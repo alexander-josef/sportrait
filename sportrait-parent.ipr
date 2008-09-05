@@ -67,6 +67,32 @@
         <modules>
           <module name="web-images-context" />
           <module name="sportrait_web" />
+          <module name="sportrait-parent">
+            <files>
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/main/webapp/WEB-INF/web.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="hibernate">
+        <modules>
+          <module name="sportrait-parent">
+            <files>
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/main/resources/hibernate.cfg.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="Groovy">
+        <modules>
+          <module name="sportrait-parent">
+            <files>
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/test/groovy/ch/unartig/selenium/AddPhotographer.groovy" />
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/test/groovy/ch/unartig/selenium/NewTest.groovy" />
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/test/groovy/ch/unartig/selenium/SecondTest.groovy" />
+              <file url="file://$PROJECT_DIR$/sportrait-web/src/test/groovy/ch/unartig/selenium/ThirdTest.groovy" />
+            </files>
+          </module>
         </modules>
       </facet-type>
     </autodetection-disabled>
@@ -273,7 +299,7 @@
     <option name="myVersion" value="123" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
+    <mapping directory="" vcs="svn" />
     <mapping directory="$PROJECT_DIR$/sportrait-web" vcs="svn" />
     <mapping directory="$PROJECT_DIR$/web-images-context" vcs="svn" />
   </component>
