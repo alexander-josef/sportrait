@@ -282,6 +282,33 @@
   <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
+  <component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Upload Applet" type="Applet" factoryName="Applet">
+      <module name="sportrait_client" />
+      <option name="MAIN_CLASS_NAME" value="wjhk.jupload2.JUploadApplet" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="600" />
+      <option name="HEIGHT" value="800" />
+      <option name="POLICY_FILE" value="file://$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <parameter name="debugLevel" value="0" />
+      <parameter name="maxChunkSize" value="500000" />
+      <parameter name="nbFilesPerRequest" value="1" />
+      <parameter name="photographerId" value="1" />
+      <parameter name="photographerPass" value="1234" />
+      <parameter name="postURL" value="http://localhost:8080/sportrait/jupload/upload.html" />
+      <parameter name="uploadPolicy" value="ch.unartig.sportrait.client.jUploadPolicies.UnartigSportraitUploadPolicy" />
+      <parameter name="xmlRpcServerUrl" value="http://localhost:8080/sportrait/xmlrpc" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="ResourceManagerContainer">
     <option name="myResourceBundles">
       <value>
