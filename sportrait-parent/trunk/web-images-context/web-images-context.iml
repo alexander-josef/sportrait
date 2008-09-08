@@ -34,6 +34,7 @@
     <exclude-output />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/war" />
       <excludeFolder url="file://$MODULE_DIR$/target/web-images-context-1.0-SNAPSHOT" />
     </content>

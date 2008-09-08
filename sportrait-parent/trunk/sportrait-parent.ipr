@@ -274,6 +274,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/sportrait-parent.iml" filepath="$PROJECT_DIR$/sportrait-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sportrait-client-applet/sportrait_client.iml" filepath="$PROJECT_DIR$/sportrait-client-applet/sportrait_client.iml" />
       <module fileurl="file://$PROJECT_DIR$/sportrait-web/sportrait_web.iml" filepath="$PROJECT_DIR$/sportrait-web/sportrait_web.iml" />
       <module fileurl="file://$PROJECT_DIR$/web-images-context/web-images-context.iml" filepath="$PROJECT_DIR$/web-images-context/web-images-context.iml" />
     </modules>
@@ -300,10 +301,11 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="svn" />
-    <mapping directory="$PROJECT_DIR$/sportrait-web" vcs="svn" />
-    <mapping directory="$PROJECT_DIR$/web-images-context" vcs="svn" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
+  <component name="uidesigner-configuration">
+    <option name="INSTRUMENT_CLASSES" value="false" />
+  </component>
   <UsedPathMacros>
     <macro name="MAVEN_REPOSITORY" />
   </UsedPathMacros>
