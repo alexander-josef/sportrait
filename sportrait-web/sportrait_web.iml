@@ -22,6 +22,10 @@
           <setting name="BUILD_ONLY_WEB_RESOURCES" value="false" />
         </building>
         <packaging>
+          <containerElement type="module" name="sportrait_client">
+            <attribute name="method" value="5" />
+            <attribute name="URI" value="/WEB-INF/lib/sportrait_client-1.0-SNAPSHOT.jar" />
+          </containerElement>
           <containerElement type="module" name="sportrait_web">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/classes" />
@@ -49,10 +53,6 @@
           <containerElement type="library" name="cglib:cglib:2.1_3" level="module">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib/cglib-2.1_3.jar" />
-          </containerElement>
-          <containerElement type="library" name="ch.unartig.server:sportrait_client:1.0-SNAPSHOT" level="module">
-            <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/sportrait_client-1.0-20080904.063604-5.jar" />
           </containerElement>
           <containerElement type="library" name="commons-beanutils:commons-beanutils:1.7.0" level="module">
             <attribute name="method" value="1" />
@@ -309,25 +309,14 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/groovy-stubs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/hibernate-plugin" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.0-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/surefire-reports" />
       <excludeFolder url="file://$MODULE_DIR$/target/war" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library name="ch.unartig.server:sportrait_client:1.0-SNAPSHOT">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/ch/unartig/server/sportrait_client/1.0-SNAPSHOT/sportrait_client-1.0-SNAPSHOT.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MAVEN_REPOSITORY$/ch/unartig/server/sportrait_client/1.0-SNAPSHOT/sportrait_client-1.0-SNAPSHOT-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/ch/unartig/server/sportrait_client/1.0-SNAPSHOT/sportrait_client-1.0-SNAPSHOT-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="module" module-name="sportrait_client" exported="" />
     <orderEntry type="module-library" exported="">
       <library name="xmlrpc:xmlrpc-client:3.0">
         <CLASSES>
