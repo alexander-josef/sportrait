@@ -438,70 +438,57 @@
             </plugin>
 
 
-            <!--Do we still use the cargo plugin ? Tomcat Plugin ?-->
-<!--
+            <!-- Currently the tomcat plugin is used for the continous integration build on test  -->
 
             <plugin>
                 <groupId>org.codehaus.cargo</groupId>
                 <artifactId>cargo-maven2-plugin</artifactId>
-                <version>0.3.1</version>
                 <configuration>
                     <container>
                         <containerId>${containerId}</containerId>
                         <type>remote</type>
-                        -->
+
 <!--<zipUrlInstaller>-->
-<!--
-                        -->
 <!--<url>${url}</url>-->
-<!--
-                        -->
 <!--<installDir>${installDir}</installDir>-->
-<!--
-                        -->
 <!--</zipUrlInstaller>-->
-<!--
                     </container>
 
                     <configuration>
+                        <!--<type>existing</type>-->
                         <type>runtime</type>
                         <properties>
-                            <cargo.tomcat.manager.url>http://sportrait.local/manager</cargo.tomcat.manager.url>
+                            <cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
                             <cargo.remote.username>admin</cargo.remote.username>
                             <cargo.remote.password/>
-                            -->
 <!--<cargo.servlet.port>8280</cargo.servlet.port>-->
-<!--
                         </properties>
                     </configuration>
 
                     <deployer>
+                        <!--<type>local</type>-->
                         <type>remote</type>
                         <deployables>
                             <deployable>
                                 <groupId>ch.unartig.server</groupId>
                                 <artifactId>sportrait_web</artifactId>
                                 <type>war</type>
-                                -->
-<!--<location>${project.build.directory}/testapp/${warName}.war</location>-->
-<!--
-                                <location>${project.build.directory}/ROOT.war</location>
+                                <!--<location>${project.build.directory}/testapp/${warName}.war</location>-->
+                                <!--<location>${project.build.directory}/ROOT.war</location>-->
                                 <properties>
-                                    <context/>
+                                    <context>sportrait</context>
                                 </properties>
-                                -->
-<!--<pingURL>optional url to ping to know if deployable is done or not</pingURL>-->
-<!--
-                                -->
-<!--<pingTimeout>optional timeout to ping (default 20000 milliseconds)</pingTimeout>-->
-<!--
+                                <!--optional url to ping to know if deployable is done or not-->
+                                <pingURL>http://localhost:8080/sportrait/index.html</pingURL>
+
+                                <!--optional timeout to ping (default 20000 milliseconds)-->
+                                <pingTimeout>2000</pingTimeout>
                             </deployable>
                         </deployables>
                     </deployer>
                 </configuration>
             </plugin>
 
--->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -680,29 +667,20 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <build>
-
-                <plugins>
-                    <!--<plugin>-->
-                        <!--<groupId>org.apache.maven.plugins</groupId>-->
-                        <!--<artifactId>maven-war-plugin</artifactId>-->
-                        <!--<configuration>-->
-                            <!--<warName>ROOT</warName>-->
-                        <!--</configuration>-->
-                    <!--</plugin>-->
-
-                </plugins>
-            </build>
             <properties>
                 <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
-                <containerId>tomcat5x</containerId>
-                <url>http://www.apache.org/dist/jakarta/tomcat-5/v5.0.30/bin/jakarta-tomcat-5.0.30.zip
-                </url>
-
             </properties>
 
 
         </profile>
+        <profile>
+              <id>tomcat6x</id>
+              <properties>
+                <containerId>tomcat6x</containerId>
+                <url>http://www.apache.org/dist/jakarta/tomcat-5/v5.0.30/bin/jakarta-tomcat-5.0.30.zip</url>
+              </properties>
+        </profile>
+
 
     </profiles>
 
