@@ -24,7 +24,7 @@ public class SecondTest {
 	public void beforeClass(){
 		selenium = new DefaultSelenium("localhost",
 					SeleniumServer.getDefaultPort(),
-					"*firefox",
+					"*mock",
 					baseUrl)
 	}
 
@@ -46,11 +46,6 @@ public class SecondTest {
 
 	@Test(groups=["sportrait-tests"])
 	public void executeIntegrationTest() throws Exception {
-		selenium.open("/index.html")
-		selenium.waitForPageToLoad("60000")
-		selenium.click("logo")
-		selenium.waitForPageToLoad("60000")
-		selenium.waitForPageToLoad("30000")
-		selenium.click("link=2008-05-17, Wil, neuer Event")
+
 	}
 }

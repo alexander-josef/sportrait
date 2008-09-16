@@ -5,10 +5,10 @@ import java.util.regex.Pattern;
 
 public class JavaTest extends SeleneseTestCase {
 	public void setUp() throws Exception {
-		setUp("http://localhost:8080", "*firefox");
+		setUp("http://localhost:8080", "*mock");
 	}
 	public void testNew() throws Exception {
-		selenium.open("/index.html");
+		selenium.open("/sportrait/index.html");
 		selenium.click("link=2008-05-17, Wil, neuer Event");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=eins");

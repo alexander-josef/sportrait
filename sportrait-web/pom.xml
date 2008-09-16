@@ -258,15 +258,12 @@
             <!--testng selenium integratin tests-->
             <!--commented out since it still fails. try the mock implementation for the browser-->
 
-<!--
 
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                -->
 <!--<version>2.4-SNAPSHOT</version>-->
-<!--
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -288,7 +285,6 @@
                 </executions>
             </plugin>
 
--->
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
                 <artifactId>gmaven-plugin</artifactId>

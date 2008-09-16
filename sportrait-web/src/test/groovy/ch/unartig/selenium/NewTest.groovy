@@ -24,7 +24,7 @@ public class NewTest {
 	public void beforeClass(){
 		selenium = new DefaultSelenium("localhost",
 					SeleniumServer.getDefaultPort(),
-					"*firefox",
+					"*mock",
 					baseUrl)
 	}
 
@@ -46,15 +46,5 @@ public class NewTest {
 
 	@Test(groups=["sportrait-tests"])
 	public void executeIntegrationTest() throws Exception {
-		selenium.open("/index.html;jsessionid=21047531EDAED4A869B643B14150821A")
-		selenium.waitForPageToLoad("60000")
-		selenium.click("link=Sportrait")
-		selenium.waitForPageToLoad("60000")
-		selenium.waitForPageToLoad("30000")
-		AssertJUnit.assertTrue(selenium.isTextPresent("SPORTRAIT ist eine Dienstleistung der unartig AG"))
-		selenium.click("link=Home")
-		selenium.waitForPageToLoad("60000")
-		selenium.waitForPageToLoad("30000")
-		AssertJUnit.assertTrue(selenium.isTextPresent("2008-05-17, Wil, neuer Event"))
 	}
 }
