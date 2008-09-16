@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="gidp-sample-integration">
   <test verbose="2" name="FFIntegrationtests" annotations="JDK">
-  	<parameter name="browser" value="firefox"/>
+  	<parameter name="browser" value="mock"/>
   	<groups>
   		<run>
   			<include name="sportrait-tests"/>
