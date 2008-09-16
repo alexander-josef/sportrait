@@ -444,10 +444,7 @@
                         <containerId>${containerId}</containerId>
                         <type>remote</type>
 
-<!--<zipUrlInstaller>-->
-<!--<url>${url}</url>-->
-<!--<installDir>${installDir}</installDir>-->
-<!--</zipUrlInstaller>-->
+
                     </container>
 
                     <configuration>
@@ -563,42 +560,11 @@
                             <warName>ROOT</warName>
                         </configuration>
                     </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>verify-deploy</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>undeploy</goal>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>clean-undeploy</id>
-                                <phase>pre-clean</phase>
-                                <goals>
-                                    <goal>undeploy</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <!--for a linux deployment this should change -->
-                            <!--<url>http://sportrait.local/manager</url>-->
-                            <url>${tomcat.url}/manager</url>
-                            <warFile>${project.build.directory}/ROOT.war</warFile>
-                            <path>/</path>
-                            <!--<mode>both</mode>-->
-                            <server>vm2-tomcat</server>
-                        </configuration>
-                    </plugin>
 
                 </plugins>
             </build>
             <properties>
                 <appConfigFilterFile>vm2-test.properties</appConfigFilterFile>
-                <tomcat.url>http://vm2.sportrait.com:8080</tomcat.url>
             </properties>
 
 
@@ -616,43 +582,11 @@
                             <warName>ROOT</warName>
                         </configuration>
                     </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>tomcat-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>verify-deploy</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>undeploy</goal>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>clean-undeploy</id>
-                                <phase>pre-clean</phase>
-                                <goals>
-                                    <goal>undeploy</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <!--for a linux deployment this should change -->
-                            <!--<url>http://sportrait.local/manager</url>-->
-                            <url>${tomcat.url}/manager</url>
-                            <warFile>${project.build.directory}/ROOT.war</warFile>
-                            <path>/</path>
-                            <!--<mode>both</mode>-->
-                            <!--where is the settings.xml ????-->
-                            <server>vm1-tomcat</server>
-                        </configuration>
-                    </plugin>
 
                 </plugins>
             </build>
             <properties>
                 <appConfigFilterFile>vm1-test.properties</appConfigFilterFile>
-                <tomcat.url>http://test.sportrait.com:8080</tomcat.url>
             </properties>
 
 
