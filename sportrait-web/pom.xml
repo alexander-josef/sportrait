@@ -452,8 +452,8 @@
                         <type>runtime</type>
                         <properties>
                             <cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
-                            <cargo.remote.username>admin</cargo.remote.username>
-                            <cargo.remote.password>leonard</cargo.remote.password>
+                            <cargo.remote.username>${tomcatUsername}</cargo.remote.username>
+                            <cargo.remote.password>${tomcatPassword}</cargo.remote.password>
 <!--<cargo.servlet.port>8280</cargo.servlet.port>-->
                         </properties>
                     </configuration>
@@ -598,6 +598,8 @@
                 </plugins>
             </build>
             <properties>
+                <tomcatUsername>admin</tomcatUsername>
+                <tomcatPassword>leonard</tomcatPassword>
                 <appConfigFilterFile>vm1-test.properties</appConfigFilterFile>
             </properties>
 
@@ -610,6 +612,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <tomcatUsername>admin</tomcatUsername>
+                <tomcatPassword></tomcatPassword>
                 <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
             </properties>
 
