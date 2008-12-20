@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <!-- todo: language depending keywords -->
     <!-- todo: is this page still active? -->
-    <meta name="author" content="studio unartig; --www.unartig.ch--; (c)2005-2008"/>
+    <meta name="author" content="studio unartig; --www.unartig.ch--; (c)2005-2009"/>
     <meta name="keywords" content="unartig, digital, data, original"/>
     <link href="/css/popup.css" rel="stylesheet" type="text/css"/>
 
