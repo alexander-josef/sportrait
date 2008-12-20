@@ -180,7 +180,7 @@
 </tr>
 <tr>
     <td/>
-    <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Clausiusstrasse 34, 8006 Zürich, Tel: +41 (0)44 251 0009</td>
+    <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Clausiusstrasse 34, 8006 Zürich, Tel: +41 (0)79 600 3561</td>
 </tr>
 </table>
 </html:form>
