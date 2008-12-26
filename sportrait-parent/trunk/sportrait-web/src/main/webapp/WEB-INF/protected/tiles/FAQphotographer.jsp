@@ -264,7 +264,7 @@ den Anlass, zu dem du Fotos publizieren mˆchtest, nicht findest, dann melde die
 <p class="longText"><a name="021"></a><b>So kann ich mich auf einen Anlass vorbereiten.</b>&nbsp;<a href="#">nach
     oben</a><br/>
     Du loggst dich bei SPORTRAIT ein und suchst in der
-    <html:link action="/photographer/admin/eventlist" target="_blank">Event¸bersicht</html:link>
+    <html:link action="/photographer/main-zul" target="_blank">Event¸bersicht</html:link>
     nach dem Anlass,
     bei dem Du gerne Fotos schiessen mˆchtest. Wenn du den Anlass in dieser Liste nicht finden kannst, bringt dich die
     n‰chste Frage
@@ -280,7 +280,7 @@ den Anlass, zu dem du Fotos publizieren mˆchtest, nicht findest, dann melde die
     <b>1. Wie schiesse ich ein gutes Sportfoto?</b> Informationen zu Brennweiten, Verschlusszeiten,
     Autofocus-Funktionen, Belichtung
     und Hilfsmitteln findest findest Du im
-    <html:link action="http://bugz.unartig.ch/?sportrait-forum" target="_blank">SPORTRAIT-Forum</html:link>
+    <html:link href="http://bugz.unartig.ch/?sportrait-forum" target="_blank">SPORTRAIT-Forum</html:link>
     .<br/>
     <b>2. Tragen die Teilnehmer Startnummern oder gibt es eine Zeitmessung?</b> Wenn ja ergibt sich daraus die
     Mˆglichkeit, den Fotos Startnummern zuzuweisen.
