@@ -215,8 +215,10 @@
             
 
             <tabpanel>
-                <label value="Fotos hochladen" sclass="sportraitTitle"/>
-                <label value="Upload nach : ${sportraitAdministrationWindow.client.serverUrl}"/>
+                <vbox>
+                    <label value="Fotos hochladen" sclass="sportraitTitle"/>
+                    <label value="(Upload nach : ${sportraitAdministrationWindow.client.serverUrl} )"/>
+                </vbox>
                 <html>
                     <![CDATA[
 
