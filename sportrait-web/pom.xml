@@ -21,8 +21,8 @@
         <dependency>
             <groupId>ch.unartig.server</groupId>
             <artifactId>sportrait_client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <!--<version>0.6.5</version>-->
+            <!-- <version>1.0-SNAPSHOT</version> -->
+            <version>0.7</version>
         </dependency>
 
         <!--ZK-->
