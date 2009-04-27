@@ -734,9 +734,8 @@
 
 
     <scm>
-        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-server/trunk</connection>
-        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-server/trunk</developerConnection>
-        <!--<url>svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-server/trunk</url>-->
+        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/sportrait-web/trunk</connection>
+        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/sportrait-web/trunk</developerConnection>
     </scm>
 
 

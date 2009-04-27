@@ -48,7 +48,7 @@ public class Client
     /**
      * Default Constructor
      *
-     * @param request HttpServletRequest
+     * @param request The HttpServletRequest is needed to extract the server URL that is to be stored with this client.
      */
     public Client(HttpServletRequest request)
     {

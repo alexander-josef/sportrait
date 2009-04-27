@@ -235,9 +235,10 @@ public final class Registry
     /*the number of thumbnail photos on the preview page*/
     public static int itemsOnPage = 14;
 
-    private static String customerServiceAddress = "unartiginfo@unartig.ch";
+    /*this addess will be used for sending a request from the contact form to fogbugz  */
+    private static String customerServiceAddress = "info@sportrait.com";
     /*this is the sender for the confirmation email after an order has been confirmed*/
-    private static String orderConfirmationFromAddress = "noreply@unartig.ch";
+    private static String orderConfirmationFromAddress = "info@sportrait.com";
 
 
     public static final float _IMAGE_QUALITY_STANDARD = 0.75F;

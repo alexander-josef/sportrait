@@ -72,6 +72,10 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>HibernateFilter</filter-name>
+        <url-pattern>/rest/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>HibernateFilter</filter-name>
         <url-pattern>/zkau/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
@@ -156,6 +160,14 @@
             <param-value>true</param-value>
         </init-param>
     </servlet>
+
+    <!-- TODO the action servlet is probably not appropriate for REST style services-->
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Mapping for the struts action. all html pages and the api for the web services-->
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.html</url-pattern>

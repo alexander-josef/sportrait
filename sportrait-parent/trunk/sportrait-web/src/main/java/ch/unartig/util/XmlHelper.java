@@ -43,16 +43,16 @@ public class XmlHelper
 {
 
     /**
+     * Todo remove this method. Has nothing todo with xml-helper
      * @param url the url
      * @return root Element that is returned by calling the passed url
      * @throws Exception
      */
     public static Element getJdomRootElement(String url) throws IOException, JDOMException
     {
-        HttpUtil httpUtil = new HttpUtil(url);
         InputStream is;
 
-        is = httpUtil.downloadFileOverApacheHttpClient();
+        is = HttpUtil.getHttpResponseAsStream(url);
 
 
         return getJdomRootElement(is);

@@ -18,8 +18,6 @@
  * $Log$
  ****************************************************************/
 
-import ch.unartig.sportrait.client.JUnartigUploadClientPanel;
-
 import javax.swing.*;
 import java.awt.*;
 

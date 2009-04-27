@@ -72,7 +72,7 @@ public class DownloadOrderAction extends Action
      * @return a page view for downloading the images identified by the order hash
      */
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws UnartigException {
-        String orderHash = actionMapping.getParameter();
+        String orderHash = actionMapping.getParameter(); // parameter set by the struts-config
         _logger.debug("preparing downloads for order with order-hash ["+orderHash +"]");
         DownloadImageBean downloadBean;
         String downloadUrl;

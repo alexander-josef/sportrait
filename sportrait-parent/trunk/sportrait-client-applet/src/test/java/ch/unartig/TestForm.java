@@ -19,8 +19,6 @@
  ****************************************************************/
 package ch.unartig;
 
-import ch.unartig.sportrait.client.JUnartigUploadClientPanel;
-
 import javax.swing.*;
 import java.awt.*;
 
