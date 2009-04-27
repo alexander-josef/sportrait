@@ -148,6 +148,8 @@ public class DownloadImageBean
             _logger.debug("streaming photo with name : " + downloadOrderItem.getPhoto().getFilename());
             response.setContentType("image/JPG");
             response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadOrderItem.getPhoto().getFilename() + "\"");
+            // What's the content length? set content-length header:
+//            response.setContentLength();
             // copy the file to the outputstream:
             streamDigitalProduct(downloadOrderItem, response.getOutputStream());
         } catch (IOException e)
@@ -209,9 +211,9 @@ public class DownloadImageBean
         double resampleFactor;
         double longerSidePixels = 600d;
         Integer originalWidthPixels = photo.isOrientationLandscape() ? photo.getWidthPixels() : photo.getHeightPixels();
-        resampleFactor = longerSidePixels / new Double(originalWidthPixels.intValue()).doubleValue();
+        resampleFactor = longerSidePixels / (double) originalWidthPixels.intValue();
         _logger.debug("sample factor :" + resampleFactor);
-        ImagingHelper.reSample(photo.getFile(), new Double(resampleFactor), os, 0.75f);
+        ImagingHelper.reSample(photo.getFile(), resampleFactor, os, 0.75f);
     }
 
     /**

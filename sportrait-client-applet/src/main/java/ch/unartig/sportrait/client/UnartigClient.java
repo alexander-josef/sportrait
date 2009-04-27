@@ -41,7 +41,11 @@ import java.util.Iterator;
 import ch.unartig.sportrait.client.jUploadPolicies.UnartigSportraitUploadPolicy;
 import ch.unartig.sportrait.client.forms.UnartigClientAppletForm;
 
-public class JUnartigUploadClientPanel  implements ActionListener
+/**
+ * This class acts as a client to unartig. It can produce a panel containing the events and categories.
+ * The class abstracts the xml-rpc / web service calls to the unartig server.
+ */
+public class UnartigClient implements ActionListener
 {
     private UploadPolicy uploadPolicy;
     private static final String _PHOTOGRAPHER_PASS = "photographerPass";
@@ -248,7 +252,7 @@ public class JUnartigUploadClientPanel  implements ActionListener
     {
         public void valueChanged(ListSelectionEvent e)
         {
-            System.out.println("JUnartigUploadClientPanel$EventListSelectionListener.valueChanged");
+            System.out.println("UnartigClient$EventListSelectionListener.valueChanged");
             String eventId = (String)form.chooseYourEventList.getSelectedValue();
             System.out.println("event id = " + eventId);
             try

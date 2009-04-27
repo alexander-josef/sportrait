@@ -136,7 +136,7 @@
             <html:text property="creditCardNumber" styleId="creditCardNumber"
                        errorStyleClass="inputError" style="width:200px"/>
         </td>
-        <td>&nbsp;<i>Bitte keine Leerzeichen!</i></td>
+        <td>&nbsp;<i>(keine Leer- oder Trennzeichen)</i></td>
     </tr>
     <tr>
         <td class="formLead">Gültig bis:<span class="must">*</span></td>

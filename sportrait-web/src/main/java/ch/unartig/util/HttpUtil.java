@@ -62,24 +62,19 @@ public class HttpUtil
 {
 
 
-    private String address;
     private URLConnection connection = null;
     private HttpClient x_client = null;
     private InputStream is = null;
 
-    public void setAddress(String address)
-    {
-        this.address = address;
-    }
 
     public HttpUtil()
     {
     }
 
-    public HttpUtil(String url)
-    {
-        this.address = url;
-    }
+//    public HttpUtil(String url)
+//    {
+//        this.address = url;
+//    }
 
     public void closeConnections()
     {
@@ -118,11 +113,10 @@ public class HttpUtil
      *
      * @throws Exception
      * @return
+     * @param url
      */
-    public InputStream downloadFileOverJavaHttpClient() throws Exception
+    public InputStream downloadFileOverJavaHttpClient(URL url) throws Exception
     {
-        URL url = new URL(address);
-
         connection = url.openConnection();
         connection.setDoOutput(false);
         connection.setDoInput(true);
@@ -134,35 +128,34 @@ public class HttpUtil
     }
 
     /**
-     * Will throw IOException if not authorized:
-     * java.io.IOException: Server returned HTTP response code: 401 for URL: http://.....
+     * Returns the response from a http GET request as stream. 
      *
-     * @throws IOException
+     * @throws IOException Will throw IOException if not authorized:
      * @return
+     * @param url
      */
-    public InputStream downloadFileOverApacheHttpClient() throws IOException
+    public static InputStream getHttpResponseAsStream(String url) throws IOException
     {
-        String p_url = address;
-        String x_new_url = p_url;
+        String x_new_url = url;
         String x_user = null;
         String x_pwd = null;
-        if (p_url.indexOf('@') > 0)
+        if (url.indexOf('@') > 0)
         {
             String x_pwd_str =
-                    p_url.substring(p_url.indexOf("://") + 3,
-                            p_url.indexOf('@'));
+                    url.substring(url.indexOf("://") + 3,
+                            url.indexOf('@'));
             x_user =
                     x_pwd_str.substring(0, x_pwd_str.indexOf(':'));
             x_pwd =
                     x_pwd_str.substring(x_pwd_str.indexOf(':') + 1);
-            x_new_url = p_url.substring(0, p_url.indexOf("://") + 3)
-                    + p_url.substring(p_url.indexOf('@') + 1);
+            x_new_url = url.substring(0, url.indexOf("://") + 3)
+                    + url.substring(url.indexOf('@') + 1);
         }
-        x_client = new HttpClient();
-        x_client.getState().setCredentials(//null,
+        HttpClient  httpClient = new HttpClient();
+        httpClient.getState().setCredentials(//null,
                 null,
                 new UsernamePasswordCredentials(x_user, x_pwd));
-        x_client.startSession(new URL(x_new_url));
+        httpClient.startSession(new URL(x_new_url));
         //	GetMethod get = new GetMethod(x_new_url);
         GetMethod get = new GetMethod(new URL(x_new_url).getPath());
         if (x_new_url.indexOf('?') > 0)
@@ -170,15 +163,13 @@ public class HttpUtil
             String x_queryString = x_new_url.substring(x_new_url.indexOf('?') + 1);
             get.setQueryString(x_queryString);
         }
-        int x_responseCode = x_client.executeMethod(get);
-        if (x_responseCode == HttpURLConnection.HTTP_OK)
+        int x_responseCode = httpClient.executeMethod(get);
+        if (x_responseCode != HttpURLConnection.HTTP_OK)
         {
-            is = get.getResponseBodyAsStream();
-        } else
-        {
-            throw new IOException("Server returned HTTP response code: " + x_responseCode + " for URL: " + p_url);
+
+            throw new IOException("Server returned HTTP response code: " + x_responseCode + " for URL: " + url);
         }
-        return is;
+        return get.getResponseBodyAsStream();
     }
 
     /**

@@ -496,6 +496,12 @@
         <!--##############################################################-->
         <action path="/jupload/upload" type="ch.unartig.studioserver.actions.JUploadAction"/>
 
+        <!--##############################################################-->
+        <!--################## REST Service Action #######################-->
+        <!--########### this action is called by the upload applet #######-->
+        <!--##############################################################-->
+        <action path="/api/events" type="ch.unartig.studioserver.actions.RestServiceAction"/>
+
     </action-mappings>
 
 

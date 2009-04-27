@@ -34,9 +34,8 @@ import java.io.File;
 import java.net.URL;
 import java.awt.*;
 
-import ch.unartig.sportrait.client.JUnartigUploadClientPanel;
+import ch.unartig.sportrait.client.UnartigClient;
 
-// TODO cookies handling: desc to be mve to UploadPolicy presentation.
 /**
  * Specific UploadPolicy for the coppermine picture gallery. It is based on the
  * PictureUploadPolicy, and some specific part to add the uploaded pictures to a
@@ -150,8 +149,8 @@ public class UnartigSportraitUploadPolicy extends PictureUploadPolicy
         JPanel topPanel = super.createTopPanel(browse, remove, removeAll, mainPanel);
 
         // the unartig panel:
-        JUnartigUploadClientPanel unartigForm = new JUnartigUploadClientPanel();
-        JPanel unartigPanel = unartigForm.getUnartigUploadClientPanel(this);
+        UnartigClient unartigClient = new UnartigClient();
+        JPanel unartigPanel = unartigClient.getUnartigUploadClientPanel(this);
         unartigPanel.setMinimumSize(new Dimension(450,220));
 
         combinedPanel.add(unartigPanel);

@@ -154,6 +154,7 @@ public class UnartigActionServlet extends ActionServlet
     public void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException
     {
 
+        // Todo google for this code ... where does that come from and why? There should be no HEAD method coming in here ...
         // check for HEAD method
         if ("HEAD".equals(httpServletRequest.getMethod())) {
 
@@ -176,9 +177,45 @@ public class UnartigActionServlet extends ActionServlet
         super.doPost(httpServletRequest, httpServletResponse);
     }
 
+    /**
+     * Extending the Struts request handling.
+     * <p>Process an HTTP "PUT" request.</p>
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     *
+     * @exception IOException if an input/output error occurs
+     * @exception ServletException if a servlet exception occurs
+     */
+    public void doPut(HttpServletRequest request,
+              HttpServletResponse response)
+        throws IOException, ServletException {
+
+        process(request, response);
+
+    }
 
     /**
-     * Check the client status: do we have an authorized client? make sure the Client object is up-to-date in the session
+     * Extending the Struts request handling.
+     * <p>Process an HTTP "DELETE" request.</p>
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     *
+     * @exception IOException if an input/output error occurs
+     * @exception ServletException if a servlet exception occurs
+     */
+    public void doDelete(HttpServletRequest request,
+              HttpServletResponse response)
+        throws IOException, ServletException {
+
+        process(request, response);
+
+    }
+
+    /**
+     * We need a 'Client' Object in the session to identify a logged in client.
+     * Check the client status: do we have an authorized user? make sure the Client object is up-to-date in the session
      * @param request HttpRequest
      * @return the authorized client or null
      */
@@ -189,11 +226,12 @@ public class UnartigActionServlet extends ActionServlet
         Client client = null;
         if (userPrincipal == null && session != null)
         {
+            // No authorized user. make sure no client session exists anymore.
             session.removeAttribute(Registry._SESSION_CLIENT_NAME);
         } else if (userPrincipal!=null)
         {
             client = new Client(request);
-            // set username to client object and store in sesscion:
+            // set username to client object and store in session:
             String userName = userPrincipal.getName();
             client.init(userName);
             request.getSession(true).setAttribute(Registry._SESSION_CLIENT_NAME,client);

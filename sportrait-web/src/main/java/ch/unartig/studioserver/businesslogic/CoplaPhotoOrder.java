@@ -151,7 +151,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1078,14 +1077,13 @@ public class CoplaPhotoOrder implements PhotoOrderIF
     {
         _logger.debug("********************* GetOipsServer ****************************");
 
-        HttpUtil httpUtil = new HttpUtil(coplaServerRoot + "/" + "GetServer.cpl");
         URL retVal = null;
         InputStream is;
         Document doc;
         Element getServer = null;
         try
         {
-            is = httpUtil.downloadFileOverApacheHttpClient();
+            is = HttpUtil.getHttpResponseAsStream(coplaServerRoot + "/" + "GetServer.cpl");
             doc = new SAXBuilder().build(is);
             getServer = doc.getRootElement();
         } catch (Exception e)
