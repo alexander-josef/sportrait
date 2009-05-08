@@ -349,12 +349,22 @@ public class Album extends GeneratedAlbum {
                 // importDataStream is zip file
                 ZipInputStream zis = new ZipInputStream(importDataStream);
                 // make sure pathes exists:
-                boolean thumbOk = getThumbnailPath().mkdirs();
-                boolean displayOk = getDisplayPath().mkdirs();
+                boolean thumbOk = true;
+                if (!getThumbnailPath().exists()) {
+                    thumbOk = getThumbnailPath().mkdirs();
+                }
+                boolean displayOk = true;
+                if (!getDisplayPath().exists()) {
+                    displayOk = getDisplayPath().mkdirs();
+                }
                 if (!(thumbOk && displayOk)) {
                     throw new RuntimeException("Error importing from Zip file, can not create directories for thumbnail or display");
                 }
                 while ((zipEntry = zis.getNextEntry()) != null) {
+                    // todo check for fine
+                    if (zipEntry.getName().toLowerCase().startsWith("fine/")){
+                        throw new RuntimeException("fine images not yet supported");
+                    }
                     FileUtils.copyFile(zis, new File(this.getAlbumWebImagesPath(), zipEntry.getName()), false, true);
                 }
                 File importFile = new File(this.getAlbumWebImagesPath(), "import.txt");
@@ -363,9 +373,7 @@ public class Album extends GeneratedAlbum {
                 } else {
                     throw new RuntimeException("import.txt must exist for importing photos.");
                 }
-
             }
-
             else { // only import.txt has been uploaded:
                 InputStreamReader reader = new InputStreamReader(importDataStream);
                 br = new BufferedReader(reader);
@@ -378,6 +386,10 @@ public class Album extends GeneratedAlbum {
                 try {
                     line = br.readLine();
                     String parts[] = line.split(";");
+                    if (parts.length!=4) {
+                        _logger.info("probably last line in file: skipping invalid line while importing from import.txt : [" + line  +"]" );
+                        continue;
+                    }
                     Photo photo = new Photo(parts[0], this, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), new Date(Long.parseLong(parts[3])), parts[0]);
                     add(photo);
                 } catch (IOException e) {
@@ -387,8 +399,6 @@ public class Album extends GeneratedAlbum {
         } catch (IOException e) {
             throw new RuntimeException("Error importing from zip file or import.txt");
         }
-
-
     }
 
 
@@ -765,10 +775,11 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     * There is only one product for a product type in an album.
+     * There is zero or one product for a given product-type per album.
      *
      * @param productTypeId The ID of the ProductType
-     * @return the product that has the productType identified by the productTypeId or NULL, if no product exists with the given productType
+     * @return <p>The product that has the productType identified by the productTypeId.</p>
+     * <p>NULL, if no product exists with the given productType.</p>
      */
     public Product getProductFor(Long productTypeId) {
         // make a query or use the collection???
@@ -778,7 +789,7 @@ public class Album extends GeneratedAlbum {
                 return product;
             }
         }
-        _logger.debug("no product found with given productTypeId");
+        _logger.debug("no product found with given productTypeId"); // this is fine. It will then show as not available in the overview.
         return null;
     }
 

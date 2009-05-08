@@ -105,11 +105,6 @@ public class SportEventsAction extends MappingDispatchAction
             SportsEvent event = (SportsEvent) glDao.load(new Long(eventId), SportsEvent.class);
             _logger.debug("params : [" + eventId + "] [" + eventCategoryId + "]");
 
-            boolean debugme = !"".equals(file.getFileName());
-
-            System.out.println("debugme = " + debugme);
-            
-
             if (file != null && !"".equals(file.getFileName()) && (fineImageServerPath == null || "".equals(fineImageServerPath)))
             {
                 _logger.debug("Going to create album from Zip file");
