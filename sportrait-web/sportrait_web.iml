@@ -28,107 +28,107 @@
           </containerElement>
           <containerElement type="library" name="ant:ant:1.6.5" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/ant-1.6.5.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="antlr:antlr:2.7.6" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/antlr-2.7.6.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="asm:asm-attrs:1.5.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/asm-attrs-1.5.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="asm:asm:1.5.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/asm-1.5.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="avalon-framework:avalon-framework:4.1.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/avalon-framework-4.1.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="cglib:cglib:2.1_3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/cglib-2.1_3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-beanutils:commons-beanutils:1.7.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-beanutils-1.7.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-codec:commons-codec:1.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-codec-1.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-collections:commons-collections:3.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-collections-3.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-digester:commons-digester:1.6" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-digester-1.6.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-fileupload:commons-fileupload:1.2" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-fileupload-1.2.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-httpclient:commons-httpclient:2.0.2" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-httpclient-2.0.2.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-io:commons-io:1.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-io-1.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-logging:commons-logging:1.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-logging-1.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-net:commons-net:1.4.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-net-1.4.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="commons-validator:commons-validator:1.1.4" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/commons-validator-1.1.4.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="dom4j:dom4j:1.6.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/dom4j-1.6.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.activation:activation:1.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/activation-1.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.mail:mail:1.4" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/mail-1.4.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.media:jai_core:1.1.2_01" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jai_core-1.1.2_01.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.servlet:jstl:1.1.2" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jstl-1.1.2.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.servlet:servlet-api:2.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/servlet-api-2.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="javax.transaction:jta:1.0.1B" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jta-1.0.1B.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="jdom:jdom:1.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jdom-1.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="jetty:org.mortbay.jetty:5.1.10" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/org.mortbay.jetty-5.1.10.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="jline:jline:0.9.94" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jline-0.9.94.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="junit:junit:3.8.1" level="module">
             <attribute name="method" value="0" />
@@ -136,23 +136,23 @@
           </containerElement>
           <containerElement type="library" name="log4j:log4j:1.2.14" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/log4j-1.2.14.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="logkit:logkit:1.0.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/logkit-1.0.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="net.sf.ehcache:ehcache:1.2.3" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/ehcache-1.2.3.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.apache.ant:ant-launcher:1.7.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/ant-launcher-1.7.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.apache.ant:ant:1.7.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/ant-1.7.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.apache.geronimo.specs:geronimo-j2ee_1.4_spec:1.0" level="module">
             <attribute name="method" value="0" />
@@ -160,35 +160,35 @@
           </containerElement>
           <containerElement type="library" name="org.apache.ws.commons:ws-commons-util:1.0.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/ws-commons-util-1.0.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.apache.xmlrpc:xmlrpc-common:3.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/xmlrpc-common-3.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.beanshell:bsh:2.0b4" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/bsh-2.0b4.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.codehaus.groovy:groovy-all:1.5.6" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/groovy-all-1.5.6.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.hibernate:hibernate:3.2.6.ga" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/hibernate-3.2.6.ga.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.openqa.selenium.client-drivers:selenium-java-client-driver:1.0-beta-1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/selenium-java-client-driver-1.0-beta-1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.openqa.selenium.core:selenium-core:1.0-beta-1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/selenium-core-1.0-beta-1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.openqa.selenium.server:selenium-server-coreless:0.9.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/selenium-server-coreless-0.9.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.openqa.selenium.server:selenium-server:1.0-beta-1:standalone" level="module">
             <attribute name="method" value="1" />
@@ -200,75 +200,75 @@
           </containerElement>
           <containerElement type="library" name="org.zkoss.common:zcommon:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zcommon-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.common:zweb:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zweb-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.zk:zhtml:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zhtml-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.zk:zk:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zk-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.zk:zkplus:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zkplus-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.zk:zul:3.0.7" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zul-3.0.7.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="org.zkoss.zkforge.el:zcommons-el:1.0.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/zcommons-el-1.0.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="oro:oro:2.0.8" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/oro-2.0.8.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="securityfilter:securityfilter:2.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/securityfilter-2.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="sslext:sslext:1.2-0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/sslext-1.2-0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="struts:struts:1.2.9" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/struts-1.2.9.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="sun-plugin:sun-plugin:1.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/sun-plugin-1.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="taglibs:standard:1.1.2" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/standard-1.1.2.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="wjhk:jupload:3.4.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/jupload-3.4.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="xalan:xalan:2.5.1" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/xalan-2.5.1.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="xml-apis:xml-apis:1.0.b2" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/xml-apis-1.0.b2.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="xmlrpc:xmlrpc-client:3.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/xmlrpc-client-3.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="xmlrpc:xmlrpc-server:3.0" level="module">
             <attribute name="method" value="1" />
-            <attribute name="URI" value="/WEB-INF/lib/xmlrpc-server-3.0.jar" />
+            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
         </packaging>
       </configuration>

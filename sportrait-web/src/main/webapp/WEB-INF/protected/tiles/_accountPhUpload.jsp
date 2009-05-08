@@ -7,7 +7,7 @@
 
 <html:xhtml/>
 <li class="contentCenter">
-    <h2>Bilder Upload für:</h2><br/>
+    <h2>Bilder Upload fï¿½r:</h2><br/>
 
     <html:form action="/photographer/createUpload" enctype="multipart/form-data">
         <h3><span class="errorstyle">Option 1: Bestehendes Album (TODO, funktioniert noch nicht)</span></h3>
@@ -18,12 +18,12 @@
                         <%--wie viele events anzeigen? letzte zwei wochen? was machen fuer andere events?--%>
                     <select name="albumId">
                         <option>Engadiner Skimarathon; Start</option>
-                        <option>Marathon Zürich; Impressionen</option>
-                        <option>Marathon Zürich; M 20</option>
+                        <option>Marathon Zï¿½rich; Impressionen</option>
+                        <option>Marathon Zï¿½rich; M 20</option>
                         <option>CSI Luzern; Samstag</option>
                     </select>
                 </td>
-                <td>Bestehendes Album auswählen</td>
+                <td>Bestehendes Album auswï¿½hlen</td>
             </tr>
             <tr>
                 <td><span class="bold">Upload-Quelle:</span></td>
@@ -37,7 +37,7 @@
                 <td><span class="bold">Event:</span></td>
                 <td>
                         <%--wie viele events anzeigen? letzte zwei wochen? was machen fuer andere events?--%>
-                    <html:select name="uploadBean" property="eventId" onchange="window.location.href = '/photographer/admin/upload.html?eventId=' + this.form.eventId.value;">
+                    <html:select name="uploadBean" property="eventId" onchange="window.location.href ='upload.html?eventId=' + this.form.eventId.value;">
                         <html:option value="">--</html:option>
                         <html:optionsCollection name="uploadBean" property="events" label="longTitle" value="genericLevelId"/>
                     </html:select>
@@ -48,11 +48,11 @@
                 <td><span class="bold">Kategorie:</span></td>
                 <td>
                     <html:select name="uploadBean" property="eventCategoryId">
-                        <html:option value="">-- Kategorie wählen --</html:option>
+                        <html:option value="">-- Kategorie wï¿½hlen --</html:option>
                         <html:optionsCollection name="uploadBean" property="eventCategories" label="title" value="eventCategoryId"/>
                     </html:select>
                 </td>
-                <td>&nbsp;(bestehende Kategorie wählen oder neue erstellen)</td>
+                <td>&nbsp;(bestehende Kategorie wï¿½hlen oder neue erstellen)</td>
             </tr>
             <tr>
                 <td colspan=3/>
@@ -77,6 +77,19 @@
                     <html:submit value="Import starten"/>
                 </td>
                 <td>...absoluten '/fine' Pfad auf Server mit Bildern angeben</td>
+            </tr>
+            <tr>
+                <td colspan=3/>
+            </tr>
+             
+            <tr>
+                <td><span style="color:red">NEU:</span> Import-File:</td>
+                <td>
+                    <html:file property="importData"/>
+                    <%-- How can the property be read ?  --%>
+                    <html:submit value="Foto-Daten in DB importieren"/>
+                </td>
+                <td>CSV-Datei mit den Importdaten (Name; Pixel Breite; Pixel Hoehe; Datum MM/dd/YY)</td>
             </tr>
             <tr>
                 <td colspan=3><h3><br/><span class="errorstyle" >Upload Applet : ${clientInSession.serverUrl}</span></h3></td>

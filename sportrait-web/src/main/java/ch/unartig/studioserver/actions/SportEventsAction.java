@@ -101,16 +101,28 @@ public class SportEventsAction extends MappingDispatchAction
             String eventCategoryId = dynaForm.getString("eventCategoryId");
             String fineImageServerPath = dynaForm.getString("imagePath");
             FormFile file = (FormFile) dynaForm.get("content");
+            FormFile importDataFile = (FormFile) dynaForm.get("importData");
             SportsEvent event = (SportsEvent) glDao.load(new Long(eventId), SportsEvent.class);
             _logger.debug("params : [" + eventId + "] [" + eventCategoryId + "]");
-            if (file != null && (fineImageServerPath == null || "".equals(fineImageServerPath)))
+
+            boolean debugme = !"".equals(file.getFileName());
+
+            System.out.println("debugme = " + debugme);
+            
+
+            if (file != null && !"".equals(file.getFileName()) && (fineImageServerPath == null || "".equals(fineImageServerPath)))
             {
-                _logger.info("Going to create album from Zip file");
+                _logger.debug("Going to create album from Zip file");
                 event.createRegisterSportsAlbum(new Long(eventCategoryId), file.getInputStream(),client, true);
             } else if ((fineImageServerPath != null && !"".equals(fineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
-                _logger.info("Going to create album from temporary path on server");
+                _logger.debug("Going to create album from temporary path on server");
                 event.createRegisterSportsAlbum(new Long(eventCategoryId), fineImageServerPath,client);
+            } else if (importDataFile!=null && (fineImageServerPath == null || "".equals(fineImageServerPath))  )
+            {
+                _logger.debug("Going to create album from import data file only (no fine images)");
+                String fileName = importDataFile.getFileName();
+                event.importAlbumFromImportDataOnly(new Long(eventCategoryId), importDataFile.getInputStream(),client, fileName.toLowerCase().endsWith(".zip"));
             } else
             {
                 _logger.error("cannot define both, file and image path");

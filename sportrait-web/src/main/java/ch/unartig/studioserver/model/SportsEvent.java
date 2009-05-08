@@ -107,7 +107,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * Example for a line:<br/>
      * <pre>
      * in Klammern die array-indices
-     * (0)laufen;(1)27.3.2007;(2)8000;(3)Zürich;(4)Marathon Zürich;(5)Am Marathon Zürich nehmen heute 12'000 Sportlerinnen und Sportler teil. Er stellt für die Marathon-Disziplin der prominenteste Anlass in der Schweiz dar\nIm Jahre 1996 standen 100 Sportlerinnen und Sportler zum ersten mal am Start des Züricher Marathons;(6)http://www.zurichmarathon.ch/;(7+)M 18;W 18;W 20;M 20;M 30;W 30
+     * (0)laufen;(1)27.3.2007;(2)8000;(3)Zï¿½rich;(4)Marathon Zï¿½rich;(5)Am Marathon Zï¿½rich nehmen heute 12'000 Sportlerinnen und Sportler teil. Er stellt fï¿½r die Marathon-Disziplin der prominenteste Anlass in der Schweiz dar\nIm Jahre 1996 standen 100 Sportlerinnen und Sportler zum ersten mal am Start des Zï¿½richer Marathons;(6)http://www.zurichmarathon.ch/;(7+)M 18;W 18;W 20;M 20;M 30;W 30
      * </pre>
      *
      * @param line column separated line that contains the sportsevent information
@@ -280,6 +280,23 @@ public class SportsEvent extends GeneratedSportsEvent
         uploader.start();
         return true;
     }
+
+    /**
+     * Without processing the fine images, import an album into the system based on the already extracted image parameters
+     * @param eventCategoryId
+     * @param inputStream
+     * @param client
+     * @param isZipArchive
+     * @return
+     * @throws UnartigException
+     */
+    public boolean importAlbumFromImportDataOnly(Long eventCategoryId, InputStream inputStream, Client client, boolean isZipArchive) throws UnartigException
+    {
+        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        sportsAlbum.registerPhotosFromImportData(inputStream, isZipArchive);
+        return true;
+    }
+
 
 
     /**
