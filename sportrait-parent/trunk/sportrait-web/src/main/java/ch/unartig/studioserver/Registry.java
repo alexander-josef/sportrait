@@ -322,7 +322,7 @@ public final class Registry
     public static final String _GERMANY_COUNTRY_CODE = "DEU";
     public static final String _AUSTRIA_COUNTRY_CODE = "AUT";
     public static final String _CURRENCY_SWISS_FRANCS = "SFr.";
-    public static final String _CURRENCY_EURO = "€";
+    public static final String _CURRENCY_EURO = "ï¿½";
     public static final int _ORDER_DOWNLOADS_VALID_DAYS = 7;
     public static final String _AD_BANNER_RIGHT_POSITION = "right";
     public static final String _ROLE_PHOTOGRAPHER = "photographer";
@@ -422,7 +422,7 @@ public final class Registry
     }
 
     /**
-     * The absolute path on the server underneath the webimages are served. Usually be a different virtual host or context.
+     * The absolute path on the server underneath the webimages are served. Usually in a different virtual host or context.
      * @return
      */
     public static String getWebImagesDocumentRoot()

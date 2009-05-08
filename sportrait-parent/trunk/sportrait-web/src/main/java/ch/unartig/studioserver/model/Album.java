@@ -196,7 +196,6 @@ import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.exceptions.UnartigImagingException;
-import ch.unartig.sportrait.reports.RowSalesPerAlbumProducts;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
@@ -211,15 +210,17 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
 
 import javax.media.jai.RenderedOp;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipEntry;
+
+
 
 /**
  *
  */
-public class Album extends GeneratedAlbum
-{
+public class Album extends GeneratedAlbum {
     private Set problemFiles;
     /**
      * this String defines the action url that is to be called for viewing this album
@@ -233,16 +234,13 @@ public class Album extends GeneratedAlbum
     /**
      * default constructor
      */
-    public Album()
-    {
+    public Album() {
     }
 
     /**
      * full constructor needed because of hbm2java generation
-     *
      */
-    public Album(String navTitle, String longTitle, String description, String quickAccess, Boolean aPrivate, Boolean publish, String privateAccessCode, String albumTypeString, Photographer photographer, Event event, EventCategory eventCategory, Set photos, Set products)
-    {
+    public Album(String navTitle, String longTitle, String description, String quickAccess, Boolean aPrivate, Boolean publish, String privateAccessCode, String albumTypeString, Photographer photographer, Event event, EventCategory eventCategory, Set photos, Set products) {
     }
 
     /**
@@ -251,10 +249,8 @@ public class Album extends GeneratedAlbum
      *
      * @return action url string
      */
-    private String lazyInitActionString()
-    {
-        if (actionString == null)
-        {
+    private String lazyInitActionString() {
+        if (actionString == null) {
             actionString = getActionStringPart() + getGenericLevelId().toString() + "/" + getNavTitle() + ".html";
         }
         _logger.debug("returning :" + actionString);
@@ -262,11 +258,9 @@ public class Album extends GeneratedAlbum
     }
 
     /**
-     *
      * @param visitor Visitor to use
      */
-    public void accept(GenericLevelVisitor visitor)
-    {
+    public void accept(GenericLevelVisitor visitor) {
         visitor.visit(this);
     }
 
@@ -275,40 +269,33 @@ public class Album extends GeneratedAlbum
      * @param longTitle
      * @param description
      */
-    public Album(String navTitle, String longTitle, String description)
-    {
+    public Album(String navTitle, String longTitle, String description) {
         setNavTitle(navTitle);
         setLongTitle(longTitle);
         setDescription(description);
     }
 
-    public StringBuffer composeTreeItem()
-    {
+    public StringBuffer composeTreeItem() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List listChildrenForNavTree()
-    {
+    public List listChildrenForNavTree() {
         return Collections.EMPTY_LIST;
     }
 
-    public List listChildren()
-    {
+    public List listChildren() {
         return null;
     }
 
-    public Class getParentClazz()
-    {
+    public Class getParentClazz() {
         return Event.class;
     }
 
-    public String[] getIndexNavEntry()
-    {
+    public String[] getIndexNavEntry() {
         return new String[]{getIndexNavLink(), getNavTitle()};
     }
 
-    public String getEventDateDisplay()
-    {
+    public String getEventDateDisplay() {
         return getEvent().getEventDateDisplay();  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -318,16 +305,14 @@ public class Album extends GeneratedAlbum
      *
      * @param event
      */
-    public void setParentLevel(GenericLevel event)
-    {
+    public void setParentLevel(GenericLevel event) {
         _logger.debug("$$$$$$$$$$$$$$$$$$$$$$$$$  addParentLevel NARROW  $$$$$$$$$$$$$$$$$$$$$$$$4");
         Event e = (Event) event;
         setEvent(e);
         e.getAlbums().add(this);
     }
 
-    public GenericLevel getParentLevel()
-    {
+    public GenericLevel getParentLevel() {
         return getEvent();
     }
 
@@ -336,15 +321,76 @@ public class Album extends GeneratedAlbum
      *
      * @param albumType
      */
-    public void setAlbumType(AlbumType albumType)
-    {
+    public void setAlbumType(AlbumType albumType) {
         this.setAlbumTypeString(albumType.getDesignator());
     }
 
-    public AlbumType getAlbumType()
-    {
+    public AlbumType getAlbumType() {
         return AlbumType.getAlbumType(this.getAlbumTypeString());
     }
+
+    /**
+     * Register Photos only from the importData stream;
+     * The import data stream comes from a file with the following format:
+     * <p/>
+     * [filename];[width pixels];[height pixels];[date in the format MM/dd/yy]
+     * <p/>
+     * example:
+     * CIMG1114.JPG;3264;2448;2/18/07
+     *
+     * @param importDataStream
+     * @param isZipArchive
+     */
+    public void registerPhotosFromImportData(InputStream importDataStream, boolean isZipArchive) {
+        BufferedReader br;
+        try {
+            if (isZipArchive) { // deal with zip archive that contains images and import.txt
+                ZipEntry zipEntry;
+                // importDataStream is zip file
+                ZipInputStream zis = new ZipInputStream(importDataStream);
+                // make sure pathes exists:
+                boolean thumbOk = getThumbnailPath().mkdirs();
+                boolean displayOk = getDisplayPath().mkdirs();
+                if (!(thumbOk && displayOk)) {
+                    throw new RuntimeException("Error importing from Zip file, can not create directories for thumbnail or display");
+                }
+                while ((zipEntry = zis.getNextEntry()) != null) {
+                    FileUtils.copyFile(zis, new File(this.getAlbumWebImagesPath(), zipEntry.getName()), false, true);
+                }
+                File importFile = new File(this.getAlbumWebImagesPath(), "import.txt");
+                if (importFile.exists()) {
+                    br = new BufferedReader(new FileReader(importFile));
+                } else {
+                    throw new RuntimeException("import.txt must exist for importing photos.");
+                }
+
+            }
+
+            else { // only import.txt has been uploaded:
+                InputStreamReader reader = new InputStreamReader(importDataStream);
+                br = new BufferedReader(reader);
+            }
+
+            // process import.txt: 
+            while (br.ready()) {
+                // for each line
+                String line = "";
+                try {
+                    line = br.readLine();
+                    String parts[] = line.split(";");
+                    Photo photo = new Photo(parts[0], this, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), new Date(Long.parseLong(parts[3])), parts[0]);
+                    add(photo);
+                } catch (IOException e) {
+                    _logger.error("The following line causes problems while importing a photo from import.txt : [" + line+"]");
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error importing from zip file or import.txt");
+        }
+
+
+    }
+
 
     /**
      * Register all photos from the 'fine' Path in the db; reads the EXIF picture-take date and enters it for every photo record<br/>
@@ -353,18 +399,16 @@ public class Album extends GeneratedAlbum
      *
      * @param createThumbDisp set to true to create the display and thumbnail images
      */
-    public void registerPhotos(boolean createThumbDisp)
-    {
-        _logger.info("registerPhoto 1, " + System.currentTimeMillis());
+    public void registerPhotos(boolean createThumbDisp) {
+        _logger.debug("registerPhoto 1, " + System.currentTimeMillis());
 
         // all fine fotos in the DATA path of the album
         File[] filesInAlbumFinePath = getFinePath().listFiles(new FileUtils.JpgFileFilter());
         Set problemFiles = new HashSet();
 
         int i;
-        for (i = 0; i < filesInAlbumFinePath.length; i++)
-        {
-            _logger.info("registerPhoto 2, " + System.currentTimeMillis());
+        for (i = 0; i < filesInAlbumFinePath.length; i++) {
+            _logger.debug("registerPhoto 2, " + System.currentTimeMillis());
             File photoFile = filesInAlbumFinePath[i];
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
         }
@@ -373,19 +417,16 @@ public class Album extends GeneratedAlbum
     }
 
     /**
-     * 
      * @param createThumbDisp set to true to create the display and thumbnail images
-     * @param problemFiles A set of accumulated files that caused problems during improt
-     * @param photoFile The image file to import (in its temporary location)
+     * @param problemFiles    A set of accumulated files that caused problems during improt
+     * @param photoFile       The image file to import (in its temporary location)
      */
-    public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, File photoFile)
-    {
+    public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, File photoFile) {
         Integer pictureWidth;
         Integer pictureHeight;
         Date pictureTakenDate;
         String filename;
-        try
-        {
+        try {
             // this causes eof problems ....
 //            FileUtils.copyFile(photoFile,new File(getFinePath(),photoFile.getName()));
             RenderedOp fineImage = ImagingHelper.load(photoFile);
@@ -397,11 +438,9 @@ public class Album extends GeneratedAlbum
             exifDate = exif.getPictureTakenDate();
             _logger.info("registerPhoto 3, " + System.currentTimeMillis());
 
-            if (exifDate != null)
-            {
+            if (exifDate != null) {
                 pictureTakenDate = new Date(exifDate.getTime());
-            } else
-            {
+            } else {
                 pictureTakenDate = new Date(0);
                 _logger.error("Unable to determine date of file : " + photoFile.getName());
                 //noinspection unchecked
@@ -421,8 +460,7 @@ public class Album extends GeneratedAlbum
             // import routine checks if photo already exists
             // once imported thumbnailer will run ... (and the ones already 'thumbnailed' ?
 
-            if (createThumbDisp)
-            {
+            if (createThumbDisp) {
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
                 // create display
@@ -431,23 +469,19 @@ public class Album extends GeneratedAlbum
                 createScaledImage(filename, fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), getThumbnailPath(), false);
             }
 
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             _logger.info("Problems while copying the file or acessing the EXIF data of file " + photoFile.getName(), e);
             //noinspection unchecked
             problemFiles.add(photoFile);
-        } catch (UnartigImagingException e1)
-        {
+        } catch (UnartigImagingException e1) {
             _logger.info("Problem processing the image; continue with next image", e1);
             //noinspection unchecked
             problemFiles.add(photoFile);
-        } catch (UAPersistenceException e2)
-        {
+        } catch (UAPersistenceException e2) {
             _logger.info("Problem saving image; continue with next image", e2);
             //noinspection unchecked
             problemFiles.add(photoFile);
-        } catch (Exception e3)
-        {
+        } catch (Exception e3) {
             _logger.info("unknown error; continue with next image", e3);
             //noinspection unchecked
             problemFiles.add(photoFile);
@@ -463,8 +497,7 @@ public class Album extends GeneratedAlbum
      * @param path             Path to create new image in
      * @param applyWatermark
      */
-    private void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark)
-    {
+    private void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark) {
         Double scale;
         scale = longerSidePixels / (double) ImagingHelper.getMaxWidthOrHightOf(sourceImage);
         File newFile = new File(path, newImageFileName);
@@ -482,21 +515,18 @@ public class Album extends GeneratedAlbum
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public void processImages() throws UnartigException
-    {
+    public void processImages() throws UnartigException {
         getDisplayPath().mkdirs();
         getThumbnailPath().mkdirs();
         // all fine fineImages:
-        if (getFinePath() == null || !getFinePath().isDirectory())
-        {
+        if (getFinePath() == null || !getFinePath().isDirectory()) {
             throw new UnartigException("fine Path does not exist or is not directory");
         }
         _logger.debug("Going to process fineImages in directory : " + getFinePath().getAbsolutePath());
         File[] fineImages = getFinePath().listFiles(new FileUtils.JpgFileFilter());
         Double displayScale;
         Double thumbnailScale;
-        for (int i = 0; i < fineImages.length; i++)
-        {
+        for (int i = 0; i < fineImages.length; i++) {
             File image = fineImages[i];
             _logger.debug(" ... image : " + image.getName());
             RenderedOp fineImage = load(image);
@@ -518,22 +548,19 @@ public class Album extends GeneratedAlbum
      *
      * @return album action link
      */
-    public String getIndexNavLink()
-    {
+    public String getIndexNavLink() {
         return getActionString() + "?page=1";
     }
 
     /**
      * @return the action url that is to called for viewing this album
      */
-    public String getActionLink()
-    {
+    public String getActionLink() {
         return getActionString();
     }
 
 
-    public String getLevelType()
-    {
+    public String getLevelType() {
         return Registry._NAME_ALBUM_LEVEL_TYPE;
     }
 
@@ -544,18 +571,15 @@ public class Album extends GeneratedAlbum
      * @param photo
      * @throws UAPersistenceException
      */
-    private void add(Photo photo) throws UAPersistenceException
-    {
+    private void add(Photo photo) throws UAPersistenceException {
         PhotoDAO phDao = new PhotoDAO();
-        try
-        {
+        try {
             HibernateUtil.beginTransaction();
             getPhotos().add(photo);
             phDao.saveOrUpdate(photo);
             HibernateUtil.commitTransaction();
             _logger.info("wrote photo with id : " + photo.getPhotoId().toString());
-        } catch (UAPersistenceException e)
-        {
+        } catch (UAPersistenceException e) {
             HibernateUtil.rollbackTransaction();
             _logger.error("error while saving photo", e);
         }
@@ -571,47 +595,39 @@ public class Album extends GeneratedAlbum
      *
      * @return a directory
      */
-    public File getFinePath()
-    {
-        File albumFinePath = new File(Registry.getFineImagesDirectory(),getGenericLevelId().toString());
+    public File getFinePath() {
+        File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
-        if (!finePath.exists())
-        {
+        if (!finePath.exists()) {
             finePath.mkdirs();
         }
         return finePath;
     }
 
-    private File getThumbnailPath()
-    {
+    private File getThumbnailPath() {
         File albumWebImagesPath = getAlbumWebImagesPath();
         return new File(albumWebImagesPath, Registry.getThumbnailPath());
     }
 
 
-    private File getDisplayPath()
-    {
+    private File getDisplayPath() {
         File albumPath = getAlbumWebImagesPath();
         return new File(albumPath, Registry.getDisplayPath());
     }
 
-    private File getAlbumWebImagesPath()
-    {
-        return new File(Registry.getWebImagesDocumentRoot(),getGenericLevelId().toString());
+    private File getAlbumWebImagesPath() {
+        return new File(Registry.getWebImagesDocumentRoot(), getGenericLevelId().toString());
     }
 
-    public void setProblemFiles(Set problemFiles)
-    {
+    public void setProblemFiles(Set problemFiles) {
         this.problemFiles = problemFiles;
     }
 
-    public Set getProblemFiles()
-    {
+    public Set getProblemFiles() {
         return problemFiles;
     }
 
-    public List getPhotosAsList()
-    {
+    public List getPhotosAsList() {
         return new ArrayList(getPhotos());
     }
 
@@ -620,39 +636,33 @@ public class Album extends GeneratedAlbum
      *
      * @return true for album
      */
-    public boolean isAlbumLevel()
-    {
+    public boolean isAlbumLevel() {
         return true;
     }
 
     /**
      * delete all photos. all order items that have a photo of this album need to set their photofilename and set the photoid to null
      */
-    public void deleteLevel() throws UAPersistenceException
-    {
+    public void deleteLevel() throws UAPersistenceException {
         OrderItemDAO oiDao = new OrderItemDAO();
 
         Set orderItemsForAlbum = new HashSet();
         // todo  this does not perform  ... create a HQL expression to update all orderitems
-        for (Object o : getPhotos())
-        {
+        for (Object o : getPhotos()) {
             Photo photo = (Photo) o;
             orderItemsForAlbum.addAll(photo.getOrderItems());
             photo.setOrderItems(Collections.EMPTY_SET);
         }
 
 
-        for (Object anOrderItemsForAlbum : orderItemsForAlbum)
-        {
+        for (Object anOrderItemsForAlbum : orderItemsForAlbum) {
             OrderItem orderItem = (OrderItem) anOrderItemsForAlbum;
             orderItem.setPhotoFileName(orderItem.getPhoto().getFilename());
             orderItem.setPhoto(null);
             _logger.debug("trying to save order item : " + orderItem);
-            try
-            {
+            try {
                 oiDao.saveOrUpdate(orderItem);
-            } catch (UAPersistenceException e)
-            {
+            } catch (UAPersistenceException e) {
                 throw new UAPersistenceException("can not save orderitem", e);
             }
 
@@ -669,8 +679,7 @@ public class Album extends GeneratedAlbum
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public Photo getLastPhotoInAlbumAndSelection() throws UnartigException
-    {
+    public Photo getLastPhotoInAlbumAndSelection() throws UnartigException {
         _logger.debug("Album.getLastPhotoInCategoryAndSelection xxxx");
         // reload this album
         GenericLevelDAO glDao = new GenericLevelDAO();
@@ -687,26 +696,22 @@ public class Album extends GeneratedAlbum
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public Photo getFirstPhotoInAlbum() throws UnartigException
-    {
+    public Photo getFirstPhotoInAlbum() throws UnartigException {
         PhotoDAO photoDao = new PhotoDAO();
         return photoDao.getFirstPhotoFor(this);
     }
 
-    public String getActionString()
-    {
+    public String getActionString() {
         _logger.debug("calling action string ...");
         lazyInitActionString();
         return actionString;
     }
 
-    public String getActionStringPart()
-    {
+    public String getActionStringPart() {
         return actionStringPart;
     }
 
-    public void setActionStringPart(String actionStringPart)
-    {
+    public void setActionStringPart(String actionStringPart) {
         this.actionStringPart = actionStringPart;
     }
 
@@ -718,35 +723,30 @@ public class Album extends GeneratedAlbum
      * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
-    public void setProductPricesMap(Map productPrices) throws UAPersistenceException
-    {
+    public void setProductPricesMap(Map productPrices) throws UAPersistenceException {
 
         // todo deprecate once we have to zk solution that handles single product changes?
         // product entries per album: only one per productType
         Set productTypeIds = productPrices.keySet();
         PriceDAO priceDao = new PriceDAO();
-        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext();)
-        {
+        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext();) {
             String productTypeIdString = (String) iterator.next();
             String priceIdString = (String) productPrices.get(productTypeIdString);
             //producttypes with priceid <=0 are not set for this album
             final Long productTypeId = Long.valueOf(productTypeIdString);
             final Long priceId = Long.valueOf(priceIdString);
-            if (priceId > 0 && !getAvailableProductTypes().keySet().contains(productTypeId))
-            {
+            if (priceId > 0 && !getAvailableProductTypes().keySet().contains(productTypeId)) {
                 // producttype does not yet exist for this album; create new product
                 getProducts().add(new Product(productTypeId, priceId, this));
             }
             // product exists, and producttype is already available for album. update?
-            else if (priceId > 0)
-            {
+            else if (priceId > 0) {
                 final Product availableProduct = getProductFor(productTypeId);
                 final Price newPrice = priceDao.load(priceId);
                 _logger.debug("available product : [" + availableProduct + "] old price: [" + availableProduct.getPrice() + "] new Price [" + newPrice + "]");
                 availableProduct.setPrice(newPrice);
                 // update newPrice
-            } else
-            {
+            } else {
                 removeProductFor(productTypeId);
             }
 
@@ -760,8 +760,7 @@ public class Album extends GeneratedAlbum
      * @param productTypeId
      * @return
      */
-    private boolean removeProductFor(Long productTypeId)
-    {
+    private boolean removeProductFor(Long productTypeId) {
         return getProducts().remove(getProductFor(productTypeId));
     }
 
@@ -771,14 +770,11 @@ public class Album extends GeneratedAlbum
      * @param productTypeId The ID of the ProductType
      * @return the product that has the productType identified by the productTypeId or NULL, if no product exists with the given productType
      */
-    public Product getProductFor(Long productTypeId)
-    {
+    public Product getProductFor(Long productTypeId) {
         // make a query or use the collection???
-        for (Object productO : getProducts())
-        {
+        for (Object productO : getProducts()) {
             Product product = (Product) productO;
-            if (product.getProductType().getProductTypeId().equals(productTypeId))
-            {
+            if (product.getProductType().getProductTypeId().equals(productTypeId)) {
                 return product;
             }
         }
@@ -791,12 +787,10 @@ public class Album extends GeneratedAlbum
      *
      * @return
      */
-    public Map getAvailableProductTypes()
-    {
+    public Map getAvailableProductTypes() {
 
         Map productTypeMap = new HashMap();
-        for (Iterator iterator = getProducts().iterator(); iterator.hasNext();)
-        {
+        for (Iterator iterator = getProducts().iterator(); iterator.hasNext();) {
             Product product = (Product) iterator.next();
             ProductType productType = product.getProductType();
             productTypeMap.put(productType.getProductTypeId(), productType);
@@ -807,47 +801,40 @@ public class Album extends GeneratedAlbum
 
     /**
      * Write access check for an album; client needs to be either admin or owner of the album.
+     *
      * @param client
      * @throws NotAuthorizedException
      */
-    protected void checkWriteAccessFor(Client client) throws NotAuthorizedException
-    {
-        _logger.debug("checking access for user ["+client.getUserProfile().getUserName()+"] with roles ["+client.getUserProfile().getRoles()+"]");
+    protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
+        _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");
         _logger.debug("client is admin? " + client.isAdmin());
         _logger.debug("Photographer : " + getPhotographer());
         // special case no photographer:
-        if (getPhotographer() == null && client.isAdmin())
-        {
+        if (getPhotographer() == null && client.isAdmin()) {
             // album without an album ...
             return;
-        } else if (getPhotographer()==null && !client.isAdmin())
-        {
+        } else if (getPhotographer() == null && !client.isAdmin()) {
             throw new RuntimeException("Unexpected state : no photographer album shown to a non-admin!!");
         }
         // regular check:
-        if ( !( client.isAdmin() || getPhotographer().equals(client.getPhotographer()) ) )
-        {
+        if (!(client.isAdmin() || getPhotographer().equals(client.getPhotographer()))) {
             throw new NotAuthorizedException("Not Administrator rights");
         }
 
     }
 
-    
 
     /**
      * sorts the albums for a nice list when showning all albums sorted by event and category (sales report)
      * Album comparator using Generics;
      */
-    public static class EventCategoryComparator implements Comparator<Album>
-    {// needs to be static
+    public static class EventCategoryComparator implements Comparator<Album> {// needs to be static
 
-        public int compare(Album album, Album albumToCompare)
-        {
+        public int compare(Album album, Album albumToCompare) {
 
             // first order is event name
-            final int eventTitleComparison  = album.getEvent().getLongTitle().compareTo(albumToCompare.getEvent().getLongTitle());
-            if (eventTitleComparison !=0)
-            {
+            final int eventTitleComparison = album.getEvent().getLongTitle().compareTo(albumToCompare.getEvent().getLongTitle());
+            if (eventTitleComparison != 0) {
                 return eventTitleComparison;
             }
             // events are equal: we sort by the eventcategory id (should be in a sensible order thanks to the list-index of eventCategory)

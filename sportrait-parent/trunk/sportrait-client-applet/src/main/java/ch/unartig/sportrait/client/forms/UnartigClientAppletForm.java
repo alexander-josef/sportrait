@@ -45,7 +45,7 @@ public class UnartigClientAppletForm {
         gbc.anchor = GridBagConstraints.WEST;
         eventCategoryChooserPanel.add(label1, gbc);
         final JLabel label2 = new JLabel();
-        label2.setText("(Event und Kategorie für Foto-Upload bestimmen)");
+        label2.setText("(Event und Kategorie f√ºr Foto-Upload bestimmen)");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -139,7 +139,7 @@ public class UnartigClientAppletForm {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         eventCategoryChooserPanel.add(spacer3, gbc);
         final JLabel label6 = new JLabel();
-        label6.setText("(Fotos auswählen)");
+        label6.setText("(Fotos ausw√§hlen)");
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 9;

@@ -46,6 +46,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import java.io.InputStream;
+
 /**
  * this persistably album object is searchable by "Startnumber" and 'etappe'
  * @author Alexander Josef, 2006
@@ -108,4 +110,6 @@ public class SportsAlbum extends GeneratedSportsAlbum
         return super.getFirstPhotoInAlbumAndSelection();    //To change body of overridden methods use File | Settings | File Templates.
     }
 */
+
+
 }

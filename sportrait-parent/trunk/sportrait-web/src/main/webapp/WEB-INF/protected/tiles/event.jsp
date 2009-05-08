@@ -19,7 +19,7 @@
 
         <c:if test="${!sportsEvent.hasPhotos}">
             <!-- wenn keine Fotos start -->
-            <p>Zu diesem Anlass gibt es bisher noch keine Fotos.<br/>In der Regel sollten Sie die Fotos spätestens 24
+            <p>Zu diesem Anlass gibt es bisher noch keine Fotos.<br/>In der Regel sollten Sie die Fotos spï¿½testens 24
                 Stunden nach dem Anlass
                 hier finden</p>
             <!-- wenn keine Fotos end -->
@@ -33,8 +33,8 @@
                            varStatus="forEachStatus">
                     <li><p class="bold">
                         <html:link
-                                   action="/showCategory?eventCategoryId=${eventCategory.eventCategoryId}&page=1&startNumber="
-                                >${eventCategory.title}</html:link>
+                                action="/showCategory?eventCategoryId=${eventCategory.eventCategoryId}&page=1&startNumber=">
+                                ${eventCategory.title}</html:link>
                     </p>
                     </li>
                 </c:forEach>
@@ -43,7 +43,7 @@
         </c:if>
         <!-- wenn eingeloggt als Fotograf start -->
         <!--<p>-->
-            <!--<a href="#">Ich möchte zu diesem Anlass Fotos hochladen!</a>-->
+            <!--<a href="#">Ich mï¿½chte zu diesem Anlass Fotos hochladen!</a>-->
         <!--</p>-->
         <!-- wenn eingeloggt als Fotograf end -->
         <!-- wenn Fotos end -->
@@ -51,7 +51,7 @@
 
 </div>
 <div class="content600">
-    <h3>Über den Anlass</h3>
+    <h3>ï¿½ber den Anlass</h3>
 
     <p>${sportsEvent.description}<br/>
         <a href="http://${sportsEvent.weblink}" target="_blank">Zur Webseite des Veranstalters...</a></p>

@@ -13,6 +13,7 @@
 
         <form-bean name="uploadForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="content" type="org.apache.struts.upload.FormFile"/>
+            <form-property name="importData" type="org.apache.struts.upload.FormFile"/>
             <form-property name="eventId" type="java.lang.String"/>
             <form-property name="imagePath" type="java.lang.String"/>
             <form-property name="eventCategoryId" type="java.lang.String"/>

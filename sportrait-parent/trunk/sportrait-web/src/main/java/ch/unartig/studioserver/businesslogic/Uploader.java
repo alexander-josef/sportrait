@@ -143,6 +143,7 @@ public class Uploader extends Thread
      */
     private void doImport() throws IOException, UnartigException
     {
+        // todo why load album again?
         GenericLevelDAO glDao = new GenericLevelDAO();
         Album album = (Album) glDao.load(albumId, Album.class);
 
