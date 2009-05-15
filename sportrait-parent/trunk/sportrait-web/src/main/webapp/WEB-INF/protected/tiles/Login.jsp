@@ -42,7 +42,10 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2"><html:link action="/photographerRegister.html">Registrieren</html:link></td>
+            <td colspan="2">
+                <%--<html:link action="/photographerRegister.html">Registrieren--%>
+                <%--</html:link>--%>
+            </td>
         </tr>
 
     </table>
