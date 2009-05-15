@@ -70,7 +70,7 @@
                     <c:if test="${clientInSession!=null}">
                         <html:link styleClass="uploadLink" href="#" title="Fotos hochladen zu diesem Anlass">
                             <html:img page="/images/arrow-upload.gif" alt="Fotos hochladen zu diesem Anlass"
-                                style="height:11px;width:47px;"/>
+                                      style="height:11px;width:47px;"/>
                         </html:link>
                     </c:if>
                     <!--<a class="uploadLink" href="upload.html" title="Fotos hochladen">fotos hochladen</a>-->
@@ -80,42 +80,49 @@
         </ul>
     </div>
 
-        <h2>WAS IST SPORTRAIT</h2>
+    <h2>WAS IST SPORTRAIT</h2>
 
-        <p>SPORTRAIT wurde von den Machern von <a href="http://www.unartig.ch">unArtig</a> entwickelt mit dem Ziel, den Sportfotoservice attraktiver zu gestalten.</p>
-        <p>SPORTRAIT lebt von der Initiative vieler unabhängiger Profi- und Amateurfotografen, die Fotos von Sportanlässe an Athletinnen und Athleten verkaufen.</p>
-        <%--    <p>SPORTRAIT wurde 2006 von den Machern von <a href="#">unArtig</a> gegründet mit dem Ziel, den Sportfotoservice in
-    vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
+    <p>SPORTRAIT wurde von den Machern von <a href="http://www.unartig.ch">unArtig</a> entwickelt mit dem Ziel, den
+        Sportfotoservice attraktiver zu gestalten.</p>
+    <%--<p>SPORTRAIT lebt von der Initiative vieler unabhängiger Profi- und Amateurfotografen, die Fotos von Sportanlässe an Athletinnen und Athleten verkaufen.</p>--%>
+    <%--    <p>SPORTRAIT wurde 2006 von den Machern von <a href="#">unArtig</a> gegründet mit dem Ziel, den Sportfotoservice in
+vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
 
 </div>
 
 <div class="rightContentHome">
-        <ul class="box_A box" id="loginBoxHome">
-            <li class="top"><html:img page="/images/box_A_top.gif" alt=""/></li>
-            <li class="middle">
-                <h2>LOGIN <span class="normalWeight">FÜR FOTOGRAFEN</span></h2>
+    <ul class="box_A box" id="loginBoxHome">
+        <li class="top"><html:img page="/images/box_A_top.gif" alt=""/></li>
+        <li class="middle">
+            <h2>LOGIN <span class="normalWeight">FÜR FOTOGRAFEN</span></h2>
 
-                <tiles:insert attribute="login"/>
-                <!-- Tile:Login -->
+            <tiles:insert attribute="login"/>
+            <!-- Tile:Login -->
 
-            </li>
+        </li>
 
-            <li class="bottom"><html:img page="/images/box_A_bottom.gif" alt=""/></li>
+        <li class="bottom"><html:img page="/images/box_A_bottom.gif" alt=""/></li>
 
-         <%--   <li class="subLinks"><a href="/photographerRegister.html">Registrieren</a><span class="linkSepartor">|</span><a href="#">Passwort
-                vergessen</a></li>--%>
-        </ul>
-        <br/>
+        <%--   <li class="subLinks"><a href="/photographerRegister.html">Registrieren</a><span class="linkSepartor">|</span><a href="#">Passwort
+        vergessen</a></li>--%>
+    </ul>
+    <br/>
 
-<h2>FÜR SPORTLER</h2>
-        <p>Hier finden Sie Ihre Sportfotos zu fairen Preisen. <b>Ist Ihr Anlass auch dabei?</b>
-        </p>
-        <h2>FÜR FOTOGRAFEN</h2>
+    <%--Re-enable if sportrait is ready for photographers:--%>
 
-        <p>Sportfotos effizient vermarkten in <html:link action="/photographerInfo">drei Schritten:</html:link></p>
-        <html:link action="/photographerInfo" styleId="stepsBox">
-            <html:img page="/images/3_steps_home.gif" alt="drei Schritte"/>
-        </html:link>
+    <%--<h2>FÜR SPORTLER</h2>--%>
+
+    <%--<p>Hier finden Sie Ihre Sportfotos zu fairen Preisen. <b>Ist Ihr Anlass auch dabei?</b>--%>
+    <%--</p>--%>
+
+    <%--<h2>FÜR FOTOGRAFEN</h2>--%>
+
+    <%--<p>Sportfotos effizient vermarkten in <html:link action="/photographerInfo">drei Schritten:</html:link></p>--%>
+    <%--<html:link action="/photographerInfo" styleId="stepsBox">--%>
+        <%--<html:img page="/images/3_steps_home.gif" alt="drei Schritte"/>--%>
+    <%--</html:link>--%>
+    <%----%>
+    
 </div>
 
 

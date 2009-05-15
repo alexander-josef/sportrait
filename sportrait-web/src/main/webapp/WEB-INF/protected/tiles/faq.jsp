@@ -106,7 +106,7 @@ trifft noch nich zu, auskommenntiert!
     Sportanlass?"</a>
     und <a href="#021" class="expliziterLink bold">"Wie gelange ich zu den Fotos?"</a> und lesen Sie dann hier
     weiter.<br/>
-    Sie befinden sich jetzt in der Foto-Üersicht der gewählten Kategorie.
+    Sie befinden sich jetzt in der Foto-Übersicht der gewählten Kategorie.
     Sie haben die Möglichkeit, andere Kategorien anzuwählen und die Fotos mittels der Startnummer zu suchen. Geben sie
     dazu Ihre
     Startnummer in dem entsprechenden Feld ein, wählen Sie die Kategorie, in der Sie Ihre Fotos erwarten, und
@@ -215,7 +215,7 @@ trifft noch nich zu, auskommenntiert!
         href="#">nach oben</a><br/>
     Jeder Fotograf kann selbst bestimmen, welche Produkte er zu welchem Preis anbieten will. Da an Grossanlässen oft
     mehrere Fotografen anwesend sind, und jeder Fotograf das Angebot an Produkten und deren Preis selbst bestimmen kann,
-    variieren das Angebot und die Preise auch für Fotos des selben Anlasses.
+    variieren das Angebot und die Preise auch für Fotos desselben Anlasses.
 </p>
 
 <p><a name="043"/><b>Was sind digitale Daten?</b>&nbsp;<a
@@ -275,7 +275,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Nach der Bestellung</h2>
 
-<p><a name="060"/><b>Wie erfahre ich, ob meine Bestellung erfolqgreich abgeschickt und erfasst wurde?</b>&nbsp;<a
+<p><a name="060"/><b>Wie erfahre ich, ob meine Bestellung erfolgreich abgeschickt und erfasst wurde?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Kurz nachdem Sie die Bestellung abgeschickt haben gelangen Sie auf die Bestätigungsseite. Die Seite zeigt Ihnen an,
     dass die Bestellung erfolgreich war. Sie erhalten
@@ -286,12 +286,11 @@ trifft noch nich zu, auskommenntiert!
 <p><a name="061"/><b>Ich habe kein Bestätigungs-E-Mail erhalten. Ist meine Bestellung fehlgeschlagen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Nicht unbedingt.
-    Wenn Sie nach Abschicken der Bestellung auf die Bestätigungsseite kommen und Ihnen dort mitgeteilt
-    wurde, dass die Bestellung erfolgreich war,
-    gibt es zwei mögliche Ursachen für das Ausbleiben des Bestätigungs-E-Mails. <br/>
-    1. Unser Mailserver hat versagt.<br/>
-    2. Die von Ihnen angegebene E-Mail Adresse existiert nicht oder kann nicht erreicht werden.<br/>
-    3. Das E-Mail kann mit einigen minuten Verzögerung bei Ihnen eintreffen.
+    Wenn Sie die Bestellung abgeschickt haben und die Bestätigungsseite erscheint, Sie aber innerhalb von ein paar Minuten
+    kein E-Mail bekommen, kann das folgende Gründe haben. <br/>
+    1. Die von Ihnen angegebene E-Mail Adresse existiert nicht oder kann nicht erreicht werden.<br/>
+    2. Das Bestätigungs-E-Mail blieb bei Ihnen im Spam-Filter hängen.<br/>
+    3. Oder die eher unwahrscheinliche Möglichkeit einer technischen Störung auf der SPORTRAIT-Plattform.
     Wir empfehlen Ihnen daher, bei Nicht erhalt des E-Mails die Bestellung nicht zu wiederholen, sondern uns über das <a
         href="/contact.html">Kontaktformular</a>
     eine entsprechende Nachricht zukommen zu lassen. Wir werden uns innerhalb von 24 Stunden bei Ihnen melden.
@@ -305,7 +304,7 @@ trifft noch nich zu, auskommenntiert!
     der Bestellung verarbeitet und Ihnen per prioritäre Brief- bzw. Paketpost zugesandt. Die durchschnittliche
     Beförderungszeit beträgt 2 bis 4 Tage.
     Poster und andere Produkte wie T-Shirts etc. haben längere Lieferfristen von bis zu einer Woche. Bei einer
-    gemischten Bestellung (zum Beispiel Abzüge und ein Poster), werden Abzüge und Poster separat versandt und haben
+    gemischten Bestellung (zum Beispiel Abzüge und ein Poster) werden Abzüge und Poster separat versandt und haben
     somit auch unterschiedliche Lieferfristen.
 </p>
 

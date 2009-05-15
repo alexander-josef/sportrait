@@ -62,7 +62,8 @@
     <option name="MAXIMUM_HEAP_SIZE" value="128" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
-    <file url="file://$PROJECT_DIR$/sportrait-web/src/main/webapp/WEB-INF/protected/tiles/FAQphotographer.jsp" charset="MacRoman" />
+    <file url="file://$PROJECT_DIR$/sportrait-web/src/main/webapp/WEB-INF/protected/tiles" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/sportrait-web/src/main/webapp/WEB-INF/protected/tiles/_accountPhUpload.jsp" charset="ISO-8859-1" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />

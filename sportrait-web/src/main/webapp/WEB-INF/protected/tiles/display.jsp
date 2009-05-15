@@ -20,6 +20,7 @@ todo refactor name albumBean as fast as possible
         </li>
     </ul>
     <h1 id="pageName">${albumBean.sportsEvent.longTitle}</h1>
+    <h2>${albumBean.eventCategory.title}</h2>    
 </div>
 
 

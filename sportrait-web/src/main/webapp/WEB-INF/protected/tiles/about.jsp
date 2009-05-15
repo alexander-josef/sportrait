@@ -13,10 +13,10 @@
         SPORTRAIT ist eine Online Plattform für Sportfotos. Sportlerinnen und Sportler finden auf www.sportrait.com bereits
         24 Stunden nach dem Sportanlass ihre Fotos und können sie einfach und bequem betrachten und bestellen. Ambitionierte
         Sortfotografen unterstützt SPORTRAIT mit einer attraktiven und effizienten Verkaufsplattform.<br/>
-        SPORTRAIT ist eine Dienstleistung der unartig AG. Die unartig AG schaut auf 10 Jahre Erfahrung in der
-        Anlassfotografie zurück. Über die Plattform <a href="http://www.unartig.ch">www.unartig.ch</a> betreibt die unartig AG
+        SPORTRAIT ist eine Dienstleistung der unartig AG. unArtig schaut auf 10 Jahre Erfahrung in der
+        Anlassfotografie zurück. Über die Plattform <a href="http://www.unartig.ch">www.unartig.ch</a> betreibt unArtig
          eine Dienstleistung für festliche Anlässe, über die Gäste ihre Fotos betrachten und bestellen
-        können. Mit SPORTRAIT erweitert die unartig AG ihre Geschäftsfelder um die Sportfotografie.<br/>
+        können. Mit SPORTRAIT erweitert unArtig ihre Geschäftsfelder um die Sportfotografie.<br/>
     </p>
 
 </div>
