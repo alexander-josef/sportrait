@@ -201,7 +201,6 @@ import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.imaging.ExifData;
 import ch.unartig.studioserver.imaging.ImagingHelper;
-import static ch.unartig.studioserver.imaging.ImagingHelper.*;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
@@ -474,9 +473,9 @@ public class Album extends GeneratedAlbum {
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
                 // create display
-                createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), true);
+                ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), true);
                 // create thumbnail
-                createScaledImage(filename, fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), getThumbnailPath(), false);
+                ImagingHelper.createScaledImage(filename, fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), getThumbnailPath(), false);
             }
 
         } catch (IOException e) {
@@ -496,23 +495,6 @@ public class Album extends GeneratedAlbum {
             //noinspection unchecked
             problemFiles.add(photoFile);
         }
-    }
-
-    /**
-     * Given an Image, create a scaled copy from that image.
-     *
-     * @param newImageFileName
-     * @param sourceImage      Source photo rendered op
-     * @param longerSidePixels target image longer side in pixels
-     * @param path             Path to create new image in
-     * @param applyWatermark
-     */
-    private void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark) {
-        Double scale;
-        scale = longerSidePixels / (double) ImagingHelper.getMaxWidthOrHightOf(sourceImage);
-        File newFile = new File(path, newImageFileName);
-        ImagingHelper.createNewImage(sourceImage, scale, newFile, Registry._imageQuality, Registry._ImageSharpFactor, applyWatermark);
-        _logger.info("wrote new file " + newFile.getAbsolutePath());
     }
 
 
@@ -539,17 +521,17 @@ public class Album extends GeneratedAlbum {
         for (int i = 0; i < fineImages.length; i++) {
             File image = fineImages[i];
             _logger.debug(" ... image : " + image.getName());
-            RenderedOp fineImage = load(image);
+            RenderedOp fineImage = ImagingHelper.load(image);
 
             // DISPLAY : (apply watermark)
-            displayScale = Registry.getDisplayPixelsLongerSide().doubleValue() / (double) getMaxWidthOrHightOf(fineImage);
+            displayScale = Registry.getDisplayPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
             File displayFile = new File(getDisplayPath(), image.getName());
-            createNewImage(fineImage, displayScale, displayFile, Registry._imageQuality, Registry._ImageSharpFactor, true);
+            ImagingHelper.createNewImage(fineImage, displayScale, displayFile, Registry._imageQuality, Registry._ImageSharpFactor, true);
 
             // THUMBNAIL:
-            thumbnailScale = Registry.getThumbnailPixelsLongerSide().doubleValue() / (double) getMaxWidthOrHightOf(fineImage);
+            thumbnailScale = Registry.getThumbnailPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
             File thumbnailFile = new File(getThumbnailPath(), image.getName());
-            createNewImage(fineImage, thumbnailScale, thumbnailFile, Registry._imageQuality, Registry._ImageSharpFactor, false);
+            ImagingHelper.createNewImage(fineImage, thumbnailScale, thumbnailFile, Registry._imageQuality, Registry._ImageSharpFactor, false);
         }
     }
 
