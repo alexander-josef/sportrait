@@ -54,6 +54,7 @@
 package ch.unartig.studioserver.imaging;
 
 import ch.unartig.exceptions.UnartigImagingException;
+import ch.unartig.studioserver.Registry;
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageEncoder;
@@ -336,4 +337,20 @@ public class ImagingHelper
         renderJpg(sampledOp, os, quality);
     }
 
+    /**
+     * Given an Image, create a scaled copy from that image.
+     *
+     * @param newImageFileName
+     * @param sourceImage      Source photo rendered op
+     * @param longerSidePixels target image longer side in pixels
+     * @param path             Path to create new image in
+     * @param applyWatermark
+     */
+    public static void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark) {
+        Double scale;
+        scale = longerSidePixels / (double) ImagingHelper.getMaxWidthOrHightOf(sourceImage);
+        File newFile = new File(path, newImageFileName);
+        createNewImage(sourceImage, scale, newFile, Registry._imageQuality, Registry._ImageSharpFactor, applyWatermark);
+//        _logger.info("wrote new file " + newFile.getAbsolutePath());
+    }
 }
