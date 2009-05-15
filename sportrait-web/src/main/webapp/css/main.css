@@ -235,6 +235,13 @@ h1#pageName{
     padding:40px 0 0 0;
 }
 
+h2#eventCategory{
+    font-size:12px;
+    margin-bottom:0;
+    margin-left:3px;
+    margin-top:5px;
+}
+
 div#contentAlbum{
     width: 882px;
 }
