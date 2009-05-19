@@ -343,6 +343,7 @@ public class Album extends GeneratedAlbum {
     public void registerPhotosFromImportData(InputStream importDataStream, boolean isZipArchive) {
         BufferedReader br;
         try {
+            // todo create fine and web images anyway!!
             if (isZipArchive) { // deal with zip archive that contains images and import.txt
                 ZipEntry zipEntry;
                 // importDataStream is zip file
@@ -360,7 +361,6 @@ public class Album extends GeneratedAlbum {
                     throw new RuntimeException("Error importing from Zip file, can not create directories for thumbnail or display");
                 }
                 while ((zipEntry = zis.getNextEntry()) != null) {
-                    // todo check for fine
                     if (zipEntry.getName().toLowerCase().startsWith("fine/")){
                         throw new RuntimeException("fine images not yet supported");
                     }

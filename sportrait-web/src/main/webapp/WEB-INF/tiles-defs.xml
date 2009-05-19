@@ -240,6 +240,7 @@
 
     <!--download page for ordered photos-->
     <definition name=".orderDownload" extends=".sportraitShoppingCart">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleDownload.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/sportraitDownload.jsp"/>
         <put name="head" value=".headNoTabs"/>
     </definition>
