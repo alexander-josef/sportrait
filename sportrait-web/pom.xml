@@ -8,7 +8,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.1</version>
+    <version>1.0-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
