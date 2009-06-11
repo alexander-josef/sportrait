@@ -8,7 +8,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.2</version>
+    <version>1.0-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -121,10 +121,19 @@
             <version>1.2-0</version>
         </dependency>
 
+
+        <!-- TODO: new version available, 1.3, but needs jboss repository ( <url>http://repository.jboss.com/maven2/</url> ), see mavensearch.net-->
         <dependency>
             <groupId>javax.media</groupId>
             <artifactId>jai_core</artifactId>
             <version>1.1.2_01</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.media</groupId>
+            <artifactId>jai_codec</artifactId>
+            <version>1.1.2_01</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
