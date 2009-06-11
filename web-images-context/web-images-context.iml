@@ -29,12 +29,12 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <exclude-output />
+    <content url="file:///opt/DATA/sportrait/web-images" />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/war" />
       <excludeFolder url="file://$MODULE_DIR$/target/web-images-context-1.0-SNAPSHOT" />
     </content>
-    <content url="file:///opt/DATA/sportrait/web-images" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
