@@ -292,7 +292,6 @@
                 </executions>
             </plugin>
 
--->
 
             <plugin>
                 <groupId>org.codehaus.groovy.maven</groupId>
@@ -322,12 +321,13 @@
                         <configuration>
                             <background>true</background>
                             <debug>true</debug>
-                            <!--<firefoxProfileTemplate>/Users/alexanderjosef/selenium-profile</firefoxProfileTemplate>-->
+                            <firefoxProfileTemplate>/Users/alexanderjosef/selenium-profile</firefoxProfileTemplate>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
+        -->
 
             <!--build system with teamCity has no svn ... until then : -->
             <!--
