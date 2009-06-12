@@ -1,9 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <parent> 
-    <groupId>ch.unartig</groupId> 
-    <artifactId>sportrait-parent</artifactId> 
-    <version>1.0-SNAPSHOT</version> 
-  </parent> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
+    <parent>
+        <groupId>ch.unartig</groupId>
+        <artifactId>sportrait-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
@@ -267,7 +271,6 @@
             <!--commented out since it still fails. try the mock implementation for the browser-->
 
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -364,7 +367,8 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/${project.build.finalName}/client-applet</outputDirectory>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/client-applet
+                            </outputDirectory>
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <includeArtifactIds>jupload,sportrait_client,xmlrpc-client,xmlrpc-common,ws-commons-util
@@ -462,7 +466,7 @@
                             <cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
                             <cargo.remote.username>${tomcatUsername}</cargo.remote.username>
                             <cargo.remote.password>${tomcatPassword}</cargo.remote.password>
-<!--<cargo.servlet.port>8280</cargo.servlet.port>-->
+                            <!--<cargo.servlet.port>8280</cargo.servlet.port>-->
                         </properties>
                     </configuration>
 
@@ -510,7 +514,7 @@
 
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -584,11 +588,11 @@
 
                 <plugins>
                     <!--<plugin>-->
-                        <!--<groupId>org.apache.maven.plugins</groupId>-->
-                        <!--<artifactId>maven-war-plugin</artifactId>-->
-                        <!--<configuration>-->
-                            <!--<warName>ROOT</warName>-->
-                        <!--</configuration>-->
+                    <!--<groupId>org.apache.maven.plugins</groupId>-->
+                    <!--<artifactId>maven-war-plugin</artifactId>-->
+                    <!--<configuration>-->
+                    <!--<warName>ROOT</warName>-->
+                    <!--</configuration>-->
                     <!--</plugin>-->
 
                     <plugin>
@@ -621,18 +625,18 @@
             </activation>
             <properties>
                 <tomcatUsername>admin</tomcatUsername>
-                <tomcatPassword />
+                <tomcatPassword/>
                 <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
             </properties>
 
 
         </profile>
         <profile>
-              <id>tomcat6x</id>
-              <properties>
+            <id>tomcat6x</id>
+            <properties>
                 <containerId>tomcat6x</containerId>
                 <url>http://www.apache.org/dist/jakarta/tomcat-5/v5.0.30/bin/jakarta-tomcat-5.0.30.zip</url>
-              </properties>
+            </properties>
         </profile>
 
 
@@ -741,10 +745,11 @@
     </pluginRepositories>
 
 
-
     <scm>
-        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk/sportrait-web</connection>
-        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk/sportrait-web</developerConnection>
+        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk/sportrait-web
+        </connection>
+        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk/sportrait-web
+        </developerConnection>
     </scm>
 
 
