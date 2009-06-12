@@ -266,7 +266,7 @@
             <!--testng selenium integratin tests-->
             <!--commented out since it still fails. try the mock implementation for the browser-->
 
-<!--
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -281,7 +281,7 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <skip>false</skip>
+                            <skip>true</skip>
                             <suiteXmlFiles>
                                 <suiteXmlFile>
                                     src/test/config/sportrait-tests.xml
@@ -321,13 +321,12 @@
                         <configuration>
                             <background>true</background>
                             <debug>true</debug>
-                            <firefoxProfileTemplate>/Users/alexanderjosef/selenium-profile</firefoxProfileTemplate>
+                            <!--<firefoxProfileTemplate>/Users/alexanderjosef/selenium-profile</firefoxProfileTemplate>-->
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-        -->
 
             <!--build system with teamCity has no svn ... until then : -->
             <!--
