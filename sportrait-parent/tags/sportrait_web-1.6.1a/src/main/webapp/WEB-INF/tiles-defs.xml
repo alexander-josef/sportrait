@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
+        "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
+
+
+<tiles-definitions>
+    <definition name=".sportraitHome" path="/WEB-INF/protected/layout/templateHome.jsp">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHome.jsp"/>
+        <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="head" value=".headHome"/>
+        <put name="content1" value=".home"/>
+        <put name="content2" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
+
+    </definition>
+
+    <definition name=".headHome" path="/WEB-INF/protected/tiles/headHome.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+    </definition>
+
+    <definition name=".home" path="/WEB-INF/protected/tiles/home.jsp">
+        <put name="login" value="/WEB-INF/protected/tiles/Login.jsp"/>
+    </definition>
+
+
+    <definition name=".sportraitEvent" path="/WEB-INF/protected/layout/template.jsp">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleEvent.jsp"/>
+        <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="head" value=".headEvent"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/event.jsp"/>
+        <put name="content2" value=".loginModal"/>
+        <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
+
+    </definition>
+
+    <definition name=".loginModal" path="/WEB-INF/protected/tiles/loginModal.jsp">
+        <put name="login" value="/WEB-INF/protected/tiles/Login.jsp"/>
+    </definition>
+
+    <definition name=".headEvent" path="/WEB-INF/protected/tiles/headBanner.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_foto.jsp"/>
+    </definition>
+<!--
+    <definition name=".sportraitResults" extends=".sportraitHome">
+        <put name="head" value=".headEvent"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/results.jsp"/>
+        <put name="content2" value=".loginModal"/>
+    </definition>
+-->
+    <definition name=".sportraitFAQ" extends=".sportraitcontact">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHelp.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/faq.jsp"/>
+        <put name="head" value=".headFAQ"/>
+    </definition>
+
+    <definition name=".headFAQ" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_faq.jsp"/>
+    </definition>
+
+    <definition name=".recentEventsFrame" template="/WEB-INF/protected/layout/simpleTemplate.jsp">
+        <put name="htmlTitle" type="string"><![CDATA[sportrait -- aktuelle anlässe]]></put>
+        <put name="content1" value="/WEB-INF/protected/tiles/_recentEventsFrame.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
+
+    </definition>
+
+    <definition name=".sportraitcontact" extends=".eventCategory">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleContact.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/contact.jsp"/>
+        <put name="head" value=".headNeutral"/>
+    </definition>
+
+    <definition name=".headNeutral" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_neutral.jsp"/>
+    </definition>
+
+    <definition name=".sportraitagb" extends=".sportraitcontact">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleAgb.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/agb.jsp"/>
+    </definition>
+
+    <definition name=".sportraitAbout" extends=".sportraitcontact">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleAbout.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/about.jsp"/>
+        <!--<put name="content2" value="/WEB-INF/protected/tiles/Login_Ghost.jsp"/>-->
+    </definition>
+
+    <definition name=".sportraitcopyright" extends=".sportraitcontact">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCopyright.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/copyright.jsp"/>
+    </definition>
+
+    <definition name=".sportraitprivacy" extends=".sportraitcontact">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titlePrivacy.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/privacy.jsp"/>
+    </definition>
+
+    <definition name=".registerPh" extends=".eventCategory">
+        <put name="head" value=".headNeutral"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/registerPhotographer.jsp"/>
+    </definition>
+
+    <definition name=".registerPhConfrim" extends=".registerPh">
+        <put name="head" value=".headNeutral"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/registerPhotographerConfirm.jsp"/>
+    </definition>
+
+    <definition name=".faqPh" extends=".sportraitFAQ">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHelp.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/FAQphotographer.jsp"/>
+    </definition>
+
+    <definition name=".sportraitAccountInfo" extends=".sportraitEvent">
+        <put name="content1" value="/WEB-INF/protected/tiles/infoForPhotographers.jsp"/>
+    </definition>
+
+    <definition name=".eventCategory" path="/WEB-INF/protected/layout/template.jsp">
+        <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCategory.jsp"/>
+        <put name="head" value=".headFoto"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/album.jsp"/>
+        <put name="content2" value=".loginModal"/>
+        <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
+
+    </definition>
+
+    <definition name=".headFoto" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_foto.jsp"/>
+    </definition>
+
+    <definition name=".sportraitDisplay" extends=".eventCategory">
+        <put name="content1" value="/WEB-INF/protected/tiles/display.jsp"/>
+    </definition>
+
+    <!--Unartig Links-->
+    <definition name=".sportraitShoppingCart" extends=".eventCategory">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleShoppingCart.jsp"/>
+        <put name="head" value=".headShoppingcart"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/shoppingCart.jsp"/>
+    </definition>
+
+    <definition name=".headShoppingcart" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_shoppingcart.jsp"/>
+    </definition>
+
+    <definition name=".sportraitExplainDigital" path="/WEB-INF/protected/explainDigital.jsp"/>
+
+
+    <!-- shows a page with a shoppingCart Preview that can be inlined as an IFrame -->
+    <definition name=".shoppingCartPreviewFrame" path="/WEB-INF/protected/layout/simpleTemplate.jsp">
+        <put name="htmlTitle" type="string"><![CDATA[sportrait -- shopping cart preview]]></put>
+        <put name="content1" value="/WEB-INF/protected/tiles/shoppingCartPreviewFrame.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
+
+    </definition>
+
+
+    <definition name=".sportraitScPerson" extends=".sportraitShoppingCart">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyStandard.jsp"/>-->
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCheckout.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/scPerson.jsp"/>
+    </definition>
+
+    <definition name=".sportraitScBilling" extends=".sportraitScPerson">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyStandard.jsp"/>-->
+        <put name="content1" value="/WEB-INF/protected/tiles/scBilling.jsp"/>
+    </definition>
+
+    <definition name=".sportraitScOver" extends=".sportraitScBilling">
+        <put name="content1" value="/WEB-INF/protected/tiles/scOver.jsp"/>
+    </definition>
+
+    <definition name=".sportraitScOrderConfirm" extends=".sportraitScOver">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleOrderConfrim.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/scOrderConfirm.jsp"/>
+        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalyticsEcommerce.jsp"/>
+    </definition>
+
+    <definition name=".photographer" extends=".eventCategory">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyAccountPh.jsp"/>-->
+        <put name="head" value=".headAdmin"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/accountPhTabs.jsp"/>
+        <put name="content2" value="/WEB-INF/protected/tiles/_accountPh.jsp"/>
+    </definition>
+
+    <definition name=".headAdmin" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/tabs_myAccount.jsp"/>
+    </definition>
+
+    <!--zul page:-->
+    <definition name=".photographer-zul" extends=".photographer">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyAccountPh.jsp"/>-->
+        <put name="content1" value="/WEB-INF/protected/zul/photographer-admin.zul"/>
+        <put name="content2" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+    </definition>
+
+
+    <definition name=".adminEditOver" extends=".photographer">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyStandard.jsp"/>-->
+        <put name="content2" value="/WEB-INF/protected/tiles/_accountPhAdminOver.jsp"/>
+    </definition>
+
+    <!-- shows a page where photos can be uploaded for a certain category of an event -->
+    <definition name=".sportraitAccountPhUpload" extends=".photographer">
+        <put name="content2" value="/WEB-INF/protected/tiles/_accountPhUpload.jsp"/>
+    </definition>
+
+    <!-- list all registered photographers -->
+    <definition name=".listPhotographers" extends=".photographer">
+        <put name="content2" value="/WEB-INF/protected/tiles/listPhotographers.jsp"/>
+    </definition>
+
+    <!-- edit or create photographer -->
+    <definition name=".editPhotographer" extends=".photographer">
+        <put name="content2" value="/WEB-INF/protected/tiles/editPhotographer.jsp"/>
+    </definition>
+
+    <definition name=".adminEventlist" extends=".photographer">
+        <put name="content2" value="/WEB-INF/protected/tiles/adminEventlist.jsp"/>
+    </definition>
+
+    <!-- shows a very simple page to upload events in a text file with a certain format-->
+    <definition name=".uploadEditEvents" extends=".photographer">
+        <put name="content2" value="/WEB-INF/protected/tiles/uploadEvents.jsp"/>
+    </definition>
+
+    <!--download page for ordered photos-->
+    <definition name=".orderDownload" extends=".sportraitShoppingCart">
+        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleDownload.jsp"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/sportraitDownload.jsp"/>
+        <put name="head" value=".headNoTabs"/>
+    </definition>
+
+    <definition name=".headNoTabs" path="/WEB-INF/protected/tiles/headMain.jsp">
+        <put name="hallo" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+        <put name="tabs" value="/WEB-INF/protected/tiles/Empty.jsp"/>
+    </definition>
+
+
+    <!--  ####################################################### new, temporaer ################# -->
+    <!-- eingefuegt, damit der link auf der fotografen seite vorlaeufig mal funktioniert -->
+    <!-- Albums werden angezeigt und editiert (z.B. Produkte hinzufuegen/entfernen) -->
+    <definition name=".photographerAlbumEdit" extends=".eventCategory">
+        <!--<put name="body" value="/WEB-INF/protected/tiles/bodyStandard.jsp"/>-->
+        <put name="head" value=".headAdmin"/>
+        <put name="content1" value="/WEB-INF/protected/tiles/accountPhTabs.jsp"/>
+        <put name="content2" value="/WEB-INF/protected/tiles/_accountPhAdminOver.jsp"/>
+        <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
+    </definition>
+    <!--  ########################################################################333-->
+
+    <!-- sample tiles definitions
+  <definition name=".mainLayout" path="/common/layouts/classicLayout.jsp">
+      <put name="title"  value="Sample Page Title" />
+      <put name="header" value="/common/header.jsp" />
+      <put name="menu"   value=".mainMenu" />
+      <put name="footer" value="/common/footer.jsp" />
+      <put name="body"   value=".portal.body" />
+  </definition>
+
+  <definition name=".mainMenu" path="/common/layouts/vboxLayout.jsp" >
+      <putList name="list" >
+          <add value=".menu.links" />
+          <add value=".menu.taglib.references" />
+          <add value=".menu.printer.friendly" />
+          <add value=".menu.old.documents" />
+    </putList>
+  </definition>
+
+  <definition name="aPage" extends=".mainLayout">
+      <put name="title"  value="Another Title" />
+      <put name="body"   value=".aPage.body" />
+  </definition>
+
+  end samples -->
+
+
+</tiles-definitions>
