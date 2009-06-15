@@ -1,6 +1,6 @@
 --
 -- The data-stup scripts is needed in order to initialize a fresh database with the necessary user profiles, product/price data etc.
--- To be executed after the schema-setup script that is automatically generated
+-- To be executed after the schema-setup script that is automatically generated via "mvn hibernate3:hbm2ddl"
 --
 -- Additionally, the add_on script should be executed to fix the sequences
 --
