@@ -10,7 +10,7 @@
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
         <building>
-          <setting name="EXPLODED_URL" value="file:///opt/DATA/sportrait/web-images" />
+          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/../../../../DATA/sportrait/web-images" />
           <setting name="EXPLODED_ENABLED" value="true" />
           <setting name="JAR_URL" value="file://$MODULE_DIR$/target/web-images-context-1.0-SNAPSHOT.war" />
           <setting name="JAR_ENABLED" value="false" />
@@ -29,10 +29,10 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <exclude-output />
+    <content url="file:///opt/DATA/sportrait/web-images" />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <content url="file:///opt/DATA/sportrait/web-images" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-j2ee_1.4_spec:1.0" level="project" />

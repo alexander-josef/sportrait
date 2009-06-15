@@ -1061,12 +1061,19 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="hibernate3">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/hibernate-annotations.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
   <component name="uidesigner-configuration">
     <option name="INSTRUMENT_CLASSES" value="false" />
   </component>
   <UsedPathMacros>
-    <macro name="MAVEN_REPOSITORY" />
+    <macro name="MAVEN_REPOSITORY" description="Maven Local Repostiry" />
   </UsedPathMacros>
 </project>
 

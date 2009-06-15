@@ -285,7 +285,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="sportraitSessionFactory" value="6673168b-568d-49aa-ac1e-b234c0be3d0f" />
+          <unit-entry name="sportraitSessionFactory" value="b17e30a4-4dd3-44fa-8fe9-3815ff0c8460" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -401,6 +401,7 @@
     <orderEntry type="library" exported="" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: jline:jline:0.9.94" level="project" />
     <orderEntry type="library" name="Maven: org.testng:testng:jdk15:5.5" level="project" />
+    <orderEntry type="library" name="hibernate3" level="project" />
   </component>
 </module>
 

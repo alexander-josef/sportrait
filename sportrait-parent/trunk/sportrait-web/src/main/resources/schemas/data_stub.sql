@@ -30,7 +30,9 @@ INSERT INTO userprofiles2userroles (username, rolename) VALUES ('admin', 'photog
 --
 -- Photographers (IMPORTANT: needed for every userprofile)
 --
-INSERT INTO photographers VALUES (1,1,'Nikon D2xs', 'www.sportrait.com', 'unartig AG, 8006 Zuerich / Switzerland');
+INSERT INTO photographers VALUES (1,'Nikon D2xs', 'www.sportrait.com', 'unartig AG, 8006 Zuerich / Switzerland');
+
+
 --
 -- Set up categories (Sportarten)
 --

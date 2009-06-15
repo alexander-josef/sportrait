@@ -161,6 +161,7 @@
         </property>
 
 
+        <!--  the one-to-one relationsship assumes the same primary keys. So there must be photographer for every userprofile -->
         <one-to-one name="photographer"
              lazy="false"
              cascade="save-update"
