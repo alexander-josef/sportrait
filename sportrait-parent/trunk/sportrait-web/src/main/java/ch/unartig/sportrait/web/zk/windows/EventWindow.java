@@ -1,4 +1,4 @@
-package ch.unartig.sportrait.zk.windows;
+package ch.unartig.sportrait.web.zk.windows;
 
 import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.EventCategory;
