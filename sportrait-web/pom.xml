@@ -136,7 +136,7 @@
             <groupId>com.sun.media</groupId>
             <artifactId>jai_codec</artifactId>
             <version>1.1.2_01</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <dependency>

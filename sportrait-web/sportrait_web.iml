@@ -182,6 +182,10 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib/" />
           </containerElement>
+          <containerElement type="library" name="Maven: com.sun.media:jai_codec:1.1.2_01" level="project">
+            <attribute name="method" value="1" />
+            <attribute name="URI" value="/WEB-INF/lib/" />
+          </containerElement>
           <containerElement type="library" name="Maven: javax.servlet:jstl:1.1.2" level="project">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/lib/" />
@@ -338,6 +342,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="hibernate3" level="project" />
     <orderEntry type="library" exported="" name="Maven: ch.unartig.server:sportrait_client:0.7" level="project" />
     <orderEntry type="library" exported="" name="Maven: xmlrpc:xmlrpc-client:3.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.apache.xmlrpc:xmlrpc-common:3.0" level="project" />
@@ -376,7 +381,7 @@
     <orderEntry type="library" exported="" name="Maven: commons-validator:commons-validator:1.1.4" level="project" />
     <orderEntry type="library" exported="" name="Maven: antlr:antlr:2.7.6" level="project" />
     <orderEntry type="library" exported="" name="Maven: javax.media:jai_core:1.1.2_01" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.media:jai_codec:1.1.2_01" level="project" />
+    <orderEntry type="library" exported="" name="Maven: com.sun.media:jai_codec:1.1.2_01" level="project" />
     <orderEntry type="library" exported="" name="Maven: javax.servlet:jstl:1.1.2" level="project" />
     <orderEntry type="library" exported="" name="Maven: taglibs:standard:1.1.2" level="project" />
     <orderEntry type="library" exported="" name="Maven: jdom:jdom:1.0" level="project" />
@@ -401,7 +406,6 @@
     <orderEntry type="library" exported="" name="Maven: org.apache.ant:ant-launcher:1.7.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: jline:jline:0.9.94" level="project" />
     <orderEntry type="library" name="Maven: org.testng:testng:jdk15:5.5" level="project" />
-    <orderEntry type="library" name="hibernate3" level="project" />
   </component>
 </module>
 
