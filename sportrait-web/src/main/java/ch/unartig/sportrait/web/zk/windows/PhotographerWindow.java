@@ -1,9 +1,8 @@
-package ch.unartig.sportrait.zk.windows;
+package ch.unartig.sportrait.web.zk.windows;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zul.Window;
 import org.zkoss.zk.ui.Executions;
-import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.DAOs.UserRoleDAO;
 import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;

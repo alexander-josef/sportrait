@@ -17,7 +17,7 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.zk.components;
+package ch.unartig.sportrait.web.zk.components;
 
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.UnartigException;
