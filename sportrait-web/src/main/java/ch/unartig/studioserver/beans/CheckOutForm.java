@@ -84,7 +84,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.businesslogic.CreditCardDetails;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;

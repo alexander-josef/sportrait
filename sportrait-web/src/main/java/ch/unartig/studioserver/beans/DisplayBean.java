@@ -67,8 +67,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.businesslogic.NavigableObject;
 import ch.unartig.studioserver.businesslogic.NavigationHelper;
 import ch.unartig.studioserver.model.Album;
@@ -107,7 +107,7 @@ public class DisplayBean implements NavigableObject
      * <br> will populate all the necessary information to display the display-view of the album
      * <br> Album can be null
      * <br> set the back to album link using the navigationhelper object
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      */
     public void processDisplayBean() throws UnartigException {
         _logger.debug("album bean : " + albumBean);
@@ -132,7 +132,7 @@ public class DisplayBean implements NavigableObject
 
     /**
      * reload is needed, if the relevant photos are not found in the albumbean
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      */
     private void reloadAlbumBean() throws UnartigException
     {
@@ -149,7 +149,7 @@ public class DisplayBean implements NavigableObject
      *Photo:              prev     disp     next
      * </pre>
      * @return true if all photos have been found and set or false, if at least one photo has not been found
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      */
     private boolean loadPhotosFromAlbumBean() throws UnartigException
     {

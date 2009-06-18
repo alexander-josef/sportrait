@@ -19,6 +19,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsEvent;

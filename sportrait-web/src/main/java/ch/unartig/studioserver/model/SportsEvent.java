@@ -52,14 +52,14 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.u_core.controller.Client;
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.u_core.util.FileUtils;
+import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -111,7 +111,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * </pre>
      *
      * @param line column separated line that contains the sportsevent information
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      *
      */
     public SportsEvent(String line) throws UnartigException
@@ -174,7 +174,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param zipCode Zip Code as string
      * @param city City as String
      * @param category The category navlevel property as string (i.e. laufen)
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public void setEventLocation(String zipCode, String city, String category) throws UAPersistenceException
@@ -247,7 +247,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param fineImageServerPath Path with high-res images local on the server
      * @param client Client object, containing photographer object
      * @return true for success
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      */
     public boolean createRegisterSportsAlbum(Long eventCategoryId, String fineImageServerPath,Client client) throws UnartigException
     {
@@ -267,7 +267,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param client client object, contains photographer object
      * @param processImages Set true to process the images for thumbnail and display images
      * @return true for success
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      *
      */
     public boolean createRegisterSportsAlbum(Long eventCategoryId, InputStream inputStream, Client client, boolean processImages) throws UnartigException

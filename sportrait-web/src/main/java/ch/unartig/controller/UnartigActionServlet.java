@@ -87,12 +87,12 @@
  * *** empty log message ***
  *
  ****************************************************************/
-package ch.unartig.u_core.controller;
+package ch.unartig.controller;
 
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.PhotoOrderService;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.u_core.util.CryptoUtil;
+import ch.unartig.util.CryptoUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 

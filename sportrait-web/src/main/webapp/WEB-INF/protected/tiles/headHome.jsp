@@ -13,7 +13,7 @@
 
         <!-- Tile: Tabnavigation Home -->
         <ul class="tabnavigation">
-            <%--@elvariable id="clientInSession" type="ch.unartig.u_core.controller.Client"--%>
+            <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
             <c:if test="${clientInSession!=null}">
                 <li>
                     <html:link action="/photographer/main-zul"><html:img page="/images/tabs/tab_toMyAccount_de.gif"

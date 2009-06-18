@@ -34,10 +34,10 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.beans.DownloadImageBean;
-import ch.unartig.u_core.util.HttpUtil;
+import ch.unartig.util.HttpUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

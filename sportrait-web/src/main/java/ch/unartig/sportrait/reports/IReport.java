@@ -19,7 +19,8 @@
 package ch.unartig.sportrait.reports;
 
 import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.zk.components.ZReportSalesProductMonth;
 
 import java.math.BigDecimal;
 import java.util.List;

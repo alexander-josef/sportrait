@@ -98,7 +98,7 @@
 
         <exception
                 key="error.timeout"
-                type="ch.unartig.u_core.exceptions.UnartigSessionExpiredException"
+                type="ch.unartig.exceptions.UnartigSessionExpiredException"
                 path="/index.html"
                 />
         <!-- catch-all exception handling :

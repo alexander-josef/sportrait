@@ -89,7 +89,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
@@ -235,7 +235,7 @@ public class GenericLevelDAO
      *
      * @param event an Event
      * @return a list of all sports albums for the passed sports event
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public List getSportsAlbumsFor(Event event) throws UAPersistenceException
@@ -265,7 +265,7 @@ public class GenericLevelDAO
      *
      * @param date A Date
      * @return List of SportsEvents
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public List getSportsEventsBefore(Date date) throws UAPersistenceException

@@ -141,13 +141,14 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.NavigableObject;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.model.Product;
+import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.ProductDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -323,7 +324,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
      *
      * @param photo the object of the photo that has been ordered
      * @param product product to combine the ordered photo with (Null for default product)
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      */
     public void addPhoto(Photo photo, Product product) throws UnartigInvalidArgument
     {
@@ -410,7 +411,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
     /**
      * called by view for confirming order in the customer's currency
      * @return
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      */
     public String getFormattedSubtotalPhotos() throws UnartigInvalidArgument
     {
@@ -435,7 +436,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
      * Shipping handling: CHE for shipping to Switzerland in CHF and DEU for shipping to Germany in EURO
      * called by view to show correct currency for customer
      * @return
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      */
     public String getFormattedShippingPrice() throws UnartigInvalidArgument
     {
@@ -537,7 +538,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
     /**
      * return consolidated itmes for order confirmation
      * @return the sc items without empty scOrderItem entries, consolidated
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public List getScItemsForConfirmation() throws UAPersistenceException
     {
@@ -664,8 +665,8 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
      * Does the necessary Business Logic to update the shopping cart:
      * - updates the price
      *
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      */
     public void updateCart() throws UAPersistenceException, UnartigInvalidArgument
     {

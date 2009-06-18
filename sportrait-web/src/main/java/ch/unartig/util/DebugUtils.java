@@ -32,7 +32,7 @@
  * languages and upload stuff
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AlbumBean;
@@ -51,7 +51,7 @@ import java.util.List;
 
 public class DebugUtils
 {
-     private static Logger _logger = Logger.getLogger("ch.unartig.u_core.util.DebugUtils");
+     private static Logger _logger = Logger.getLogger("ch.unartig.util.DebugUtils");
 
     /**
      * helper for showing the content of the request

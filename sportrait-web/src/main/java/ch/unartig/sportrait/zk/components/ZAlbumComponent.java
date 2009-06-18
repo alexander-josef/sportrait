@@ -17,11 +17,11 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.web.zk.components;
+package ch.unartig.sportrait.zk.components;
 
-import ch.unartig.u_core.controller.Client;
-import ch.unartig.u_core.exceptions.NotAuthorizedException;
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.NotAuthorizedException;
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.model.ProductType;

@@ -17,12 +17,12 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.web.zk.windows;
+package ch.unartig.sportrait.zk.windows;
 
-import ch.unartig.u_core.controller.Client;
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.sportrait.web.zk.components.ZAlbumComponent;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.zk.components.ZAlbumComponent;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -41,6 +41,7 @@ import org.zkoss.zul.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * ZK Window class for the administration tab window

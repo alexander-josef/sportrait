@@ -70,8 +70,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Price;
@@ -127,7 +127,7 @@ public class ScOrderItem {
      * itemPrice: quantity x productprice
      * this needs to be called every time a photo has been updated in order to calculate the correct prices
      *
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public void updateItemPrice() throws UAPersistenceException {
@@ -154,7 +154,7 @@ public class ScOrderItem {
      * this is called from the view after the the address has been entered. it shows the relevent amount in the correct currency
      *
      * @return the price as formatted string
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument in case customer currency not available
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument in case customer currency not available
      */
     public String getPrice() throws UnartigInvalidArgument {
         return Price.monetaryAmountFormat.format(getPriceCustomerCurrency());
@@ -166,7 +166,7 @@ public class ScOrderItem {
      * (customer already filled out form)
      *
      * @return amount in correct currency as double
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      *          if custumer country not available
      */
     private double getPriceCustomerCurrency() throws UnartigInvalidArgument {

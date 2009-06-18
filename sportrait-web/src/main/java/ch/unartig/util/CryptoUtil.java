@@ -26,7 +26,7 @@
  * creating the order hashes
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
 import org.apache.log4j.Logger;
 
@@ -34,12 +34,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import ch.unartig.exceptions.UnartigException;
+
 /**
  * Util class for performing security and cryptology related functions
  */
 public class CryptoUtil
 {
-    public static Logger _logger = Logger.getLogger("ch.unartig.u_core.util.CryptUtil");
+    public static Logger _logger = Logger.getLogger("ch.unartig.util.CryptUtil");
 
     static SecureRandom prng;
 

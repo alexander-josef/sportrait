@@ -33,7 +33,7 @@
  * post-redirect-get PRG pattern for shoppingcart / check-out
  *
  ****************************************************************/
-package ch.unartig.u_core.controller;
+package ch.unartig.controller;
 
 import javax.servlet.*;
 import java.io.IOException;

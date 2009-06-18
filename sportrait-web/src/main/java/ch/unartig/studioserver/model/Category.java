@@ -112,8 +112,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import org.apache.log4j.Logger;

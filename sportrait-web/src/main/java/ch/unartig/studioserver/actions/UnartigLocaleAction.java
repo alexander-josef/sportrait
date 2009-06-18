@@ -48,7 +48,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 
 public class UnartigLocaleAction extends Action
 {

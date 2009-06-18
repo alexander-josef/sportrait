@@ -31,7 +31,7 @@
  * processing of images
  *
  ****************************************************************/
-package ch.unartig.u_core.exceptions;
+package ch.unartig.exceptions;
 
 public class UnartigInvalidArgument extends UnartigException
 {

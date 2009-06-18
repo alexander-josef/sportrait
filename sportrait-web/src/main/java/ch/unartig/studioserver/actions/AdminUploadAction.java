@@ -53,13 +53,13 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.u_core.util.FileUtils;
+import ch.unartig.util.FileUtils;
 import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
@@ -93,7 +93,7 @@ public class AdminUploadAction extends MappingDispatchAction
      * @param request
      * @param response
      * @return forward for the upload page
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public ActionForward getSingleAlbumUploadPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UAPersistenceException
@@ -116,7 +116,7 @@ public class AdminUploadAction extends MappingDispatchAction
      * @return
      * @throws IOException
      *
-     * @throws ch.unartig.u_core.exceptions.UnartigImagingException
+     * @throws ch.unartig.exceptions.UnartigImagingException
      */
     public ActionForward importDirectory(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException, IOException {
         GenericLevelDAO glDao = new GenericLevelDAO();

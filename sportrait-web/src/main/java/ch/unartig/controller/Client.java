@@ -20,14 +20,14 @@
  * photographer
  *
  ****************************************************************/
-package ch.unartig.u_core.controller;
+package ch.unartig.controller;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.studioserver.model.UserRole;
 import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
-import ch.unartig.u_core.util.HttpUtil;
+import ch.unartig.util.HttpUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

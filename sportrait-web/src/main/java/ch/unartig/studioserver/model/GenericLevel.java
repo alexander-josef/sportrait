@@ -152,10 +152,10 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.u_core.controller.Client;
-import ch.unartig.u_core.exceptions.NotAuthorizedException;
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.NotAuthorizedException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
@@ -318,7 +318,7 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
      * Count recursivly all photos that are contained in this level
      *
      * @return number of photos
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     private int countPhotos()
     {
@@ -486,7 +486,7 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
     /**
      * method deleteLevel must be implemented for all levels
      *
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public abstract void deleteLevel() throws UAPersistenceException;

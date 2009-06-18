@@ -39,11 +39,11 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.u_core.util.FileUtils;
+import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
