@@ -58,8 +58,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UnartigSessionExpiredException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import org.apache.log4j.Logger;
@@ -76,8 +76,8 @@ public class NavigationHelper
      *
      * @param request
      * @param navObject
-     * @throws ch.unartig.exceptions.UnartigException
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      */
     public static void setBackToAlbumLink(HttpServletRequest request, NavigableObject navObject) throws UnartigException, UnartigSessionExpiredException
     {
@@ -101,7 +101,7 @@ public class NavigationHelper
      *
      * @param navObject
      * @param albumBean
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     public static void setBackToAlbumLink(NavigableObject navObject, AbstractAlbumBean albumBean) throws UnartigException
     {

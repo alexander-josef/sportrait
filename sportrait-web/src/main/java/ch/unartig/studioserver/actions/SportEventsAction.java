@@ -43,9 +43,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.UploadBean;
 import ch.unartig.studioserver.model.SportsEvent;
@@ -244,9 +244,9 @@ public class SportEventsAction extends MappingDispatchAction
      * process each line from the column separated sportsevent file and save the created sportsevent
      *
      * @param line column separated line with event information to be parsed
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          if saving the sporsevent fails
-     * @throws ch.unartig.exceptions.UnartigException Rollback
+     * @throws ch.unartig.u_core.exceptions.UnartigException Rollback
      */
     private void processEventLine(String line) throws UnartigException
     {

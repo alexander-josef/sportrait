@@ -19,9 +19,9 @@
  ****************************************************************/
 package ch.unartig.sportrait.web.zk.windows;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.sportrait.web.zk.components.ZAlbumComponent;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.*;

@@ -51,7 +51,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Order;
 import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
@@ -88,7 +88,7 @@ public class OrderDAO
      * retrieve all open orders. open orders have no oipsorderid and no upload completed date
      *
      * @return list of open orders
-     * @throws ch.unartig.exceptions.UAPersistenceException db error
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException db error
      *
      */
     public List getOpenOrders() throws UAPersistenceException
@@ -105,7 +105,7 @@ public class OrderDAO
      *
      * @param orderHashString the message digest that is stored with each order
      * @return a single order if a mapping exists or null if none exists
-     * @throws ch.unartig.exceptions.UAPersistenceException db-error in case more than one record is returned
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException db-error in case more than one record is returned
      *
      */
     public Order getOrderFromHash(String orderHashString) throws UAPersistenceException

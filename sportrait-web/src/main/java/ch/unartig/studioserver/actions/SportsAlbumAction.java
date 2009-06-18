@@ -43,8 +43,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.EventAlbum;
@@ -200,7 +200,7 @@ public class SportsAlbumAction extends Action
      * @param sportsAlbumBean
      * @param actionMapping
      * @return the album genericlevelid
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     private Album extractAlbumIdFromRequest(SportsAlbumBean sportsAlbumBean, ActionMapping actionMapping) throws UnartigException {
         Album retVal;

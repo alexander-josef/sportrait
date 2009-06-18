@@ -44,7 +44,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.util;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.UserProfile;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -151,7 +151,7 @@ public class HibernateUtil
     /**
      * If DB connection was acquired, DB connection is released.
      * @param request Servlet Request
-     * @throws ch.unartig.exceptions.UAPersistenceException Exception
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException Exception
      */
 /*
     public static void leaveService(HttpServletRequest request) throws UAPersistenceException

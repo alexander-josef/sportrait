@@ -2,7 +2,7 @@ package ch.unartig.sportrait.reports;
 
 import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
 import ch.unartig.studioserver.colorplaza.OipsPidMapper;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigException;
 
 import java.util.List;
 import java.math.BigDecimal;
@@ -39,7 +39,7 @@ public class ReportSalesPerProductMonths extends MonthlyReport
      * @param monthlySalesSummary the object that contains the product sale information
      * @param reportType type code for this report value
      * @return string value that wille be shown in the report.
-     * @throws ch.unartig.exceptions.UnartigException if something goes wrong calculating the report values or totals
+     * @throws ch.unartig.u_core.exceptions.UnartigException if something goes wrong calculating the report values or totals
      */
     public BigDecimal calculateReportValue(ReportMonthlySalesSummary monthlySalesSummary, int reportType) throws UnartigException
     {

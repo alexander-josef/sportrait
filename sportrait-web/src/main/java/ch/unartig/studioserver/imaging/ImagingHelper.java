@@ -53,7 +53,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.imaging;
 
-import ch.unartig.exceptions.UnartigImagingException;
+import ch.unartig.u_core.exceptions.UnartigImagingException;
 import ch.unartig.studioserver.Registry;
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -85,7 +85,7 @@ public class ImagingHelper
      *
      * @param file
      * @return image
-     * @throws ch.unartig.exceptions.UnartigImagingException
+     * @throws ch.unartig.u_core.exceptions.UnartigImagingException
      *          File not found or similar problem
      */
     public static RenderedOp load(File file) throws UnartigImagingException
@@ -327,7 +327,7 @@ public class ImagingHelper
      * @param resampleFactor
      * @param os             OutputStream
      * @param quality
-     * @throws ch.unartig.exceptions.UnartigImagingException
+     * @throws ch.unartig.u_core.exceptions.UnartigImagingException
      *          from load; file not found or similar
      */
     public static void reSample(File file, Double resampleFactor, OutputStream os, float quality) throws UnartigImagingException

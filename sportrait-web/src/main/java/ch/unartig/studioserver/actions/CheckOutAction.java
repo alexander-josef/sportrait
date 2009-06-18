@@ -148,9 +148,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.exceptions.UnartigSessionExpiredException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.CheckOutForm;
 import ch.unartig.studioserver.beans.ShoppingCart;
@@ -158,7 +158,7 @@ import ch.unartig.studioserver.businesslogic.PhotoOrderIF;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.businesslogic.ShoppingCartLogic;
 import ch.unartig.studioserver.model.Customer;
-import ch.unartig.util.DebugUtils;
+import ch.unartig.u_core.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
@@ -201,7 +201,7 @@ public class CheckOutAction extends MappingDispatchAction
      * @param request
      * @param response
      * @return forward page
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      *
      */
     @SuppressWarnings({"JavaDoc", "UnusedDeclaration"})
@@ -297,7 +297,7 @@ public class CheckOutAction extends MappingDispatchAction
      *
      *
      * @return forward to address
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      */
     @SuppressWarnings({"UnusedDeclaration", "JavaDoc"})
     public ActionForward checkOutBillingMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigSessionExpiredException
@@ -315,7 +315,7 @@ public class CheckOutAction extends MappingDispatchAction
      * Make sure session is alive and shopping cart available!<br>
      *
      * @return forward to overview or session expired page
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      *
      */
     @SuppressWarnings({"UnusedDeclaration", "JavaDoc"})
@@ -331,7 +331,7 @@ public class CheckOutAction extends MappingDispatchAction
      * helper method to check for an experied session during the check out process
      *
      * @param request Http Request
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      *          If Session has expired
      */
     private void checkSessionExpired(HttpServletRequest request) throws UnartigSessionExpiredException
@@ -359,9 +359,9 @@ public class CheckOutAction extends MappingDispatchAction
      * @param request  http request
      * @param response http response
      * @return forward to next page
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          database problem
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      *          if the current shopping sesssion has expired
      */
     @SuppressWarnings({"UnusedDeclaration"})

@@ -18,8 +18,8 @@
  ****************************************************************/
 package ch.unartig.sportrait.web.zk.components;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.sportrait.reports.IReport;
 import ch.unartig.sportrait.reports.IReportColumn;
 import ch.unartig.sportrait.reports.ReportSalesPerPhotographerMonths;

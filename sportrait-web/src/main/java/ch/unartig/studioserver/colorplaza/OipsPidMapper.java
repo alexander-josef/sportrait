@@ -37,7 +37,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.colorplaza;
 
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.businesslogic.ProductMapperIF;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.model.ProductType;

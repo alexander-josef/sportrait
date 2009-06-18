@@ -22,7 +22,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.hibernate.Criteria;

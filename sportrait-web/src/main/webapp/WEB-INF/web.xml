@@ -59,7 +59,7 @@
     </filter>
     <filter>
         <filter-name>EncodingFilter</filter-name>
-        <filter-class>ch.unartig.controller.UTF8EncodingFilter</filter-class>
+        <filter-class>ch.unartig.u_core.controller.UTF8EncodingFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -132,7 +132,7 @@
 
     <servlet>
         <servlet-name>action</servlet-name>
-        <servlet-class>ch.unartig.controller.UnartigActionServlet</servlet-class>
+        <servlet-class>ch.unartig.u_core.controller.UnartigActionServlet</servlet-class>
         <init-param>
             <param-name>config</param-name>
             <param-value>/WEB-INF/struts-config.xml</param-value>

@@ -28,8 +28,6 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.persistence.DAOs.UserRoleDAO;
 import org.apache.log4j.Logger;
 
 /**

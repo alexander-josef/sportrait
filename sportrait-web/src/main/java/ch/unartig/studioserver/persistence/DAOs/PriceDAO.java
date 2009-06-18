@@ -25,7 +25,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.hibernate.HibernateException;
