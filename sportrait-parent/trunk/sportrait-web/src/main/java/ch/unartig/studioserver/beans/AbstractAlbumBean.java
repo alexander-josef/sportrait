@@ -55,8 +55,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
@@ -143,9 +143,9 @@ public abstract class AbstractAlbumBean
      * hour is initialized to 0 (possible null pointer exception if left to null)
      * <p/>
      *
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
      */
     public final void populateAlbumBeanTemplate()
@@ -167,7 +167,7 @@ public abstract class AbstractAlbumBean
     /**
      * 'standard' implementation, that counts all photos that are in an album. uses method of genericlevel
      *
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
      */
     protected void setTotalNumberOfPhotosForSession()
@@ -491,7 +491,7 @@ public abstract class AbstractAlbumBean
      * called from display bean if it can't find the photos to display<br>
      *
      * @param displayPhotoId
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     public void reloadPhotosTemplate(Long displayPhotoId) throws UnartigException
     {
@@ -519,7 +519,7 @@ public abstract class AbstractAlbumBean
      * AlbumBean caches the last Album for performance reasons ; how do we make sure last photo information is not stale?
      *
      * @return last Photo in Album
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     public Photo getLastPhotoInAlbumAndSelection() throws UnartigException
     {

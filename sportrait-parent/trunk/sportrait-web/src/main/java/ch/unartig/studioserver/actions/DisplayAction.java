@@ -72,8 +72,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UnartigSessionExpiredException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
@@ -106,7 +106,7 @@ public class DisplayAction extends Action
      * @param request
      * @param httpServletResponse
      * @return
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws UnartigException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, UnartigSessionExpiredException
     {

@@ -5,7 +5,7 @@ import ch.unartig.studioserver.model.OrderItem;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.model.ProductType;
 import ch.unartig.studioserver.colorplaza.OipsPidMapper;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +122,7 @@ public class ReportSalesPerAlbumProducts
      * @param productSale the object that contains the product sale information
      * @param reportType type code for this report value
      * @return string value that wille be shown in the report.
-     * @throws ch.unartig.exceptions.UnartigException in case the values cannot be calculated
+     * @throws ch.unartig.u_core.exceptions.UnartigException in case the values cannot be calculated
      */
     public BigDecimal calculateReportValue(EntryProductSale productSale, int reportType) throws UnartigException
     {

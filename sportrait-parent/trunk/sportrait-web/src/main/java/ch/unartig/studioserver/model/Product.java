@@ -81,8 +81,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigInvalidArgument;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
 

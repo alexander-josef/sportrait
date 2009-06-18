@@ -1,7 +1,7 @@
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Category;
 import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.EventGroup;

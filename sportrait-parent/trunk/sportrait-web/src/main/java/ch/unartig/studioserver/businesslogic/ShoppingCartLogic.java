@@ -85,9 +85,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.CreditCardException;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.CreditCardException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.CheckOutForm;
 import ch.unartig.studioserver.beans.ScOrderItem;
@@ -103,9 +103,9 @@ import ch.unartig.studioserver.persistence.DAOs.OrderHashDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.ProductDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.CryptoUtil;
-import ch.unartig.util.HttpUtil;
-import ch.unartig.util.MailUtil;
+import ch.unartig.u_core.util.CryptoUtil;
+import ch.unartig.u_core.util.HttpUtil;
+import ch.unartig.u_core.util.MailUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
@@ -146,7 +146,7 @@ public class ShoppingCartLogic
      * @param consolidatedItems only order items that are relevant for order process, i.e. no zero amount order items etc.
      * @param order             instance of order object
      * @return a Set of OrderItems
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          if order cannot be persisted
      */
     @SuppressWarnings({"unchecked"})
@@ -180,9 +180,9 @@ public class ShoppingCartLogic
      *
      * @param ipAddress retrieved from the request;
      * @return the return code from the photoOrder
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          if a problem with the database occurs
-     * @throws ch.unartig.exceptions.UnartigException On db rollback
+     * @throws ch.unartig.u_core.exceptions.UnartigException On db rollback
      */
     public int storeAndExecuteOrder(String ipAddress) throws UnartigException {
         // defensive programming: initialize the error code to unknown error
@@ -275,7 +275,7 @@ public class ShoppingCartLogic
      * </ul>
      *
      * @param order the persistent order object instance
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          if orderHash can not be persisted
      */
     private void prepareDownloadLink(Order order) throws UnartigException
@@ -296,7 +296,7 @@ public class ShoppingCartLogic
      * @param order      the persistend order object
      * @param expiryDate a date
      * @return the one time hash
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          if orderHash can not be saved
      */
     private String createOrderHash(Order order, Date expiryDate)
@@ -316,7 +316,7 @@ public class ShoppingCartLogic
      * Send email message to customer after order has been confirmed
      * this service can time out ....
      *
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *          database exception
      */
     private void sendCustomerNotification() throws UAPersistenceException

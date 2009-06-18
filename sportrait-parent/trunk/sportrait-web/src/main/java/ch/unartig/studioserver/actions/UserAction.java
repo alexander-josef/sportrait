@@ -34,7 +34,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Customer;
 import ch.unartig.studioserver.persistence.DAOs.CustomerDAO;

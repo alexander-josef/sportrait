@@ -98,8 +98,6 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;

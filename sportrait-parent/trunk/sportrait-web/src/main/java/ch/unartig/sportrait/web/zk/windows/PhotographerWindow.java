@@ -10,7 +10,7 @@ import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.studioserver.model.UserRole;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.controller.Client;
+import ch.unartig.u_core.controller.Client;
 
 
 public class PhotographerWindow extends Window {

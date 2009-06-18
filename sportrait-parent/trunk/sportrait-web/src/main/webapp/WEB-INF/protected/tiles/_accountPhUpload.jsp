@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:useBean id="uploadBean" type="ch.unartig.studioserver.beans.UploadBean" scope="request"/>
-<jsp:useBean id="clientInSession" type="ch.unartig.controller.Client" scope="session"/>
+<jsp:useBean id="clientInSession" type="ch.unartig.u_core.controller.Client" scope="session"/>
 
 <html:xhtml/>
 <li class="contentCenter">
