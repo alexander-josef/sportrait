@@ -114,9 +114,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.u_core.exceptions.CreditCardException;
-import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.exceptions.CreditCardException;
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.colorplaza.OipsPidMapper;
 import ch.unartig.studioserver.model.Customer;
@@ -126,8 +126,8 @@ import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.persistence.DAOs.CustomerDAO;
 import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
-import ch.unartig.u_core.util.HttpUtil;
-import ch.unartig.u_core.util.XmlHelper;
+import ch.unartig.util.HttpUtil;
+import ch.unartig.util.XmlHelper;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
@@ -522,7 +522,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
      *
      * @throws java.io.IOException
      * @throws org.jdom.JDOMException
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      *                                if this mehtod is called without valid credit card details
      */
     private void verifyCC() throws IOException, JDOMException, UnartigInvalidArgument
@@ -716,7 +716,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
      * opt = 0: no correction; opt = 1 : automatic correction (default)
      *
      * @throws java.io.IOException
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      *
      * @throws org.jdom.JDOMException
      */
@@ -811,7 +811,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
      *
      * @param product the product form the orderItem
      * @return the price in minor units
-     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.exceptions.UnartigInvalidArgument
      *          if no the customers country is not valid for this transaction
      */
     private int getDigitalProductPrice(Product product) throws UnartigInvalidArgument

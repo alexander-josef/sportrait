@@ -38,7 +38,7 @@
  * no account action , photo order
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;

@@ -20,9 +20,11 @@ package ch.unartig.studioserver.persistence.DAOs;
 
 import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
 import ch.unartig.studioserver.model.OrderItem;
+import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.u_core.controller.Client;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UnartigException;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

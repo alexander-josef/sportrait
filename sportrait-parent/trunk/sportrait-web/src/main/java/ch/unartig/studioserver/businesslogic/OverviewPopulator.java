@@ -44,7 +44,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.model.Album;
 

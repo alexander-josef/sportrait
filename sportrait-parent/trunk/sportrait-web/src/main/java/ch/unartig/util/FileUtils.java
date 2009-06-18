@@ -43,9 +43,9 @@
  * saving new tree_items file
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -60,7 +60,7 @@ public class FileUtils
 {
 
     private static final int BUFFER_SIZE = 10000;
-    static Logger _logger = Logger.getLogger("ch.unartig.u_core.util.FileUtils");
+    static Logger _logger = Logger.getLogger("ch.unartig.util.FileUtils");
 
     private FileUtils()
     {

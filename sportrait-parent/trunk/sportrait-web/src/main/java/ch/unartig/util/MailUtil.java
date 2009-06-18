@@ -53,10 +53,10 @@
  * customer service message
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.ScOrderItem;
 import ch.unartig.studioserver.beans.ShoppingCart;

@@ -42,7 +42,7 @@
  * exception handling improved
  *
  ****************************************************************/
-package ch.unartig.u_core.exceptions;
+package ch.unartig.exceptions;
 
 public class UAPersistenceException extends RuntimeException
 {

@@ -28,7 +28,7 @@
  * processing of images
  *
  ****************************************************************/
-package ch.unartig.u_core.exceptions;
+package ch.unartig.exceptions;
 
 public class UnartigImagingException extends UnartigException
 {

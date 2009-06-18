@@ -16,14 +16,14 @@
  *
  *************************************************
  * $Log$
- * Revision 1.1  2007/03/27 15:54:28  alex
- * initial commit sportrait code base
+ * Revision 1.1  2007/03/18 13:28:20  urban
+ * initial check in
  *
  * Revision 1.1  2007/03/01 18:23:41  alex
  * initial commit maven setup no history
  *
- * Revision 1.1  2005/11/14 11:52:22  alex
- * delete photo in cart works again
+ * Revision 1.3  2005/11/25 11:09:09  alex
+ * removed system outs
  *
  * Revision 1.2  2005/10/24 13:50:07  alex
  * upload of album
@@ -55,31 +55,32 @@
  * exception handling improved
  *
  ****************************************************************/
-package ch.unartig.u_core.exceptions;
+package ch.unartig.exceptions;
 
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-public class UnartigSessionExpiredException extends Exception
+public class UnartigException extends Exception
 {
     ActionMessages actionMessages = new ActionMessages();
 
-    public UnartigSessionExpiredException(String message)
+    public UnartigException(String message)
     {
         super(message);
+
         System.out.println("message = " + message);
         actionMessages.add(Globals.MESSAGE_KEY, new ActionMessage("error.generalError", message));
     }
 
-    public UnartigSessionExpiredException(String message, Throwable problem)
+    public UnartigException(String message, Throwable problem)
     {
         super(message, problem);
         System.out.println("message = " + message);
         problem.printStackTrace();
     }
 
-    public UnartigSessionExpiredException(Throwable problem)
+    public UnartigException(Throwable problem)
     {
         super(problem);
         System.out.println("problem = " + problem);

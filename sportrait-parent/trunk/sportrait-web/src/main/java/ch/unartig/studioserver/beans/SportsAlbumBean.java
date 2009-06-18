@@ -58,8 +58,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.Photo;

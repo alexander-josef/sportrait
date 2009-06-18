@@ -29,7 +29,7 @@
  * no account action , photo order
  *
  ****************************************************************/
-package ch.unartig.u_core.util;
+package ch.unartig.util;
 
 import org.jdom.Document;
 import org.jdom.Element;

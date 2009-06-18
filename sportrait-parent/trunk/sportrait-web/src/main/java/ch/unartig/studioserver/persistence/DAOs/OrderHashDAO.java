@@ -28,7 +28,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;

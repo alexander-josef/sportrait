@@ -31,7 +31,7 @@ import org.apache.struts.actions.MappingDispatchAction;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 
 import java.util.List;

@@ -19,7 +19,7 @@
 package ch.unartig.sportrait.reports;
 
 import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

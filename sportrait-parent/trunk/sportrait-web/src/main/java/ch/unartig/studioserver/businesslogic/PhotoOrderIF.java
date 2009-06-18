@@ -58,7 +58,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Customer;
 import ch.unartig.studioserver.model.Order;
 
@@ -88,7 +88,7 @@ public interface PhotoOrderIF
      * process the order and return true for success of false for problems (check error message)
      *
      * @return true for success of false for failure
-     * @throws ch.unartig.u_core.exceptions.UnartigException  database problem
+     * @throws ch.unartig.exceptions.UnartigException  database problem
      */
     boolean processOrder() throws UnartigException;
 
@@ -98,7 +98,7 @@ public interface PhotoOrderIF
      *
      * @param ccDetails object containg all credit card information used for payment
      * @return true for succesful credit card payment or false
-     * @throws ch.unartig.u_core.exceptions.UnartigException
+     * @throws ch.unartig.exceptions.UnartigException
      *          can be thrown if order is not set
      */
 //    boolean creditCardPayment(CreditCardDetails ccDetails) throws UnartigException;

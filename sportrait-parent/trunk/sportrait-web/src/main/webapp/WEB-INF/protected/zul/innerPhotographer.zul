@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
         xmlns:a="http://www.zkoss.org/2005/zk/annotation"
         id="photographerWindow"
-        use="ch.unartig.sportrait.web.zk.windows.PhotographerWindow"
+        use="ch.unartig.sportrait.zk.windows.PhotographerWindow"
         >
     <zscript>
         import ch.unartig.studioserver.model.*;

@@ -121,7 +121,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.persistence.DAOs;
 
-import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.EventAlbum;
 import ch.unartig.studioserver.model.Album;
@@ -129,7 +130,7 @@ import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.u_core.util.DebugUtils;
+import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -245,7 +246,7 @@ public class PhotoDAO
      * @param interval
      * @param album
      * @return a lost of photos
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public List getPhotosForInterval(int hour, int minutes, int interval, Album album) throws UAPersistenceException
     {
@@ -632,7 +633,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param itemsOnPage
      * @param startnumber
      * @return a list of photos
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
     public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException
@@ -674,7 +675,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param itemsOnPage the number of photos on page
      * @param startNumber if null, ignore
      * @return a list of Photo s
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public List listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException
     {
@@ -842,7 +843,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param eventCategory
      * @param startNumber
      * @return the last photo in an eventCategory filtered by startnumber
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getLastPhotoInCategoryAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException
     {
@@ -863,7 +864,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param album
      * @param startNumber
      * @return the last photo in an album filtered by startnumber
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getLastPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException
     {
@@ -910,7 +911,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param eventCategory
      * @param startNumber
      * @return first Photo
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getFirstPhotoInAlbumAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException
     {
@@ -930,7 +931,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param album
      * @param startNumber
      * @return first Photo
-     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
+     * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getFirstPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException
     {

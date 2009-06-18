@@ -26,7 +26,7 @@
  * text = no check in
  *
  ****************************************************************/
-package ch.unartig.u_core.exceptions;
+package ch.unartig.exceptions;
 
 public class CreditCardException extends UnartigException
 {

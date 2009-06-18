@@ -115,6 +115,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;

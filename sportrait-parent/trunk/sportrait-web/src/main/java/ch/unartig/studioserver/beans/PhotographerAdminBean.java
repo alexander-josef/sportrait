@@ -19,7 +19,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.controller.Client;
+import ch.unartig.controller.Client;
 import ch.unartig.studioserver.model.GenericLevel;
 
 import java.util.List;
