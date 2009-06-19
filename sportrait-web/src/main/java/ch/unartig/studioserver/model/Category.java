@@ -112,9 +112,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import org.apache.log4j.Logger;
 
@@ -245,7 +245,7 @@ public class Category extends GeneratedCategory
                 "\t\t\t\t\t'i4' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_ITEM +languageDepImageSuffix+"', \n" +
                 "\t\t\t\t\t'i8' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_OPENED_ITEM +languageDepImageSuffix+"', \n" +
                 "\t\t\t\t\t'i12' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_OPEN_ITEM +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i64' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
+                "\t\t\t\t\t'i64' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+ Registry._ICON_FOR_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
                 "\t\t\t\t\t'i68' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
                 "\t\t\t\t\t'i72' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_OPENED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
                 "\t\t\t\t\t'i76' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_OPENED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +

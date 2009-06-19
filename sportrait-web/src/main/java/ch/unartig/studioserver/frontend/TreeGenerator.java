@@ -68,13 +68,13 @@
  ****************************************************************/
 package ch.unartig.studioserver.frontend;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.model.Category;
 import ch.unartig.studioserver.model.EventGroup;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.util.FileUtils;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
@@ -94,7 +94,7 @@ public class TreeGenerator
     /**
      * generate all the i18n ized tree items files!
      *
-     * @throws UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     public void generateTreeItems() throws UnartigException {
         GenericLevelDAO glDao = new GenericLevelDAO();

@@ -52,17 +52,16 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.exceptions.UnartigImagingException;
-import ch.unartig.exceptions.UnartigInvalidArgument;
-import ch.unartig.studioserver.imaging.ImagingHelper;
+import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.u_core.imaging.ImagingHelper;
 import ch.unartig.studioserver.model.Order;
 import ch.unartig.studioserver.model.OrderItem;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.ProductType;
-import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
-import ch.unartig.util.FileUtils;
+import ch.unartig.u_core.persistence.DAOs.OrderDAO;
+import ch.unartig.u_core.util.FileUtils;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.*;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletResponse;
@@ -92,7 +91,7 @@ public class DownloadImageBean
      * constructor; takes the order hash to retrieve the order
      *
      * @param orderHash the digest that is stored in the db to get an order
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *
      */
     public DownloadImageBean(String orderHash) throws UAPersistenceException
@@ -118,7 +117,7 @@ public class DownloadImageBean
      *
      * @param orderItemId  the oderItemId-parameter value that has been passed in the request
      * @param response servlet response
-     * @throws ch.unartig.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
      *          if the passed oderItemId is not part of this order
      */
     public void downloadPhoto(String orderItemId, HttpServletResponse response) throws UnartigException
@@ -168,7 +167,7 @@ public class DownloadImageBean
      *
      * @param orderItem the order item to genereate the digital image from
      * @param os        output stream for new jpg image from the action class
-     * @throws ch.unartig.exceptions.UnartigImagingException
+     * @throws ch.unartig.u_core.exceptions.UnartigImagingException
      *          if exception during the calculation of the ordered image is thrown
      */
     private void streamDigitalProduct(OrderItem orderItem, OutputStream os) throws UnartigImagingException

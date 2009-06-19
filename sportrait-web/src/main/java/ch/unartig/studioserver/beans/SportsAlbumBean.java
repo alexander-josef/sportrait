@@ -58,13 +58,13 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsEvent;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 
 import java.util.List;

@@ -28,9 +28,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.SportsEvent;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 
 import java.util.Collections;
 import java.util.List;

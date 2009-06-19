@@ -46,7 +46,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.Registry;
 
 import java.util.Calendar;
 import java.util.Date;

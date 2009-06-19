@@ -22,17 +22,17 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.beans.PhotographerAdminBean;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.NoTimeAlbum;
 import ch.unartig.studioserver.model.*;
-import ch.unartig.studioserver.persistence.DAOs.*;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.u_core.persistence.DAOs.*;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;

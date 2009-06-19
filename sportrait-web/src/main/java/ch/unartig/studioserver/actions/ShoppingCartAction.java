@@ -147,18 +147,18 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.exceptions.UnartigInvalidArgument;
-import ch.unartig.exceptions.UnartigSessionExpiredException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
+import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.ScOrderItem;
 import ch.unartig.studioserver.beans.ShoppingCart;
 import ch.unartig.studioserver.businesslogic.NavigationHelper;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Product;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
-import ch.unartig.studioserver.persistence.DAOs.ProductDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.ProductDAO;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
@@ -182,9 +182,9 @@ public class ShoppingCartAction extends MappingDispatchAction
      * @param request
      * @param response
      * @return forward to shopping cart confirm
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *
-     * @throws ch.unartig.exceptions.UnartigInvalidArgument
+     * @throws ch.unartig.u_core.exceptions.UnartigInvalidArgument
      *
      */
     @SuppressWarnings({"JavaDoc"})
@@ -227,9 +227,9 @@ public class ShoppingCartAction extends MappingDispatchAction
      * @param request
      * @param response
      * @return forward to sc overview
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
-     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     * @throws ch.unartig.u_core.exceptions.UnartigSessionExpiredException
      *
      */
     public ActionForward toShoppingCart(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException, UnartigSessionExpiredException

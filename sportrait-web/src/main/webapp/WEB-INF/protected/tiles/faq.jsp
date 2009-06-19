@@ -1,6 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
+<%--@elvariable id="clientInSession" type="ch.unartig.u_core.controller.Client"--%>
 <div class="pageNav">
     <h1 id="pageName">Hilfestellung für Kunden</h1>
 </div>

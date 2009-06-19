@@ -43,16 +43,16 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.EventAlbum;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.SportsAlbum;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
@@ -200,7 +200,7 @@ public class SportsAlbumAction extends Action
      * @param sportsAlbumBean
      * @param actionMapping
      * @return the album genericlevelid
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     private Album extractAlbumIdFromRequest(SportsAlbumBean sportsAlbumBean, ActionMapping actionMapping) throws UnartigException {
         Album retVal;

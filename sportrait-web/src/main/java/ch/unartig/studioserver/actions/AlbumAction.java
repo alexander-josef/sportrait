@@ -98,13 +98,11 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;

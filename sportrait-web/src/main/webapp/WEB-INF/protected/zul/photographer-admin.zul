@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <?page id="sportraitAdministrationWindow" title="SPORTrait Administration"  ?>
-<?component name="zAlbum" extends="div" class="ch.unartig.sportrait.zk.components.ZAlbumComponent"?>
-<?component name="reportSalesAlbumProduct" extends="div" class="ch.unartig.sportrait.zk.components.ZReportSalesAlbumAndProduct"?>
-<?component name="reportSalesProductMonth" extends="div" class="ch.unartig.sportrait.zk.components.ZReportSalesProductMonth"?>
+<?component name="zAlbum" extends="div" class="ch.unartig.sportrait.web.zk.components.ZAlbumComponent"?>
+<?component name="reportSalesAlbumProduct" extends="div" class="ch.unartig.sportrait.web.zk.components.ZReportSalesAlbumAndProduct"?>
+<?component name="reportSalesProductMonth" extends="div" class="ch.unartig.sportrait.web.zk.components.ZReportSalesProductMonth"?>
 
 
 
@@ -14,12 +14,12 @@
         xmlns:a="http://www.zkoss.org/2005/zk/annotation"
         border="none" width="1000px"
         id="sportraitAdministrationWindow"
-        use="ch.unartig.sportrait.zk.windows.SportraitAdministrationWindow"
+        use="ch.unartig.sportrait.web.zk.windows.SportraitAdministrationWindow"
         onBookmarkChanged="gotoBookmark(event.bookmark)">
 
     <zscript>
         import ch.unartig.studioserver.model.*;
-        import ch.unartig.studioserver.Registry;
+        import ch.unartig.u_core.Registry;
 
         void gotoBookmark(String bookmark)
         {

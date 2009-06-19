@@ -52,12 +52,13 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.ordering.colorplaza.CoplaPhotoOrder;
 import ch.unartig.studioserver.model.Order;
-import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.u_core.persistence.DAOs.OrderDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -91,7 +92,7 @@ public class TimedOrderProcess extends TimerTask
     /**
      * processes a batch of orders
      * <p>every order is commited separatly!
-     * @throws ch.unartig.exceptions.UAPersistenceException problem getting orders from database
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException problem getting orders from database
      */
     private void processOrders() throws UAPersistenceException
     {

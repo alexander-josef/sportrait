@@ -47,7 +47,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.ShoppingCart;
 

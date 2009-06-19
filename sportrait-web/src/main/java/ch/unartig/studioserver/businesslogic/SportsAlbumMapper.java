@@ -52,18 +52,18 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.EventRunner;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
-import ch.unartig.studioserver.persistence.DAOs.EventRunnerDAO;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.u_core.persistence.DAOs.EventRunnerDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoSubjectDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -210,7 +210,7 @@ public class SportsAlbumMapper
      * @param startNumber
      * @param timeString
      * @param name
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     private void mapLine(String etappe, String startNumber, String timeString, String name) throws UAPersistenceException
     {
@@ -382,7 +382,7 @@ public class SportsAlbumMapper
      * @param startNumber
      * @param album
      * @return PhotoSubject
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     private PhotoSubject createNewSubject(String startNumber, Album album) throws UAPersistenceException
     {
@@ -492,7 +492,7 @@ public class SportsAlbumMapper
 
     /**
      * Iterate over all photos of an album and set their photosubject-mapping to an empty set
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     public void delete() throws UAPersistenceException
     {

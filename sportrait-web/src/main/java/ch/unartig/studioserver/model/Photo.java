@@ -60,7 +60,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.Registry;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
