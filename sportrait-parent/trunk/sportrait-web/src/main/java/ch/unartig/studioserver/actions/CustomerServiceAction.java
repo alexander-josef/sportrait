@@ -52,8 +52,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.studioserver.Registry;
-import ch.unartig.util.MailUtil;
+import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.util.MailUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
 import org.apache.struts.actions.MappingDispatchAction;

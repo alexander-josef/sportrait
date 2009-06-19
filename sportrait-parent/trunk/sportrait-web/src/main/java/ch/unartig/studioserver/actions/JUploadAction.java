@@ -19,11 +19,10 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsEvent;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;

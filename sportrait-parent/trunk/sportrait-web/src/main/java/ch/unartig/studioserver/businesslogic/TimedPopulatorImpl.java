@@ -73,13 +73,12 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
@@ -131,7 +130,7 @@ public class TimedPopulatorImpl implements OverviewPopulator
      * <br> page shall be initialized to 1 if no page is given
      *
      * @param albumBean
-     * @throws UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     private void populateByPage(AlbumBean albumBean) throws UnartigException
     {

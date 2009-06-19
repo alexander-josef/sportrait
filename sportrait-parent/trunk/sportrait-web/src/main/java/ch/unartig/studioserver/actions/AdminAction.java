@@ -201,20 +201,20 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.NotAuthorizedException;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.businesslogic.*;
 import ch.unartig.studioserver.frontend.TreeGenerator;
 import ch.unartig.studioserver.model.*;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
-import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.ProductTypeDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
+import ch.unartig.u_core.util.FileUtils;
+import ch.unartig.u_core.exceptions.NotAuthorizedException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
 import org.apache.struts.actions.MappingDispatchAction;
@@ -262,7 +262,7 @@ public class AdminAction extends MappingDispatchAction
 
     /**
      * Photographer Action: change publish status of an album. Can be used by a photographer for his albums, by the admin for all albums.
-     * @throws UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     @SuppressWarnings({"JavaDoc"})
     public ActionForward toggleAlbumPublishStatus(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UAPersistenceException, NotAuthorizedException
@@ -778,7 +778,7 @@ public class AdminAction extends MappingDispatchAction
      * @return to the admin screen
      * @throws UAPersistenceException for persistence relateded problems
      * @throws java.text.ParseException
-     * @throws ch.unartig.exceptions.UnartigException for all thrown exception, throw unchecked UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException for all thrown exception, throw unchecked UnartigException
      */
     public ActionForward newLevel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException, ParseException
     {

@@ -80,10 +80,10 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotographerDAO;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

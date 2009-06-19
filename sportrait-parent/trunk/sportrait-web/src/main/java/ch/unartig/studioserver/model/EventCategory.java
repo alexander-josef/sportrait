@@ -34,7 +34,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigException;
 
 /**
  *
@@ -62,7 +62,7 @@ public class EventCategory extends GeneratedEventCategory
     /**
      * Return true if this eventcategory has uploaded, published photos.
      * @return true if category has photos
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      */
     public boolean hasPublishedPhotos() throws UnartigException
     {

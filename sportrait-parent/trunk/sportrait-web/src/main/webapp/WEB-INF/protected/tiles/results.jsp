@@ -28,7 +28,7 @@
         <%--@elvariable id="recentEvents" type="java.util.List"--%>
         <c:forEach items="${recentEvents}" var="event" varStatus="forEachStatus">
             <li><p>
-                <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
+                    <%--@elvariable id="clientInSession" type="ch.unartig.u_core.controller.Client"--%>
                 <c:if test="${clientInSession!=null}">
                     <html:link styleClass="uploadLink" href="#">
                         <html:img page="/images/arrow-upload.gif" alt=""/>

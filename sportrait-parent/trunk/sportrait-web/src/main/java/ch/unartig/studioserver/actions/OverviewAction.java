@@ -47,10 +47,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.model.GenericLevel;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

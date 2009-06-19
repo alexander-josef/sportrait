@@ -191,22 +191,22 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.NotAuthorizedException;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.exceptions.UnartigImagingException;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.NotAuthorizedException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigImagingException;
+import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
-import ch.unartig.studioserver.imaging.ExifData;
-import ch.unartig.studioserver.imaging.ImagingHelper;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
-import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
+import ch.unartig.u_core.imaging.ExifData;
+import ch.unartig.u_core.imaging.ImagingHelper;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.OrderItemDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.persistence.DAOs.PriceDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
+import ch.unartig.u_core.util.FileUtils;
 
 import javax.media.jai.RenderedOp;
 import java.io.*;
@@ -504,7 +504,7 @@ public class Album extends GeneratedAlbum {
      * - thumbnail folder and images<br/>
      * <p>Fine Folder must exist!</p>
      *
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
      */
     public void processImages() throws UnartigException {
@@ -668,7 +668,7 @@ public class Album extends GeneratedAlbum {
      * todo: the term 'album' is not specific enough anymore with sportsalbums ... there, the last photo of one 'view' is not necessarily the last photo in the whole album
      *
      * @return last photo in album
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
      */
     public Photo getLastPhotoInAlbumAndSelection() throws UnartigException {
@@ -685,7 +685,7 @@ public class Album extends GeneratedAlbum {
      * method to get first photo in album
      *
      * @return first photo in album
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws ch.unartig.u_core.exceptions.UnartigException
      *
      */
     public Photo getFirstPhotoInAlbum() throws UnartigException {
@@ -712,7 +712,7 @@ public class Album extends GeneratedAlbum {
      * Given the map of productTypeids (key) and the priceids (value) set the collections of products for this album
      *
      * @param productPrices
-     * @throws ch.unartig.exceptions.UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      *
      */
     public void setProductPricesMap(Map productPrices) throws UAPersistenceException {
@@ -796,7 +796,7 @@ public class Album extends GeneratedAlbum {
      * Write access check for an album; client needs to be either admin or owner of the album.
      *
      * @param client
-     * @throws NotAuthorizedException
+     * @throws ch.unartig.u_core.exceptions.NotAuthorizedException
      */
     protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
         _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");

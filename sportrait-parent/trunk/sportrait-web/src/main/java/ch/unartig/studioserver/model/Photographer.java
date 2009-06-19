@@ -22,7 +22,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.studioserver.persistence.DAOs.UserRoleDAO;
+import ch.unartig.u_core.persistence.DAOs.UserRoleDAO;
 
 /**
  * 

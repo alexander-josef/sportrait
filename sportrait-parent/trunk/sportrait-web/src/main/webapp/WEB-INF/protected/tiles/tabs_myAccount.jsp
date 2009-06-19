@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <ul class="tabnavigation">
-    <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
+    <%--@elvariable id="clientInSession" type="ch.unartig.u_core.controller.Client"--%>
     <c:if test="${clientInSession==null}">
         <li><html:image styleId="Button1"  page="/images/tabs/tab_loginPh_de.gif" onclick="revealModal('modalPage')"/>
         </li>

@@ -1,4 +1,4 @@
-<%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
+<%--@elvariable id="clientInSession" type="ch.unartig.u_core.controller.Client"--%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>

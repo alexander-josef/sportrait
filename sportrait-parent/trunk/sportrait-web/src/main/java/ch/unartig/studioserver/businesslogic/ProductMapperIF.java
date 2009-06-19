@@ -28,7 +28,7 @@
 ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.exceptions.UnartigException;
+import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.model.ProductType;
@@ -56,7 +56,7 @@ public interface ProductMapperIF {
      *
      * @param product product object
      * @return The Amount that goes to unartig from this product after costs from a partner for  production, shipping, invoicing etc. have been deducted.
-     * @throws UnartigException In case a mapping error occurs.
+     * @throws ch.unartig.u_core.exceptions.UnartigException In case a mapping error occurs.
      */
     public BigDecimal getUnartigEarnings(Product product) throws UnartigException;
     public BigDecimal getUnartigEarnings(ProductType productType, Price price) throws UnartigException;
