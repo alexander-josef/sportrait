@@ -144,10 +144,10 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.businesslogic.NavigableObject;
-import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.model.Price;
-import ch.unartig.studioserver.model.Product;
+import ch.unartig.u_core.model.Product;
+import ch.unartig.u_core.model.Price;
+import ch.unartig.u_core.model.Photo;
+import ch.unartig.u_core.presentation.NavigableObject;
 import ch.unartig.u_core.persistence.DAOs.ProductDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -761,7 +761,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
      */
     public double getShippingHandlingInternationalEUR()
     {
-        return isOnlyDigitalProducts()?0:Product._SHIPPING_HANDLING_INTERNATIONAL_EUR;
+        return isOnlyDigitalProducts()?0: Product._SHIPPING_HANDLING_INTERNATIONAL_EUR;
     }
 
 

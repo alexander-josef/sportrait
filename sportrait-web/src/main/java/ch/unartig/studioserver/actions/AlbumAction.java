@@ -99,9 +99,9 @@
 package ch.unartig.studioserver.actions;
 
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.util.SessionHelper;
+import ch.unartig.u_core.model.Album;
 import ch.unartig.studioserver.beans.AlbumBean;
-import ch.unartig.studioserver.businesslogic.SessionHelper;
-import ch.unartig.studioserver.model.Album;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;

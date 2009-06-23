@@ -124,11 +124,11 @@ package ch.unartig.u_core.persistence.DAOs;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.util.DebugUtils;
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.businesslogic.EventAlbum;
-import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.EventCategory;
-import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.model.SportsAlbum;
+import ch.unartig.u_core.presentation.EventAlbum;
+import ch.unartig.u_core.model.Album;
+import ch.unartig.u_core.model.EventCategory;
+import ch.unartig.u_core.model.Photo;
+import ch.unartig.u_core.model.SportsAlbum;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -378,7 +378,7 @@ Note: if you list each property explicitly, you must include all properties of t
      */
     public int countPhotos(Album album)
     {
-        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
+        String query = "select count(*) from ch.unartig.u_core.model.Photo as photo " + "       where photo.album = :album";
         Map map = new HashMap();
         map.put("album", album);
         Object queryObject = HibernateUtil.getUnique(query, map);
@@ -454,7 +454,7 @@ Note: if you list each property explicitly, you must include all properties of t
         try
         {
             Photo firstPhoto = getFirstPhotoForTime(hour, minutes, album);
-            String query = "select count(*) " + "from ch.unartig.studioserver.model.Photo as photo " + "where photo.album = :album " + "and photo.pictureTakenDate < :firstPhotoDate";
+            String query = "select count(*) " + "from ch.unartig.u_core.model.Photo as photo " + "where photo.album = :album " + "and photo.pictureTakenDate < :firstPhotoDate";
             Map map = new HashMap();
             map.put("album", album);
             map.put("firstPhotoDate", firstPhoto.getPictureTakenDate());

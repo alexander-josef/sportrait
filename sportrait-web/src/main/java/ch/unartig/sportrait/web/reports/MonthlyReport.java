@@ -18,7 +18,7 @@
  ****************************************************************/
 package ch.unartig.sportrait.web.reports;
 
-import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
+import ch.unartig.u_core.model.ReportMonthlySalesSummary;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

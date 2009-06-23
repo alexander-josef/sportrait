@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.studioserver.model.PhotoSubject"
+            name="ch.unartig.u_core.model.PhotoSubject"
             table="PhotoSubjects"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhotoSubject</meta>
@@ -55,7 +55,7 @@
             <meta attribute="scope-set">protected</meta>
             <meta attribute="scope-get">protected</meta>
             <key column="photoSubjectId"/>
-            <many-to-many class="ch.unartig.studioserver.model.Photo" column="photoId"/>
+            <many-to-many class="ch.unartig.u_core.model.Photo" column="photoId"/>
         </set>
 
 
@@ -65,14 +65,14 @@
              cascade="save-update"
                 >
             <key column="photoSubjectId"/>
-            <one-to-many class="ch.unartig.studioserver.model.EventRunner"/>
+            <one-to-many class="ch.unartig.u_core.model.EventRunner"/>
         </set>
 
         <!--
 
         <many-to-one
                 name="album"
-                class="ch.unartig.studioserver.model.Album"
+                class="ch.unartig.u_core.model.Album"
                 lazy="proxy"
                 not-null="true"
                 >
