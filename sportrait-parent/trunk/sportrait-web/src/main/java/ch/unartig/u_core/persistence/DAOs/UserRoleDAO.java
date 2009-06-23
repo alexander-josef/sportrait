@@ -23,7 +23,7 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.UserRole;
+import ch.unartig.u_core.model.UserRole;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

@@ -52,8 +52,8 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.Order;
-import ch.unartig.studioserver.model.OrderHash;
+import ch.unartig.u_core.model.Order;
+import ch.unartig.u_core.model.OrderHash;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -130,7 +130,7 @@ public class OrderDAO
         _logger.debug("reloading Order");
         try
         {
-            return (Order)HibernateUtil.currentSession().createQuery("from ch.unartig.studioserver.model.Order as order where order.orderId = "+orderId).uniqueResult();
+            return (Order)HibernateUtil.currentSession().createQuery("from ch.unartig.u_core.model.Order as order where order.orderId = "+orderId).uniqueResult();
 //            return (Order) HibernateUtil.currentSession().load(Order.class, orderId);
         } catch (HibernateException e)
         {

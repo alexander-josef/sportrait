@@ -1,5 +1,5 @@
 <%@ page import="java.util.Enumeration" %>
-<%@ page import="ch.unartig.studioserver.businesslogic.PhotoOrderIF" %>
+<%@ page import="ch.unartig.u_core.ordering.PhotoOrderIF" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -13,7 +13,7 @@
 %>
 <jsp:useBean id="sc" scope="session" type="ch.unartig.studioserver.beans.ShoppingCart" />
 <jsp:useBean id="GAorderId" scope="session" type="Long" />
-<jsp:useBean id="GAorderItems" scope="session" type="java.util.Collection<ch.unartig.studioserver.model.OrderItem>" />
+<jsp:useBean id="GAorderItems" scope="session" type="java.util.Collection<ch.unartig.u_core.model.OrderItem>" />
 <jsp:useBean id="GAcustomerCity" scope="session"  type="String"/>
 <html:xhtml/>
 <%--
