@@ -26,11 +26,11 @@ import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.presentation.NoTimeAlbum;
-import ch.unartig.u_core.model.*;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.beans.PhotographerAdminBean;
-import ch.unartig.u_core.presentation.AlbumType;
+import ch.unartig.studioserver.businesslogic.AlbumType;
+import ch.unartig.studioserver.businesslogic.NoTimeAlbum;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.u_core.persistence.DAOs.*;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.commons.beanutils.BeanUtils;
@@ -218,7 +218,7 @@ public class PhotographerAdminAction extends MappingDispatchAction
 
 
     /**
-     * Load level and prepare form to edit level
+     * load level and prepare form to edit level
      *
      * @param mapping
      * @param form

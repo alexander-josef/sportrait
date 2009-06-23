@@ -204,13 +204,10 @@ package ch.unartig.studioserver.actions;
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.presentation.TimedAlbum;
-import ch.unartig.u_core.presentation.NoTimeAlbum;
-import ch.unartig.u_core.presentation.SportsAlbumMapper;
-import ch.unartig.u_core.presentation.GenericLevelVisitor;
-import ch.unartig.u_core.ordering.TimedOrderProcess;
-import ch.unartig.u_core.model.*;
 import ch.unartig.studioserver.beans.AdminForm;
+import ch.unartig.studioserver.businesslogic.*;
+import ch.unartig.studioserver.frontend.TreeGenerator;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import ch.unartig.u_core.persistence.DAOs.ProductTypeDAO;
@@ -523,7 +520,7 @@ public class AdminAction extends MappingDispatchAction
     }
 
     /**
-     * Provide a ParentLeveltVisitor that sets the parent level.
+     * provide a ParentLeveltVisitor
      *
      * @param adminForm
      * @return ParentLevelVisitor Implementation
@@ -557,6 +554,31 @@ public class AdminAction extends MappingDispatchAction
         return setParentLevelVisitor;
     }
 
+    /**
+     * return a concrete visitor as anonymous inner class
+     *
+     * @param adminForm
+     * @return PriceSegmentVisitor
+     */
+    private GenericLevelVisitor getPriceSegmentVisitor(final AdminForm adminForm)
+    {
+        GenericLevelVisitor setPriceSegmentVisitor;
+        setPriceSegmentVisitor = new GenericLevelVisitorAdaptor()
+        {
+            public void visit(Album album) {
+//                PriceSegmentDAO psDao = new PriceSegmentDAO();
+//                try
+//                {
+//                    album.setPriceSegment(psDao.load(adminForm.getPriceSegmentId()));
+//                } catch (UAPersistenceException e)
+//                {
+//                    _logger.error("Error loading price segment, see stack trace", e);
+//                    throw new UnartigInvalidArgument("Error loading Price Segment ");
+//                }
+            }
+        };
+        return setPriceSegmentVisitor;
+    }
 
     /**
      * prepare all data for creating a new level and put attributes to request
@@ -639,8 +661,7 @@ public class AdminAction extends MappingDispatchAction
     }
 
     /**
-     * THIS IS NOT PART OF CORE ACTIONS OR SPORTRAIT
-     * Triggers the generations of a new tree items file
+     * triggers the generations of a new tree items file
      *
      * @param mapping
      * @param form
@@ -649,12 +670,12 @@ public class AdminAction extends MappingDispatchAction
      * @return
      * @throws UAPersistenceException
      */
-//    public ActionForward generateNavTree(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
-//    {
-//        new TreeGenerator().generateTreeItems();
-//        request.setAttribute("navTree", "check the tree_itmes.js files for the result");
-//        return mapping.findForward("navTree");
-//    }
+    public ActionForward generateNavTree(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
+    {
+        new TreeGenerator().generateTreeItems();
+        request.setAttribute("navTree", "check the tree_itmes.js files for the result");
+        return mapping.findForward("navTree");
+    }
 
     /**
      * trigger an oips order process without using the timer
@@ -789,6 +810,8 @@ public class AdminAction extends MappingDispatchAction
             newLevel.setIsPrivate(privateEvent);
             glDao.saveOrUpdate(newLevel);
             newLevel.setParentLevel(parentLevel);
+            // visit price segment
+            newLevel.accept(getPriceSegmentVisitor(adminForm));
 
             newLevel.setEventDateDisplay(eventDateDisplay);
             if (noTimeAlbum != null && noTimeAlbum)

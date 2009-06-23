@@ -16,17 +16,17 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.web.zk.components;
+package ch.unartig.sportrait.zk.components;
 
-import ch.unartig.u_core.controller.Client;
-import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.model.ReportMonthlySalesSummary;
-import ch.unartig.sportrait.web.reports.IReport;
-import ch.unartig.sportrait.web.reports.IReportColumn;
-import ch.unartig.sportrait.web.reports.ReportSalesPerPhotographerMonths;
-import ch.unartig.sportrait.web.reports.ReportSalesPerProductMonths;
-import ch.unartig.u_core.persistence.DAOs.ReportingDAO;
+import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.reports.IReport;
+import ch.unartig.sportrait.reports.IReportColumn;
+import ch.unartig.sportrait.reports.ReportSalesPerPhotographerMonths;
+import ch.unartig.sportrait.reports.ReportSalesPerProductMonths;
+import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
+import ch.unartig.studioserver.persistence.DAOs.ReportingDAO;
+import ch.unartig.studioserver.Registry;
 import org.apache.log4j.Logger;
 import org.zkoss.zul.*;
 import org.zkoss.zk.ui.Executions;

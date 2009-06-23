@@ -1,4 +1,4 @@
-<%@ page import="ch.unartig.u_core.model.Album" %>
+<%@ page import="ch.unartig.studioserver.model.Album" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -66,7 +66,7 @@
     </ul>
 </div>
 <c:if test="${photographerAdminBean.level!=null}">
-<%--<jsp:useBean id="level" type="ch.unartig.u_core.model.GenericLevel" scope="request"/>--%>
+<%--<jsp:useBean id="level" type="ch.unartig.studioserver.model.GenericLevel" scope="request"/>--%>
 <%--<jsp:useBean id="productTypeList" type="java.util.List" scope="request"/>--%>
 <html:form action="/photographer/updateAlbum">
 <html:hidden property="genericLevelId" value="${photographerAdminBean.level.genericLevelId}"/>

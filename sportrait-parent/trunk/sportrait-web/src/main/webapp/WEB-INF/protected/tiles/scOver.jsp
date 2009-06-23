@@ -155,7 +155,7 @@
 
         <!--we are not at start and a new photo began ... first, finish of last photo if necessary-->
         <c:if test="${scItemIndex != 0}">
-            <%--@elvariable id="photo" type="ch.unartig.u_core.model.Photo"--%>
+            <%--@elvariable id="photo" type="ch.unartig.studioserver.model.Photo"--%>
             <!--end of photo if-->
             <table class="scTableFormats">
                 <tr>

@@ -90,7 +90,7 @@
 package ch.unartig.u_core.controller;
 
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.ordering.PhotoOrderService;
+import ch.unartig.studioserver.businesslogic.PhotoOrderService;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import ch.unartig.u_core.util.CryptoUtil;
 import org.apache.log4j.Logger;

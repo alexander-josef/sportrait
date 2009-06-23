@@ -5,10 +5,10 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.Photo"
+            name="ch.unartig.studioserver.model.Photo"
             table="Photos"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedPhoto</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhoto</meta>
         <cache usage="read-write"/>
 
         <id
@@ -77,7 +77,7 @@
              cascade="save-update"
                 >
             <key column="photoId"/>
-            <one-to-many class="ch.unartig.u_core.model.OrderItem"/>
+            <one-to-many class="ch.unartig.studioserver.model.OrderItem"/>
         </set>
 
         <set name="photoSubjects"
@@ -87,12 +87,12 @@
             <!--<meta attribute="scope-set">protected</meta>-->
             <!--<meta attribute="scope-get">protected</meta>-->
             <key column="photoId"/>
-            <many-to-many class="ch.unartig.u_core.model.PhotoSubject" column="photoSubjectId"/>
+            <many-to-many class="ch.unartig.studioserver.model.PhotoSubject" column="photoSubjectId"/>
         </set>
 
         <many-to-one
                 name="album"
-                class="ch.unartig.u_core.model.Album"
+                class="ch.unartig.studioserver.model.Album"
                 lazy="false"
                 not-null="true"
                 >

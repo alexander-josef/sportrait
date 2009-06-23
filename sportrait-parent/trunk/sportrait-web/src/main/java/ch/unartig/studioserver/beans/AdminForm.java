@@ -61,7 +61,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.beans;
 
-import ch.unartig.u_core.model.Product;
+import ch.unartig.studioserver.model.Product;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.upload.FormFile;
