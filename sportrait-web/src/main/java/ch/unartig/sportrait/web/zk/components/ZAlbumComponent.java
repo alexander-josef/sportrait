@@ -17,18 +17,18 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.zk.components;
+package ch.unartig.sportrait.web.zk.components;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.NotAuthorizedException;
-import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.exceptions.NotAuthorizedException;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.model.ProductType;
 import ch.unartig.studioserver.model.Product;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.ProductTypeDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;

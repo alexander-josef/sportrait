@@ -17,18 +17,18 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.zk.windows;
+package ch.unartig.sportrait.web.zk.windows;
 
-import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
-import ch.unartig.sportrait.zk.components.ZAlbumComponent;
-import ch.unartig.studioserver.Registry;
+import ch.unartig.u_core.controller.Client;
+import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.u_core.exceptions.UnartigException;
+import ch.unartig.sportrait.web.zk.components.ZAlbumComponent;
+import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.persistence.DAOs.PhotographerDAO;
+import ch.unartig.u_core.persistence.DAOs.UserProfileDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import ch.unartig.studioserver.model.*;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
-import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.zkoss.util.media.Media;
@@ -41,7 +41,6 @@ import org.zkoss.zul.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * ZK Window class for the administration tab window
@@ -104,7 +103,7 @@ public class SportraitAdministrationWindow extends Window
     /**
      * create the grid and the entries with all applicable albums
      *
-     * @throws UAPersistenceException
+     * @throws ch.unartig.u_core.exceptions.UAPersistenceException
      */
     private void createAlbumListbox()
     {

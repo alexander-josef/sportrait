@@ -1,17 +1,16 @@
-package ch.unartig.sportrait.zk.windows;
+package ch.unartig.sportrait.web.zk.windows;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zul.Window;
 import org.zkoss.zk.ui.Executions;
-import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
-import ch.unartig.studioserver.persistence.DAOs.UserRoleDAO;
-import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.u_core.persistence.DAOs.UserRoleDAO;
+import ch.unartig.u_core.persistence.DAOs.UserProfileDAO;
+import ch.unartig.u_core.persistence.util.HibernateUtil;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.studioserver.model.UserRole;
-import ch.unartig.studioserver.Registry;
-import ch.unartig.controller.Client;
+import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.controller.Client;
 
 
 public class PhotographerWindow extends Window {
