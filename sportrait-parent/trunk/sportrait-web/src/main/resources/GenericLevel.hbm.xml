@@ -5,10 +5,10 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.studioserver.model.GenericLevel"
+            name="ch.unartig.u_core.model.GenericLevel"
             table="GenericLevels" discriminator-value="GENERIC"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedGenericLevel</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedGenericLevel</meta>
         <cache usage="read-write"/>
 
         <id
@@ -79,8 +79,8 @@
         <!--   Subclasses of GenericLevel:    -->
         <!--**********************************-->
 
-        <subclass name="ch.unartig.studioserver.model.Category" discriminator-value="CATEGORY">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedCategory</meta>
+        <subclass name="ch.unartig.u_core.model.Category" discriminator-value="CATEGORY">
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedCategory</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
 
             <set name="eventGroups"
@@ -90,21 +90,21 @@
                  order-by="navTitle"
                     >
                 <key column="categoryId"/>
-                <one-to-many class="ch.unartig.studioserver.model.EventGroup"/>
+                <one-to-many class="ch.unartig.u_core.model.EventGroup"/>
             </set>
 
         </subclass>
 
         <!--ORT-->
         <subclass
-                name="ch.unartig.studioserver.model.EventGroup"
+                name="ch.unartig.u_core.model.EventGroup"
                 discriminator-value="EVENTGROUP"
                 >
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventGroup</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedEventGroup</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
             <many-to-one
                     name="category"
-                    class="ch.unartig.studioserver.model.Category"
+                    class="ch.unartig.u_core.model.Category"
                     lazy="false"
                     cascade="save-update"
                     >
@@ -132,7 +132,7 @@
                  order-by="eventDate desc"
                     >
                 <key column="eventGroupId"/>
-                <one-to-many class="ch.unartig.studioserver.model.Event"/>
+                <one-to-many class="ch.unartig.u_core.model.Event"/>
             </set>
 
 
@@ -140,9 +140,9 @@
 
         <!--Sport ANLASS-->
         <subclass
-                name="ch.unartig.studioserver.model.Event"
+                name="ch.unartig.u_core.model.Event"
                 discriminator-value="EVENT">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEvent</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedEvent</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
 
             <property
@@ -157,7 +157,7 @@
 
             <many-to-one
                     name="eventGroup"
-                    class="ch.unartig.studioserver.model.EventGroup"
+                    class="ch.unartig.u_core.model.EventGroup"
                     lazy="false"
                     cascade="save-update"
                     >
@@ -172,16 +172,16 @@
                  order-by="genericLevelId"
                     >
                 <key column="eventId"/>
-                <one-to-many class="ch.unartig.studioserver.model.Album"/>
+                <one-to-many class="ch.unartig.u_core.model.Album"/>
             </set>
 
             <!--Sub-subclass for Event: Sports Event (used for SOLA, navigation)-->
             <subclass
-                    name="ch.unartig.studioserver.model.SportsEvent"
+                    name="ch.unartig.u_core.model.SportsEvent"
                     discriminator-value="SPORTSEVENT"
                     >
                 <meta attribute="scope-class" inherit="false">public abstract</meta>
-                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsEvent
+                <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedSportsEvent
                 </meta>
 
                 <list name="eventCategories"
@@ -193,7 +193,7 @@
                     <!--order-by="title"-->
                     <key column="eventId" not-null="true"/>
                     <list-index column="category_position"/>
-                    <one-to-many class="ch.unartig.studioserver.model.EventCategory"/>
+                    <one-to-many class="ch.unartig.u_core.model.EventCategory"/>
                 </list>
 
             </subclass>
@@ -202,9 +202,9 @@
 
 
         <subclass
-                name="ch.unartig.studioserver.model.Album"
+                name="ch.unartig.u_core.model.Album"
                 discriminator-value="ALBUM">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedAlbum</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedAlbum</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
             <property
                     name="albumTypeString"
@@ -212,7 +212,7 @@
 
             <many-to-one
                     name="photographer"
-                    class="ch.unartig.studioserver.model.Photographer"
+                    class="ch.unartig.u_core.model.Photographer"
                     lazy="false"
                     >
                 <meta attribute="use-in-tostring">true</meta>
@@ -221,7 +221,7 @@
 
             <many-to-one
                     name="event"
-                    class="ch.unartig.studioserver.model.Event"
+                    class="ch.unartig.u_core.model.Event"
                     lazy="false"
                     >
                 <meta attribute="use-in-tostring">true</meta>
@@ -231,7 +231,7 @@
             <many-to-one
                     
                     name="eventCategory"
-                    class="ch.unartig.studioserver.model.EventCategory"
+                    class="ch.unartig.u_core.model.EventCategory"
                     lazy="false"
                     >
                 <meta attribute="use-in-tostring">true</meta>
@@ -246,7 +246,7 @@
                  order-by="pictureTakenDate"
                     >
                 <key column="albumId"/>
-                <one-to-many class="ch.unartig.studioserver.model.Photo"/>
+                <one-to-many class="ch.unartig.u_core.model.Photo"/>
             </set>
 
             <!--maybe a separate mapping for 'album2products' needs to be introduced-->
@@ -256,11 +256,11 @@
                  order-by="productTypeId"
                     >
                 <key column="albumId"/>
-                <one-to-many class="ch.unartig.studioserver.model.Product"/>
+                <one-to-many class="ch.unartig.u_core.model.Product"/>
             </set>
 
-            <subclass name="ch.unartig.studioserver.model.SportsAlbum" discriminator-value="SPORTSALBUM">
-                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsAlbum
+            <subclass name="ch.unartig.u_core.model.SportsAlbum" discriminator-value="SPORTSALBUM">
+                <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedSportsAlbum
                 </meta>
                 <meta attribute="scope-class" inherit="false">public abstract</meta>
 
