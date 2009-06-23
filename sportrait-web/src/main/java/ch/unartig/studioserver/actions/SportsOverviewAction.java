@@ -36,9 +36,9 @@ package ch.unartig.studioserver.actions;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.GenericLevel;
-import ch.unartig.studioserver.model.SportsEvent;
+import ch.unartig.u_core.model.Album;
+import ch.unartig.u_core.model.GenericLevel;
+import ch.unartig.u_core.model.SportsEvent;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;

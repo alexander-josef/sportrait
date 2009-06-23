@@ -5,11 +5,11 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.studioserver.model.UserRole"
+            name="ch.unartig.u_core.model.UserRole"
             table="UserRoles"
             lazy="false"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedUserRole</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedUserRole</meta>
 
         <cache usage="read-write"/>
         <id

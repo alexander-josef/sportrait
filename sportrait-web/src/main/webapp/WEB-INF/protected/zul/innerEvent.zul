@@ -10,7 +10,7 @@
         use="ch.unartig.sportrait.web.zk.windows.EventWindow"
         >
     <zscript>
-        import ch.unartig.studioserver.model.*;
+        import ch.unartig.u_core.model.*;
 
         // read the event to edit from the desktop scope
         Event eachEvent = eventWindow.eachEvent;
@@ -18,25 +18,24 @@
         // delete an event category
         void deleteCategory(EventCategory category)
         {
-            alert(category.title);
-            eventWindow.deleteCategory(category);
+        alert(category.title);
+        eventWindow.deleteCategory(category);
 
         }
-
 
 
         void updateCategory(EventCategory category,String title)
         {
-            alert("bla");
-            alert(title);
-            alert(category.title);
-            eventWindow.updateCategory(category,title);
+        alert("bla");
+        alert(title);
+        alert(category.title);
+        eventWindow.updateCategory(category,title);
         }
 
         void addCategory(String newCategoryTitle)
         {
-            alert("new category : " + newCategoryTitle);
-            eventWindow.addCategory(newCategoryTitle);
+        alert("new category : " + newCategoryTitle);
+        eventWindow.addCategory(newCategoryTitle);
         }
 
     </zscript>

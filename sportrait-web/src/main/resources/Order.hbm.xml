@@ -5,10 +5,10 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.studioserver.model.Order"
+            name="ch.unartig.u_core.model.Order"
             table="Orders"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrder</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedOrder</meta>
 
         <id
                 name="orderId"
@@ -44,7 +44,7 @@
 
         <many-to-one
                 name="customer"
-                class="ch.unartig.studioserver.model.Customer"
+                class="ch.unartig.u_core.model.Customer"
                 cascade="save-update"
                 lazy="false"
                 not-null="true"
@@ -59,7 +59,7 @@
              inverse="true"
                 >
             <key column="orderId"/>
-            <one-to-many class="ch.unartig.studioserver.model.OrderItem"/>
+            <one-to-many class="ch.unartig.u_core.model.OrderItem"/>
         </set>
 
     </class>
