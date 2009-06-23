@@ -29,7 +29,7 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.model.OrderItem;
+import ch.unartig.studioserver.model.OrderItem;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;

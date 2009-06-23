@@ -18,7 +18,7 @@
         onBookmarkChanged="gotoBookmark(event.bookmark)">
 
     <zscript>
-        import ch.unartig.u_core.model.*;
+        import ch.unartig.studioserver.model.*;
         import ch.unartig.u_core.Registry;
 
         void gotoBookmark(String bookmark)

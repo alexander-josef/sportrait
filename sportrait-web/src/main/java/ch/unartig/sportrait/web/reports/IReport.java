@@ -18,7 +18,7 @@
  ****************************************************************/
 package ch.unartig.sportrait.web.reports;
 
-import ch.unartig.u_core.model.ReportMonthlySalesSummary;
+import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
 import ch.unartig.u_core.exceptions.UnartigException;
 
 import java.math.BigDecimal;

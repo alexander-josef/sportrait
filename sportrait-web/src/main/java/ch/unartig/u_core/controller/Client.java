@@ -24,9 +24,9 @@ package ch.unartig.u_core.controller;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.util.HttpUtil;
-import ch.unartig.u_core.model.Photographer;
-import ch.unartig.u_core.model.UserProfile;
-import ch.unartig.u_core.model.UserRole;
+import ch.unartig.studioserver.model.Photographer;
+import ch.unartig.studioserver.model.UserProfile;
+import ch.unartig.studioserver.model.UserRole;
 import ch.unartig.u_core.persistence.DAOs.UserProfileDAO;
 import org.apache.log4j.Logger;
 

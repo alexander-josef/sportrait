@@ -29,7 +29,7 @@
 package ch.unartig.studioserver.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.model.SportsEvent;
+import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 
 import java.util.Collections;

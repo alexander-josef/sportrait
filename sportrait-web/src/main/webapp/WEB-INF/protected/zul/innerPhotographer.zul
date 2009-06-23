@@ -10,7 +10,7 @@
         use="ch.unartig.sportrait.web.zk.windows.PhotographerWindow"
         >
     <zscript>
-        import ch.unartig.u_core.model.*;
+        import ch.unartig.studioserver.model.*;
 
         // read the photographer to edit from the desktop scope
         Photographer eachPhotographer = photographerWindow.eachPhotographer;

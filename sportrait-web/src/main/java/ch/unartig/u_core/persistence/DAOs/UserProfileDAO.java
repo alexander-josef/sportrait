@@ -23,7 +23,7 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.model.UserProfile;
+import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public class UserProfileDAO
     public UserProfile load(String userName)
     {
         // caution: make sure that the rolename exists in the UserRoles table - foreign key is linked to the rolename column. The query otherwise fails with a not-so-clear null pointer exception.
-        return (UserProfile)HibernateUtil.currentSession().createQuery("from ch.unartig.u_core.model.UserProfile as up where up.userName = '"+userName+"'").uniqueResult();
+        return (UserProfile)HibernateUtil.currentSession().createQuery("from ch.unartig.studioserver.model.UserProfile as up where up.userName = '"+userName+"'").uniqueResult();
     }
 
 

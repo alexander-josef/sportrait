@@ -144,10 +144,10 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.presentation.NavigableObject;
-import ch.unartig.u_core.model.Product;
-import ch.unartig.u_core.model.Price;
-import ch.unartig.u_core.model.Photo;
+import ch.unartig.studioserver.businesslogic.NavigableObject;
+import ch.unartig.studioserver.model.Photo;
+import ch.unartig.studioserver.model.Price;
+import ch.unartig.studioserver.model.Product;
 import ch.unartig.u_core.persistence.DAOs.ProductDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -331,7 +331,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
         for (int i = 0; i < Registry._NUMBER_OF_SC_ITEMS_PER_PHOTO; i++)
         {
             // first item will have the passed product or an standard initial product assigned : (or -1 for the remaining scItems)
-            ScOrderItem oi = new ScOrderItem(photo.getPhotoId(), i==0?(product!=null?product.getProductId(): Product.getInitialProductIdFor(photo)): -1, i==0?1:0, this);
+            ScOrderItem oi = new ScOrderItem(photo.getPhotoId(), i==0?(product!=null?product.getProductId():Product.getInitialProductIdFor(photo)): -1, i==0?1:0, this);
             addScOrderItem(oi);
         }
 

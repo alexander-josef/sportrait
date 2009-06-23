@@ -5,10 +5,10 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.Product"
+            name="ch.unartig.studioserver.model.Product"
             table="Products"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedProduct</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedProduct</meta>
 
         <cache usage="read-write"/>
         <id
@@ -33,7 +33,7 @@
 
         <many-to-one
                 name="price"
-                class="ch.unartig.u_core.model.Price"
+                class="ch.unartig.studioserver.model.Price"
                 lazy="false"
                 not-null="true"
                 >
@@ -43,7 +43,7 @@
 
         <many-to-one
                 name="productType"
-                class="ch.unartig.u_core.model.ProductType"
+                class="ch.unartig.studioserver.model.ProductType"
                 lazy="false"
                 not-null="true"
                 >

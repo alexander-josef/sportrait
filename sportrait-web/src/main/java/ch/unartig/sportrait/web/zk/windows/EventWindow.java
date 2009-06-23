@@ -1,11 +1,11 @@
-package ch.unartig.sportrait.web.zk.windows;
+package ch.unartig.sportrait.zk.windows;
 
-import ch.unartig.u_core.model.Event;
-import ch.unartig.u_core.model.EventCategory;
-import ch.unartig.u_core.model.SportsEvent;
-import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.u_core.persistence.DAOs.EventCategoryDAO;
-import ch.unartig.u_core.persistence.util.HibernateUtil;
+import ch.unartig.studioserver.model.Event;
+import ch.unartig.studioserver.model.EventCategory;
+import ch.unartig.studioserver.model.SportsEvent;
+import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Window;
