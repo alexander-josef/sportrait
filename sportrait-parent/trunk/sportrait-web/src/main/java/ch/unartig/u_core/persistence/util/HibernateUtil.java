@@ -45,7 +45,7 @@
 package ch.unartig.u_core.persistence.util;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.u_core.model.UserProfile;
+import ch.unartig.studioserver.model.UserProfile;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

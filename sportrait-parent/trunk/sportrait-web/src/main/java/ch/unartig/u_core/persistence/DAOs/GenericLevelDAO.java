@@ -90,8 +90,8 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
-import ch.unartig.u_core.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;

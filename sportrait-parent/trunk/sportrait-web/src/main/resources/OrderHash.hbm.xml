@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.OrderHash"
+            name="ch.unartig.studioserver.model.OrderHash"
             table="OrderHashes"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrderHash</meta>
@@ -42,7 +42,7 @@
 
         <many-to-one
                 name="order"
-                class="ch.unartig.u_core.model.Order"
+                class="ch.unartig.studioserver.model.Order"
                 lazy="false"
                 not-null="true"
                 >

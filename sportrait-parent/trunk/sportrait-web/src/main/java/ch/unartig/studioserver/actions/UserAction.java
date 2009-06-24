@@ -36,7 +36,7 @@ package ch.unartig.studioserver.actions;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.model.Customer;
+import ch.unartig.studioserver.model.Customer;
 import ch.unartig.u_core.persistence.DAOs.CustomerDAO;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;

@@ -48,7 +48,7 @@
 package ch.unartig.studioserver.actions;
 
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.model.GenericLevel;
+import ch.unartig.studioserver.model.GenericLevel;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;

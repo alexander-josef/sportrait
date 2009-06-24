@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="sportsEvent" type="ch.unartig.u_core.model.SportsEvent" scope="request"/>
+<jsp:useBean id="sportsEvent" type="ch.unartig.studioserver.model.SportsEvent" scope="request"/>
 
 
 <div class="pageNav">
