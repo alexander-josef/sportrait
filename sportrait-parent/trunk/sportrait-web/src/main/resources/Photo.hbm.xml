@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.Photo"
             table="Photos"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhoto</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedPhoto</meta>
         <cache usage="read-write"/>
 
         <id

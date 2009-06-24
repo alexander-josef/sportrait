@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.OrderHash"
             table="OrderHashes"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrderHash</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedOrderHash</meta>
         <cache usage="read-write"/>
 
         <id

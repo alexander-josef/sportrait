@@ -209,7 +209,7 @@ public final class Registry
 
 // todo: move to appSettings
 //read from prop-file
-    private static String modelPackageName = "ch.unartig.studioserver.model.";
+    private static String modelPackageName = "ch.unartig.u_core.model.";
     public static String frontendDirectory = "";
     private static String projectName;
     private static String projectVersion;

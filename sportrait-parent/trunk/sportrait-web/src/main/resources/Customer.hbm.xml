@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.Customer"
             table="Customers"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedCustomer</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedCustomer</meta>
 
         <id
                 name="customerId"

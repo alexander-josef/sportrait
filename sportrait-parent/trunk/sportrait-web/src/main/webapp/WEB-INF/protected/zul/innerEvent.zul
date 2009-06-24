@@ -10,7 +10,7 @@
         use="ch.unartig.sportrait.web.zk.windows.EventWindow"
         >
     <zscript>
-        import ch.unartig.studioserver.model.*;
+        import ch.unartig.u_core.model.*;
 
         // read the event to edit from the desktop scope
         Event eachEvent = eventWindow.eachEvent;

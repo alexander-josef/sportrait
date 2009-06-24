@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.OrderItem"
             table="OrderItems"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrderItem</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedOrderItem</meta>
         <cache usage="read-write"/>
 
         <id

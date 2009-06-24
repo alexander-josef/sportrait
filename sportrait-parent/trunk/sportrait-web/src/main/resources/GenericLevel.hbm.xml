@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.GenericLevel"
             table="GenericLevels" discriminator-value="GENERIC"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedGenericLevel</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedGenericLevel</meta>
         <cache usage="read-write"/>
 
         <id
@@ -80,7 +80,7 @@
         <!--**********************************-->
 
         <subclass name="ch.unartig.u_core.model.Category" discriminator-value="CATEGORY">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedCategory</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedCategory</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
 
             <set name="eventGroups"
@@ -100,7 +100,7 @@
                 name="ch.unartig.u_core.model.EventGroup"
                 discriminator-value="EVENTGROUP"
                 >
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventGroup</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedEventGroup</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
             <many-to-one
                     name="category"
@@ -142,7 +142,7 @@
         <subclass
                 name="ch.unartig.u_core.model.Event"
                 discriminator-value="EVENT">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEvent</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedEvent</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
 
             <property
@@ -181,7 +181,7 @@
                     discriminator-value="SPORTSEVENT"
                     >
                 <meta attribute="scope-class" inherit="false">public abstract</meta>
-                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsEvent
+                <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedSportsEvent
                 </meta>
 
                 <list name="eventCategories"
@@ -204,7 +204,7 @@
         <subclass
                 name="ch.unartig.u_core.model.Album"
                 discriminator-value="ALBUM">
-            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedAlbum</meta>
+            <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedAlbum</meta>
             <meta attribute="scope-class" inherit="false">public abstract</meta>
             <property
                     name="albumTypeString"
@@ -260,7 +260,7 @@
             </set>
 
             <subclass name="ch.unartig.u_core.model.SportsAlbum" discriminator-value="SPORTSALBUM">
-                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsAlbum
+                <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedSportsAlbum
                 </meta>
                 <meta attribute="scope-class" inherit="false">public abstract</meta>
 
