@@ -49,12 +49,11 @@
  * build script
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 import org.apache.log4j.Logger;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Set;
 
 /**

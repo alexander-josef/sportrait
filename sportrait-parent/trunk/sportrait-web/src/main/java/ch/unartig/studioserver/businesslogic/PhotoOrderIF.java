@@ -59,8 +59,8 @@
 package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.studioserver.model.Customer;
-import ch.unartig.studioserver.model.Order;
+import ch.unartig.u_core.model.Order;
+import ch.unartig.u_core.model.Customer;
 
 /**
  * <p>The purpose of this interface is to define a photo order</p>

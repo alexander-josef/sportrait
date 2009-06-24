@@ -29,9 +29,9 @@
 package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.studioserver.model.Price;
-import ch.unartig.studioserver.model.Product;
-import ch.unartig.studioserver.model.ProductType;
+import ch.unartig.u_core.model.Price;
+import ch.unartig.u_core.model.Product;
+import ch.unartig.u_core.model.ProductType;
 
 import java.math.BigDecimal;
 

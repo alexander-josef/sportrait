@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.studioserver.model.Photographer"
+            name="ch.unartig.u_core.model.Photographer"
             table="Photographers"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhotographer</meta>
@@ -27,7 +27,7 @@
         <!--more than one photographer per userprofile ??-->
         <one-to-one
                 name="userProfile"
-                class="ch.unartig.studioserver.model.UserProfile"
+                class="ch.unartig.u_core.model.UserProfile"
                 constrained="true"
                 >
             <meta attribute="use-in-tostring">true</meta>
@@ -38,7 +38,7 @@
              inverse="true"
                 >
             <key column="photographerId"/>
-            <one-to-many class="ch.unartig.studioserver.model.Album"/>
+            <one-to-many class="ch.unartig.u_core.model.Album"/>
         </set>
 
         <property

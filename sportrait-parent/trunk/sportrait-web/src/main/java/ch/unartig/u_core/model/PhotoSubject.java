@@ -26,7 +26,7 @@
  * first check in for new sports album logic and db changes
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 public class PhotoSubject extends GeneratedPhotoSubject
 {

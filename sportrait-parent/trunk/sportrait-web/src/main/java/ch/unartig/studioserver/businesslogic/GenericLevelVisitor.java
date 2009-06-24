@@ -2,10 +2,10 @@ package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.studioserver.model.Category;
-import ch.unartig.studioserver.model.Event;
-import ch.unartig.studioserver.model.EventGroup;
-import ch.unartig.studioserver.model.Album;
+import ch.unartig.u_core.model.Category;
+import ch.unartig.u_core.model.Event;
+import ch.unartig.u_core.model.EventGroup;
+import ch.unartig.u_core.model.Album;
 
 /*-*
  *

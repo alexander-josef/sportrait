@@ -57,8 +57,8 @@ package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.model.Album;
 import ch.unartig.studioserver.beans.AlbumBean;
-import ch.unartig.studioserver.model.Album;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 

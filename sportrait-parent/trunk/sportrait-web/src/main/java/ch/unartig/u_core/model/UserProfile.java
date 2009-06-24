@@ -26,7 +26,7 @@
  * no more price segment
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 import java.util.Collection;
 

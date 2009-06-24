@@ -1,7 +1,7 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.Category;
+import ch.unartig.u_core.model.Category;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.hibernate.HibernateException;
 /*-*

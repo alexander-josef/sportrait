@@ -79,7 +79,7 @@ import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.beans.DisplayBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
-import ch.unartig.studioserver.model.Photo;
+import ch.unartig.u_core.model.Photo;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;

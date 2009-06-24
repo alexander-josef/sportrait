@@ -32,7 +32,7 @@
  * reporting, download photos check in
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 import java.util.Date;
 
