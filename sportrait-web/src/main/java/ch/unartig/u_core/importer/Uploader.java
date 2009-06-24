@@ -37,7 +37,7 @@
  * Revision 1.1  2005/11/25 10:56:58  alex
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.importer;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.util.FileUtils;

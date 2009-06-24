@@ -45,7 +45,7 @@
  * back link, incl. new interface for naviable objects
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.util;
 
 import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
