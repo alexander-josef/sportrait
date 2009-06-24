@@ -81,7 +81,7 @@
 package ch.unartig.u_core.model;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
+import ch.unartig.u_core.presentation.GenericLevelVisitor;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.u_core.persistence.DAOs.PhotographerDAO;
 import org.apache.log4j.Logger;

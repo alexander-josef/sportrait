@@ -42,7 +42,7 @@
  * new mappings in struts for the /album/** url
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.model.Album;

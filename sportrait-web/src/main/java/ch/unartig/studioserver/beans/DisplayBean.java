@@ -69,8 +69,8 @@ package ch.unartig.studioserver.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.studioserver.businesslogic.NavigableObject;
-import ch.unartig.studioserver.businesslogic.NavigationHelper;
+import ch.unartig.u_core.presentation.NavigableObject;
+import ch.unartig.u_core.presentation.NavigationHelper;
 import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.model.Product;

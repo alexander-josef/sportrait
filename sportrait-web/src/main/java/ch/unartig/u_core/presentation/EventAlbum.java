@@ -32,7 +32,7 @@
  * many sola features, bugs, hibernate config
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
 import ch.unartig.u_core.model.Event;
 import ch.unartig.u_core.model.Album;

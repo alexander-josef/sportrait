@@ -145,7 +145,7 @@ import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.model.Price;
-import ch.unartig.studioserver.businesslogic.NavigableObject;
+import ch.unartig.u_core.presentation.NavigableObject;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.model.Product;
 import ch.unartig.u_core.persistence.DAOs.ProductDAO;

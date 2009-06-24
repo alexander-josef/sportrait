@@ -157,8 +157,8 @@ import ch.unartig.u_core.exceptions.NotAuthorizedException;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.businesslogic.AlbumType;
-import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
+import ch.unartig.u_core.presentation.AlbumType;
+import ch.unartig.u_core.presentation.GenericLevelVisitor;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 

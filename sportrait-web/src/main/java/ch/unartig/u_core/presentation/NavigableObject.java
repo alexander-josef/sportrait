@@ -29,7 +29,7 @@
  * back link, incl. new interface for naviable objects
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
 import java.util.Map;
 
