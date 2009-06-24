@@ -104,7 +104,7 @@ public class Order extends GeneratedOrder
      * return a list with all orderitems that contain an order for a digital photo<br>
      * currently all photo-product will be processsed, i.e. the customer gets a small digi photo from every orderitem
      *
-     * @return list of @see 'ch.unartig.studioserver.model.orderItem'
+     * @return list of @see 'ch.unartig.u_core.model.orderItem'
      */
     public Set getDigitalItems()
     {

@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.EventRunner"
             table="EventRunners"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventRunner</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedEventRunner</meta>
         <cache usage="read-write"/>
 
         <!--

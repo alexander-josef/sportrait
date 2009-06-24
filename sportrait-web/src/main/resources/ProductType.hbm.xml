@@ -8,7 +8,7 @@
             name="ch.unartig.u_core.model.ProductType"
             table="ProductTypes"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedProductType</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.u_core.model.GeneratedProductType</meta>
 
         <cache usage="read-only"/>
         <id

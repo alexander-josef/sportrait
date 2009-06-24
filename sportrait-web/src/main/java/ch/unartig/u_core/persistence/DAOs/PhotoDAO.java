@@ -165,7 +165,7 @@ public class PhotoDAO
      * todo: replace deprecated call from classic session
      * <pre>
 
-     String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
+     String hqlQuery = "select new ch.unartig.u_core.model.ReportMonthlySalesSummary(" +
              "   oi.product.productType.productTypeId, " +
              "   oi.product.price.priceId, " +
              "   oi.product.productType.name, " +
@@ -223,7 +223,7 @@ public class PhotoDAO
      * use the time/date functions like here (from ReportingDAO)
      * <pre>
 
-     String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
+     String hqlQuery = "select new ch.unartig.u_core.model.ReportMonthlySalesSummary(" +
              "   oi.product.productType.productTypeId, " +
              "   oi.product.price.priceId, " +
              "   oi.product.productType.name, " +
