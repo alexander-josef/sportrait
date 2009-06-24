@@ -33,8 +33,8 @@ package ch.unartig.studioserver.actions;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.util.SessionHelper;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
-import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.u_core.model.EventCategory;
 import ch.unartig.u_core.model.SportsEvent;
 import ch.unartig.u_core.persistence.DAOs.EventCategoryDAO;

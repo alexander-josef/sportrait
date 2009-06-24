@@ -19,7 +19,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.studioserver.businesslogic.Uploader;
+import ch.unartig.u_core.importer.Uploader;
 import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.model.SportsEvent;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;

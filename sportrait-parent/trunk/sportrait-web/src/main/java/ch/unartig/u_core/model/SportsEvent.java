@@ -55,7 +55,7 @@ package ch.unartig.u_core.model;
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.studioserver.businesslogic.Uploader;
+import ch.unartig.u_core.importer.Uploader;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.u_core.persistence.DAOs.PhotographerDAO;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
