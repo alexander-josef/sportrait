@@ -26,8 +26,12 @@
  * first steps for album type configuration
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
-public class StartNummerAlbum extends AlbumType
+public class NoTimeAlbum extends AlbumType
 {
+    public NoTimeAlbum()
+    {
+        this.designator="notime";
+    }
 }

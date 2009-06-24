@@ -22,16 +22,12 @@
  * Revision 1.1  2007/03/01 18:23:41  alex
  * initial commit maven setup no history
  *
- * Revision 1.2  2006/02/13 16:15:28  alex
- * but [968]
- *
  * Revision 1.1  2006/02/08 18:04:50  alex
  * first steps for album type configuration
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
-public class TimedAlbum extends AlbumType
+public class StartNummerAlbum extends AlbumType
 {
-    
 }

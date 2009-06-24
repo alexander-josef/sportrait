@@ -56,12 +56,13 @@
  * back link, incl. new interface for naviable objects
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
 import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
+import ch.unartig.studioserver.businesslogic.SessionHelper;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

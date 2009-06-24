@@ -32,7 +32,7 @@
  * first steps for album type configuration
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.presentation;
 
 public abstract class AlbumType
 {
