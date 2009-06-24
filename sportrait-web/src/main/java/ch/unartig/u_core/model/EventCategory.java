@@ -32,7 +32,7 @@
  * added eventCategory
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 

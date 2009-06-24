@@ -26,7 +26,7 @@
  * initial commit maven setup no history
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

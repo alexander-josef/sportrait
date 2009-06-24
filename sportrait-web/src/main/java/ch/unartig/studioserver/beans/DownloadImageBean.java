@@ -54,14 +54,14 @@ package ch.unartig.studioserver.beans;
 
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.imaging.ImagingHelper;
-import ch.unartig.studioserver.model.Order;
-import ch.unartig.studioserver.model.OrderItem;
-import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.model.ProductType;
+import ch.unartig.u_core.model.Photo;
+import ch.unartig.u_core.model.ProductType;
 import ch.unartig.u_core.persistence.DAOs.OrderDAO;
 import ch.unartig.u_core.util.FileUtils;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.*;
+import ch.unartig.u_core.model.OrderItem;
+import ch.unartig.u_core.model.Order;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletResponse;

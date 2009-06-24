@@ -34,8 +34,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.businesslogic;
 
-import ch.unartig.studioserver.model.Event;
-import ch.unartig.studioserver.model.Album;
+import ch.unartig.u_core.model.Event;
+import ch.unartig.u_core.model.Album;
 
 /**
  * this album can not be persisted!! is only exists to be used to be created dynamically from different albums. hence the name 'EventAlbum'

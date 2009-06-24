@@ -26,7 +26,7 @@
  * display fixed for sports album
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 public class EventRunner extends GeneratedEventRunner
 {

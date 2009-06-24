@@ -20,11 +20,11 @@
 package ch.unartig.u_core.services.xmlRpc;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.Event;
-import ch.unartig.studioserver.model.EventCategory;
-import ch.unartig.studioserver.model.SportsEvent;
+import ch.unartig.u_core.model.Album;
+import ch.unartig.u_core.model.SportsEvent;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.u_core.model.Event;
+import ch.unartig.u_core.model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -111,7 +111,7 @@ public class AdminServices
         SportsEvent event;
         try
         {
-            event = (SportsEvent)glDao.load(new Long(eventId),SportsEvent.class);
+            event = (SportsEvent)glDao.load(new Long(eventId), SportsEvent.class);
         } catch (UAPersistenceException e)
         {
             throw new RuntimeException("Error loading Event: ",e);

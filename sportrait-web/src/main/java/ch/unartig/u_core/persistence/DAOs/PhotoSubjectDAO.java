@@ -32,8 +32,8 @@
 package ch.unartig.u_core.persistence.DAOs;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.PhotoSubject;
-import ch.unartig.studioserver.model.Album;
+import ch.unartig.u_core.model.PhotoSubject;
+import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

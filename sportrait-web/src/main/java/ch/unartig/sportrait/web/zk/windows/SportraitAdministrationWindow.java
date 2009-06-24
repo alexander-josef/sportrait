@@ -21,6 +21,7 @@ package ch.unartig.sportrait.web.zk.windows;
 
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.model.*;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.sportrait.web.zk.components.ZAlbumComponent;
@@ -28,7 +29,6 @@ import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.u_core.persistence.DAOs.PhotographerDAO;
 import ch.unartig.u_core.persistence.DAOs.UserProfileDAO;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
-import ch.unartig.studioserver.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.zkoss.util.media.Media;

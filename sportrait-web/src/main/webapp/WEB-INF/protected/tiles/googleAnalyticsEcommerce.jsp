@@ -13,7 +13,7 @@
 %>
 <jsp:useBean id="sc" scope="session" type="ch.unartig.studioserver.beans.ShoppingCart" />
 <jsp:useBean id="GAorderId" scope="session" type="Long" />
-<jsp:useBean id="GAorderItems" scope="session" type="java.util.Collection<ch.unartig.studioserver.model.OrderItem>" />
+<jsp:useBean id="GAorderItems" scope="session" type="java.util.Collection<ch.unartig.u_core.model.OrderItem>" />
 <jsp:useBean id="GAcustomerCity" scope="session"  type="String"/>
 <html:xhtml/>
 <%--

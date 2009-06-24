@@ -31,7 +31,7 @@
  * build script
  *
  ****************************************************************/
-package ch.unartig.studioserver.model;
+package ch.unartig.u_core.model;
 
 public class OrderItem extends GeneratedOrderItem
 {
