@@ -83,7 +83,7 @@
  * bug 820 and minor refactorings
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.ordering;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;

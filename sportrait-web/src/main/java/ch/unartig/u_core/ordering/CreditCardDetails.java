@@ -32,7 +32,7 @@
  * reformat
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.ordering;
 
 public class CreditCardDetails
 {
