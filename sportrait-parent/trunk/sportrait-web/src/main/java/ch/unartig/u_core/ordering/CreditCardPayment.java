@@ -23,7 +23,7 @@
  * initial commit maven setup no history
  *
  ****************************************************************/
-package ch.unartig.studioserver.businesslogic;
+package ch.unartig.u_core.ordering;
 
 /**
  * COPLA won't be the only CC interface we use
