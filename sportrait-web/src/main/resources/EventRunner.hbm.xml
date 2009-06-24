@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.EventRunner"
+            name="ch.unartig.studioserver.model.EventRunner"
             table="EventRunners"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventRunner</meta>
@@ -27,7 +27,7 @@
             <key-many-to-one
                     name="event"
                     column="eventId"
-                    class="ch.unartig.u_core.model.Event"
+                    class="ch.unartig.studioserver.model.Event"
                     >
                 <meta attribute="use-in-tostring">true</meta>
 
@@ -36,7 +36,7 @@
             <key-many-to-one
                     name="photoSubject"
                     column="photoSubjectId"
-                    class="ch.unartig.u_core.model.PhotoSubject"
+                    class="ch.unartig.studioserver.model.PhotoSubject"
                     >
                 <meta attribute="use-in-tostring">true</meta>
 

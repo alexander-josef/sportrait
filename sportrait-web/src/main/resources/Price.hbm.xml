@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.Price"
+            name="ch.unartig.studioserver.model.Price"
             table="Prices"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPrice</meta>

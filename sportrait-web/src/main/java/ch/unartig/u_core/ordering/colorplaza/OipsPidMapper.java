@@ -38,10 +38,10 @@
 package ch.unartig.u_core.ordering.colorplaza;
 
 import ch.unartig.u_core.exceptions.UnartigException;
-import ch.unartig.u_core.model.Product;
-import ch.unartig.u_core.util.ProductMapperIF;
-import ch.unartig.u_core.model.ProductType;
-import ch.unartig.u_core.model.Price;
+import ch.unartig.studioserver.businesslogic.ProductMapperIF;
+import ch.unartig.studioserver.model.Product;
+import ch.unartig.studioserver.model.ProductType;
+import ch.unartig.studioserver.model.Price;
 
 import java.math.BigDecimal;
 
@@ -130,7 +130,7 @@ public class OipsPidMapper implements ProductMapperIF {
     }
 
     /**
-     * @see ch.unartig.u_core.util.ProductMapperIF
+     * @see ch.unartig.studioserver.businesslogic.ProductMapperIF
      */
     public String getMappedProductId(Product product)
     {
@@ -151,7 +151,7 @@ public class OipsPidMapper implements ProductMapperIF {
 
     /**
      * Delegating method to ch.unartig.studioserver.businesslogic.ProductMapperIF#getUnartigEarnings(java.lang.Long,java.lang.Long)
-     * @see ch.unartig.u_core.util.ProductMapperIF#getUnartigEarnings(java.lang.Long,java.lang.Long)
+     * @see ch.unartig.studioserver.businesslogic.ProductMapperIF#getUnartigEarnings(java.lang.Long,java.lang.Long)
      * @param productType product type object
      * @param price price object
      * @return unartig earnings from colorplaza

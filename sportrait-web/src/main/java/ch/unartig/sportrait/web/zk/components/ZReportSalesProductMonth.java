@@ -21,7 +21,7 @@ package ch.unartig.sportrait.web.zk.components;
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.u_core.model.ReportMonthlySalesSummary;
+import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
 import ch.unartig.sportrait.web.reports.IReport;
 import ch.unartig.sportrait.web.reports.IReportColumn;
 import ch.unartig.sportrait.web.reports.ReportSalesPerPhotographerMonths;

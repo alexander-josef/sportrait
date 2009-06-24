@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.EventCategory"
+            name="ch.unartig.studioserver.model.EventCategory"
             table="EventCategories"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventCategory</meta>
@@ -41,7 +41,7 @@
 
         <many-to-one
                 name="event"
-                class="ch.unartig.u_core.model.SportsEvent"
+                class="ch.unartig.studioserver.model.SportsEvent"
                 lazy="false"
                 not-null="true"
                 update="false"
@@ -58,7 +58,7 @@
              inverse="true"
                 >
             <key column="eventCategoryId"/>
-            <one-to-many class="ch.unartig.u_core.model.Album"/>
+            <one-to-many class="ch.unartig.studioserver.model.Album"/>
         </set>
 
 

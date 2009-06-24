@@ -6,9 +6,9 @@ import org.zkoss.zk.ui.Executions;
 import ch.unartig.u_core.persistence.DAOs.UserRoleDAO;
 import ch.unartig.u_core.persistence.DAOs.UserProfileDAO;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
-import ch.unartig.u_core.model.Photographer;
-import ch.unartig.u_core.model.UserProfile;
-import ch.unartig.u_core.model.UserRole;
+import ch.unartig.studioserver.model.Photographer;
+import ch.unartig.studioserver.model.UserProfile;
+import ch.unartig.studioserver.model.UserRole;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.controller.Client;
 

@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.UserProfile"
+            name="ch.unartig.studioserver.model.UserProfile"
             table="UserProfiles"
             lazy="false"
             >
@@ -165,7 +165,7 @@
         <one-to-one name="photographer"
              lazy="false"
              cascade="save-update"
-             class="ch.unartig.u_core.model.Photographer"/>
+             class="ch.unartig.studioserver.model.Photographer"/>
 
 
         <!--
@@ -181,7 +181,7 @@
             <!--<meta attribute="scope-set">protected</meta>-->
             <!--<meta attribute="scope-get">protected</meta>-->
             <key column="userName" property-ref="userName"/>
-            <many-to-many class="ch.unartig.u_core.model.UserRole" column="roleName" property-ref="roleName"/>
+            <many-to-many class="ch.unartig.studioserver.model.UserRole" column="roleName" property-ref="roleName"/>
         </set>
 
 

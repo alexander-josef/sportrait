@@ -5,7 +5,7 @@
 
 <hibernate-mapping>
     <class
-            name="ch.unartig.u_core.model.OrderItem"
+            name="ch.unartig.studioserver.model.OrderItem"
             table="OrderItems"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrderItem</meta>
@@ -38,7 +38,7 @@
 
         <many-to-one
                 name="photo"
-                class="ch.unartig.u_core.model.Photo"
+                class="ch.unartig.studioserver.model.Photo"
                 lazy="false"
                 >
             <meta attribute="use-in-tostring">true</meta>
@@ -47,7 +47,7 @@
 
         <many-to-one
                 name="product"
-                class="ch.unartig.u_core.model.Product"
+                class="ch.unartig.studioserver.model.Product"
                 lazy="false"
                 not-null="true"
                 >
@@ -57,7 +57,7 @@
 
         <many-to-one
                 name="order"
-                class="ch.unartig.u_core.model.Order"
+                class="ch.unartig.studioserver.model.Order"
                 lazy="false"
                 not-null="true"
                 >

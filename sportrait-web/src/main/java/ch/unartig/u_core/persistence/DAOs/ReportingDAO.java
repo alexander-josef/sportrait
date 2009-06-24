@@ -18,9 +18,9 @@
  ****************************************************************/
 package ch.unartig.u_core.persistence.DAOs;
 
-import ch.unartig.u_core.model.ReportMonthlySalesSummary;
-import ch.unartig.u_core.model.OrderItem;
-import ch.unartig.u_core.model.Photographer;
+import ch.unartig.studioserver.model.ReportMonthlySalesSummary;
+import ch.unartig.studioserver.model.OrderItem;
+import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import ch.unartig.u_core.controller.Client;
 import org.apache.log4j.Logger;
@@ -68,7 +68,7 @@ public class ReportingDAO
         // todo this fails if no uploadcompleteddate is available of an order record
 
 //        String hqlQuery = "select " +
-        String hqlQuery = "select new ch.unartig.u_core.model.ReportMonthlySalesSummary(" +
+        String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
                 "   oi.product.productType.productTypeId, " +
                 "   oi.product.price.priceId, " +
                 "   oi.product.productType.name, " +
@@ -191,7 +191,7 @@ public class ReportingDAO
         List<ReportMonthlySalesSummary> orderItems = null;
 //        List reportObjectList;
 
-        String hqlQuery = "select new ch.unartig.u_core.model.ReportMonthlySalesSummary(" +
+        String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
 //        String hqlQuery = "select " +
                 "   oi.photo.album.photographer.photographerId," +
                 "   oi.photo.album.photographer.userProfile.lastName," +

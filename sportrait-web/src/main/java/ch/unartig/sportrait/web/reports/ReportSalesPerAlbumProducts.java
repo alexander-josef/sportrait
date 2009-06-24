@@ -1,9 +1,9 @@
 package ch.unartig.sportrait.web.reports;
 
-import ch.unartig.u_core.model.Album;
-import ch.unartig.u_core.model.OrderItem;
-import ch.unartig.u_core.model.Price;
-import ch.unartig.u_core.model.ProductType;
+import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.OrderItem;
+import ch.unartig.studioserver.model.Price;
+import ch.unartig.studioserver.model.ProductType;
 import ch.unartig.u_core.ordering.colorplaza.OipsPidMapper;
 import ch.unartig.u_core.exceptions.UnartigException;
 
