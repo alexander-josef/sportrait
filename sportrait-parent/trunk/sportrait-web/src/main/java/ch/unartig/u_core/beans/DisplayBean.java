@@ -65,7 +65,7 @@
  * album view works
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -75,12 +75,19 @@ import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.model.Product;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.u_core.beans.AbstractAlbumBean;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 
+/**
+ *  Module Refactoing:
+ *  + Checked with unartig: OK, no additional logic in unartig
+ *  + StudioAlbum is now Album
+
+ */
 public class DisplayBean implements NavigableObject
 {
     Logger _logger = Logger.getLogger(getClass().getName());

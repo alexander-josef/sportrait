@@ -61,7 +61,7 @@ package ch.unartig.u_core.presentation;
 import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.beans.AbstractAlbumBean;
+import ch.unartig.u_core.beans.AbstractAlbumBean;
 import ch.unartig.u_core.util.SessionHelper;
 import org.apache.log4j.Logger;
 

@@ -82,7 +82,7 @@
  * check out form wizard
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.ordering.CreditCardDetails;
@@ -96,6 +96,10 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
+ * Module Refactoing:
+ *  + Checked with unartig: OK, no additional logic in unartig
+ *
+ *
  * Form for storing check-out relevant information
  *
  * @noinspection BooleanPropertyMissingResetInspection

@@ -43,7 +43,7 @@
 
         <form-bean
                 name="checkOutForm"
-                type="ch.unartig.studioserver.beans.CheckOutForm"/>
+                type="ch.unartig.u_core.beans.CheckOutForm"/>
 
         <form-bean name="sportsAlbumMappingForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="mappingFile" type="org.apache.struts.upload.FormFile"/>

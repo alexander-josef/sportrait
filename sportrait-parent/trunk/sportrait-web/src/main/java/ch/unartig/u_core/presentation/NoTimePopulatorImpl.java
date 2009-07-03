@@ -58,7 +58,7 @@ package ch.unartig.u_core.presentation;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.model.Album;
-import ch.unartig.studioserver.beans.AlbumBean;
+import ch.unartig.u_core.beans.AlbumBean;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 

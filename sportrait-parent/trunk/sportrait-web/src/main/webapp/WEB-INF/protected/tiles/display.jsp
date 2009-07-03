@@ -2,7 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="display" type="ch.unartig.studioserver.beans.DisplayBean" scope="request"/>
+<jsp:useBean id="display" type="ch.unartig.u_core.beans.DisplayBean" scope="request"/>
 <html:xhtml/>
 <%--
 IMPORTANT: albumBean is a misleading name: it means the bean that supports the thumbnail-overview.

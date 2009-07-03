@@ -61,6 +61,7 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.beans.AbstractAlbumBean;
 import ch.unartig.u_core.model.SportsEvent;
 import ch.unartig.u_core.model.EventCategory;
 import ch.unartig.u_core.model.Photo;
@@ -119,7 +120,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
 
     /**
      * SportsAlbum implementation to set all the photos for the current session, considering page, startnumber and eventcategory
-     * @see AbstractAlbumBean#setPhotosForCurrentSession()
+     * @see ch.unartig.u_core.beans.AbstractAlbumBean#setPhotosForCurrentSession()
      * @throws UAPersistenceException
      */
     protected void setPhotosForCurrentSession()
