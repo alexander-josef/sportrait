@@ -136,7 +136,8 @@
             <groupId>com.sun.media</groupId>
             <artifactId>jai_codec</artifactId>
             <version>1.1.2_01</version>
-            <scope>provided</scope>
+            <!-- Do we need to set provided? Will the native library be used if not set to provided? -->
+            <!--<scope>provided</scope>-->
         </dependency>
 
         <dependency>

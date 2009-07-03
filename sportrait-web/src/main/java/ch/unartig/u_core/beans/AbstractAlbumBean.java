@@ -53,7 +53,7 @@
  * first check in for new sports album logic and db changes
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -61,6 +61,8 @@ import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
+import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.AlbumBean;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -68,6 +70,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Module Refactoing:
+ *  + Checked with unartig: few methods are not abstract in unartig
+ *  + Studioalbum is now Album
+
+ *
  * @author Alexander Josef, 2006
  *         Common Class to all Albums.
  *         <br>Rule for handling album access:
@@ -495,7 +502,7 @@ public abstract class AbstractAlbumBean
      */
     public void reloadPhotosTemplate(Long displayPhotoId) throws UnartigException
     {
-        // this method fails if all photo taken times are equal or not set
+        // TODO: this method fails if all photo taken times are equal or not set
         setPageFor(displayPhotoId);
         populateAlbumBeanTemplate();
     }

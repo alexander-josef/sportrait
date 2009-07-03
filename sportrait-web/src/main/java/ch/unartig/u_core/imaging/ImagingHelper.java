@@ -60,6 +60,7 @@ import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageEncoder;
 import com.sun.media.jai.codec.JPEGEncodeParam;
 import org.apache.log4j.Logger;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
@@ -115,25 +116,27 @@ public class ImagingHelper
 
     /**
      * @param sampledOp
-     * @param os        output stream for encoder
      * @param quality
+     * @return The rendered image as a byte array
      */
-    private static void renderJpg(RenderedOp sampledOp, OutputStream os, float quality)
+    private static byte[] renderJpg(RenderedOp sampledOp, float quality)
     {
         // todo : robust exception handling
+        ByteArrayOutputStream baos = new org.apache.commons.io.output.ByteArrayOutputStream();
         JPEGEncodeParam encParam = new JPEGEncodeParam();
         try
         {
             encParam.setQuality(quality);
-            ImageEncoder encoder = ImageCodec.createImageEncoder("JPEG", os, encParam);
+            ImageEncoder encoder = ImageCodec.createImageEncoder("JPEG", baos, encParam);
             encoder.encode(sampledOp);
             _logger.debug("ImagingHelper.saveJpg : image encoded");
+            return baos.toByteArray();
         } catch (FileNotFoundException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new RuntimeException("Cannot render JPG image");
         } catch (IOException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            throw new RuntimeException("Cannot render JPG image");
         }
 
     }
@@ -334,7 +337,13 @@ public class ImagingHelper
     {
 //        PipedOutputStream retVal = new PipedOutputStream();
         RenderedOp sampledOp = reSample(load(file), resampleFactor);
-        renderJpg(sampledOp, os, quality);
+        renderJpg(sampledOp, quality);
+    }
+
+    public static byte[] reSample(File file, Double resampleFactor,  float quality) throws UnartigImagingException
+    {
+        RenderedOp sampledOp = reSample(load(file), resampleFactor);
+        return renderJpg(sampledOp, quality);
     }
 
     /**

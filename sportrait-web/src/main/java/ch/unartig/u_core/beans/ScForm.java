@@ -35,13 +35,19 @@
  * overview, admin menu, index-photo upload
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import org.apache.struts.action.ActionForm;
 
 import java.io.Serializable;
 
+import ch.unartig.u_core.beans.ScOrderItem;
+
 /**
+ * Module Refactoing:
+ *  + Checked with unartig: OK, identical
+ *
+ *
  * Shopping Cart Form: used to process the parameters from the shopping cart when updated or finished with the check-out process
  * a shopping-cart-form consists of:
  * - orderItem: an array of [photoId,productId,quantity]

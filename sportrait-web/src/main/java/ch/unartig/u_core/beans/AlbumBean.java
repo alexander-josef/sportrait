@@ -113,15 +113,20 @@
  * new mappings in struts for the /album/** url
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.beans.AbstractAlbumBean;
 import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 
 /**
- * this bean provides the album view with all necessary information
+ * Module Refactoing:
+ *  + Checked with unartig: OK, no additional logic
+ *  + Studioalbum is now Album
+ *
+ * This bean provides the album view with all necessary information
  *
  * @author Alexander Josef
  */

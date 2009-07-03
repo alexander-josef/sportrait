@@ -144,6 +144,7 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.Registry;
+import ch.unartig.u_core.beans.ScOrderItem;
 import ch.unartig.u_core.model.Price;
 import ch.unartig.u_core.presentation.NavigableObject;
 import ch.unartig.u_core.model.Photo;

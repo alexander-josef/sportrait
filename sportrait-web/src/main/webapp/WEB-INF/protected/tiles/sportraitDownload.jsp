@@ -1,7 +1,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:useBean id="downloadBean" type="ch.unartig.studioserver.beans.DownloadImageBean" scope="request"/>
+<jsp:useBean id="downloadBean" type="ch.unartig.u_core.beans.DownloadImageBean" scope="request"/>
 <html:xhtml/>
 
 <div class="content">

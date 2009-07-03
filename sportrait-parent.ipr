@@ -36,11 +36,11 @@
   <component name="CopyrightManager" default="">
     <module2copyright />
   </component>
-  <component name="DependenciesAnalyzeManager">
-    <option name="myForwardDirection" value="false" />
-  </component>
   <component name="DependencyValidationManager">
+    <scope name="sportrait-web" pattern="file[sportrait_web]:src/main/java/ch/unartig/sportrait//*" />
+    <scope name="a" pattern="file[sportrait_web]:src/main/java/ch/unartig/u_core//*||file[sportrait_web]:src/main/java/ch/unartig/u_core//*" />
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+    <deny_rule from_scope="a" to_scope="sportrait-web" is_deny="true" />
   </component>
   <component name="DynamicManagerImpl">
     <option name="containingClasses">
@@ -998,11 +998,17 @@
     <library name="Maven: org.openqa.selenium.server:selenium-server:standalone:1.0-beta-1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-sources.jar!/" />
       </SOURCES>
     </library>
@@ -1053,11 +1059,17 @@
     <library name="Maven: org.testng:testng:jdk15:5.5">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-sources.jar!/" />
         <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-sources.jar!/" />
       </SOURCES>
     </library>

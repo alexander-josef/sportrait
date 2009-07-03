@@ -68,7 +68,7 @@
  * add ScOrderItem
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
@@ -78,9 +78,14 @@ import ch.unartig.u_core.model.Product;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import ch.unartig.u_core.persistence.DAOs.ProductDAO;
+import ch.unartig.studioserver.beans.ShoppingCart;
 import org.apache.log4j.Logger;
 
 /**
+ *  * Module Refactoing:
+ *  + Checked with unartig: OK, identical
+ *
+ *
  * Bean class to represent a shopping cart order item
  * will be used in sc form to populate the shopping cart<br>
  * an item consits of :

@@ -35,7 +35,7 @@
 package ch.unartig.u_core.util;
 
 import ch.unartig.u_core.Registry;
-import ch.unartig.studioserver.beans.AlbumBean;
+import ch.unartig.u_core.beans.AlbumBean;
 import ch.unartig.u_core.model.Photo;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;

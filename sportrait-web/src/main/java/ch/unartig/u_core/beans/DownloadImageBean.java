@@ -50,27 +50,29 @@
  * reporting, download photos check in
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.imaging.ImagingHelper;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.model.ProductType;
 import ch.unartig.u_core.persistence.DAOs.OrderDAO;
-import ch.unartig.u_core.util.FileUtils;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.*;
 import ch.unartig.u_core.model.OrderItem;
 import ch.unartig.u_core.model.Order;
 import org.apache.log4j.Logger;
+import org.apache.commons.io.FileUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 
 /**
- * this bean serves the download-view with all necessary information for downloadable images of the relevant order
+ *  Module Refactoing:
+ *  + Checked with unartig: downloadPhoto method is slightly different. Different signature.
+ *
+ * This bean serves the download-view with all necessary information for downloadable images of the relevant order
  * the relevant order is identified by the unique hash that is used in the constructor
  * this bean delivers:
  * <p/>
@@ -123,11 +125,10 @@ public class DownloadImageBean
     public void downloadPhoto(String orderItemId, HttpServletResponse response) throws UnartigException
     {
         OrderItem downloadOrderItem = null;
-        for (Iterator iterator = order.getOrderItems().iterator(); iterator.hasNext();)
-        {
-            OrderItem orderItem = (OrderItem) iterator.next();
-            if (orderItemId.equals(orderItem.getOrderItemId().toString()))
-            {
+        // iterate to find the orderitem
+        for (Object o : order.getOrderItems()) {
+            OrderItem orderItem = (OrderItem) o;
+            if (orderItemId.equals(orderItem.getOrderItemId().toString())) {
                 // we found the orderitem
                 downloadOrderItem = orderItem;
                 break;
@@ -140,38 +141,38 @@ public class DownloadImageBean
         {
             throw new UnartigInvalidArgument("passed oderItemId not part of order");
         }
+        byte[] photoBytes = loadDigitalProduct(downloadOrderItem);
 
-        try
-        {
-            // use application/octet-stream instead to download and not display the image??
-            _logger.debug("streaming photo with name : " + downloadOrderItem.getPhoto().getFilename());
-            response.setContentType("image/JPG");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadOrderItem.getPhoto().getFilename() + "\"");
-            // What's the content length? set content-length header:
-//            response.setContentLength();
-            // copy the file to the outputstream:
-            streamDigitalProduct(downloadOrderItem, response.getOutputStream());
-        } catch (IOException e)
-        {
-            // for exmaple if high-res file was not found ...
-            throw new UnartigException("cannot stream photo for download ...", e);
+        // use application/octet-stream instead to download and not display the image??
+        _logger.debug("streaming photo with name : " + downloadOrderItem.getPhoto().getFilename());
+        response.setContentType("image/JPG");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadOrderItem.getPhoto().getFilename() + "\"");
+        // Todo: What's the content length? set content-length header:
+        // We need to know the size of the streamed object beforehand. How?
+        response.setContentLength(photoBytes.length);
+        // copy the photo to the outputstream:
+        try {
+            response.getOutputStream().write(photoBytes);
+        } catch (IOException e) {
+            throw new UnartigException("Problem streaming the photo to the output stream");
         }
 
 
     }
 
     /**
-     * check the ordered product
+     * Check the ordered product, load the photo and return it.
      * <p/>
      * prepare the correct image and put it to the output stream from the action class
      *
      * @param orderItem the order item to genereate the digital image from
-     * @param os        output stream for new jpg image from the action class
      * @throws ch.unartig.u_core.exceptions.UnartigImagingException
      *          if exception during the calculation of the ordered image is thrown
+     * @return The photo as byte array
      */
-    private void streamDigitalProduct(OrderItem orderItem, OutputStream os) throws UnartigImagingException
+    private byte[] loadDigitalProduct(OrderItem orderItem) throws UnartigImagingException
     {
+        byte[] photoBytes;
         try
         {
             // digi foto 400 x 600 : (productIds 17 & 18)
@@ -180,17 +181,18 @@ public class DownloadImageBean
 //            if (orderItem.getProduct().getProductId().intValue() == 17 || orderItem.getProduct().getProductId().intValue() == 18)
             if (productType.getProductTypeId() == _ID_DIGI_FOTO_400_600)
             {
-                stream400x600Photo(photo, os);
+                photoBytes = stream400x600Photo(photo);
+
 
             } else if (productType.getProductTypeId() == _ID_DIGITAL_NEGATIVE)
             {
                 // digital negativ copy the file to the output stream
                 _logger.info("streaming the digital negativ");
-                FileUtils.copyFile(photo.getFile(), os);
+                photoBytes = FileUtils.readFileToByteArray(photo.getFile());
             } else // everything else
             {
                 _logger.info("Not a digital product; streaming standard preview size");
-                stream400x600Photo(photo, os);
+                photoBytes = stream400x600Photo(photo);
 
             }
         } catch (UnartigImagingException e)
@@ -202,9 +204,11 @@ public class DownloadImageBean
             _logger.error("Cannot copy fine image to the output stream", e);
             throw new UnartigImagingException("Cannot copy fine image to the output stream", e);
         }
+
+        return photoBytes;
     }
 
-    private void stream400x600Photo(Photo photo, OutputStream os) throws UnartigImagingException
+    private byte[] stream400x600Photo(Photo photo) throws UnartigImagingException
     {
         _logger.info("processing digi foto 600 * 400");
         double resampleFactor;
@@ -212,7 +216,7 @@ public class DownloadImageBean
         Integer originalWidthPixels = photo.isOrientationLandscape() ? photo.getWidthPixels() : photo.getHeightPixels();
         resampleFactor = longerSidePixels / (double) originalWidthPixels.intValue();
         _logger.debug("sample factor :" + resampleFactor);
-        ImagingHelper.reSample(photo.getFile(), resampleFactor, os, 0.75f);
+        return ImagingHelper.reSample(photo.getFile(), resampleFactor, 0.75f);
     }
 
     /**
