@@ -59,7 +59,7 @@ import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.beans.ScOrderItem;
-import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.ShoppingCart;
 import ch.unartig.u_core.ordering.PhotoOrderIF;
 import org.apache.struts.util.MessageResources;
 

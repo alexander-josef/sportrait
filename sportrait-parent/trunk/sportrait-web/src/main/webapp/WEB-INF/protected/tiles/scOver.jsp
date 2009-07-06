@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:useBean id="shoppingCart" type="ch.unartig.studioserver.beans.ShoppingCart" scope="session"/>
+<jsp:useBean id="shoppingCart" type="ch.unartig.u_core.beans.ShoppingCart" scope="session"/>
 <jsp:useBean id="checkOutForm" type="ch.unartig.u_core.beans.CheckOutForm" scope="session"/>
 <html:xhtml/>
 

@@ -48,7 +48,7 @@ import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.presentation.EventAlbum;
 import ch.unartig.u_core.model.Event;
-import ch.unartig.studioserver.beans.SportsAlbumBean;
+import ch.unartig.sportrait.web.beans.SportsAlbumBean;
 import ch.unartig.u_core.util.SessionHelper;
 import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.model.SportsAlbum;

@@ -9,7 +9,7 @@
     <!-- ================================================ Form Bean Definitions -->
 
     <form-beans>
-        <form-bean name="adminForm" type="ch.unartig.studioserver.beans.AdminForm"/>
+        <form-bean name="adminForm" type="ch.unartig.u_core.beans.AdminForm"/>
 
         <form-bean name="uploadForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="content" type="org.apache.struts.upload.FormFile"/>
@@ -33,7 +33,7 @@
 
         <form-bean
                 name="shoppingCart"
-                type="ch.unartig.studioserver.beans.ShoppingCart"
+                type="ch.unartig.u_core.beans.ShoppingCart"
                 >
         </form-bean>
 

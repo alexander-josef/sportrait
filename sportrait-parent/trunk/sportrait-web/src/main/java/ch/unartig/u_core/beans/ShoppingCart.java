@@ -139,7 +139,7 @@
  * shopping cart session
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
@@ -157,6 +157,10 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
+ * Module Refactoing:
+ *  + Checked with unartig: minor changes in currency handling
+ *  + more methods
+ *
  * Session object to store shopping cart information
  */
 public class ShoppingCart extends ActionForm implements Serializable, NavigableObject

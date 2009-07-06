@@ -49,7 +49,7 @@ package ch.unartig.u_core.util;
 
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.beans.AbstractAlbumBean;
-import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.ShoppingCart;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

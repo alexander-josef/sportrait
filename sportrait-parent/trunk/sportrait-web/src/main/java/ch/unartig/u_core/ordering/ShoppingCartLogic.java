@@ -90,7 +90,7 @@ import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.ordering.colorplaza.CoplaPhotoOrder;
 import ch.unartig.u_core.beans.CheckOutForm;
 import ch.unartig.u_core.beans.ScOrderItem;
-import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.ShoppingCart;
 import ch.unartig.u_core.model.Customer;
 import ch.unartig.u_core.model.Order;
 import ch.unartig.u_core.model.OrderHash;

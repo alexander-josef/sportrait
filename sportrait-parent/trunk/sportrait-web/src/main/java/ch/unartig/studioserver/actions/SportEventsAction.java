@@ -48,7 +48,7 @@ import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.model.SportsEvent;
-import ch.unartig.studioserver.beans.UploadBean;
+import ch.unartig.sportrait.web.beans.UploadBean;
 import ch.unartig.u_core.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.u_core.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;

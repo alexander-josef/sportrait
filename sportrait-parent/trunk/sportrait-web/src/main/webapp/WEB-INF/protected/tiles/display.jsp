@@ -9,7 +9,7 @@ IMPORTANT: albumBean is a misleading name: it means the bean that supports the t
 There may be pictures from many albums in the thumbnailOverview
 todo refactor name albumBean as fast as possible
 --%>
-<jsp:useBean id="albumBean" type="ch.unartig.studioserver.beans.SportsAlbumBean" scope="session"/>
+<jsp:useBean id="albumBean" type="ch.unartig.sportrait.web.beans.SportsAlbumBean" scope="session"/>
 
 <div class="pageNav">
     <ul id="fotoNav">

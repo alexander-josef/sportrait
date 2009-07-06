@@ -56,7 +56,7 @@
  * first check in for new sports album logic and db changes
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.sportrait.web.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -71,6 +71,8 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 /**
+ * Module Refactoing:
+ *  + sportrait only
  * Bean for handling sports events
  * <br>implements the page-paramter part of the populate template from the abstract album bean
  * @author Alexander Josef, 2006
@@ -156,8 +158,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
 
     public String getActionString()
     {
-        String actionString = "/showCategory";
-        return actionString;
+        return "/showCategory";
     }
 
     public String getStartNumber()
