@@ -59,7 +59,7 @@
  * overview, admin menu, index-photo upload
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.model.Product;
 import org.apache.log4j.Logger;
@@ -71,6 +71,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ *
+ */
 public class AdminForm extends ActionForm implements Serializable {
     private String navTitle;
     private String longTitle;

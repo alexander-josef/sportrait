@@ -26,7 +26,7 @@
  * working on photo upload
  *
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.sportrait.web.beans;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.model.SportsEvent;
@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Module Refactoing:
+ *  + Sportrait only? If similar bean ist needed in unartig, try to refactor to common bean.
  * Bean used in admin interface; containing upload related data for the view
  */
 public class UploadBean

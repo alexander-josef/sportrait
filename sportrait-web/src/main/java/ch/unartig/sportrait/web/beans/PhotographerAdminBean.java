@@ -17,13 +17,17 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.studioserver.beans;
+package ch.unartig.sportrait.web.beans;
 
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.model.GenericLevel;
 
 import java.util.List;
 
+/**
+ * Module Refactoing:
+ *  + sportrait only; But may be refactored to contain common logic
+ */
 public class PhotographerAdminBean
 {
     private Client client;

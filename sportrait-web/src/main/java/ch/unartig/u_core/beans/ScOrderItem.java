@@ -78,7 +78,7 @@ import ch.unartig.u_core.model.Product;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
 import ch.unartig.u_core.persistence.DAOs.ProductDAO;
-import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.ShoppingCart;
 import org.apache.log4j.Logger;
 
 /**

@@ -152,7 +152,7 @@ import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.presentation.NavigationHelper;
 import ch.unartig.u_core.beans.ScOrderItem;
-import ch.unartig.studioserver.beans.ShoppingCart;
+import ch.unartig.u_core.beans.ShoppingCart;
 import ch.unartig.u_core.model.Photo;
 import ch.unartig.u_core.model.Product;
 import ch.unartig.u_core.persistence.DAOs.PhotoDAO;
