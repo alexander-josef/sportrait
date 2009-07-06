@@ -35,7 +35,7 @@
  * languages and upload stuff
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;

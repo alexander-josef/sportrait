@@ -112,7 +112,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * this action class is called if an album shall be presented in the view
+ * This action class is called if an album shall be presented in the view
  * reads from url the necessay infos
  *
  * @author Alexander Josef 2005
