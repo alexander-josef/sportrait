@@ -32,7 +32,7 @@
  * reporting, download photos check in
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -48,6 +48,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ *  Module Refactoing:
+ *  + Checked with unartig: phId changes to OIID in the request params
+ *
  * <p>This class contains the actions related to downloading the digital photos of an order
  * </p>
  * <p>First, list *every photo* that has been ordered on the download page and explain the available download:

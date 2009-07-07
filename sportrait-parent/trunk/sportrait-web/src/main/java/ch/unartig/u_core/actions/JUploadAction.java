@@ -17,7 +17,7 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.importer.Uploader;
 import ch.unartig.u_core.model.Album;

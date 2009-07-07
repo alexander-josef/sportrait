@@ -96,7 +96,7 @@
  * new mappings in struts for the /album/** url
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.util.SessionHelper;
@@ -112,6 +112,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * Module Refactoing:
+ *  + Checked with unartig: 'StudioAlbum' is now Album
+ *
  * This action class is called if an album shall be presented in the view
  * reads from url the necessay infos
  *

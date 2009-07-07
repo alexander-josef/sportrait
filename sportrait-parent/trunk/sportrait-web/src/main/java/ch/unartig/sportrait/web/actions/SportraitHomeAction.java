@@ -23,7 +23,7 @@
  * home page most recent events are working
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.sportrait.web.actions;
 
 import org.apache.struts.action.*;
 import org.apache.struts.actions.MappingDispatchAction;

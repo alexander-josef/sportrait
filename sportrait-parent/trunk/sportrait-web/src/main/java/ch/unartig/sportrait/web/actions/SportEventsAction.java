@@ -41,7 +41,7 @@
  * edit events page
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.sportrait.web.actions;
 
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UAPersistenceException;
@@ -66,7 +66,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *
+ * Todo describe
  */
 public class SportEventsAction extends MappingDispatchAction
 {

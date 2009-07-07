@@ -146,7 +146,7 @@
  * check out form wizard
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.exceptions.UAPersistenceException;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -175,6 +175,8 @@ import java.util.Locale;
 
 
 /**
+ *  Module Refactoing:
+ *  + Checked with unartig: some changes for google analytics: order params
  * Check out releated actions.
  */
 public class CheckOutAction extends MappingDispatchAction

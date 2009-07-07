@@ -50,7 +50,7 @@
  * customer service message
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.util.MailUtil;

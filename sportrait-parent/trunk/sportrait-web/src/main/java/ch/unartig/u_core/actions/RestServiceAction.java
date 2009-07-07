@@ -1,4 +1,4 @@
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;

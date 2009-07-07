@@ -70,7 +70,7 @@
  * album view works
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
 import ch.unartig.u_core.exceptions.UnartigException;

@@ -29,7 +29,7 @@
  * dynamic pager added
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.sportrait.web.actions;
 
 import ch.unartig.u_core.exceptions.UnartigException;
 import ch.unartig.u_core.Registry;
