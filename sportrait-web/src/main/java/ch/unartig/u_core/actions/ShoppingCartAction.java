@@ -145,7 +145,7 @@
  * shopping cart session
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.exceptions.UnartigInvalidArgument;
 import ch.unartig.u_core.exceptions.UnartigSessionExpiredException;
@@ -170,6 +170,10 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Module Refactoing:
+ *  + Checked with unartig: small changes in place in cart action
+ */
 public class ShoppingCartAction extends MappingDispatchAction
 {
     Logger _logger = Logger.getLogger(getClass().getName());

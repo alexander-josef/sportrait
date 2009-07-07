@@ -49,7 +49,9 @@ import ch.unartig.u_core.model.Album;
 import ch.unartig.u_core.beans.AlbumBean;
 
 /**
- * Strategy Interface for populating an overview
+ * Todo: describe the strategy pattern usage.
+ * Strategy Interface for populating an overview.
+ *
  */
 public interface OverviewPopulator
 {

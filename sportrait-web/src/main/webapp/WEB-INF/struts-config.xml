@@ -141,24 +141,24 @@
 
         <!-- =========================================== Customer pages -->
         <!-- =========================================== Security Filter / Authentication pages -->
-        <action path="/authError" type="ch.unartig.studioserver.actions.SportraitHomeAction"
+        <action path="/authError" type="ch.unartig.sportrait.web.actions.SportraitHomeAction"
                 parameter="authError">
             <forward name="success" path=".sportraitHome" redirect="false"/>
         </action>
 
         <!-- =================================================================================  -->
-        <action path="/index" type="ch.unartig.studioserver.actions.SportraitHomeAction"
+        <action path="/index" type="ch.unartig.sportrait.web.actions.SportraitHomeAction"
                 parameter="home">
             <forward name="success" path=".sportraitHome" redirect="false"/>
         </action>
 
-        <action path="/recentEventsFrame" type="ch.unartig.studioserver.actions.SportraitHomeAction"
+        <action path="/recentEventsFrame" type="ch.unartig.sportrait.web.actions.SportraitHomeAction"
                 parameter="home">
             <forward name="success" path=".recentEventsFrame" redirect="false"/>
         </action>
 
         <!--todo: remove the <p> to make selenium work-->
-        <action path="/event" type="ch.unartig.studioserver.actions.SportEventsAction"
+        <action path="/event" type="ch.unartig.sportrait.web.actions.SportEventsAction"
                 parameter="event">
             <forward name="success" path=".sportraitEvent" redirect="false"/>
             <!-- todo create an error page -->
@@ -166,7 +166,7 @@
         </action>
 
         <!-- shows thumbnail overview of an  Eventcategory-->
-        <action path="/showCategory" type="ch.unartig.studioserver.actions.EventCategoryAction"
+        <action path="/showCategory" type="ch.unartig.sportrait.web.actions.EventCategoryAction"
                 parameter="showCategory"
                 name="eventCategoryForm"
                 >
@@ -174,7 +174,7 @@
             <forward name="notFound" path="/index.html" redirect="false"/>
         </action>
 
-        <action path="/display/**" type="ch.unartig.studioserver.actions.DisplayAction"
+        <action path="/display/**" type="ch.unartig.u_core.actions.DisplayAction"
                 scope="request"
                 parameter="{1}"
                 name="displayForm">
@@ -183,7 +183,7 @@
         </action>
 
         <!-- Customer Service -->
-        <action path="/sendCustomerServiceMessage" type="ch.unartig.studioserver.actions.CustomerServiceAction"
+        <action path="/sendCustomerServiceMessage" type="ch.unartig.u_core.actions.CustomerServiceAction"
                 parameter="sendMessage"
                 name="customerServiceMessage"
                 input="contactError"
@@ -198,7 +198,7 @@
         <action path="/SendMessageReply" forward=".sportraitcontact"/>
 
         <!--******** validation error treatment ********-->
-        <action path="/contactErrorAction" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/contactErrorAction" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutError">
             <forward name="errorpage" path="/contact_error_page.html" redirect="true"/>
         </action>
@@ -209,37 +209,37 @@
         <!-- ///// -->
         <!-- Shopping Cart Actions -->
         <!-- ///// -->
-        <action path="/shoppingCartPreviewFrame" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/shoppingCartPreviewFrame" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 parameter="toShoppingCart">
             <forward name="shoppingCartPage" path=".shoppingCartPreviewFrame"/>
 
         </action>
 
 
-        <action path="/placeInCart" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/placeInCart" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 parameter="placeInCart">
             <forward name="inCartSuccess" path=".sportraitShoppingCart"/>
         </action>
 
         <!-- Place photo in cart and show preview -->
-        <action path="/placeInCartPreview" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/placeInCartPreview" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 parameter="placeInCart"
                 name="shoppingCart">
             <forward name="inCartSuccess" path=".shoppingCartPreviewFrame"/>
         </action>
 
-        <action path="/toShoppingCart" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/toShoppingCart" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 parameter="toShoppingCart">
             <forward name="shoppingCartPage" path=".sportraitShoppingCart"/>
             <!--<forward name="databaseError" path=".unartigError1"/>-->
         </action>
-        <action path="/removeFromCart" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/removeFromCart" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 name="removePhotoBean"
                 parameter="removeFromCart">
             <!--<forward name="sessionExpired" path=".unartigError1"/>-->
             <!--<forward name="error" path=".unartigError1"/>-->
         </action>
-        <action path="/updateShoppingCart" type="ch.unartig.studioserver.actions.ShoppingCartAction"
+        <action path="/updateShoppingCart" type="ch.unartig.u_core.actions.ShoppingCartAction"
                 parameter="updateShoppingCart"
                 name="shoppingCart"
                 scope="session">
@@ -249,7 +249,7 @@
         <!-- END Shopping Cart  -->
 
 
-        <action path="/startCheckOut" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/startCheckOut" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="startCheckOut"
                 name="shoppingCart"
                 scope="session">
@@ -262,7 +262,7 @@
 
 
         <!--insert billingMethod-->
-        <action path="/checkOutBillingMethod" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/checkOutBillingMethod" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutBillingMethod"
                 name="checkOutForm"
                 scope="session"
@@ -277,7 +277,7 @@
         <action path="/coWizard_page3" forward=".sportraitScBilling"/>
 
         <!-- ******** validation error treatment ******** -->
-        <action path="/coWizard_page2_error" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/coWizard_page2_error" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutError">
             <forward name="errorpage" path="/coWizard_page2_error_page.html" redirect="true"/>
         </action>
@@ -285,7 +285,7 @@
         <!-- **************** -->
 
 
-        <action path="/checkOutOverview" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/checkOutOverview" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutOverview"
                 name="checkOutForm"
                 scope="session"
@@ -298,21 +298,21 @@
         </action>
         <!-- todo check session also with get pages!-->
         <!-- show the order overview :  -->
-        <action path="/coWizard_page4" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/coWizard_page4" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkSession"
                 >
             <forward name="success" path=".sportraitScOver"/>
         </action>
 
         <!--******** validation error treatment ********-->
-        <action path="/coWizard_page3_error" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/coWizard_page3_error" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutError">
             <forward name="errorpage" path="/coWizard_page3_error_page.html" redirect="true"/>
         </action>
         <action path="/coWizard_page3_error_page" forward=".sportraitScBilling"/>
         <!--****************-->
 
-        <action path="/checkOutConfirm" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/checkOutConfirm" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutConfirm"
                 name="checkOutForm"
                 scope="session"
@@ -334,7 +334,7 @@
         </action>
 
         <!--******** validation error treatment ********-->
-        <action path="/coWizard_page4_error" type="ch.unartig.studioserver.actions.CheckOutAction"
+        <action path="/coWizard_page4_error" type="ch.unartig.u_core.actions.CheckOutAction"
                 parameter="checkOutError">
             <forward name="errorpage" path="/coWizard_page4_error_page.html" redirect="true"/>
         </action>
@@ -349,21 +349,21 @@
         <!-- =============== Photographer pages ================= -->
         <!-- ===============                    ================= -->
 
-        <action path="/photographer/main-zul" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
+        <action path="/photographer/main-zul" type="ch.unartig.u_core.actions.PhotographerAdminAction"
                 parameter="login">
             <forward name="success" path=".photographer-zul"/>
                 </action>
 
         <action path="/photographer/main" forward=".photographer"/>
         <!-- Show the upload Page; let's you chose a category for a an event and either a zip file with fotos or a path on the server with photos: -->
-        <action path="/photographer/admin/upload" type="ch.unartig.studioserver.actions.SportEventsAction"
+        <action path="/photographer/admin/upload" type="ch.unartig.sportrait.web.actions.SportEventsAction"
                 parameter="accountPhUpload"
                 >
             <forward name="success" path=".sportraitAccountPhUpload" redirect="false"/>
         </action>
 
         <!-- Create an Album for a chosen category and upload fotos from a zip file; show upload page again after success-->
-        <action path="/photographer/createUpload" type="ch.unartig.studioserver.actions.SportEventsAction"
+        <action path="/photographer/createUpload" type="ch.unartig.sportrait.web.actions.SportEventsAction"
                 parameter="createUpload"
                 name="uploadForm"
                 scope="request">
@@ -372,7 +372,7 @@
 
         <!-- Show overview of the photographer's albums
              if an album has been chosen to edit, show album details -->
-        <action path="/photographer/admin/edit" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
+        <action path="/photographer/admin/edit" type="ch.unartig.u_core.actions.PhotographerAdminAction"
                 scope="request"
                 name="adminForm"
                 parameter="getOverview"
@@ -381,7 +381,7 @@
         </action>
 
         <!-- Store Album updates; Products etc.  -->
-        <action path="/photographer/updateAlbum" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/photographer/updateAlbum" type="ch.unartig.u_core.actions.AdminAction"
                 scope="request"
                 name="adminForm"
                 parameter="updateLevel"
@@ -389,14 +389,14 @@
             <forward name="success" path="/photographer/admin/edit.html"/>
         </action>
         <!-- Store Album updates; Products etc.  -->
-        <action path="/photographer/logout" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/photographer/logout" type="ch.unartig.u_core.actions.AdminAction"
                 parameter="logout"
                 >
             <forward name="success" path="/index.html"/>
         </action>
 
         <!-- album status eines photographen aendern-->
-        <action path="/photographer/toggleAlbumPublishStatus" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/photographer/toggleAlbumPublishStatus" type="ch.unartig.u_core.actions.AdminAction"
                 scope="request"
                 parameter="toggleAlbumPublishStatus"
                 name="adminForm">
@@ -406,7 +406,7 @@
 
 
         <!-- mapping : -->
-        <action path="/admin/startnumberMapping" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/admin/startnumberMapping" type="ch.unartig.u_core.actions.AdminAction"
                 scope="request"
                 parameter="startnumberMapping"
                 name="sportsAlbumMappingForm">
@@ -414,7 +414,7 @@
             <forward name="success" path="/photographer/admin/edit.html"/>
         </action>
 
-        <action path="/admin/finishtimeMapping" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/admin/finishtimeMapping" type="ch.unartig.u_core.actions.AdminAction"
                 scope="request"
                 parameter="finishtimeMapping"
                 name="sportsAlbumMappingForm">
@@ -423,7 +423,7 @@
         </action>
 
 
-        <action path="/admin/deleteFinishtimeMappings" type="ch.unartig.studioserver.actions.AdminAction"
+        <action path="/admin/deleteFinishtimeMappings" type="ch.unartig.u_core.actions.AdminAction"
                 scope="request"
                 parameter="deleteFinishtimeMappings"
                 name="sportsAlbumMappingForm">
@@ -432,7 +432,7 @@
         </action>
 
 
-        <action path="/admin/deleteLevel" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
+        <action path="/admin/deleteLevel" type="ch.unartig.u_core.actions.AdminAction" scope="request"
                 parameter="deleteLevel"
                 name="adminForm">
             <!--roles="unartigadmin">-->
@@ -441,7 +441,7 @@
 
 
         <!--download ordered photos-->
-        <action path="/order/*/download" type="ch.unartig.studioserver.actions.DownloadOrderAction"
+        <action path="/order/*/download" type="ch.unartig.u_core.actions.DownloadOrderAction"
                 parameter="{1}">
             <set-property property="secure" value="false"/>
             <forward name="success" path=".orderDownload"/>
@@ -453,7 +453,7 @@
         <action path="/admin/editEvents" forward=".uploadEditEvents"/>
 
         <!-- Import events and show upload page again  -->
-        <action path="/admin/bulkImportEvents" type="ch.unartig.studioserver.actions.SportEventsAction" scope="request"
+        <action path="/admin/bulkImportEvents" type="ch.unartig.sportrait.web.actions.SportEventsAction" scope="request"
                 parameter="bulkImportEvents"
                 name="uploadForm"
                 >
@@ -461,14 +461,14 @@
         </action>
 
         <!-- Present a list with all regisutered Photographers -->
-        <action path="/admin/listPhotographers" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
+        <action path="/admin/listPhotographers" type="ch.unartig.u_core.actions.PhotographerAdminAction"
                 parameter="listPhotographers"
                 >
             <forward name="success" path=".listPhotographers" redirect="false"/>
         </action>
 
         <!-- Edit an existing photographer or create a new one -->
-        <action path="/admin/editCreatePhotographer" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
+        <action path="/admin/editCreatePhotographer" type="ch.unartig.u_core.actions.PhotographerAdminAction"
                 scope="request"
                 parameter="editCreatePhotographer"
                 name="photographerForm"
@@ -477,7 +477,7 @@
         </action>
 
         <!-- Update an existing photographer or save a new one -->
-        <action path="/admin/saveUpdatePhotographer" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
+        <action path="/admin/saveUpdatePhotographer" type="ch.unartig.u_core.actions.PhotographerAdminAction"
                 scope="request"
                 parameter="saveUpdatePhotographer"
                 name="photographerForm"
@@ -487,7 +487,7 @@
         </action>
 
 
-        <action path="/admin/triggerOrder" type="ch.unartig.studioserver.actions.AdminAction" parameter="triggerOrder">
+        <action path="/admin/triggerOrder" type="ch.unartig.u_core.actions.AdminAction" parameter="triggerOrder">
             <forward name="showAdminPage" path=".uploadEditEvents" redirect="true"/>
         </action>
 
@@ -495,13 +495,13 @@
         <!--####################### JUpload Action #######################-->
         <!--########### this action is called by the upload applet #######-->
         <!--##############################################################-->
-        <action path="/jupload/upload" type="ch.unartig.studioserver.actions.JUploadAction"/>
+        <action path="/jupload/upload" type="ch.unartig.u_core.actions.JUploadAction"/>
 
         <!--##############################################################-->
         <!--################## REST Service Action #######################-->
         <!--########### this action is called by the upload applet #######-->
         <!--##############################################################-->
-        <action path="/api/events" type="ch.unartig.studioserver.actions.RestServiceAction"/>
+        <action path="/api/events" type="ch.unartig.u_core.actions.RestServiceAction"/>
 
     </action-mappings>
 

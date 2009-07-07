@@ -45,7 +45,7 @@
  * overview und links in tree menu
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.Registry;
 import ch.unartig.u_core.model.GenericLevel;
@@ -61,6 +61,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 // todo delete me if not needed anymore
+/**
+ * TODO: describe
+ */
 public class OverviewAction extends Action
 {
     Logger _logger = Logger.getLogger(getClass().getName());

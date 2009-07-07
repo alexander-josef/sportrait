@@ -199,7 +199,7 @@
  * *** empty log message ***
  *
  ****************************************************************/
-package ch.unartig.studioserver.actions;
+package ch.unartig.u_core.actions;
 
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.exceptions.UnartigException;
@@ -233,7 +233,12 @@ import java.util.List;
 
 
 /**
- *
+ * Module Refactoing:
+ *  + Checked with unartig: navTree generation missing
+ *  + ReportProductSales missing
+ *  + GetOverview missing
+ *  + EditLevel missing
+ *  + Album Advertisment logic missing
  */
 public class AdminAction extends MappingDispatchAction
 {
@@ -258,7 +263,26 @@ public class AdminAction extends MappingDispatchAction
         return mapping.findForward("success");
     }
 
+    /**
+     * prepare all levels to be displayed in the level overview
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws UnartigException
+     */
+    public ActionForward getOverview(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
+    {
 
+        List categories;
+        GenericLevelDAO levelDao = new GenericLevelDAO();
+        categories = levelDao.listGenericLevel(Category.class);
+//        System.out.println("categories = " + categories.size());
+        request.setAttribute("categories", categories);
+        return mapping.findForward("levelOverview");
+    }
 
     /**
      * Photographer Action: change publish status of an album. Can be used by a photographer for his albums, by the admin for all albums.
