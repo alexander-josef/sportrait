@@ -4,16 +4,15 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/src/main/webapp/META-INF/context.xml" optional="false" version="5.x" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" optional="false" version="2.5" />
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
         <building>
-          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/target/sportrait_web-1.0-SNAPSHOT" />
+          <setting name="EXPLODED_URL" value="file://$MODULE_DIR$/target/sportrait_web-1.6.1b" />
           <setting name="EXPLODED_ENABLED" value="true" />
-          <setting name="JAR_URL" value="file://$MODULE_DIR$/target/sportrait_web-1.0-SNAPSHOT.war" />
+          <setting name="JAR_URL" value="file://$MODULE_DIR$/target/sportrait_web-1.6.1b.war" />
           <setting name="JAR_ENABLED" value="false" />
           <setting name="EXCLUDE_EXPLODED_DIRECTORY" value="true" />
         </building>
@@ -21,18 +20,6 @@
           <containerElement type="module" name="sportrait_web">
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/classes" />
-          </containerElement>
-          <containerElement type="library" name="junit:junit:3.8.1" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
-          </containerElement>
-          <containerElement type="library" name="org.apache.geronimo.specs:geronimo-j2ee_1.4_spec:1.0" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="&lt;N/A&gt;" />
-          </containerElement>
-          <containerElement type="library" name="org.testng:testng:5.5:jdk15" level="module">
-            <attribute name="method" value="0" />
-            <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
           <containerElement type="library" name="Maven: ch.unartig.server:sportrait_client:0.7" level="project">
             <attribute name="method" value="1" />
@@ -282,16 +269,16 @@
         </configuration>
       </facet>
     </facet>
+    <facet type="Groovy" name="Groovy">
+      <configuration />
+    </facet>
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="sportraitSessionFactory" value="6673168b-568d-49aa-ac1e-b234c0be3d0f" />
+          <unit-entry name="sportraitSessionFactory" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
-    </facet>
-    <facet type="Groovy" name="Groovy">
-      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_5" inherit-compiler-output="false">
@@ -312,32 +299,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
-      <library name="org.openqa.selenium.server:selenium-server:1.0-beta-1:standalone">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/openqa/selenium/server/selenium-server/1.0-beta-1/selenium-server-1.0-beta-1-standalone-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="org.testng:testng:5.5:jdk15">
-        <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="library" exported="" name="Maven: ch.unartig.server:sportrait_client:0.7" level="project" />
     <orderEntry type="library" exported="" name="Maven: xmlrpc:xmlrpc-client:3.0" level="project" />
     <orderEntry type="library" exported="" name="Maven: org.apache.xmlrpc:xmlrpc-common:3.0" level="project" />

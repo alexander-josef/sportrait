@@ -75,7 +75,7 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
             <html:image  styleClass="right" page="/images/buttons/bt_sendOrder_de.gif"/>
             <span class="right">Ich akzeptiere die <html:link action="/agb" target="_blank">allgemeinen
@@ -86,7 +86,7 @@
                 <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
             </html:link>
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
@@ -120,7 +120,7 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
             <table class="scTableDescription bold">
                 <tr>
@@ -142,7 +142,7 @@
                 </tr>
             </table>
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
@@ -180,14 +180,14 @@
 
 
         <ul class="slide sliceSc margTB10">
-            <li class="slideTop"/>
+            <li class="slideTop"></li>
             <li class="slideImage">
                 <!--<a href="display.html">-->
                 <html:img styleClass="${photo.orientationSuffix}" src="${photo.thumbnailUrl}"
                           title="${photo.displayTitle}" alt="${photo.displayTitle}"/>
                 <!--</a>-->
             </li>
-            <li class="slideBottom"/>
+            <li class="slideBottom"></li>
         </ul>
     </c:if>
 
@@ -196,7 +196,7 @@
         <tr>
             <td class="scSecondcol"><p>${product.productType.name}</p></td>
             <td class="scThirdcol"><p>${scItem.quantity}</p></td>
-            <td class="scFourthcol"><p/></td>
+            <td class="scFourthcol"><p></p></td>
             <td class="scFifthcol"><p>${scItem.price} &nbsp;${shoppingCart.currency}</p></td>
         </tr>
     </table>
@@ -222,14 +222,14 @@
     <table class="scTableDescription">
         <tr class="bold">
             <td class="scFirstcol" colspan="3">Subtotal</td>
-            <td class="scFourthcol"/>
+            <td class="scFourthcol"></td>
             <td class="scFifthcol">${shoppingCart.formattedSubtotalPhotos} &nbsp;${shoppingCart.currency}</td>
         </tr>
         <tr>
-            <td class="scSecondcol"/>
-            <td class="scThirdcol"/>
-            <td class="scFourthcol"/>
-            <td class="scFifthcol"/>
+            <td class="scSecondcol"></td>
+            <td class="scThirdcol"></td>
+            <td class="scFourthcol"></td>
+            <td class="scFifthcol"></td>
         </tr>
             <%--
                     <tr>
@@ -240,7 +240,7 @@
             --%>
         <tr>
             <td class="scFirstcol" colspan="3">Versandkosten</td>
-            <td class="scFourthcol"/>
+            <td class="scFourthcol"></td>
             <td class="scFifthcol">${shoppingCart.formattedShippingPrice} &nbsp;${shoppingCart.currency}</td>
         </tr>
 
@@ -249,20 +249,20 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
 
             <table class="scTableDescription">
                 <tr class="bold emphasize">
                     <td class="scFirstcol">TOTAL</td>
                     <td class="scSecondcol" colspan="2">MWST inbegriffen.</td>
-                    <td class="scFourthcol"/>
+                    <td class="scFourthcol"></td>
                     <td class="scFifthcol">${shoppingCart.formattedTotal} &nbsp;${shoppingCart.currency}</td>
                 </tr>
             </table>
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 <div class="content">
