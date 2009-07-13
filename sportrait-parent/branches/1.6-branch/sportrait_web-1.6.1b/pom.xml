@@ -11,7 +11,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.2</version>
+    <version>1.6.3-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -745,9 +745,9 @@
 
 
     <scm>
-        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.2
+        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.1b
         </connection>
-        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.2
+        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.1b
         </developerConnection>
     </scm>
 
