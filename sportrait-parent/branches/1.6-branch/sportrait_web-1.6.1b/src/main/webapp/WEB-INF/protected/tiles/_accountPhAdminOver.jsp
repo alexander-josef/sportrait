@@ -18,7 +18,7 @@
                     <span class="yellow right">
                         <!--only for admins:-->
                         <html:link action="/admin/deleteLevel"
-                                   onclick="if (confirm('Permanently delete Album? All Photos under this Album will be deleted as well!')) return true; else return false;"
+                                   onclick="return confirm('Permanently delete Album? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="event" paramProperty="genericLevelId">
                             <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
@@ -35,7 +35,7 @@
 
                     <li class="albumAdmin">
                         <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
-                                   onclick="if (confirm('Permanently delete Albem? All Photos under this Album will be deleted as well!')) return true; else return false;"
+                                   onclick="return confirm('Permanently delete Albem? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="album" paramProperty="genericLevelId">
                             <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
@@ -92,7 +92,7 @@
                     <span class="green leftalign">online</span>
 
                     <html:link action="/photographer/toggleAlbumPublishStatus?genericLevelId=${photographerAdminBean.level.genericLevelId}"
-                               onclick="if (confirm('Toggle Album status from online to offline?')) return true; else return false;"
+                               onclick="return confirm('Toggle Album status from online to offline?');"
                                >
                         Offline schalten
                     </html:link>
@@ -102,7 +102,7 @@
                     <span class="red leftalign">offline</span>
 
                     <html:link action="/photographer/toggleAlbumPublishStatus?genericLevelId=${photographerAdminBean.level.genericLevelId}"
-                               onclick="if (confirm('Toggle Album status from offline to online?')) return true; else return false;"
+                               onclick="return confirm('Toggle Album status from offline to online?');"
                                >
                         Online schalten
                     </html:link>
@@ -161,8 +161,8 @@
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
             <th><h3 class="orange">Manuelle Starnummer-Zuweisung (über Unartig Client):</h3></th>
-            <td/>
-            <td/>
+            <td></td>
+            <td></td>
         </tr>
 
         <tr>
@@ -188,8 +188,8 @@
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
             <th><h3 class="orange">Startnummer-Zuweisung anhand der Zeitmessung:</h3></th>
-            <td/>
-            <td/>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td></td>
@@ -248,7 +248,7 @@
             <th><h3 class="orange">Alle Startnummer-Zuweisungen löschen!</h3></th>
             <td>
                 <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
-                <html:submit value="Loeschen!"onclick="if (confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?')) return true; else return false;"/>
+                <html:submit value="Loeschen!"onclick="return confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?');"/>
                 <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelöscht!</p>
             </td>
             <td></td>

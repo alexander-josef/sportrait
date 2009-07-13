@@ -10,7 +10,7 @@
         <li><html:link action="/agb">AGB</html:link></li>
         <li><html:link action="/privacy">Datenschutz</html:link></li>
         <li><html:link action="/contact">Kontakt</html:link></li>
-        <%--<li><a href="http://bugz.unartig.ch/?sportrait-forum" target="_blank">Sportrait-Forum</a>--%>
-        </li>
+        <%--  <li><a href="http://bugz.unartig.ch/?sportrait-forum" target="_blank">Sportrait-Forum</a></li>  --%>
+
     </ul>
 </div>

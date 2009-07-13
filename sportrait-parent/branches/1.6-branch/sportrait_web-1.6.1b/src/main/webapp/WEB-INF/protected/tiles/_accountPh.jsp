@@ -66,7 +66,7 @@
                 <td>******</td>
             </tr>
             <tr>
-                <td/>
+                <td></td>
                 <td>
                     <html:link href="#" onclick="windowShow('editPhPers')" styleClass="left">
                         <img src="/images/buttons/bt_edit_de.jpg" alt="anpassen"/>
@@ -122,11 +122,11 @@
         </tr>
         <tr>
             <td><br/></td>
-            <td colspan="2"/>
+            <td colspan="2"></td>
         </tr>
 
         <tr>
-            <td/>
+            <td></td>
             <td colspan="2">
                     <html:link href="#" onclick="windowHide('editPhPers')" styleClass="left">
                         <img src="/images/buttons/bt_saveChanges_de.gif" alt="Aenderungen seichern"

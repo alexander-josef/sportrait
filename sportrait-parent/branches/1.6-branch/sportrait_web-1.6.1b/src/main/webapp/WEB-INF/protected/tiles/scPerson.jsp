@@ -9,7 +9,9 @@
 <!--Form must enclose all input elements! -->
 <html:form action="/checkOutBillingMethod">
 
-<center id="checkoutBar">
+<%--suppress HtmlDeprecatedTag --%>
+<%--suppress HtmlDeprecatedTag --%>
+    <center id="checkoutBar">
     <table id="checkoutProgress">
         <tr>
             <td class="iamhere">
@@ -26,19 +28,20 @@
             </td>
         </tr>
     </table>
+
 </center>
 
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
             <html:image styleClass="right" page="/images/buttons/bt_next_de.gif"/>
             <html:link action="/toShoppingCart" styleClass="left">
                 <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
             </html:link>
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 

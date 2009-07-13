@@ -96,7 +96,8 @@
         verpflichtet den Fotografen, die oben erwähnten Daten dem Käufer zur Verfügung zu stellen.<br/>
         Die Daten registrierten Fotografen werden ausser im oben beschrieben Fall oder
         ohne exlizite Einwilligung des Fotografen nicht an Dritte weitergegeben.
-    <p/>
+
+    <p></p>
 
     <p class="longText"><span class="bold">Das Publizieren von Fotos</span><br/>
         Wenn nicht ausdrücklich vom Veranstalter eines Anlasses anders verlangt, sind

@@ -23,7 +23,7 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
             <html:image styleClass="right" page="/images/buttons/bt_checkout_de.gif"
                    onclick="postSimpleForm('checkOut',0)"/>
@@ -32,7 +32,7 @@
             <!--todo duplizierter code, siehe ende dieses files-->
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
@@ -70,7 +70,7 @@
 
 
         <ul class="slide sliceSc">
-            <li class="slideTop"/>
+            <li class="slideTop"></li>
             <li class="slideImage">
                 <!--<a href="display.html">-->
                 <html:img styleClass="${photo.orientationSuffix}" src="${photo.thumbnailUrl}"
@@ -169,10 +169,10 @@
             <td class="scFifthcol">${shoppingCart.formattedSubtotalPhotosEUR} (Euro)</td>
         </tr>
         <tr>
-            <td class="scSecondcol"/>
-            <td class="scThirdcol"/>
-            <td class="scFourthcol"/>
-            <td class="scFifthcol"/>
+            <td class="scSecondcol"></td>
+            <td class="scThirdcol"></td>
+            <td class="scFourthcol"></td>
+            <td class="scFifthcol"></td>
         </tr>
         <tr>
             <td class="scFirstcol" colspan="3">Versandkosten</td>
@@ -184,21 +184,21 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
 
             <table class="scTableDescription">
                 <tr class="bold">
                     <td class="scFirstcol">TOTAL</td>
                     <td class="scSecondcol normal">MWST inbegriffen</td>
-                    <td class="scThirdcol"/>
+                    <td class="scThirdcol"></td>
                     <td class="scFourthcol">${shoppingCart.formattedTotalCHE} (SFr.)</td>
                     <td class="scFifthcol">${shoppingCart.formattedTotalEUR} (Euro)</td>
                 </tr>
             </table>
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
