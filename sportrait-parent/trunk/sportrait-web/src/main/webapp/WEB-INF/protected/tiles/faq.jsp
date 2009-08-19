@@ -77,7 +77,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Fotos Suchen und Finden</h2>
 
-<p><a name="020"/><b>Wie finde ich einen Sportanlass?</b>&nbsp;<a
+<p><a name="020"></a><b>Wie finde ich einen Sportanlass?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Auf der
     <html:link action="/index" target="blank">Homepage von SPORTRAIT</html:link>
@@ -90,7 +90,7 @@ trifft noch nich zu, auskommenntiert!
                <a href="/contact.html">kontaktieren</a>, falls Sie möchten, dass dieser Anlass bei SPORTrait eingetregen wird.-->
 </p>
 
-<p><a name="021"/><b>Wie gelange ich zu den Fotos?</b>&nbsp;<a
+<p><a name="021"></a><b>Wie gelange ich zu den Fotos?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Befolgen Sie zuerst die Anleitungen zu <a href="#020" class="expliziterLink bold">"Wie finde ich einen
     Sportanlass?"</a> und lesen Sie dann hier weiter.<br/>
@@ -100,7 +100,7 @@ trifft noch nich zu, auskommenntiert!
     Klicken Sie auf die Kategorie, unter der Sie Ihre Fotos erwarten und Sie gelangen zur Foto-Übersicht der gewählten
     Kategorie. </p>
 
-<p><a name="022"/><b>Wie kann ich meine Fotos anhand der Startnummer finden?</b>&nbsp;<a
+<p><a name="022"></a><b>Wie kann ich meine Fotos anhand der Startnummer finden?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Befolgen Sie zuerst die Anleitungen zu <a href="#020" class="expliziterLink bold">"Wie finde ich einen
     Sportanlass?"</a>
@@ -117,7 +117,7 @@ trifft noch nich zu, auskommenntiert!
     und sofort werden alle Fotos der gewählten Kategorie angezeigt.</p>
 <html:img page="/images/faq/faq_022_de.gif" alt=""/>
 
-<p><a name="023"/><b>Ich kann mein Foto nicht finden. Wie gehe ich vor?</b>&nbsp;<a
+<p><a name="023"></a><b>Ich kann mein Foto nicht finden. Wie gehe ich vor?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Gehen Sie wie folgt vor, wenn Ihre erste Suche nach einem Foto erfolglos war:<br/>
     1. Suchen Sie das Foto in den anderen Kategorien. Es ist möglich, dass die Fotos nicht der richtigen
@@ -132,7 +132,7 @@ trifft noch nich zu, auskommenntiert!
     fast unmöglich, jede Teilnehmerin und jeden Teilnehmer fotografisch festzuhalten. Vielleicht klappt es beim nächsten
     mal...</p>
 
-<p><a name="024"/><b>Gibt es eine Grossansicht der Fotos?</b>&nbsp;<a
+<p><a name="024"></a><b>Gibt es eine Grossansicht der Fotos?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Ja. Wenn Sie in der Foto-Übersicht auf ein einzelnes Foto klicken, gelangen Sie zur Grossansicht dieses Fotos. Sie
     haben auch in diesem Modus die Möglichkeit vor- und zurückzublättern (kleine Fotos rechts und links der
@@ -141,7 +141,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Fotos bestellen</h2>
 
-<p><a name="030"/><b>Wie kann ich ein Foto in den Warenkorb legen?</b>&nbsp;<a
+<p><a name="030"></a><b>Wie kann ich ein Foto in den Warenkorb legen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Sie haben in der Foto-Übersicht ein Foto gewählt und betrachten nun das Foto in der Grossansicht:<br/>
     Im hellgrauen Balken über dem Foto können Sie das Format wählen und den Knopf mit der Bezeichnung "In den Warenkorb"
@@ -155,7 +155,7 @@ trifft noch nich zu, auskommenntiert!
 <html:img page="/images/faq/faq_030_de.gif" alt=""/>
 
 
-<p><a name="031"/><b>Wo kann ich die Produkte (Formate/Produkte) und Mengen wählen?</b>&nbsp;<a
+<p><a name="031"></a><b>Wo kann ich die Produkte (Formate/Produkte) und Mengen wählen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Wenn Sie ein Foto in den Warenkorb legen, wählen Sie bereits ein Format oder Produkt. Im Warenkorb können sie zu
     jedem
@@ -174,7 +174,7 @@ trifft noch nich zu, auskommenntiert!
 
 <p>Wählen Sie ein digitales Produkt, so wird die Menge automatisch auf '1' gesetzt und kann nicht angepasst werden.</p>
 
-<p><a name="032"/><b>Wie kann ich erkennen, dass sich ein Foto bereits im Warenkorb befindet?</b>&nbsp;<a
+<p><a name="032"></a><b>Wie kann ich erkennen, dass sich ein Foto bereits im Warenkorb befindet?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     In der Foto-Übersicht befindet sich im oberen linken Rand ein kleiner Einkaufswagen, wenn
     das Foto bereits im Einkaufswagen liegt (siehe nachfolgende Abbildung <b>a</b>). In der Grossansicht zeigt die Box
@@ -185,7 +185,7 @@ trifft noch nich zu, auskommenntiert!
 </p>
 <html:img page="/images/faq/faq_032_de.jpg" alt=""/>
 
-<p><a name="033"/><b>Wie kann ich ein Foto aus meiner Bestellung entfernen?</b>&nbsp;<a
+<p><a name="033"></a><b>Wie kann ich ein Foto aus meiner Bestellung entfernen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Gehen Sie zum Einkaufswagen. Unter jedem einzelnen Foto finden Sie eine Funktion "löschen". Betätigen Sie diese, um
     ein einzelnes Foto aus dem Einkaufswagen zu entfernen (Siehe letzte Abbildung weiter oben auf diser Seite).
@@ -193,7 +193,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Preise und Produkte</h2>
 
-<p><a name="040"/><b>Welche Formate und Produkte werden angeboten?</b>&nbsp;<a
+<p><a name="040"></a><b>Welche Formate und Produkte werden angeboten?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Welche Produkte zur Auswahl stehen, entscheidet der Fotograf, der die Fotos publiziert und zum Kauf anbietet. Das
     mögliche Angebot
@@ -211,14 +211,14 @@ trifft noch nich zu, auskommenntiert!
 </p>
 <html:img page="/images/faq/faq_040_de.gif" alt=""/>
 
-<p><a name="042"/><b>Warum variieren Preise und Produkte-Angebot?</b>&nbsp;<a
+<p><a name="042"></a><b>Warum variieren Preise und Produkte-Angebot?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Jeder Fotograf kann selbst bestimmen, welche Produkte er zu welchem Preis anbieten will. Da an Grossanlässen oft
     mehrere Fotografen anwesend sind, und jeder Fotograf das Angebot an Produkten und deren Preis selbst bestimmen kann,
     variieren das Angebot und die Preise auch für Fotos desselben Anlasses.
 </p>
 
-<p><a name="043"/><b>Was sind digitale Daten?</b>&nbsp;<a
+<p><a name="043"></a><b>Was sind digitale Daten?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Unter den digitalen Bildprodukten sind die elektronischen Daten eines Fotos zu verstehen.<br/>
     Es stehen zwei digitale Bildprodukte zur Verfügung: <b>digital (hochaufgelöst)</b> und <b>digital (400x600)</b>.
@@ -231,7 +231,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Checkout (Bestellung abschliessen)</h2>
 
-<p><a name="050"/><b>Wie kann ich eine Bestellung abschliessen?</b>&nbsp;<a
+<p><a name="050"></a><b>Wie kann ich eine Bestellung abschliessen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Gehen Sie zum Warenkorb. Wenn Sie alle Fotos ausgewählt und deren Produkte (Formate) und Mengen bestimmt
     haben, dann klicken Sie auf den
@@ -254,7 +254,7 @@ trifft noch nich zu, auskommenntiert!
     Bestellung, Ihre persönlichen Angaben und die Zahlungsmethode jederzeit ändern.
 </p>
 
-<p><a name="051"/><b>Kann ich meine Bestellung noch ändern?</b>&nbsp;<a
+<p><a name="051"></a><b>Kann ich meine Bestellung noch ändern?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Sie können den Inhalt und somit die Auswahl der Fotos, deren Formate und Mengen anpassen, bis Sie sich auf der
     Seite 3 des Checkout-Prozesses (siehe Fortschrittsanzeige in drei Punkten oben an der Seite) mit den allgemeinen
@@ -263,7 +263,7 @@ trifft noch nich zu, auskommenntiert!
     Ihre persönlichen Angaben und die Zahlungsmethode jederzeit ändern.
 </p>
 
-<p><a name="052"/><b>Wann ist eine Bestellung definitiv abgeschlossen?</b>&nbsp;<a
+<p><a name="052"></a><b>Wann ist eine Bestellung definitiv abgeschlossen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Sobald Sie sich auf der Seite 3 des Checkout-Prozessen (siehe Fortschrittsanzeige in drei Punkten oben an der Seite)
     mit den allgemeinen
@@ -275,7 +275,7 @@ trifft noch nich zu, auskommenntiert!
 
 <h2 class="orange">Nach der Bestellung</h2>
 
-<p><a name="060"/><b>Wie erfahre ich, ob meine Bestellung erfolgreich abgeschickt und erfasst wurde?</b>&nbsp;<a
+<p><a name="060"></a><b>Wie erfahre ich, ob meine Bestellung erfolgreich abgeschickt und erfasst wurde?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Kurz nachdem Sie die Bestellung abgeschickt haben gelangen Sie auf die Bestätigungsseite. Die Seite zeigt Ihnen an,
     dass die Bestellung erfolgreich war. Sie erhalten
@@ -283,7 +283,7 @@ trifft noch nich zu, auskommenntiert!
     einmal angezeigt. Es kann sein, dass es einige Minuten dauert, bis das E-Mail bei Ihnen eintrifft.
 </p>
 
-<p><a name="061"/><b>Ich habe kein Bestätigungs-E-Mail erhalten. Ist meine Bestellung fehlgeschlagen?</b>&nbsp;<a
+<p><a name="061"></a><b>Ich habe kein Bestätigungs-E-Mail erhalten. Ist meine Bestellung fehlgeschlagen?</b>&nbsp;<a
         href="#">nach oben</a><br/>
     Nicht unbedingt.
     Wenn Sie die Bestellung abgeschickt haben und die Bestätigungsseite erscheint, Sie aber innerhalb von ein paar Minuten
@@ -296,7 +296,7 @@ trifft noch nich zu, auskommenntiert!
     eine entsprechende Nachricht zukommen zu lassen. Wir werden uns innerhalb von 24 Stunden bei Ihnen melden.
 </p>
 
-<p><a name="062"/><b>Wie lange dauert es, bis die Bestellung bei mir eintrifft?</b>&nbsp;
+<p><a name="062"></a><b>Wie lange dauert es, bis die Bestellung bei mir eintrifft?</b>&nbsp;
     <a href="#">nach oben</a><br/>
     Bei der Bestellung von digitalen Daten wird Ihnen wenige Minuten nach Ihrer
     Bestellung per E-Mail ein Link zugestellt, über den Sie das bestellte Foto

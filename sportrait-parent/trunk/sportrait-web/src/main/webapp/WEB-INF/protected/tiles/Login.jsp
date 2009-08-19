@@ -5,7 +5,7 @@
 <form action="j_security_check" method="POST">
     <table class="form">
         <tr>
-            <td class="formLead">User Name</td>
+            <td class="formLead">Username</td>
             <td>
                 <input type="text" name="j_username" value="" size="18"/>
             </td>
@@ -17,13 +17,13 @@
             </td>
         </tr>
         <tr>
-            <td class="formLead"/>
+            <td class="formLead"></td>
             <td class="checkbox">
                 <input type="checkbox" name="j_rememberme" value="true" /> Remember me
             </td>
         </tr>
         <tr>
-            <td/>
+            <td></td>
             <td>
                 <html:image styleClass="left" 
                        page="/images/buttons/bt_login_de.gif"

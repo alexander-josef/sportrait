@@ -12,7 +12,7 @@
     <div class="content">
 
         <ul class="slide sliceSc" style="margin:6px 20px 0 0;float:left;">
-            <li class="slideTop"/>
+            <li class="slideTop"></li>
             <li class="slideImage">
                 <html:img styleClass="${downloadableItem.photo.orientationSuffix}"
                           src="${downloadableItem.photo.thumbnailUrl}"/>

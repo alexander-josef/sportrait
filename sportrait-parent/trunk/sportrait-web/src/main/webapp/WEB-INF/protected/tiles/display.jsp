@@ -26,7 +26,7 @@ todo refactor name albumBean as fast as possible
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
 
             <html:form action="/placeInCartPreview" target="shoppingcart_frame">
@@ -84,7 +84,7 @@ todo refactor name albumBean as fast as possible
             </html:form>
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
@@ -95,7 +95,7 @@ todo refactor name albumBean as fast as possible
 
     <c:if test="${ ! empty display.previousPhoto}">
         <ul class="slide">
-            <li class="slideTop"/>
+            <li class="slideTop"></li>
             <li class="slideImage">
                 <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
                            property="previousPhotoLinkParams" title="vorheriges Foto">
@@ -116,24 +116,24 @@ todo refactor name albumBean as fast as possible
 
     <table>
         <tr>
-            <th class="frameTopleft"/>
+            <th class="frameTopleft"></th>
             <th class="frameTop">
 
             </th>
-            <th class="frameTopright"/>
+            <th class="frameTopright"></th>
         </tr>
         <tr>
-            <td class="frameLeft"/>
+            <td class="frameLeft"></td>
             <td id="displayImageholder_${display.displayPhoto.orientationSuffix}">
                 <img src="${display.displayPhoto.displayUrl}"
                      alt="${display.displayPhoto.filename} -- ${display.displayPhoto.displayUrl}"/>
             </td>
-            <td class="frameRight"/>
+            <td class="frameRight"></td>
         </tr>
         <tr>
-            <th class="frameBottomleft"/>
-            <th class="frameBottom"/>
-            <th class="frameBottomright"/>
+            <th class="frameBottomleft"></th>
+            <th class="frameBottom"></th>
+            <th class="frameBottomright"></th>
         </tr>
         <tr>
             <td colspan="3" id="filename">
@@ -151,7 +151,7 @@ todo refactor name albumBean as fast as possible
 
     <c:if test="${ ! empty display.nextPhoto}">
         <ul class="slide right">
-            <li class="slideTop"/>
+            <li class="slideTop"></li>
             <li class="slideImage">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
                            property="nextPhotoLinkParams" title="nächstes Foto"><img
@@ -167,8 +167,8 @@ todo refactor name albumBean as fast as possible
     </c:if>
 
 </td>
-<td id="displaySpacer"/>
-<td id="displayShop">
+    <td id="displaySpacer"></td>
+    <td id="displayShop">
 
 
 <ul class="box_B box">

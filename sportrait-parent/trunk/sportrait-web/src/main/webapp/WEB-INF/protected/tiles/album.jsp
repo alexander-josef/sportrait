@@ -20,7 +20,7 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
 
             <html:form action="/showCategory" method="get">
@@ -55,7 +55,7 @@
             </html:form>
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
@@ -101,7 +101,7 @@
 <div class="pageNav">
 
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
 
             <ul class="navList">
@@ -187,7 +187,7 @@
             <!--DYNAMIC Pager END-->
 
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 
 </div>

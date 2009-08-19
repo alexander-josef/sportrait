@@ -5,7 +5,7 @@
 
 <logic:messagesPresent message="true">
     <div class="content">
-        <p class="errorstyle"><span/></p>
+        <p class="errorstyle"><span></span></p>
         <ul>
             <html:messages id="msg" message="true" bundle="ERROR">
                 <li><p class="errorstyle">
@@ -18,7 +18,7 @@
 
 <logic:messagesPresent>
     <div class="content">
-        <p class="errorstyle"><span/></p>
+        <p class="errorstyle"><span></span></p>
         <ul>
             <html:messages id="validationError" bundle="ERROR">
                 <li><p class="errorstyle">
@@ -170,7 +170,7 @@
 </tr>
 
 <tr>
-    <td/>
+    <td></td>
     <td class="leftalign" colspan="2">
         <html:submit property="Button1" value="Senden"/>
     </td>
@@ -179,7 +179,7 @@
     <td colspan="3"><br/></td>
 </tr>
 <tr>
-    <td/>
+    <td></td>
     <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Clausiusstrasse 34, 8006 Zürich, Tel: +41 (0)79 600 3561</td>
 </tr>
 </table>
