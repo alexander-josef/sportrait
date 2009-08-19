@@ -66,8 +66,8 @@
                 <td>Entweder Zip-File waehlen...</td>
             </tr>
             <tr>
-                <td/>
-                <td/>
+                <td></td>
+                <td></td>
                 <td>oder...</td>
             </tr>
             <tr>

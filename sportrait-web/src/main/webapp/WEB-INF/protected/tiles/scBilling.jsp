@@ -29,7 +29,7 @@
 
 <div class="pageNav">
     <ul>
-        <li class="navList-top"/>
+        <li class="navList-top"></li>
         <li class="navList-content">
             <html:image  styleClass="right" page="/images/buttons/bt_next_de.gif"/>
             <span class="right">Mit einer sicheren Verbindung&nbsp;</span>
@@ -37,7 +37,7 @@
                 <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
             </html:link>
         </li>
-        <li class="navList-bottom"/>
+        <li class="navList-bottom"></li>
     </ul>
 </div>
 
