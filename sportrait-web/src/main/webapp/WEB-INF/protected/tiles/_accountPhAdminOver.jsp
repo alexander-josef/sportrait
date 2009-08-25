@@ -5,7 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%--<jsp:useBean id="eventGroups" type="java.util.ArrayList" scope="request"/>--%>
-<jsp:useBean id="photographerAdminBean" type="ch.unartig.sportrait.web.beans.PhotographerAdminBean" scope="request"/>
+<jsp:useBean id="photographerAdminBean" type="ch.unartig.u_core.beans.PhotographerAdminBean" scope="request"/>
 <li class="contentCenter">
 <div class="contentLeft content-1-2">
     <h2>Liste Ihrer Alben </h2>

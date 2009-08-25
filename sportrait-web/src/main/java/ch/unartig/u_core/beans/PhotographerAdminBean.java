@@ -17,7 +17,7 @@
  *************************************************
  * $Log$
  ****************************************************************/
-package ch.unartig.sportrait.web.beans;
+package ch.unartig.u_core.beans;
 
 import ch.unartig.u_core.controller.Client;
 import ch.unartig.u_core.model.GenericLevel;

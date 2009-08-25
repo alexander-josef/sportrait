@@ -275,6 +275,7 @@ public class SportsEvent extends GeneratedSportsEvent
         SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
         extractPhotosFor(sportsAlbum, inputStream);
         // giving control to new thread and return.
+        // todo FIXME: this introduces a (cyclic) dependency to the Importer package
         Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages);
         _logger.info("Starting Uploader Thread ...");
         uploader.start();
