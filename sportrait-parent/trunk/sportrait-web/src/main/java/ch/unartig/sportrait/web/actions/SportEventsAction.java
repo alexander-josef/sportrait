@@ -108,6 +108,7 @@ public class SportEventsAction extends MappingDispatchAction
             if (file != null && !"".equals(file.getFileName()) && (fineImageServerPath == null || "".equals(fineImageServerPath)))
             {
                 _logger.debug("Going to create album from Zip file");
+                // todo FIXME : use importer here and reduce cyclic dependency on model:
                 event.createRegisterSportsAlbum(new Long(eventCategoryId), file.getInputStream(),client, true);
             } else if ((fineImageServerPath != null && !"".equals(fineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
