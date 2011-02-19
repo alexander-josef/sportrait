@@ -191,8 +191,8 @@ public class MailUtil
                 }
                 localizedBody.append(content.getMessage(locale, "email.orderAccepted.body.ccBooked"));
                 localizedBody.append(" " + shoppingCart.getFormattedTotal() + " " + shoppingCart.getCurrency() + "\n");
-                localizedBody.append(content.getMessage(locale, "email.orderAccepted.body.ccNoteColorplaza"))
-                        .append("\n\n");
+//                localizedBody.append(content.getMessage(locale, "email.orderAccepted.body.ccNoteColorplaza"))
+                localizedBody.append("\n\n");
             }
             localizedBody.append(content.getMessage("email.orderAccepted.2-lines"));
             localizedBody.append(downloadLink).append("\n");

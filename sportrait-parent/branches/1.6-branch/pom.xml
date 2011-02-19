@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 
     <parent>
@@ -160,7 +161,8 @@
         <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
-            <version>2.0.2</version>
+            <version>3.1</version>
+            <!--<version>2.0.2</version>-->
         </dependency>
 
         <dependency>
@@ -233,6 +235,12 @@
             <classifier>jdk15</classifier>
             <optional>true</optional>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.paypal</groupId>
+            <artifactId>paypal_base</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
@@ -624,7 +632,7 @@
             </activation>
             <properties>
                 <tomcatUsername>admin</tomcatUsername>
-                <tomcatPassword />
+                <tomcatPassword/>
                 <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
             </properties>
 
@@ -659,7 +667,11 @@
             <id>http-repo</id>
             <name>unArtig maven2 repo</name>
             <url>http://svn.unartig.ch/maven2</url>
+            <releases>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
         </repository>
+
 
         <repository>
             <id>codehaus-snapshots</id>
@@ -751,5 +763,20 @@
         </developerConnection>
     </scm>
 
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <!-- the authentication settings can be put to settings.xml (in [your homedir]/.m2/settings.xml) -->
+        <repository>
+            <id>ssh-repo</id>
+            <name>unartig m2 repo</name>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
+        </repository>
+        <!-- use the following if you ARE using a snapshot version . -->
+        <snapshotRepository>
+            <id>ssh-repo</id>
+            <name>unartig m2 snapshot repo</name>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

@@ -10,7 +10,7 @@
 <div class="content">
 
     <p class="longText"><span class="bold">Kurz und bündig</span><br/>
-        Wir geben keine persönlichen Daten weiter!</p>
+        Wir behandeln Ihre persönlichen Daten mit grösster Sorgfalt und benutzen diese einzig um Ihnen unsere Dienstleistung anzubieten!</p>
     <p class="longText"><span class="bold">Allgemein</span><br/>
         Beim Zugriff auf die Website www.sportrait.com und
         beim Bestellen von Produkten über diese Webseite fallen persönliche Daten

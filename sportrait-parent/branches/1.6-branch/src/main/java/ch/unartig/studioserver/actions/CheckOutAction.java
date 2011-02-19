@@ -158,14 +158,11 @@ import ch.unartig.studioserver.businesslogic.PhotoOrderIF;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.businesslogic.ShoppingCartLogic;
 import ch.unartig.studioserver.model.Customer;
+import ch.unartig.studioserver.ordermodules.PaypalPaymentOrder;
 import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.*;
 import org.apache.struts.actions.MappingDispatchAction;
 
 import javax.servlet.http.HttpServletRequest;
@@ -325,6 +322,46 @@ public class CheckOutAction extends MappingDispatchAction
         CheckOutForm coForm = (CheckOutForm) form;
         SessionHelper.getShoppingCartFromSession(request).setCustomerCountry(coForm.getCountry());
         return mapping.findForward("checkOutOverviewSuccess");
+    }
+
+    /**
+     * Prepare Express Checkout Session with Paybal<br>
+     * clean out the
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return forward to overview or session expired page
+     * @throws ch.unartig.exceptions.UnartigSessionExpiredException
+     *
+     */
+    public ActionForward checkOutPaypalEC(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigSessionExpiredException {
+        checkSessionExpired(request);
+
+        CheckOutForm coForm = (CheckOutForm) form;
+        // todo: country in shopping cart, ok?
+        // todo: does the scitem know its shopping cart?
+        // todo: store a reference to the shopping cart in the sc item?
+        ShoppingCart shoppingCart = SessionHelper.getShoppingCartFromSession(request);
+        shoppingCart.setCustomerCountry(coForm.getCountry());
+        String token = PaypalPaymentOrder.callSetupPaypalExpressCheckout(request, coForm, shoppingCart);
+
+
+        shoppingCart.setPaypalToken(token);
+
+
+        /* redirect ot paypal with the token received from setting up express checkout*/
+
+        ActionRedirect redirect;
+        if (Registry.isDemoOrderMode()) {
+            redirect = new ActionRedirect(mapping.findForward("checkOutSuccessPaypalSandbox"));
+        } else {
+            redirect = new ActionRedirect(mapping.findForward("checkOutSuccessPaypal"));
+        }
+        redirect.addParameter("token",token);
+
+        return redirect;
     }
 
     /**

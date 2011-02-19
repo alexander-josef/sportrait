@@ -136,8 +136,9 @@ public class UnartigActionServlet extends ActionServlet
              throw new ServletException("initialization failed",e);
          }
         PhotoOrderService orderService = PhotoOrderService.getInstance();
-        orderService.startService();
-        System.out.println("UnartigActionServlet.init : STARTED ORDER SERVICE !");
+        // no service needed to batch-process orders currently:
+//        orderService.startService();
+//        System.out.println("UnartigActionServlet.init : STARTED ORDER SERVICE !");
 
         //Initialize SecureRandom
         //This is a lengthy operation, to be done only upon

@@ -176,7 +176,11 @@
 
     <definition name=".sportraitScBilling" extends=".sportraitScPerson">
         <!--<put name="body" value="/WEB-INF/protected/tiles/bodyStandard.jsp"/>-->
+<!--
         <put name="content1" value="/WEB-INF/protected/tiles/scBilling.jsp"/>
+-->
+        <put name="content1" value="/WEB-INF/protected/tiles/scPaypalEC.jsp"/>
+
     </definition>
 
     <definition name=".sportraitScOver" extends=".sportraitScBilling">
