@@ -98,6 +98,7 @@ import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.model.OrderItem;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Product;
+import ch.unartig.studioserver.ordermodules.PaypalPaymentOrder;
 import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
 import ch.unartig.studioserver.persistence.DAOs.OrderHashDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
@@ -203,12 +204,14 @@ public class ShoppingCartLogic
             this.order.setCustomer(customer);
             orderDao.save(this.order);
             prepareDownloadLink(this.order);
+            checkOutForm.setDownloadLink(downloadLink);
             _logger.info("Order with orderid [" + this.order.getOrderId().toString() + "] commited from IP-Address [" + ipAddress + "]");
             _logger.info("successfully stored new order; oipsorderid = " + this.order.getOipsOrderId());
-            if (checkOutForm.isPaymentMethodCreditCard())
+//            if (checkOutForm.isPaymentMethodCreditCard())
+            if (true) // all orders are processed immediately. No deferred orders like colorplaza before.
             {
                 // todo the "photoOrder" is only constructed in this method (and only if method is credit card!). Think about a better solution or initialize the photoOrder before.
-                sendOrderImmediately(this.order);
+                sendOrderImmediately(this.order, ipAddress);
             }
             HibernateUtil.commitTransaction();
             _logger.info("Order successfullly commited [OrderId:"+ this.order.getOrderId().toString()+"]. Starting new Transaction.");
@@ -234,19 +237,23 @@ public class ShoppingCartLogic
     }
 
     /**
-     * If payment method is credit card, the order is sent to the lab immediately
+     * If payment method is credit card, the order is processed
+     *
      * @param order the order to send to the lab
+     * @param ipAddress
      * @return a return code from the order-processing
      * @throws UnartigException
      */
-    private int sendOrderImmediately(Order order) throws UnartigException
+    private int sendOrderImmediately(Order order, String ipAddress) throws UnartigException
     {
         int returnCode;// send order now! use credit card payment
         _logger.debug("payment method: credit card");
-        photoOrder = new CoplaPhotoOrder(order, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly());
+        // the Order object is needed later to send the customer notification email. put reference to shopping cart?
+        photoOrder = new PaypalPaymentOrder(shoppingCart, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly(), ipAddress, order);
+//      photoOrder = new CoplaPhotoOrder(order, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly());
         String cardHolderName = getCardHolderName();
-        CreditCardDetails ccDetail = new CreditCardDetails(checkOutForm.getCreditCardTypeCode(), checkOutForm.getCreditCardNumber(), null, cardHolderName, new Integer(checkOutForm.getCreditCardExpiryYear()), new Integer(checkOutForm.getCreditCardExpiryMonth()));
-        photoOrder.setCreditCardDetails(ccDetail);
+        // CreditCardDetails ccDetail = new CreditCardDetails(checkOutForm.getCreditCardTypeCode(), checkOutForm.getCreditCardNumber(), null, cardHolderName, new Integer(checkOutForm.getCreditCardExpiryYear()), new Integer(checkOutForm.getCreditCardExpiryMonth()));
+        // photoOrder.setCreditCardDetails(ccDetail);
         photoOrder.processOrder();
         returnCode = photoOrder.getErrorCode();
         return returnCode;
@@ -277,6 +284,7 @@ public class ShoppingCartLogic
      * @param order the persistent order object instance
      * @throws ch.unartig.exceptions.UAPersistenceException
      *          if orderHash can not be persisted
+     * @throws ch.unartig.exceptions.UnartigException
      */
     private void prepareDownloadLink(Order order) throws UnartigException
     {

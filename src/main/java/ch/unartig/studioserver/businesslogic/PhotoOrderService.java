@@ -112,7 +112,8 @@ public class PhotoOrderService
 
     public boolean stopService()
     {
-        timer.cancel();
+        // currently no timer active
+//        timer.cancel();
         return true;
     }
 

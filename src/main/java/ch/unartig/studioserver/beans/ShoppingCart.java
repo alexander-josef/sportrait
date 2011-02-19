@@ -190,6 +190,8 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
     private String actionParam;
     private String currency="undefined";
     private String customerCountry;
+    private String paypalToken; /* Added to integrate paypal express checkout*/
+    private String paypalPayerId; /* PayerId can be read with getExpressCheckoutDetails after the customer has successfully from paypal*/
 
 
     /**
@@ -236,22 +238,6 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
         return true;
     }
 
-    /**
-     *
-     * @return true if an invoice is available for the chosen customer country
-     */
-    public boolean isInvoiceAvailableCountry()
-    {
-        // list countries that don't offer invoices
-        // AUSTRIA
-        if (Registry._AUSTRIA_COUNTRY_CODE.equals(getCustomerCountry()))
-        {
-            return false;
-        } else
-        {
-            return true;
-        }
-    }
 
 
     /**
@@ -730,12 +716,14 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
         // GERMANY
         else if (Registry._GERMANY_COUNTRY_CODE.equals(customerCountry))
         {
-            currency=Registry._CURRENCY_EURO;
+            // set to chf
+            currency=Registry._CURRENCY_SWISS_FRANCS;
         }
         // AUSTRIA
         else if (Registry._AUSTRIA_COUNTRY_CODE.equals(customerCountry))
         {
-            currency=Registry._CURRENCY_EURO;
+            // set to chf
+            currency=Registry._CURRENCY_SWISS_FRANCS;
         }
         this.customerCountry = customerCountry;
     }
@@ -765,6 +753,21 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
         return isOnlyDigitalProducts()?0:Product._SHIPPING_HANDLING_INTERNATIONAL_EUR;
     }
 
+    public String getPaypalToken() {
+        return paypalToken;
+    }
+
+        public void setPaypalToken(String paypalToken) {
+        this.paypalToken = paypalToken;
+    }
+
+    public String getPaypalPayerId() {
+        return paypalPayerId;
+    }
+
+    public void setPaypalPayerId(String paypalPayerId) {
+        this.paypalPayerId = paypalPayerId;
+    }
 
     public Long getOrderedPhotoId() {
         return orderedPhotoId;

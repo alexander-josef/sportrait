@@ -689,8 +689,9 @@ public class AdminAction extends MappingDispatchAction
      */
     public ActionForward triggerOrder(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UAPersistenceException
     {
-        TimedOrderProcess orderProcess = new TimedOrderProcess();
-        orderProcess.run();
+        // no OIPS order to trigger anymore
+//        TimedOrderProcess orderProcess = new TimedOrderProcess();
+//        orderProcess.run();
         return mapping.findForward("showAdminPage");
     }
 

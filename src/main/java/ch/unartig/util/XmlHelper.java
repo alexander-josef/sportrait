@@ -47,6 +47,8 @@ public class XmlHelper
      * @param url the url
      * @return root Element that is returned by calling the passed url
      * @throws Exception
+     * @throws java.io.IOException
+     * @throws org.jdom.JDOMException
      */
     public static Element getJdomRootElement(String url) throws IOException, JDOMException
     {

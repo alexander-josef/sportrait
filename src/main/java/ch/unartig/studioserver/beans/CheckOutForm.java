@@ -140,6 +140,7 @@ public class CheckOutForm extends ValidatorForm implements Serializable
     private String creditCardExpiryMonth;
 
     private boolean newCustomer;
+    private String downloadLink;
 
 
     public ActionErrors validate(ActionMapping actionMapping, HttpServletRequest httpServletRequest)
@@ -504,16 +505,21 @@ Iterator errorsIter = errors.get();
     }
 
 
-    public int getCreditCardTypeCode() throws UnartigInvalidArgument
-    {
-        if ("masterCard".equals(getCreditCardType()))
-        {
+    /**
+     * TODO describe: what code? why is it needed?
+     * todo: if this is needed use first digit of card to decide which cc schema
+     * @return
+     * @throws UnartigInvalidArgument
+     */
+    public int getCreditCardTypeCode() throws UnartigInvalidArgument {
+        if ((getCreditCardNumber() == null) || getCreditCardNumber().isEmpty()) {
+            return 0;
+        }
+        if ("masterCard".equals(getCreditCardType())) {
             return CreditCardDetails._CC_TYPE_CODE_MASTERCARD;
-        } else if ("visa".equals(getCreditCardType()))
-        {
+        } else if ("visa".equals(getCreditCardType())) {
             return CreditCardDetails._CC_TYPE_CODE_VISA;
-        } else
-        {
+        } else {
             throw new UnartigInvalidArgument("not a valid credit card type");
         }
     }
@@ -584,5 +590,13 @@ Iterator errorsIter = errors.get();
     public void setEmailConfirmation(String emailConfirmation)
     {
         this.emailConfirmation = emailConfirmation;
+    }
+
+    public void setDownloadLink(String downloadLink) {
+        this.downloadLink = downloadLink;
+    }
+
+    public String getDownloadLink() {
+        return downloadLink;
     }
 }

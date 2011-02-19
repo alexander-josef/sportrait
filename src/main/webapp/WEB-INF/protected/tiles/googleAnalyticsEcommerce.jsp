@@ -7,9 +7,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     PhotoOrderIF test = (PhotoOrderIF)session.getAttribute("photoOrder");
-    System.out.println("test = " + test);
+//    System.out.println("test = " + test);
     Enumeration enumeration = request.getAttributeNames();
-    System.out.println("enumeration = " + enumeration);
+//    System.out.println("enumeration = " + enumeration);
 %>
 <jsp:useBean id="sc" scope="session" type="ch.unartig.studioserver.beans.ShoppingCart" />
 <jsp:useBean id="GAorderId" scope="session" type="Long" />

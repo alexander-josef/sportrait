@@ -56,19 +56,21 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * HTTP related helper methods. Meks heavy use of Commons HTTP-Util 
+ * HTTP related helper methods. Makes heavy use of Commons HTTP-Util
  */
-public class HttpUtil
-{
+public class HttpUtil {
 
 
+    private String address;
     private URLConnection connection = null;
     private HttpClient x_client = null;
     private InputStream is = null;
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public HttpUtil()
-    {
+    public HttpUtil() {
     }
 
 //    public HttpUtil(String url)
@@ -76,34 +78,25 @@ public class HttpUtil
 //        this.address = url;
 //    }
 
-    public void closeConnections()
-    {
-        try
-        {
-            if (is != null)
-            {
+    public void closeConnections() {
+        try {
+            if (is != null) {
                 is.close();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
         }
-        try
-        {
-            if (connection != null && connection instanceof HttpURLConnection)
-            {
+        try {
+            if (connection != null && connection instanceof HttpURLConnection) {
                 ((HttpURLConnection) connection).disconnect();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
         }
-        try
-        {
-            if (x_client != null)
-            {
-                x_client.endSession();
+        try {
+            if (x_client != null) {
+//                deprecated, and not available anymore in v3 of httpclient
+//                x_client.endSession();
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
         }
     }
 
@@ -111,12 +104,11 @@ public class HttpUtil
      * will throw IOException if not authorized:
      * java.io.IOException: Server returned HTTP response code: 401 for URL: http://.....
      *
-     * @throws Exception
-     * @return
      * @param url
+     * @return
+     * @throws Exception
      */
-    public InputStream downloadFileOverJavaHttpClient(URL url) throws Exception
-    {
+    public InputStream downloadFileOverJavaHttpClient(URL url) throws Exception {
         connection = url.openConnection();
         connection.setDoOutput(false);
         connection.setDoInput(true);
@@ -128,19 +120,18 @@ public class HttpUtil
     }
 
     /**
-     * Returns the response from a http GET request as stream. 
+     * Returns the response from a http GET request as stream.
      *
-     * @throws IOException Will throw IOException if not authorized:
-     * @return
      * @param url
+     * @return
+     * @throws IOException Will throw IOException if not authorized:
      */
-    public static InputStream getHttpResponseAsStream(String url) throws IOException
-    {
+    public static InputStream getHttpResponseAsStream(String url) throws IOException {
+
         String x_new_url = url;
         String x_user = null;
         String x_pwd = null;
-        if (url.indexOf('@') > 0)
-        {
+        if (url.indexOf('@') > 0) {
             String x_pwd_str =
                     url.substring(url.indexOf("://") + 3,
                             url.indexOf('@'));
@@ -151,21 +142,22 @@ public class HttpUtil
             x_new_url = url.substring(0, url.indexOf("://") + 3)
                     + url.substring(url.indexOf('@') + 1);
         }
-        HttpClient  httpClient = new HttpClient();
+        HttpClient httpClient = new HttpClient();
         httpClient.getState().setCredentials(//null,
                 null,
                 new UsernamePasswordCredentials(x_user, x_pwd));
-        httpClient.startSession(new URL(x_new_url));
+
+//        Deprecated in httpclient > v3.0
+//        x_client.startSession(new URL(x_new_url));
+        httpClient.getHostConfiguration().setHost(url);
         //	GetMethod get = new GetMethod(x_new_url);
         GetMethod get = new GetMethod(new URL(x_new_url).getPath());
-        if (x_new_url.indexOf('?') > 0)
-        {
+        if (x_new_url.indexOf('?') > 0) {
             String x_queryString = x_new_url.substring(x_new_url.indexOf('?') + 1);
             get.setQueryString(x_queryString);
         }
         int x_responseCode = httpClient.executeMethod(get);
-        if (x_responseCode != HttpURLConnection.HTTP_OK)
-        {
+        if (x_responseCode != HttpURLConnection.HTTP_OK) {
 
             throw new IOException("Server returned HTTP response code: " + x_responseCode + " for URL: " + url);
         }
@@ -175,28 +167,23 @@ public class HttpUtil
     /**
      * @return content Encoding
      */
-    public String getContentEncoding()
-    {
+    public String getContentEncoding() {
         return connection.getContentEncoding();
     }
 
     /**
      * @return content length
      */
-    public int getContentLength()
-    {
+    public int getContentLength() {
         return connection.getContentLength();
     }
 
     /**
      * @return content type
      */
-    public String getContentType()
-    {
-        if (connection instanceof sun.net.www.protocol.file.FileURLConnection)
-        {
-            if ("application/xml".equals(connection.getContentType()))
-            {
+    public String getContentType() {
+        if (connection instanceof sun.net.www.protocol.file.FileURLConnection) {
+            if ("application/xml".equals(connection.getContentType())) {
                 return "text/xml";
             }
         }
@@ -207,10 +194,8 @@ public class HttpUtil
      * @return
      * @throws java.io.IOException
      */
-    public int getResponseCode() throws IOException
-    {
-        if (connection instanceof HttpURLConnection)
-        {
+    public int getResponseCode() throws IOException {
+        if (connection instanceof HttpURLConnection) {
             return ((HttpURLConnection) connection).getResponseCode();
         }
         return 0;
@@ -220,10 +205,8 @@ public class HttpUtil
      * @return
      * @throws java.io.IOException
      */
-    public String getResponseMessage() throws IOException
-    {
-        if (connection instanceof HttpURLConnection)
-        {
+    public String getResponseMessage() throws IOException {
+        if (connection instanceof HttpURLConnection) {
             return ((HttpURLConnection) connection).getResponseMessage();
         }
         return null;
@@ -231,27 +214,26 @@ public class HttpUtil
 
     /**
      * compose a get-request with the given host, path and parameter values
+     *
      * @param parameters
      * @param server
      * @param path
      * @return a new url with the parameters introduced
      * @throws java.io.UnsupportedEncodingException
+     *
      */
-    public static String composeUrlFromParameters(Map parameters, String server, String path) throws UnsupportedEncodingException
-    {
+    public static String composeUrlFromParameters(Map parameters, String server, String path) throws UnsupportedEncodingException {
         StringBuffer sb = new StringBuffer(server + path);
         sb.append('?');
 
-        for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();)
-        {
+        for (Iterator iterator = parameters.keySet().iterator(); iterator.hasNext();) {
             String key = (String) iterator.next();
             String value = (String) parameters.get(key);
 
             sb.append(key);
             sb.append('=');
             sb.append(URLEncoder.encode(value, "utf-8"));
-            if (iterator.hasNext())
-            {
+            if (iterator.hasNext()) {
                 sb.append('&');
             }
         }
@@ -260,33 +242,41 @@ public class HttpUtil
 
     /**
      * return a url as string that points to a download site for the order-hash that is passed
+     *
      * @param orderHash the order hash
-     * @param request servlet request
+     * @param request   servlet request
      * @return String to the downloadURL
      */
-    public static String getDownloadUrl(final String orderHash, HttpServletRequest request)
-    {
+    public static String getDownloadUrl(final String orderHash, HttpServletRequest request) {
         String orderUri = "/order/" + orderHash + "/download.html";
         // for non standard port ...
         String serverUrl = getWebApplicationUrl(request);
-        return  serverUrl + orderUri;
+        return serverUrl + orderUri;
     }
 
     /**
      * Construct the URL for this web-application;
      * Example : 'http://www.sportrait.com'
+     *
      * @param request The http-request from the action
-     * @return The URL to the web application constructed dynamically from the 
+     * @return The URL to the web application constructed dynamically from the
      */
-    public static String getWebApplicationUrl(HttpServletRequest request)
-    {
-        String port="";
-        if (request.getServerPort()!=80 && request.getServerPort()!=443)
-        {
+    public static String getWebApplicationUrl(HttpServletRequest request) {
+        return getBaseUrl(request, "https".equals(request.getScheme()));
+    }
 
-            port=String.valueOf(":"+request.getServerPort());
+    public static String getBaseUrl(HttpServletRequest request, boolean https) {
+        // for non standard port ...
+        String port = "";
+        if (request.getServerPort() != 80 && request.getServerPort() != 443) {
+
+            port = String.valueOf(":" + request.getServerPort());
         }
         // use request.getScheme() if the scheme must match the current scheme
-        return request.getScheme() + "://" + request.getServerName() + port + request.getContextPath();
+        if (https) {
+            return "https://" + request.getServerName() + port + request.getContextPath();
+        } else {
+            return "http://" + request.getServerName() + port + request.getContextPath();
+        }
     }
 }

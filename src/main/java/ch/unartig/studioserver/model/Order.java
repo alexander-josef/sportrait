@@ -78,12 +78,13 @@ public class Order extends GeneratedOrder
 
     /**
      * after an order has completly uploaded, write the orderid and the upload completed date to the db
-     *
-     * @param oipsOrderId id given by oips
+     * TODO : rename in DB
+     * TODO : add field "payment provider" to order object (i.e. "Paypal", or whoever processes a payment)
+     * @param transactionId id given by payment processer (used to be copla, now Paypal)
      */
-    public void confirmUpload(String oipsOrderId)
+    public void confirmUpload(String transactionId)
     {
-        setOipsOrderId(oipsOrderId);
+        setOipsOrderId(transactionId);
         setUploadCompletedDate(new Date());
     }
 
