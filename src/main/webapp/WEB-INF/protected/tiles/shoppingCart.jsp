@@ -51,9 +51,11 @@
             <td class="scFourthcol">
                 Preis (SFr.)
             </td>
+<%--
             <td class="scFifthcol">
                 Preis (Euro)
             </td>
+--%>
         </tr>
     </table>
 </div>
@@ -81,7 +83,7 @@
             <li class="slideBottom">
                 <html:link action="/removeFromCart" paramId="<%=Registry._NAME_ORDERED_PHOTO_ID_PARAM%>"
                            paramName="scItem" paramProperty="photoId">
-                    löschen
+                    lšschen
                 </html:link>
             </li>
         </ul>
@@ -121,11 +123,13 @@
             <td class="scFourthcol">
                     ${scItem.formattedItemPriceCHF} (SFr.)
 
+<%--
             </td>
             <!--<td class="scFifthcol"><p>10.00 (Euro) </p></td>-->
             <td class="scFifthcol">
                     ${scItem.formattedItemPriceEUR} (Euro)
             </td>
+--%>
 
         </tr>
     </table>
@@ -141,7 +145,7 @@
             <tr>
                 <td class="leftalign" colspan="4">
                         <%-- <c:if test="${!empty photo.photo.photographer}">
-                        © by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
+                        ? by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
                         </c:if>
                         --%>
                     <p style="width:743px;padding:1px 0;margin-bottom:10px;"> © by Fotograf: <span class="bold">unartig AG</span>
@@ -166,18 +170,24 @@
         <tr class="bold">
             <td class="scFirstcol" colspan="3">Subtotal</td>
             <td class="scFourthcol">${shoppingCart.formattedSubtotalPhotosCHF} (SFr.)</td>
+<%--
             <td class="scFifthcol">${shoppingCart.formattedSubtotalPhotosEUR} (Euro)</td>
+--%>
         </tr>
         <tr>
             <td class="scSecondcol"></td>
             <td class="scThirdcol"></td>
             <td class="scFourthcol"></td>
+<%--
             <td class="scFifthcol"></td>
+--%>
         </tr>
         <tr>
             <td class="scFirstcol" colspan="3">Versandkosten</td>
             <td class="scFourthcol">${shoppingCart.formattedShippingCHE} (SFr.)</td>
+<%--
             <td class="scFifthcol">${shoppingCart.formattedShippingInternationalEUR} (Euro)</td>
+--%>
         </tr>
     </table>
 </div>
@@ -193,7 +203,9 @@
                     <td class="scSecondcol normal">MWST inbegriffen</td>
                     <td class="scThirdcol"></td>
                     <td class="scFourthcol">${shoppingCart.formattedTotalCHE} (SFr.)</td>
+<%--
                     <td class="scFifthcol">${shoppingCart.formattedTotalEUR} (Euro)</td>
+--%>
                 </tr>
             </table>
 
@@ -204,8 +216,10 @@
 
 <div class="content">
     <b>Lieferfristen:</b><br/>
-    2-3 Tage für Papierabzüge; bis 10 Tage für Poster; Digitale Produkte werden unverzüglich per E-Mail zugestellt.
-
+<%--
+    2-3 Tage fŸr PapierabzŸge; bis 10 Tage fŸr Poster; Digitale Produkte werden unverzŸglich per E-Mail zugestellt.
+--%>
+    Nach der Bezahlung mit Kreditkarte kšnnen die Dateien unmittelbar heruntergeladen werden.
 </div>
 <!-- set default actionParam to checkOut to support non js browser -->
 <html:hidden property="actionParam" value="checkOut"/>
