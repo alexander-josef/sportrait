@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class
+            name="ch.unartig.studioserver.model.Product"
+            table="Products"
+            >
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedProduct</meta>
+
+        <cache usage="read-write"/>
+        <id
+                name="productId"
+                type="java.lang.Long"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <generator class="native">
+                <param name="sequence">sequence_productId</param>
+            </generator>
+        </id>
+
+        <property
+                name="productName"
+                type="java.lang.String"
+                length="255"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+
+        <many-to-one
+                name="price"
+                class="ch.unartig.studioserver.model.Price"
+                lazy="false"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <column name="priceId" index="Product_ProductPrice_INDEX"/>
+        </many-to-one>
+
+        <many-to-one
+                name="productType"
+                class="ch.unartig.studioserver.model.ProductType"
+                lazy="false"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <column name="productTypeId" index="Product_ProductType_INDEX"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>
