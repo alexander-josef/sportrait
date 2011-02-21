@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 
     <parent>
@@ -11,7 +12,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.3</version>
+    <version>1.6-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -631,7 +632,7 @@
             </activation>
             <properties>
                 <tomcatUsername>admin</tomcatUsername>
-                <tomcatPassword />
+                <tomcatPassword/>
                 <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
             </properties>
 
@@ -756,9 +757,9 @@
 
 
     <scm>
-        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.3
+        <connection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches/1.6-branch
         </connection>
-        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags/sportrait_web-1.6.3
+        <developerConnection>scm:svn:svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches/1.6-branch
         </developerConnection>
     </scm>
 
