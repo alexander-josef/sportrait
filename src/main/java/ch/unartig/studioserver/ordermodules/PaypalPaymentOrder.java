@@ -20,6 +20,9 @@ import com.paypal.sdk.services.NVPCallerServices;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,9 +41,16 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
     private boolean simulateOrderOnly;
     private String customerIpAddress;
     private Order order;
+    private static Map<String, String> _paypalCountries = new HashMap<String,String>();
+
+    static {
+        _paypalCountries.put("CHE", "CH");
+        _paypalCountries.put("DEU", "DE");
+        _paypalCountries.put("AUT", "AT");
+        Collections.unmodifiableMap(_paypalCountries);
+    }
 
     /**
-     *
      * @param profile
      * @throws PayPalException
      */
@@ -53,7 +63,6 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
     }
 
     /**
-     *
      * @param profile
      * @throws PayPalException
      */
@@ -85,6 +94,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
 
     /**
      * First call to start paypal express checkout workflow.
+     *
      * @param request
      * @param coForm
      * @param shoppingCart
@@ -111,8 +121,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             // Set up your API credentials, PayPal end point, API operation and version.
             if (Registry.isDemoOrderMode()) {
                 getPaypalSanboxProfile(profile);
-            } else
-            {
+            } else {
                 getPaypalLiveProfile(profile);
 
             }
@@ -127,7 +136,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             String returnURL = HttpUtil.getBaseUrl(request, false) + "/coWizard_page4.html";
 //            String returnURL = "http://www.unartig.ch/coWizard_page4.html";
             encoder.add("RETURNURL", returnURL);
-            String cancelURL="http://www.unartig.ch";
+            String cancelURL = "http://www.unartig.ch";
             encoder.add("CANCELURL", cancelURL);
             encoder.add("SOLUTIONTYPE", "Sole");
             encoder.add("NOSHIPPING", "1"); // don's show shipping address in paypal dialog
@@ -139,7 +148,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             encoder.add("PAYMENTREQUEST_0_PAYMENTACTION", "Sale");
             encoder.add("PAYMENTREQUEST_0_CURRENCYCODE", "CHF"); // Todo check currency codes ...
             encoder.add("PAYMENTREQUEST_0_SHIPTOZIP", coForm.getZipCode().toString());
-            encoder.add("PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE", "CH"); // todo set correct country code from shopping cart
+            encoder.add("PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE", getPaypalCountryCode(coForm)); // todo set correct country code from shopping cart
             encoder.add("PAYMENTREQUEST_0_SHIPTOCITY", coForm.getCity());
             encoder.add("PAYMENTREQUEST_0_SHIPTONAME", coForm.getFirstName() + " " + coForm.getLastName());
             encoder.add("PAYMENTREQUEST_0_SHIPTOSTREET", coForm.getAddr1());
@@ -157,7 +166,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
         }
 
         // logging the response ...
-        for (Object key : decoder.getMap().keySet() ) {
+        for (Object key : decoder.getMap().keySet()) {
             _logger.info(key.toString() + " = " + decoder.getMap().get(key).toString());
         }
 
@@ -166,6 +175,18 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
 
         // Store the token: It's needed again in the shopping cart logic storeandexecute order ...
         return decoder.get("TOKEN");
+    }
+
+    /**
+     * CHE Switzerland
+     * DEU Germany
+     * AUT Austria
+     *
+     * @param coForm
+     * @return
+     */
+    private static String getPaypalCountryCode(CheckOutForm coForm) {
+        return _paypalCountries.get(coForm.getCountry());
     }
 
     public void setUnartigCustomer(Customer customer) {
@@ -213,8 +234,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             if (Registry.isDemoOrderMode()) {
                 _logger.debug("Paypal Demo Order ... DoExpressCheckoutPayment");
                 getPaypalSanboxProfile(profile);
-            } else
-            {
+            } else {
                 getPaypalLiveProfile(profile);
 
             }
@@ -265,7 +285,8 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
                 oDao.save(order);
                 _logger.info("Order persisted for transaction: " + transactionId);
             } catch (UAPersistenceException e) {
-                _logger.error(e);            }
+                _logger.error(e);
+            }
         }
 
 
@@ -273,13 +294,12 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
     }
 
 
-
     /**
      * get the paypal express checkout details (payerid needed for completing transaction)
+     *
      * @return
      */
-    private boolean callPaypalEcGetDetails()
-    {
+    private boolean callPaypalEcGetDetails() {
         NVPEncoder encoder = new NVPEncoder();
         NVPDecoder decoder = new NVPDecoder();
 
@@ -299,8 +319,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             if (Registry.isDemoOrderMode()) {
                 getPaypalSanboxProfile(profile);
                 _logger.debug("Paypal demo Order");
-            } else
-            {
+            } else {
                 // todo: insert values
                 // todo: not so good to store that here in plain text ...
                 getPaypalLiveProfile(profile);
@@ -340,7 +359,6 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
 
         return false;
     }
-
 
 
     public void setCreditCardDetails(CreditCardDetails ccDetail) {
