@@ -39,7 +39,7 @@ todo refactor name albumBean as fast as possible
                         <td>
                             <table id="formatSelectDisplay">
                                 <tr>
-                                    <td class="rightalign">Format:</td>
+                                    <td class="rightalign">Produkt:</td>
                                     <td class="leftalign">
                                         <!-- Dynamic List of products: -->
 
@@ -48,24 +48,28 @@ todo refactor name albumBean as fast as possible
 
                                             <!-- Start digital products -->
                                             <!--todo : refactor the getAlbumProducts in many methods: one for each product category-->
-                                            <c:forEach items="${display.albumFromPhoto.products}" var="product"
+                                            <c:forEach items="${display.albumFromPhoto.activeProducts}" var="product"
                                                        varStatus="forEachStatus">
                                                 <c:if test="${product.digitalProduct}">
                                                     <option value="${product.productId}" ${display.defaultProductId==product.productId?' selected=selected':' '}>
                                                             ${product.productType.name}
                                                         - ${product.formattedPriceCHF} CHF
+<%--
                                                         / ${product.formattedPriceEUR} EUR
+--%>
                                                     </option>
                                                 </c:if>
                                             </c:forEach>
 
                                             <!-- And then paper products -->
-                                            <c:forEach items="${display.albumFromPhoto.products}" var="product"
+                                            <c:forEach items="${display.albumFromPhoto.activeProducts}" var="product"
                                                        varStatus="forEachStatus">
                                                 <c:if test="${!product.digitalProduct}">
                                                     <option value="${product.productId}" ${display.defaultProductId==product.productId?' selected=selected':' '}>
                                                             ${product.productType.name} - ${product.formattedPriceCHF} CHF
+<%--
                                                                 / ${product.formattedPriceEUR} EUR
+--%>
                                                     </option>
                                                 </c:if>
                                             </c:forEach>
@@ -105,7 +109,7 @@ todo refactor name albumBean as fast as possible
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
-                           property="previousPhotoLinkParams" title="vorheriges Foto">zurück
+                           property="previousPhotoLinkParams" title="vorheriges Foto">zurï¿½ck
                 </html:link>
             </li>
         </ul>
@@ -138,7 +142,7 @@ todo refactor name albumBean as fast as possible
         <tr>
             <td colspan="3" id="filename">
                 <c:if test="${!empty display.displayPhoto.photographer}">
-                    © by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
+                    ï¿½ by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
                 </c:if>
                 ${display.displayPhoto.filename}&nbsp;--&nbsp;${display.displayPhoto.shortTimeString}</td>
         </tr>
@@ -154,13 +158,13 @@ todo refactor name albumBean as fast as possible
             <li class="slideTop"></li>
             <li class="slideImage">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                           property="nextPhotoLinkParams" title="nächstes Foto"><img
+                           property="nextPhotoLinkParams" title="nï¿½chstes Foto"><img
                         class="${display.nextPhoto.orientationSuffix}" src="${display.nextPhoto.thumbnailUrl}"
-                        alt="nächstes Foto"/></html:link>
+                        alt="nï¿½chstes Foto"/></html:link>
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                           property="nextPhotoLinkParams" title="nächstes Foto">weiter
+                           property="nextPhotoLinkParams" title="nï¿½chstes Foto">weiter
                 </html:link>
             </li>
         </ul>
