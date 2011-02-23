@@ -30,6 +30,14 @@
             <meta attribute="use-in-tostring">true</meta>
         </property>
 
+        <property
+                name="inactive"
+                type="java.lang.Boolean"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
 
         <many-to-one
                 name="price"

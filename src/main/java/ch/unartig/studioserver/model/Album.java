@@ -215,7 +215,6 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipEntry;
 
 
-
 /**
  *
  */
@@ -361,7 +360,7 @@ public class Album extends GeneratedAlbum {
                     throw new RuntimeException("Error importing from Zip file, can not create directories for thumbnail or display");
                 }
                 while ((zipEntry = zis.getNextEntry()) != null) {
-                    if (zipEntry.getName().toLowerCase().startsWith("fine/")){
+                    if (zipEntry.getName().toLowerCase().startsWith("fine/")) {
                         throw new RuntimeException("fine images not yet supported");
                     }
                     FileUtils.copyFile(zis, new File(this.getAlbumWebImagesPath(), zipEntry.getName()), false, true);
@@ -372,8 +371,7 @@ public class Album extends GeneratedAlbum {
                 } else {
                     throw new RuntimeException("import.txt must exist for importing photos.");
                 }
-            }
-            else { // only import.txt has been uploaded:
+            } else { // only import.txt has been uploaded:
                 InputStreamReader reader = new InputStreamReader(importDataStream);
                 br = new BufferedReader(reader);
             }
@@ -385,14 +383,14 @@ public class Album extends GeneratedAlbum {
                 try {
                     line = br.readLine();
                     String parts[] = line.split(";");
-                    if (parts.length!=4) {
-                        _logger.info("probably last line in file: skipping invalid line while importing from import.txt : [" + line  +"]" );
+                    if (parts.length != 4) {
+                        _logger.info("probably last line in file: skipping invalid line while importing from import.txt : [" + line + "]");
                         continue;
                     }
                     Photo photo = new Photo(parts[0], this, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), new Date(Long.parseLong(parts[3])), parts[0]);
                     add(photo);
                 } catch (IOException e) {
-                    _logger.error("The following line causes problems while importing a photo from import.txt : [" + line+"]");
+                    _logger.error("The following line causes problems while importing a photo from import.txt : [" + line + "]");
                 }
             }
         } catch (IOException e) {
@@ -761,7 +759,7 @@ public class Album extends GeneratedAlbum {
      *
      * @param productTypeId The ID of the ProductType
      * @return <p>The product that has the productType identified by the productTypeId.</p>
-     * <p>NULL, if no product exists with the given productType.</p>
+     *         <p>NULL, if no product exists with the given productType.</p>
      */
     public Product getProductFor(Long productTypeId) {
         // make a query or use the collection???
@@ -814,6 +812,23 @@ public class Album extends GeneratedAlbum {
             throw new NotAuthorizedException("Not Administrator rights");
         }
 
+    }
+
+    /**
+     * Only products that are not flagged for inactive shall be shown in the product information or shopping cart.
+     *
+     * @return Active products (products that don't have the inactvie flag)
+     */
+    public Set getActiveProducts() {
+        Set<Product> activeProducts = new HashSet<Product>();
+        Set allProductsForAlbum = getProducts();
+        for (Object anAllProductsForAlbum : allProductsForAlbum) {
+            Product product = (Product) anAllProductsForAlbum;
+            if (product.getInactive() == null || !product.getInactive()) { // either null or NOT inactive
+                activeProducts.add(product);
+            }
+        }
+        return activeProducts;
     }
 
 
