@@ -1,2 +1,3 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <title>sportrait agb</title>
-<meta name="keywords" content="agb, allgemeine geschäftsbedingungen, general terms and conditions" />
+<meta name="keywords" content="agb, allgemeine geschï¿½ftsbedingungen, general terms and conditions" />

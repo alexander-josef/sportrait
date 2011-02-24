@@ -120,6 +120,11 @@
 
     <action-mappings type="org.apache.struts.config.SecureActionConfig">
 
+        <action path="/hello-tiles" forward=".hello-tiles" />
+
+
+
+
         <action path="/photographer/faq" forward=".faqPh"/>
         <action path="/photographerFaq" forward=".faqPh"/>
         <action path="/photographerInfo" forward=".sportraitAccountInfo"/>
@@ -541,7 +546,7 @@
     <controller
             processorClass="org.apache.struts.action.SecureTilesRequestProcessor"
             nocache="true"
-            contentType="text/html;charset=UTF-8"
+            contentType="text/html;charset=UTF8"
             inputForward="true"
             maxFileSize="1G"/>
 

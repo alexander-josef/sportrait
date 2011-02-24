@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -113,7 +114,7 @@
         </td>
     </tr>
     <tr>
-        <td class="formLead">E-Mail bestätigen:<span class="must">*</span>:</td>
+        <td class="formLead">E-Mail bestÃ¤tigen:<span class="must">*</span>:</td>
         <td class="leftalign" colspan="2">
             <html:text property="fromAddressConfirm" style="width: 190px"/>
         </td>
@@ -180,7 +181,7 @@
 </tr>
 <tr>
     <td></td>
-    <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Clausiusstrasse 34, 8006 Zürich, Tel: +41 (0)79 600 3561</td>
+    <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Clausiusstrasse 34, 8006 ZÃ¼rich, Tel: +41 (0)79 600 3561</td>
 </tr>
 </table>
 </html:form>

@@ -1,2 +1,3 @@
-<title>über sportrait</title>
-<meta name="keywords" content="über uns, about, sport, foto, photo, picture, image" />
+<%@ page contentType="text/html; charset=UTF-8"%>
+<title>Ãœber sportrait</title>
+<meta name="keywords" content="ï¿½ber uns, about, sport, foto, photo, picture, image" />

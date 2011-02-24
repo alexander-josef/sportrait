@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -20,11 +21,11 @@
             </td>
             <td class="undone">
                 <html:img page="/images/buttons/Checkout_step_2_off.gif" alt="Schritt 2"/><br/>
-                Zahlungsmethode wählen
+                Zahlungsmethode wÃ¤hlen
             </td>
             <td class="undone">
                 <html:img page="/images/buttons/Checkout_step_3_off.gif" alt="Schritt 3"/><br/>
-                Bestätigen
+                BestÃ¤tigen
             </td>
         </tr>
     </table>
@@ -38,7 +39,7 @@
         <li class="navList-content">
             <html:image styleClass="right" page="/images/buttons/bt_next_de.gif"/>
             <html:link action="/toShoppingCart" styleClass="left">
-                <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
+                <html:img page="/images/buttons/bt_back_de.gif" alt="zurï¿½ck"/>
             </html:link>
         </li>
         <li class="navList-bottom"></li>
@@ -82,7 +83,7 @@
 
 
 <p><i>Mit einem
-    <span class="must">*</span> versehene Felder müssen ausgefüllt werden.</i>
+    <span class="must">*</span> versehene Felder mÃ¼ssen ausgefÃ¼llt werden.</i>
 </p>
 <table class="form">
     <tr>
@@ -157,7 +158,7 @@
                     Deutschland<%--<bean:message bundle="CONTENT" key="country.germany"/>--%>
                 </html:option>
                 <html:option value="AUT">
-                    Österreich
+                    Ã–sterreich
                 </html:option>
             </html:select>
 
@@ -168,8 +169,8 @@
 
 
 <div class="content">
-    <p class="leftclear leftalign comment">Die Daten werden über eine
-        verschlüsselte Verbindung übertragen. Wir behandeln Ihre persönlichen Daten mit grösster Sorgfalt. Lesen Sie
+    <p class="leftclear leftalign comment">Die Daten werden Ã¼ber eine
+        verschlÃ¼sselte Verbindung Ã¼bertragen. Wir behandeln Ihre persÃ¶nlichen Daten mit grÃ¶sster Sorgfalt. Lesen Sie
         dazu auch unsere
         <html:link action="/privacy" target="_blank">Datenschutzbestimmungen</html:link>
         .</p>

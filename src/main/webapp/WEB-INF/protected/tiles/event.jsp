@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -19,7 +20,7 @@
 
         <c:if test="${!sportsEvent.hasPhotos}">
             <!-- wenn keine Fotos start -->
-            <p>Zu diesem Anlass gibt es bisher noch keine Fotos.<br/>In der Regel sollten Sie die Fotos sp?testens 24
+            <p>Zu diesem Anlass gibt es bisher noch keine Fotos.<br/>In der Regel sollten Sie die Fotos spätestens 24
                 Stunden nach dem Anlass
                 hier finden</p>
             <!-- wenn keine Fotos end -->
@@ -51,7 +52,7 @@
 
 </div>
 <div class="content600">
-    <h3>�ber den Anlass</h3>
+    <h3>Über den Anlass</h3>
 
     <p>${sportsEvent.description}<br/>
         <a href="http://${sportsEvent.weblink}" target="_blank">Zur Webseite des Veranstalters...</a></p>

@@ -109,7 +109,7 @@ todo refactor name albumBean as fast as possible
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
-                           property="previousPhotoLinkParams" title="vorheriges Foto">zurï¿½ck
+                           property="previousPhotoLinkParams" title="vorheriges Foto">zurück
                 </html:link>
             </li>
         </ul>
@@ -142,7 +142,7 @@ todo refactor name albumBean as fast as possible
         <tr>
             <td colspan="3" id="filename">
                 <c:if test="${!empty display.displayPhoto.photographer}">
-                    ï¿½ by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
+                  © by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
                 </c:if>
                 ${display.displayPhoto.filename}&nbsp;--&nbsp;${display.displayPhoto.shortTimeString}</td>
         </tr>
@@ -158,13 +158,13 @@ todo refactor name albumBean as fast as possible
             <li class="slideTop"></li>
             <li class="slideImage">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                           property="nextPhotoLinkParams" title="nï¿½chstes Foto"><img
+                           property="nextPhotoLinkParams" title="n?chstes Foto"><img
                         class="${display.nextPhoto.orientationSuffix}" src="${display.nextPhoto.thumbnailUrl}"
-                        alt="nï¿½chstes Foto"/></html:link>
+                        alt="n?chstes Foto"/></html:link>
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                           property="nextPhotoLinkParams" title="nï¿½chstes Foto">weiter
+                           property="nextPhotoLinkParams" title="n?chstes Foto">weiter
                 </html:link>
             </li>
         </ul>

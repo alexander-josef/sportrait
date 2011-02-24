@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -62,7 +63,7 @@
 <div class="content">
     <c:if test="${albumBean.size==0}">
         <%--<bean:message bundle="CONTENT" key="error.album.photos.notavailable" />--%>
-        <p>1) Entweder sind diese Fotos noch nicht verfügbar, oder <br/>
+        <p>1) Entweder sind diese Fotos noch nicht verfÃ¼gbar, oder <br/>
             2) Das gesuchte Foto wurde nicht gefunden. >> Probieren Sie's mit der Startnummer <span
                 class="bold">'999'</span>.
         </p>
