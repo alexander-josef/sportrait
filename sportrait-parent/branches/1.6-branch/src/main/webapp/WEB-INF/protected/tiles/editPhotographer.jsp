@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -37,7 +38,7 @@
         </td>
     </tr>
     <tr>
-        <td>Passwort best‰tigen</td>
+        <td>Passwort best√§tigen</td>
         <td>
             <html:password property="passwordConfirm"/>
         </td>

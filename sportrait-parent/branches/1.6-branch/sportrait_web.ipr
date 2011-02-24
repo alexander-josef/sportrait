@@ -6,12 +6,12 @@
   <component name="ArtifactManager">
     <artifact type="war" name="sportrait_web:war">
       <output-path>$PROJECT_DIR$/target</output-path>
-      <root id="archive" name="sportrait_web-1.6.4-SNAPSHOT.war">
+      <root id="archive" name="sportrait_web-1.6.5-SNAPSHOT.war">
         <element id="artifact" artifact-name="sportrait_web:war exploded" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="sportrait_web:war exploded">
-      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.4-SNAPSHOT</output-path>
+      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.5-SNAPSHOT</output-path>
       <root id="root">
         <element id="javaee-facet-resources" facet="sportrait_web/web/Web" />
         <element id="directory" name="WEB-INF">
@@ -121,12 +121,31 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/about.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/accountPhTabs.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/agb.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/album.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/contact.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/copyright.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/display.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/editPhotographer.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/event.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/eventsPh.jsp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/faq.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/footer.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/home.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/infoForPhotographers.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/privacy.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/registerPhotographer.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/registerPhotographerConfirm.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/results.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/scBilling.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/scOrderConfirm.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/scOver.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/scPaypalEC.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/scPerson.jsp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/shoppingCart.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/uploadEvents.jsp" charset="windows-1252" />
   </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
@@ -308,7 +327,7 @@
   <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="spotrait exploded" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
-      <option name="UPDATING_POLICY" value="update-resources" />
+      <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="sportrait_web:war exploded">
           <settings>
@@ -373,6 +392,64 @@
     </configuration>
   </component>
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches" />
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../trunk/web-images-context">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches" />
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">

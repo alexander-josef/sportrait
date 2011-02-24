@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <div class="pageNav">
@@ -21,7 +22,7 @@
 </div>
 
 <div class="content600">
-    <p><span class="bold">Suche nach: </span>Marathon, Zürich, Mai 2006</p>
+    <p><span class="bold">Suche nach: </span>Marathon, ZÃ¼rich, Mai 2006</p>
 
     <div id="eventlist">
         <ul class="linkList">

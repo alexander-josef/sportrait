@@ -109,7 +109,8 @@
             <param-name>update-uri</param-name>
             <param-value>/zkau</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup><!-- MUST -->
+        <load-on-startup>1</load-on-startup>
+        <!-- MUST -->
     </servlet>
     <servlet-mapping>
         <servlet-name>zkLoader</servlet-name>
@@ -183,4 +184,17 @@
         <session-timeout>30</session-timeout>
     </session-config>
 
+ <!--
+ use this configuration instead of specifying utf-8 as encoding on all jsp's:
+
+<%@ page contentType="text/html; charset=UTF-8"%>
+
+
+ <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+-->
 </web-app>

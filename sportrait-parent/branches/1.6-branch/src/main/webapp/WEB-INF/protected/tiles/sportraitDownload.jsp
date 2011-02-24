@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -32,7 +33,7 @@
             </p>
 
             <p>
-                <b>WICHTIG, bitte Anleitung lesen: </b> Klicken Sie auf den "Download >>" Link, und benutzen Sie die Speicher-Funktion ('Save', 'Save to Disk') des Browsers bevor Sie das Foto &ouml;ffnen!
+                <b>WICHTIG, bitte Anleitung lesen: </b> Klicken Sie auf den "Download >>" Link, und benutzen Sie die Speicher-Funktion ('Save', 'Save to Disk') des Browsers bevor Sie das Foto öffnen!
                 <%--<bean:message bundle="CONTENT" key="instructions.download"/>--%>
                 <br/>
 

@@ -34,7 +34,7 @@
     </form>
     --><!-- Tile Ende --><!---->
 
-        <h2>AKTUELLE ANLÄSSE</h2>
+        <h2>AKTUELLE ANL?SSE</h2>
 
 
     <div class="eventlist">
@@ -58,7 +58,7 @@
         </ul>
     </div>
 
-        <h2>KOMMENDE ANLÄSSE</h2>
+        <h2>KOMMENDE ANL?SSE</h2>
 
         <div class="eventlist">
             <ul class="linkList">
@@ -78,14 +78,14 @@
 <div class="rightContentHome">
 
         <h2>&nbsp;</h2>
-        <p style="height:205px;">In diesem Kasten werden die Events angezeigt, für die du Fotos hochladen kannst. Ab dem Tag, an dem der Anlass
-        stattfindet bis eine Woche nach dem Anlass werden die Anlässe hier angezeigt.<br/>
-        Über den <b>UPLOAD-LINK </b><html:img page="/images/arrow-upload.gif" alt="Fotos hochladen"/> gelangst du zur FOTO-UPLOAD Seite.
+        <p style="height:205px;">In diesem Kasten werden die Events angezeigt, f?r die du Fotos hochladen kannst. Ab dem Tag, an dem der Anlass
+        stattfindet bis eine Woche nach dem Anlass werden die Anl?sse hier angezeigt.<br/>
+        ?ber den <b>UPLOAD-LINK </b><html:img page="/images/arrow-upload.gif" alt="Fotos hochladen"/> gelangst du zur FOTO-UPLOAD Seite.
         </p>
 
         <h2>&nbsp;</h2>
-        <p>In diesem Kasten werden die Anlässe angezeigt, die noch nicht stattgefunden haben. Die Anlässe sind chronologisch geordnet mit dem
-        nächsten Anlass zuoberst. Jeeder Anlass ist ein link, der dich zu mehr Informationen über den Anlässen führt.<br/>
+        <p>In diesem Kasten werden die Anl?sse angezeigt, die noch nicht stattgefunden haben. Die Anl?sse sind chronologisch geordnet mit dem
+        n?chsten Anlass zuoberst. Jeeder Anlass ist ein link, der dich zu mehr Informationen ?ber den Anl?ssen f?hrt.<br/>
         Wenn du einen Anlass angemeldet hast, erscheint dieser nach ca. 1 Tag in diesem Kasetn.
         </p>
 

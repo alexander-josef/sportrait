@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -15,11 +16,11 @@
             </td>
             <td class="iamhere">
                 <html:img page="/images/buttons/Checkout_step_2.gif" alt="Schritt 2"/><br/>
-                Zahlungsmethode wählen
+                Zahlungsmethode wÃ¤hlen
             </td>
             <td>
                 <html:img page="/images/buttons/Checkout_step_3_off.gif" alt="Schritt 3"/><br/>
-                Bestätigen
+                BestÃ¤tigen
             </td>
         </tr>
     </table>
@@ -36,7 +37,7 @@
             <span class="right">Mit einer sicheren Verbindung&nbsp;</span>
 --%>
             <html:link action="/startCheckOut" styleClass="left">
-                <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
+                <html:img page="/images/buttons/bt_back_de.gif" alt="zurÃ¼ck"/>
             </html:link>
         </li>
         <li class="navList-bottom"></li>
@@ -96,7 +97,7 @@
 --%>
 <%--
 <c:if test="${!shoppingCart.onlyDigitalProducts && !shoppingCart.invoiceAvailableCountry}">
-    <p><b>Für die gewählte Rechnungsadresse bieten wir nur die Bezahlung per Kreditkarte an.</b>
+    <p><b>FÃ¼r die gewÃ¤hlte Rechnungsadresse bieten wir nur die Bezahlung per Kreditkarte an.</b>
     </p>
 </c:if>
 --%>
@@ -105,7 +106,7 @@
 <table class="form">
     <tr>
         <td colspan="2"><p><i>Mit einem
-            <span class="must">*</span> versehene Felder müssen ausgefüllt werden.</i></p><br/></td>
+            <span class="must">*</span> versehene Felder mÃ¼ssen ausgefÃ¼llt werden.</i></p><br/></td>
     </tr>
     <!--Invoice is possible for non-digital orders and if the country supports invoicing-->
     <c:if test="${!shoppingCart.onlyDigitalProducts && shoppingCart.invoiceAvailableCountry}">
@@ -149,9 +150,9 @@
 
 <div class="content">
 
-    <p class="leftclear leftalign comment">Die Daten werden über eine
-        <span style="font-weight:bold;">verschlüsselte Verbindung</span> übertragen. Wir behandeln Ihre persönlichen
-        Daten mit grösster Sorgfalt. Lesen Sie
+    <p class="leftclear leftalign comment">Die Daten werden Ã¼ber eine
+        <span style="font-weight:bold;">verschlÃ¼sselte Verbindung</span> Ã¼bertragen. Wir behandeln Ihre persÃ¶nlichen
+        Daten mit grÃ¶sster Sorgfalt. Lesen Sie
         dazu auch unsere
         <html:link action="/privacy" target="_blank">Datenschutzbestimmungen</html:link>
         .</p>

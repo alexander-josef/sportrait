@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+
 <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -51,13 +53,15 @@
     </table>
     </form>
     --><!-- Tile Ende --><!---->
+<%--
+
     <c:if test="${clientInSession==null}">
         <h2>AKTUELLE FOTOS</h2>
     </c:if>
-    <c:if test="${clientInSession!=null}">
-        <h2>AKTUELLE ANLÄSSE</h2>
-    </c:if>
+--%>
+        <h2>AKTUELLE ANLÃ„SSE</h2>
 
+   
     <div class="eventlist">
         <ul class="linkList">
             <c:forEach items="${recentEvents}" var="event" varStatus="forEachStatus">
@@ -84,8 +88,8 @@
 
     <p>SPORTRAIT wurde von den Machern von <a href="http://www.unartig.ch">unArtig</a> entwickelt mit dem Ziel, den
         Sportfotoservice attraktiver zu gestalten.</p>
-    <%--<p>SPORTRAIT lebt von der Initiative vieler unabhängiger Profi- und Amateurfotografen, die Fotos von Sportanlässe an Athletinnen und Athleten verkaufen.</p>--%>
-    <%--    <p>SPORTRAIT wurde 2006 von den Machern von <a href="#">unArtig</a> gegründet mit dem Ziel, den Sportfotoservice in
+    <%--<p>SPORTRAIT lebt von der Initiative vieler unabhÃ¤ngiger Profi- und Amateurfotografen, die Fotos von SportanlÃ¤sse an Athletinnen und Athleten verkaufen.</p>--%>
+    <%--    <p>SPORTRAIT wurde 2006 von den Machern von <a href="#">unArtig</a> gegrÃ¼ndet mit dem Ziel, den Sportfotoservice in
 vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
 
 </div>
@@ -94,7 +98,7 @@ vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
     <ul class="box_A box" id="loginBoxHome">
         <li class="top"><html:img page="/images/box_A_top.gif" alt=""/></li>
         <li class="middle">
-            <h2>LOGIN <span class="normalWeight">FÜR FOTOGRAFEN</span></h2>
+            <h2>LOGIN <span class="normalWeight">FÃœR FOTOGRAFEN</span></h2>
 
             <tiles:insert attribute="login"/>
             <!-- Tile:Login -->
@@ -110,12 +114,12 @@ vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
 
     <%--Re-enable if sportrait is ready for photographers:--%>
 
-    <%--<h2>FÜR SPORTLER</h2>--%>
+    <%--<h2>F?R SPORTLER</h2>--%>
 
     <%--<p>Hier finden Sie Ihre Sportfotos zu fairen Preisen. <b>Ist Ihr Anlass auch dabei?</b>--%>
     <%--</p>--%>
 
-    <%--<h2>FÜR FOTOGRAFEN</h2>--%>
+    <%--<h2>F?R FOTOGRAFEN</h2>--%>
 
     <%--<p>Sportfotos effizient vermarkten in <html:link action="/photographerInfo">drei Schritten:</html:link></p>--%>
     <%--<html:link action="/photographerInfo" styleId="stepsBox">--%>

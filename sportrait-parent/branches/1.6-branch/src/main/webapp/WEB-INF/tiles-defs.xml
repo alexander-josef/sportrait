@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <!DOCTYPE tiles-definitions PUBLIC
         "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN"
@@ -17,6 +17,10 @@
         <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
+
+<!-- test encoding:
+    <definition name=".hello-tiles" path="/hello.jsp"/>
+-->
 
     <definition name=".headHome" path="/WEB-INF/protected/tiles/headHome.jsp">
         <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
@@ -66,7 +70,7 @@
     </definition>
 
     <definition name=".recentEventsFrame" template="/WEB-INF/protected/layout/simpleTemplate.jsp">
-        <put name="htmlTitle" type="string"><![CDATA[sportrait -- aktuelle anlässe]]></put>
+        <put name="htmlTitle" type="string"><![CDATA[sportrait -- aktuelle anlÃ¤sse]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/_recentEventsFrame.jsp"/>
         <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 

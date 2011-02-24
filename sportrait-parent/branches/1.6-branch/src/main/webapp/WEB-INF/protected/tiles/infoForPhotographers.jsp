@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -7,15 +8,15 @@
     <h1 id="pageName">Sportfotos Verkaufen leicht gemacht</h1>
 </div>
 <div class="content600">
-    <p><br/> Du fotografierst bereits an Sportanlässen, hast aber keine geeignete Plattform, um deine Fotos zu
-        präsentieren oder zu verkaufen, oder Du
-        bist ein ambitionierter Sportfotograf und suchst nach Möglichkeiten, dein teures Equipment mit der
-        Sportfotografie selbstständig
+    <p><br/> Du fotografierst bereits an SportanlÃ¤ssen, hast aber keine geeignete Plattform, um deine Fotos zu
+        prÃ¤sentieren oder zu verkaufen, oder Du
+        bist ein ambitionierter Sportfotograf und suchst nach MÃ¶glichkeiten, dein teures Equipment mit der
+        Sportfotografie selbststÃ¤ndig
         zu finanzieren - dann wird dich SPORTRAIT interessieren.<br/>
         SPORTRAIT bietet Fotografen eine attraktive Plattform, um Sportfotos einfach und effizient einer grossen
-        Öffentlichkeit
-        zu präsentieren und eine reale Verdienstmöglichkeit.<br/>
-        Die folgenden drei Schritte beschreiben, wie auch du künftig deine Sporfotos potentiellen Kunden präsentieren
+        Ã–ffentlichkeit
+        zu prÃ¤sentieren und eine reale VerdienstmÃ¶glichkeit.<br/>
+        Die folgenden drei Schritte beschreiben, wie auch du kÃ¼nftig deine Sporfotos potentiellen Kunden prÃ¤sentieren
         kannst.
     </p>
 
@@ -30,41 +31,41 @@
 
     <h2><html:img page="/images/step_2.gif" alt="Schritt 2"/></h2>
 
-    <p>Zurück vom Anlass bearbeitest du die Fotos. Die Fotos müssen gedreht, umbenannt und schlechte Fotos sollten
+    <p>ZurÃ¼ck vom Anlass bearbeitest du die Fotos. Die Fotos mÃ¼ssen gedreht, umbenannt und schlechte Fotos sollten
         ausgeschieden werden.
-        Bei SPORTRAIT findest du Tipps und Unterstützung, wie du die Fotos effizient und richtig nachbearbeiten kannst.
+        Bei SPORTRAIT findest du Tipps und UnterstÃ¼tzung, wie du die Fotos effizient und richtig nachbearbeiten kannst.
         SPORTRAIT stellt dir
-        unter anderem Tools zur Verfügung, um den Fotos Startnummern zuzuweisen, was den Kunden die Suche nach den
-        Fotos deutlich erleichert und gleichzeitig die Wahrscheinlichkeit, dass die Kunden Fotos kaufen, erhöht.<br/>
-        Jetzt lädst du die Fotos bequem auf unseren Server. Für jede einzelne Kategorie eines Sportanlasses kannst du
+        unter anderem Tools zur VerfÃ¼gung, um den Fotos Startnummern zuzuweisen, was den Kunden die Suche nach den
+        Fotos deutlich erleichert und gleichzeitig die Wahrscheinlichkeit, dass die Kunden Fotos kaufen, erhÃ¶ht.<br/>
+        Jetzt lÃ¤dst du die Fotos bequem auf unseren Server. FÃ¼r jede einzelne Kategorie eines Sportanlasses kannst du
         die
         Produkteauswahl und die Preise bestimmen. Zuletzt publizierst du deine Fotos auf Knopfdruck, und schon hat eine
-        breite Öffentlichkeit
+        breite Ã–ffentlichkeit
         Zugang zu deinen Fotos.
     </p>
 
     <h2><html:img page="/images/step_3.gif" alt="Schritt 3"/></h2>
 
-    <p>Sind die Fotos einmal online, so arbeitet SPORTRAIT für dich. SPORTRAIT bietet deinen Kunden eine Bestellung über
+    <p>Sind die Fotos einmal online, so arbeitet SPORTRAIT fÃ¼r dich. SPORTRAIT bietet deinen Kunden eine Bestellung Ã¼ber
         einen
         benutzerfreundlichen Warenkorb an, besorgt die Zustellung der bestellten Prints per Post innert 2-4 Tagen und
-        die Zustellung digitaler Bilder unverzüglich per E-Mail und kümmert sich selbstverständlich auch um das Inkasso.<br>
-        Du kannst jederzeit deinen erwirtschafteten Umsatz einsehen. Die Detailiertheit der Umsatz-Berichte ermöglicht
+        die Zustellung digitaler Bilder unverzÃ¼glich per E-Mail und kÃ¼mmert sich selbstverstÃ¤ndlich auch um das Inkasso.<br>
+        Du kannst jederzeit deinen erwirtschafteten Umsatz einsehen. Die Detailiertheit der Umsatz-Berichte ermÃ¶glicht
         Dir,
-        die Preismodelle und die Produkteauswahl für kommenede Anlässe zu optimieren.<br/>
-        Der Ertrag aus deinem Fotoverkauf wird dir monatlich überwiesen.</p>
+        die Preismodelle und die Produkteauswahl fÃ¼r kommenede AnlÃ¤sse zu optimieren.<br/>
+        Der Ertrag aus deinem Fotoverkauf wird dir monatlich Ã¼berwiesen.</p>
 
     <h2>Pilotphase</h2>
 
     <p>Zurzeit befindet sich SPORTRAIT noch in der <b>Pilot-Phase</b>.<br/>
-        Wenn du interessiert bist, in der Pilotphase aktiv mitzuhelfen, die Funktionaliät und die Benutzerfreundlichkeit
+        Wenn du interessiert bist, in der Pilotphase aktiv mitzuhelfen, die FunktionaliÃ¤t und die Benutzerfreundlichkeit
         von SPORTRAIT
         zu optimieren, und du ein ambitionierter und engagierter Sportfotograf bist (Hobby oder Beruf), dann kannst du
-        dich gerne über
+        dich gerne Ã¼ber
         das <html:link action="/contact">Kontaktformular</html:link> bei uns mellden.
     </p>
 
-    <p>Alle anderen Fotografen bitten wir um etwas Geduld, bis SPORTRAIT seine Tore definitiv öffnet.</p>
+    <p>Alle anderen Fotografen bitten wir um etwas Geduld, bis SPORTRAIT seine Tore definitiv Ã¶ffnet.</p>
 
 
     <!--
@@ -80,9 +81,9 @@
         <%--
             <h2>SPORTrait hat eine Vision</h2>
             <p>SPORTrait soll zu einem Marktplatz heranwachsen, der eine Grosszahl von Fotografen und Sportler anzieht. SPORTrait bietet dem Fotografen
-            eine interessante Plattform, um seine Fotos einfach und effizient einer grossen Öffentlichkeit zu präsentieren und nicht zuletzt eine
-            reale Verdienstmöglichkeit. Sportler verschiedenster Sportarten werden in Zukunft ihre Fotos bei SPORTrait suchen, und somit wird
-            SPORTrait für Fotografen zu einem Schaufenster an bester Lage.</p>
+            eine interessante Plattform, um seine Fotos einfach und effizient einer grossen Ã–ffentlichkeit zu prÃ¤sentieren und nicht zuletzt eine
+            reale VerdienstmÃ¶glichkeit. Sportler verschiedenster Sportarten werden in Zukunft ihre Fotos bei SPORTrait suchen, und somit wird
+            SPORTrait fÃ¼r Fotografen zu einem Schaufenster an bester Lage.</p>
         --%>
 
 </div>

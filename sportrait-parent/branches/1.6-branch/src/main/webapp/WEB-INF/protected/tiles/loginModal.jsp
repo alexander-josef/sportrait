@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
@@ -12,7 +13,7 @@
             <div class="modalBody">
 
                 <h2 style="margin:10px 0 20px 0;text-align:left;">LOGIN <span
-                        class="normalWeight">FUER FOTOGRAFEN</span>
+                        class="normalWeight">FÃœR FOTOGRAFEN</span>
                 </h2>
 
                 <tiles:insert attribute="login"/>
@@ -41,7 +42,7 @@
                             <td>
                                 <input class="left" name="loginPh" type="image"
                                        src="/images/buttons/bt_login_de.gif"
-                                       title="Login für aktive User"/>
+                                       title="Login fï¿½r aktive User"/>
                             </td>
                         </tr>
                         <tr>

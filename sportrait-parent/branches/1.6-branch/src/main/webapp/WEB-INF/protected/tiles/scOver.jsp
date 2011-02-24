@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -36,11 +37,11 @@
             </td>
             <td>
                 <html:img page="/images/buttons/Checkout_step_2_off.gif" alt="Schritt 2"/><br/>
-                <html:link action="/coWizard_page3">Zahlungsmethode wählen</html:link>
+                <html:link action="/coWizard_page3">Zahlungsmethode wÃ¤hlen</html:link>
             </td>
             <td class="iamhere">
                 <html:img page="/images/buttons/Checkout_step_3.gif" alt="Schritt 3"/><br/>
-                Bestätigen
+                BestÃ¤tigen
             </td>
         </tr>
     </table>
@@ -79,11 +80,11 @@
         <li class="navList-content">
             <html:image  styleClass="right" page="/images/buttons/bt_sendOrder_de.gif"/>
             <span class="right">Ich akzeptiere die <html:link action="/agb" target="_blank">allgemeinen
-                Geschäftsbedingungen
+                GeschÃ¤ftsbedingungen
             </html:link>.
             <html:checkbox errorStyleClass="inputError" property="acceptTermsCondition" value="true"/>&nbsp;</span>
             <html:link action="/checkOutBillingMethod" styleClass="left">
-                <html:img page="/images/buttons/bt_back_de.gif" alt="zurück"/>
+                <html:img page="/images/buttons/bt_back_de.gif" alt="zurÃ¼ck"/>
             </html:link>
         </li>
         <li class="navList-bottom"></li>
@@ -93,7 +94,7 @@
 <div class="content">
     <div class="modalitySc">
         <p><span class="bold">Rechnungs- und Zustelladresse: </span>
-            <html:link action="/coWizard_page1">..ändern</html:link>
+            <html:link action="/coWizard_page1">..Ã¤ndern</html:link>
             <br/>
                 ${checkOutForm.firstName} ${checkOutForm.lastName}<br/>
                 ${checkOutForm.addr1}<br/>
@@ -107,7 +108,7 @@
     </div>
     <div class="modalitySc">
         <p><span class="bold">Zahlungsmethode:</span>
-            <html:link action="/coWizard_page3">..ändern</html:link>
+            <html:link action="/coWizard_page3">..Ã¤ndern</html:link>
             <br/>
             <c:if test="${checkOutForm.paymentMethodInvoice}">Rechnung</c:if>
             <c:if test="${checkOutForm.paymentMethodCreditCard}">Kreditkarte<br/>
@@ -162,10 +163,10 @@
                     <td class="leftalign" colspan="4">
                             <%--
                              <c:if test="${!empty photo.photo.photographer}">
-                            © by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
+                            Â© by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
                             </c:if>
                             --%>
-                        <p style="width:743px;padding:1px 0;margin-bottom:10px;"> © by Fotograf: <span class="bold">unartig AG</span>
+                        <p style="width:743px;padding:1px 0;margin-bottom:10px;"> Â© by Fotograf: <span class="bold">unartig AG</span>
                             --
                             Filename: <span class="bold">${photo.displayTitle}</span></p>
                     </td>
@@ -211,7 +212,7 @@
     <tr>
         <td class="scSecondcol leftalign">
             &nbsp;
-            <!--<p class="left">Anbieter: <span class="bold">Mathias Mühlemann</span></p>-->
+            <!--<p class="left">Anbieter: <span class="bold">Mathias MÃ¼hlemann</span></p>-->
         </td>
     </tr>
 </table>

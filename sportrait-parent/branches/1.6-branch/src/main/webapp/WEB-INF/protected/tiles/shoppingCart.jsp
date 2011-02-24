@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="ch.unartig.studioserver.Registry" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -83,7 +84,7 @@
             <li class="slideBottom">
                 <html:link action="/removeFromCart" paramId="<%=Registry._NAME_ORDERED_PHOTO_ID_PARAM%>"
                            paramName="scItem" paramProperty="photoId">
-                    löschen
+                    l√∂schen
                 </html:link>
             </li>
         </ul>
@@ -96,9 +97,9 @@
                 <html:select styleClass="left" name="scItem" property="productId" indexed="true"
                              onchange="postSimpleForm('update',0)">
                     <html:option value="-1">
-                        <%--<bean:message bundle="BUTTONS" key="product.choose"/>--%>Format/Produkt w‰hlen
+                        <%--<bean:message bundle="BUTTONS" key="product.choose"/>--%>Format/Produkt w√§hlen
                     </html:option>
-                    <html:optionsCollection name="album" property="products" label="productType.name"
+                    <html:optionsCollection name="album" property="activeProducts" label="productType.name"
                                             value="productId"/>
                 </html:select>
                 <c:if test="${!scItem.digitalOrderItem}">
@@ -148,7 +149,7 @@
                         ? by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
                         </c:if>
                         --%>
-                    <p style="width:743px;padding:1px 0;margin-bottom:10px;"> © by Fotograf: <span class="bold">unartig AG</span>
+                    <p style="width:743px;padding:1px 0;margin-bottom:10px;"> ¬© by Fotograf: <span class="bold">unartig AG</span>
                         --
                         Filename: <span class="bold">${photo.displayTitle}</span></p>
                 </td>
@@ -217,9 +218,9 @@
 <div class="content">
     <b>Lieferfristen:</b><br/>
 <%--
-    2-3 Tage für Papierabzüge; bis 10 Tage für Poster; Digitale Produkte werden unverzüglich per E-Mail zugestellt.
+    2-3 Tage f≈∏r Papierabz≈∏ge; bis 10 Tage f≈∏r Poster; Digitale Produkte werden unverz≈∏glich per E-Mail zugestellt.
 --%>
-    Nach der Bezahlung mit Kreditkarte können die Dateien unmittelbar heruntergeladen werden.
+    Nach der Bezahlung mit Kreditkarte k√∂nnen die Dateien unmittelbar heruntergeladen werden.
 </div>
 <!-- set default actionParam to checkOut to support non js browser -->
 <html:hidden property="actionParam" value="checkOut"/>
