@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -15,7 +16,7 @@ todo refactor name albumBean as fast as possible
     <ul id="fotoNav">
         <li>
             <html:link action="/showCategory" styleClass="toAlbum">
-                zur &Uuml;bersicht
+                zur Übersicht
             </html:link>
         </li>
     </ul>
@@ -44,7 +45,7 @@ todo refactor name albumBean as fast as possible
                                         <!-- Dynamic List of products: -->
 
                                         <select name="orderedProductId">
-                                            <option value="-1">Format/Produkt w&auml;hlen :</option>
+                                            <option value="-1">Format/Produkt wählen :</option>
 
                                             <!-- Start digital products -->
                                             <!--todo : refactor the getAlbumProducts in many methods: one for each product category-->
@@ -109,7 +110,7 @@ todo refactor name albumBean as fast as possible
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
-                           property="previousPhotoLinkParams" title="vorheriges Foto">zur�ck
+                           property="previousPhotoLinkParams" title="vorheriges Foto">zurück
                 </html:link>
             </li>
         </ul>
@@ -142,7 +143,7 @@ todo refactor name albumBean as fast as possible
         <tr>
             <td colspan="3" id="filename">
                 <c:if test="${!empty display.displayPhoto.photographer}">
-                  � by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
+                  © by Fotograf: &nbsp;${display.displayPhoto.photographer.fullName} <br/>
                 </c:if>
                 ${display.displayPhoto.filename}&nbsp;--&nbsp;${display.displayPhoto.shortTimeString}</td>
         </tr>
@@ -158,9 +159,9 @@ todo refactor name albumBean as fast as possible
             <li class="slideTop"></li>
             <li class="slideImage">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                           property="nextPhotoLinkParams" title="n?chstes Foto"><img
+                           property="nextPhotoLinkParams" title="nächstes Foto"><img
                         class="${display.nextPhoto.orientationSuffix}" src="${display.nextPhoto.thumbnailUrl}"
-                        alt="n?chstes Foto"/></html:link>
+                        alt="nächstes Foto"/></html:link>
             </li>
             <li class="slideBottom">
                 <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
@@ -180,7 +181,7 @@ todo refactor name albumBean as fast as possible
     <li class="middle">
 
         <iframe src="<html:rewrite action="/shoppingCartPreviewFrame"/>" id="shoppingcartPreview" name="shoppingcart_frame">
-            <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen: Sie k&ouml;nnen aber direkt zum
+            <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen: Sie können aber direkt zum
                 Einkaufswagen gehen:
                 <html:link action="/toShoppingCart">zum Einkaufswagen</html:link>
             </p>

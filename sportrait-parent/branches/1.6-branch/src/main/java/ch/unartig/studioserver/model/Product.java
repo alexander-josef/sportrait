@@ -82,7 +82,6 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigInvalidArgument;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
 
@@ -130,7 +129,7 @@ public class Product extends GeneratedProduct
     public static Long getInitialProductIdFor(Photo photo)
     {
         for (Long preselectedProductTypeId : preselectedProductTypeIds) {
-            Map availableProductTypes = photo.getAlbum().getAvailableProductTypes();
+            Map availableProductTypes = photo.getAlbum().getAvailableProductTypes(true);
             if (availableProductTypes.containsKey(preselectedProductTypeId)) {
                 return photo.getAlbum().getProductFor(preselectedProductTypeId).getProductId();
             }

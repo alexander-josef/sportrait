@@ -55,22 +55,16 @@
         Die Angabe von persönlichen Daten wie Name, Vorname, Adresse und E-Mail ist
         freiwillig und nur zwingend, wenn vom Besucher der Webseite eine kostenpflichtige Dienstleistung in Anspruch
         genommen wird, die die Angabe dieser Daten unerlässlich macht, beispielsweise bei der Bestellung
-        eines Fotos. Die E-Mail Adresse wird von der unartig AG und von deren&nbsp;
-        Partnerlabor (Colorplaza SA) ausschliesslich dazu verwendet,
-        den Kunden zu kontaktieren, wenn Schwierigkeiten bei der Abwicklung einer Bestellung
-        auftreten. Mehr Information dazu enthalten die allgemeinen Geschäftsbestimmungen der Colorplaza SA unter
-        <a href="http://www.colorplaza.com">www.colorplaza.com</a>.
+        eines Fotos. Die E-Mail Adresse wird von der unartig AG nur zur Abwicklung der Bestellung verwendet, oder um
+        einen Kunden zu kontaktieren, wenn Schwierigkeiten bei der Abwicklung einer Bestellung
+        auftreten.
     </p>
 
 
     <p class="longText"><span class="bold">Gesammelte Daten bei der Abwicklung einer Bestellung</span><br/>
         Zur Abwicklung einer Bestellung werden persönliche Daten wie Name, Vorname, Adresse und
-        E-Mail an unser Partnerlabor (Colorplaza SA) weitergeleitet. Das Partnerlabor
-        hat Zugang zu diesen persönlichen Daten und den Bilddaten, benutzt diese aber ausschliesslich zur Abwicklung
-        der Bestellung. Die Bild-Daten werden vom Partnerlabor nach der Abwicklung einer Bestellung gelöscht. Willigt der
-        Kunde nach Abwicklung einer Bestellung explizit ein, von unserem Partnerlabor Informationen zu erhalten, werden
-        diese Daten von unserem Partnerlabor gespeichert. Mehr Informationen hierzu können den allgemeinen Geschäftsbedingungen
-        des Partnerlabors entnommen werden unter <a href="http://www.colormailer.ch">www.colormailer.ch</a>.
+        E-Mail an unsere Partner weitergeleitet (z.B. Paypal für die Zahlungsabwicklung). Diese benutzen die Informationen ausschliesslich zur Abwicklung
+        der Bestellung.
     </p>
 
     <p class="longText">Beim Kauf eines Fotos wird der Käufer oder die Käuferin automatisch Kunde (Kundin) des Anbieters,

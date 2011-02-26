@@ -6,12 +6,12 @@
   <component name="ArtifactManager">
     <artifact type="war" name="sportrait_web:war">
       <output-path>$PROJECT_DIR$/target</output-path>
-      <root id="archive" name="sportrait_web-1.6.6-SNAPSHOT.war">
+      <root id="archive" name="sportrait_web-1.6.9-SNAPSHOT.war">
         <element id="artifact" artifact-name="sportrait_web:war exploded" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="sportrait_web:war exploded">
-      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.6-SNAPSHOT</output-path>
+      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.9-SNAPSHOT</output-path>
       <root id="root">
         <element id="javaee-facet-resources" facet="sportrait_web/web/Web" />
         <element id="directory" name="WEB-INF">
@@ -127,7 +127,7 @@
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/album.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/contact.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/copyright.jsp" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/display.jsp" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/display.jsp" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/editPhotographer.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/event.jsp" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/eventsPh.jsp" charset="UTF-8" />

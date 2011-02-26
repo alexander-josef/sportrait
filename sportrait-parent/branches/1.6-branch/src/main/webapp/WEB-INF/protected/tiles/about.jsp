@@ -17,7 +17,7 @@
         SPORTRAIT ist eine Dienstleistung der unartig AG. unArtig schaut auf 10 Jahre Erfahrung in der
         Anlassfotografie zurück. Über die Plattform <a href="http://www.unartig.ch">www.unartig.ch</a> betreibt unArtig
          eine Dienstleistung für festliche Anlässe, über die Gäste ihre Fotos betrachten und bestellen
-        künnen. Mit SPORTRAIT erweitert unArtig ihre Geschäftsfelder um die Sportfotografie.<br/>
+        können. Mit SPORTRAIT erweitert unArtig ihre Geschäftsfelder um die Sportfotografie.<br/>
     </p>
 
 </div>
