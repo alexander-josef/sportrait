@@ -725,7 +725,7 @@ public class Album extends GeneratedAlbum {
             //producttypes with priceid <=0 are not set for this album
             final Long productTypeId = Long.valueOf(productTypeIdString);
             final Long priceId = Long.valueOf(priceIdString);
-            if (priceId > 0 && !getAvailableProductTypes().keySet().contains(productTypeId)) {
+            if (priceId > 0 && !getAvailableProductTypes(false).keySet().contains(productTypeId)) {
                 // producttype does not yet exist for this album; create new product
                 getProducts().add(new Product(productTypeId, priceId, this));
             }
@@ -777,11 +777,14 @@ public class Album extends GeneratedAlbum {
      * Return a map containing the productTypeId as key and the productType as Value
      *
      * @return
+     * @param onlyActiveProducts set to true to filter for active products, in the shopping cart, for example.
+     * For product configuration, more likely all products are needed
      */
-    public Map getAvailableProductTypes() {
+    public Map getAvailableProductTypes(boolean onlyActiveProducts) {
 
         Map productTypeMap = new HashMap();
-        for (Iterator iterator = getProducts().iterator(); iterator.hasNext();) {
+        Set products  = onlyActiveProducts ? getActiveProducts():getProducts();
+        for (Iterator iterator = products.iterator(); iterator.hasNext();) {
             Product product = (Product) iterator.next();
             ProductType productType = product.getProductType();
             productTypeMap.put(productType.getProductTypeId(), productType);

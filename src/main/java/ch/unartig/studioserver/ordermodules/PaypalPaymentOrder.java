@@ -136,19 +136,19 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             String returnURL = HttpUtil.getBaseUrl(request, false) + "/coWizard_page4.html";
 //            String returnURL = "http://www.unartig.ch/coWizard_page4.html";
             encoder.add("RETURNURL", returnURL);
-            String cancelURL = "http://www.unartig.ch";
+            String cancelURL = "http://www.sportrait.com";
             encoder.add("CANCELURL", cancelURL);
             encoder.add("SOLUTIONTYPE", "Sole");
             encoder.add("NOSHIPPING", "1"); // don's show shipping address in paypal dialog
-            encoder.add("LOCALECODE", "CH"); // todo set locale code according to session locale
+            encoder.add("LOCALECODE", "CH");
             encoder.add("EMAIL", coForm.getEmail());
             encoder.add("LANDINGPAGE", "Billing"); //
             encoder.add("BRANDNAME", "unartig Studio"); //
             encoder.add("PAYMENTREQUEST_0_AMT", Double.toString(shoppingCart.getTotalPhotosCHF())); // how does the string look like?
             encoder.add("PAYMENTREQUEST_0_PAYMENTACTION", "Sale");
-            encoder.add("PAYMENTREQUEST_0_CURRENCYCODE", "CHF"); // Todo check currency codes ...
+            encoder.add("PAYMENTREQUEST_0_CURRENCYCODE", "CHF");
             encoder.add("PAYMENTREQUEST_0_SHIPTOZIP", coForm.getZipCode().toString());
-            encoder.add("PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE", getPaypalCountryCode(coForm)); // todo set correct country code from shopping cart
+            encoder.add("PAYMENTREQUEST_0_SHIPTOCOUNTRYCODE", getPaypalCountryCode(coForm));
             encoder.add("PAYMENTREQUEST_0_SHIPTOCITY", coForm.getCity());
             encoder.add("PAYMENTREQUEST_0_SHIPTONAME", coForm.getFirstName() + " " + coForm.getLastName());
             encoder.add("PAYMENTREQUEST_0_SHIPTOSTREET", coForm.getAddr1());
@@ -253,7 +253,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
             encoder.add("PAYERID", shoppingCart.getPaypalPayerId());
             encoder.add("PAYMENTREQUEST_0_AMT", Double.toString(shoppingCart.getTotalPhotosCHF())); // how does the string look like? is it correct?
             encoder.add("PAYMENTREQUEST_0_PAYMENTACTION", "Sale");
-            encoder.add("PAYMENTREQUEST_0_CURRENCYCODE", "CHF"); // Todo check currency codes ...
+            encoder.add("PAYMENTREQUEST_0_CURRENCYCODE", "CHF");
 
             // Execute the API operation and obtain the response.
             String nvpRequest = encoder.encode();
