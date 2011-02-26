@@ -18,7 +18,7 @@
 
     <p class="leftclear leftalign">In den nächsten Minuten erhalten Sie von uns eine <span style="font-weight:bold">Bestätigung</span>
         Ihrer Bestellung per E-Mail.
-        Dieses E-Mail enthält auch den <span style="font-weight:bold">Download-Link fär Ihre Digitalfotos.</span>
+        Dieses E-Mail enthält auch den <span style="font-weight:bold">Download-Link für Ihre Digitalfotos.</span>
     </p>
 
     <p class="leftclear leftalign"><span style="font-weight:bold">Falls Sie keine Bestätigung erhalten,</span>
