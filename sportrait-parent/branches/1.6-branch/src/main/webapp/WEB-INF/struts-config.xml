@@ -474,6 +474,12 @@
             <forward name="success" path=".orderDownload"/>
         </action>
 
+        <!-- download free photos  -->
+        <action path="/downloadPhoto" type="ch.unartig.studioserver.actions.DownloadPhotoAction"
+                parameter="{1}">
+            <set-property property="secure" value="false"/>
+            <forward name="success" path=".orderDownload"/>
+        </action>
 
         <!-- =========================================== Admin pages -->
         <!--  shows a very simple page to upload events in a text file with a certain format : -->

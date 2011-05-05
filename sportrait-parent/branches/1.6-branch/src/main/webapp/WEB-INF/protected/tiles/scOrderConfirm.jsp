@@ -23,8 +23,6 @@
 
     <p class="leftclear leftalign"><span style="font-weight:bold">Falls Sie keine Bestätigung erhalten,</span>
         überprüfen Sie bitte zuerst Ihren Spam-Filter.
-        <html:link action="/contact" title="Zur Kontaktseite"> Kontaktieren</html:link>
-        Sie uns, wenn Sie kein Bestätigungs-E-Mail bekommen haben.
     </p>
 
     <p class="leftclear leftalign">Vielen Dank für Ihren Einkauf bei SPORTrait und viel Spass mit den Fotos!</p>
