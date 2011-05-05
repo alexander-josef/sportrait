@@ -834,6 +834,16 @@ public class Album extends GeneratedAlbum {
         return activeProducts;
     }
 
+    /**
+     * In case a download is offered on the display page offers this method returns true.
+     * @return
+     */
+    public boolean isHasFreeHighResDownload() {
+
+        
+        return true;
+    }
+
 
     /**
      * sorts the albums for a nice list when showning all albums sorted by event and category (sales report)

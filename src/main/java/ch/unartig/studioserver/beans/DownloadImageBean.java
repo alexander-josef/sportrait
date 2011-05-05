@@ -124,11 +124,9 @@ public class DownloadImageBean
     public void downloadPhoto(String orderItemId, HttpServletResponse response) throws UnartigException
     {
         OrderItem downloadOrderItem = null;
-        for (Iterator iterator = order.getOrderItems().iterator(); iterator.hasNext();)
-        {
-            OrderItem orderItem = (OrderItem) iterator.next();
-            if (orderItemId.equals(orderItem.getOrderItemId().toString()))
-            {
+        for (Object o : order.getOrderItems()) {
+            OrderItem orderItem = (OrderItem) o;
+            if (orderItemId.equals(orderItem.getOrderItemId().toString())) {
                 // we found the orderitem
                 downloadOrderItem = orderItem;
                 break;
