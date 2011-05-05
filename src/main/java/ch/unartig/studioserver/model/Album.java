@@ -835,13 +835,17 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     * In case a download is offered on the display page offers this method returns true.
-     * @return
+     *  
+     * @return true In case a free download is offered on the display page offers this method
      */
     public boolean isHasFreeHighResDownload() {
-
-        
-        return true;
+        for (Object o : getActiveProducts()) {
+            Product product = (Product) o;
+            if (product.isDigitalProduct() && (product.getPrice().getPriceCHF().floatValue()==0.0f)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

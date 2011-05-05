@@ -44,12 +44,13 @@ todo refactor name albumBean as fast as possible
 
                                         <%-- free download on display page? --%>
                                     <c:if test="${display.albumFromPhoto.hasFreeHighResDownload}">
-                                        <td class="leftalign">
+                                        <td class="rightalign">
 
                                                 <%--<html:link href="${downloadBean.downloadUrl}?phId=${downloadableItem.photo.photoId}">--%>
                                             <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}">
-                                                DATEI DOWNLOADEN
+                                                <html:img page="/images/buttons/bt_download_file_de.gif" alt="DATEI HERUNTERLADEN -- Datei wird nur als Gratis Download angeboten"/>
                                             </html:link>
+
                                         </td>
                                     </c:if>
 
