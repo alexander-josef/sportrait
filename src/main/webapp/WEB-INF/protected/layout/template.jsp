@@ -13,6 +13,7 @@
     <tiles:insert attribute="htmlTitle"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
+    <tiles:insert attribute="googleAnalytics"/>
 </head>
 <body id="body">
 <%-- todo bessere loesung:
@@ -30,6 +31,5 @@
     </div>
 </center>
 
-<tiles:insert attribute="googleAnalytics"/>
 </body>
 </html>

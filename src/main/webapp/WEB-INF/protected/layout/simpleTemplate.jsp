@@ -10,11 +10,11 @@
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <title><tiles:insert attribute="htmlTitle"/></title>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
+    <tiles:insert attribute="googleAnalytics"/>
 </head>
 <body id="iframeBody">
 
 <tiles:insert attribute="content1"/>
 
-<tiles:insert attribute="googleAnalytics"/>
 </body>
 </html>
