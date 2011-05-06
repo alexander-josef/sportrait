@@ -15,6 +15,7 @@
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
+    <tiles:insert attribute="googleAnalytics"/>
 </head>
 <body id="bodyHome">
 <center id="window">
@@ -28,7 +29,6 @@
     </div>
 </center>
 
-<tiles:insert attribute="googleAnalytics"/>
 
 </body>
 </html>

@@ -18,7 +18,66 @@
 <html:xhtml/>
 <%--
 Google analytics script for the eCommerce functions after a transaction
+Should be on the sending page ....
 --%>
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-385263-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+        _gaq.push(['_addTrans',
+            // we only know an order id if processed immediatly with credit card, use unartig order id
+            '${GAorderId}', // Order ID
+            'sportrait', // Affiliation
+            '${sc.totalPhotosCHF}', // Total
+            '0', // Tax
+            '${sc.shippingHandlingCHE}', // Shipping
+            '${GAcustomerCity}', // City
+            'n/a', // State
+            '${sc.customerCountry}'  // Country
+        ]);
+
+    // loop over product-type/price consolidated items
+    <c:forEach items="${GAorderItems}" var="item" varStatus="forEachStatus" >
+
+/*
+
+    Think about how to handle this. We don't want to count based on individual photos, but on products, or better, product types.
+    Maybe add a helper method to consolidate the product types.
+    - add item per individual producttype-price combination.
+    - category is the product type.
+
+*/
+
+        _gaq.push(['_addItem',
+                '${GAorderId}', // Order ID
+                '${item.product.productName}', // SKU (unique stock keeping unit)
+                '${item.product.productName}', // Product Name
+                '${item.product.productType.name}', // Category
+                '${item.product.price.priceCHF}', // Price
+                '${item.quantity}'  // Quantity
+        ]);
+
+        _gaq.push(['_trackTrans']);
+
+    </c:forEach>
+
+</script>
+
+
+<%--
+
+Old e-commerce tracking
+
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -44,12 +103,12 @@ Google analytics script for the eCommerce functions after a transaction
     // loop over product-type/price consolidated items
     <c:forEach items="${GAorderItems}" var="item" varStatus="forEachStatus" >
 
-    <%--
+    &lt;%&ndash;
     Think about how to handle this. We don't want to count based on individual photos, but on products, or better, product types.
     Maybe add a helper method to consolidate the product types.
     - add item per individual producttype-price combination.
     - category is the product type.
-    --%>
+    &ndash;%&gt;
 
         pageTracker._addItem(
                 "${GAorderId}", // Order ID
@@ -65,3 +124,5 @@ Google analytics script for the eCommerce functions after a transaction
     </c:forEach>
 
 </script>
+
+--%>
