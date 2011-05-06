@@ -47,9 +47,9 @@ todo refactor name albumBean as fast as possible
                                         <td class="rightalign">
 
                                             <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                                       title="DATEI HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                       title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
                                                        onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                                <html:img page="/images/buttons/bt_download_file_de.gif" />
+                                                <html:img page="/images/buttons/bt_download_picture_de.gif" />
                                             </html:link>
 
                                         </td>
