@@ -1,0 +1,48 @@
+unArtigSerVer
+/Users/alexanderjosef/WORK/unartig-server/web
+/Users/alexanderjosef/WORK/unartig-server/web/src/main
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/filters
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/filters/mac-local.properties
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/controller
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/controller/UnartigActionServlet.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/actions
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/actions/AdminAction.java
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/actions/CheckOutAction.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/beans
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/beans/ShoppingCart.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/businesslogic
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/businesslogic/CoplaPhotoOrder.java
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/businesslogic/PhotoOrderIF.java
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/businesslogic/ShoppingCartLogic.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/model
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/model/Order.java
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/model/Product.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/ordermodules
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/studioserver/ordermodules/PaypalPaymentOrder.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/util
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/util/HttpUtil.java
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/java/ch/unartig/util/MailUtil.java
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources/contentText.properties
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources/contentText_de.properties
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources/contentText_en.properties
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources/contentText_fr.properties
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/resources/ch/unartig/studioserver/resources/images.properties
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/js
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/js/popup.js
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles/contentFAQ.jsp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles/contentSCOrderlist.jsp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles/contentSCOrderlistFix.jsp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles/contentSCPaypalEC.jsp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/protected/tiles/sidebarPrice.jsp
+/Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/struts-config.xml
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/tiles-defs.xml
+OK /Users/alexanderjosef/WORK/unartig-server/web/src/main/webapp/WEB-INF/validation.xml
+OK /Users/alexanderjosef/WORK/unartig-server/web/pom.xml
+/Users/alexanderjosef/WORK/unartig-server/web/unArtigSerVer.iml
+/Users/alexanderjosef/WORK/unartig-server/web/unArtigSerVer.ipr
