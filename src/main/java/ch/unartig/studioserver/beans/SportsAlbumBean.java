@@ -245,8 +245,22 @@ public class SportsAlbumBean extends AbstractAlbumBean
         this.eventCategories = eventCategories;
     }
 
+    /**
+     * Return all categories registered for the event of this sportsalbum.
+     * Make sure you really want to show all categories, also categories without photos or with offline albums only
+     * @return
+     */
     public List getEventCategories()
     {
         return eventCategories;
+    }
+
+    /**
+     * only return categories with photos.
+     * @return
+     */
+    public List getEventCategoriesWithPhotos()
+    {
+        return eventCategory.getEvent().getEventCategoriesWithPhotos();
     }
 }
