@@ -42,7 +42,7 @@
                         <td>&nbsp;Kategorie:</td>
                         <td>
                             <html:select property="eventCategoryId">
-                                <html:optionsCollection name="albumBean" property="eventCategories" label="title"
+                                <html:optionsCollection name="albumBean" property="eventCategoriesWithPhotos" label="title"
                                                         value="eventCategoryId"/>
                             </html:select>
                         </td>
