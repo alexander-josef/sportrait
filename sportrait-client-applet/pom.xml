@@ -99,9 +99,11 @@
             <url>http://snapshots.repository.codehaus.org/</url>
             <snapshots>
                 <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
             </snapshots>
             <releases>
                 <enabled>false</enabled>
+                <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
 
