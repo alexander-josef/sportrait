@@ -2,7 +2,7 @@
 -- The data-stup scripts is needed in order to initialize a fresh database with the necessary user profiles, product/price data etc.
 -- To be executed after the schema-setup script that is automatically generated
 --
--- Additionally, the add_on script should be executed to fix the sequences
+-- Additionally, the add_on.sql script should be executed to fix the sequences
 --
 -- Alexander Josef, unartig AG 2007
 --

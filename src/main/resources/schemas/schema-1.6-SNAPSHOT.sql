@@ -147,6 +147,8 @@
         primary key (productTypeId)
     );
 
+    -- Caution! parameter "inactive" is missing ... better generate again from scratch
+
     create table Products (
         productId int8 not null,
         productName varchar(255),
