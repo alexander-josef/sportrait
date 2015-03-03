@@ -64,9 +64,9 @@ public class Uploader extends Thread
 
     /**
      * If ImagePath = null or Album Image Path : ignore; else copy from temp imageDirectory to the album image path
-     * @param imageDirectory Either the temporary fine directory on the server, or the fine folder under DATA if the archive has been extraced there.
+     * @param imageDirectory Either the temporary fine directory on the server, or the fine folder under DATA if the archive has been extracted there.
      * @param albumId
-     * @param processImages set to true if thumnail and display images shall be created using JAI
+     * @param processImages set to true if thumbnail and display images shall be created using JAI
      */
     public Uploader(String imageDirectory, Long albumId, Boolean processImages)
     {
@@ -151,6 +151,7 @@ public class Uploader extends Thread
         {
             // copy images only if temp path available and not same as album path
             File sourceDir = new File(imageDirectory);
+            // todo: can fine path be null and throw exception? --> log meaningful message
             if (!sourceDir.equals(album.getFinePath()))
             {
                 _logger.debug("imageDir.isDirectory() = " + sourceDir.isDirectory());

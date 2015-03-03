@@ -345,8 +345,8 @@ public final class Registry
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
-        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
-        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
+//        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
+//        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
 
         setFineImagesDirectory(appSettings.getMessage("fineImagesDirectory"));
         _logger.info("***** fine images directory = " + appSettings.getMessage("fineImagesDirectory"));

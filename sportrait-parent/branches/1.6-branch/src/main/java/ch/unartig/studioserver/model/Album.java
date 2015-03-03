@@ -586,6 +586,7 @@ public class Album extends GeneratedAlbum {
      * @return a directory
      */
     public File getFinePath() {
+        // todo: what happens if the fineImagesDirectory does not exist?
         File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
         if (!finePath.exists()) {
