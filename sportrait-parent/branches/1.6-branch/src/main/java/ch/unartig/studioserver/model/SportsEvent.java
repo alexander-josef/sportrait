@@ -246,14 +246,15 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param eventCategoryId Sports Category Id as String as passed from view
      * @param fineImageServerPath Path with high-res images local on the server
      * @param client Client object, containing photographer object
+     * @param createThumbDisplay
      * @return true for success
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean createRegisterSportsAlbum(Long eventCategoryId, String fineImageServerPath,Client client) throws UnartigException
+    public boolean createRegisterSportsAlbum(Long eventCategoryId, String fineImageServerPath, Client client, Boolean createThumbDisplay) throws UnartigException
     {
         SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
         // giving control to new thread and return.
-        Thread uploader = new Uploader(fineImageServerPath, sportsAlbum.getGenericLevelId(), false);
+        Thread uploader = new Uploader(fineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay);
         uploader.start();
         return true;
     }

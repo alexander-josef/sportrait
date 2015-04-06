@@ -207,8 +207,12 @@ import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
+import org.imgscalr.Scalr;
 
+import javax.imageio.ImageIO;
 import javax.media.jai.RenderedOp;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -414,13 +418,43 @@ public class Album extends GeneratedAlbum {
         Set problemFiles = new HashSet();
 
         int i;
+        // include performance measure
+        long base = System.currentTimeMillis();
         for (i = 0; i < filesInAlbumFinePath.length; i++) {
             _logger.debug("registerPhoto 2, " + System.currentTimeMillis());
             File photoFile = filesInAlbumFinePath[i];
+            // don't create ThumbDisp, this is done with the bash script
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
         }
 
+
         setProblemFiles(problemFiles);
+
+        // if createThumbDisp call the batch job (as alternative to create the thumb with java for every registered photo, which is done in registerSinglePhoto)
+        // todo implement check and script call
+        if (createThumbDisp & Boolean.FALSE) {
+            try {
+                // todo: script path in properties file
+                String thumbDispScript = "/Users/alexanderjosef/scripts/createSportraitImages.sh";
+                _logger.info("calling thumb/disp script : " + thumbDispScript);
+                _logger.info("with param 1 (fine path) : " + getFinePath().getAbsolutePath());
+                _logger.info("with param 2 (web-images path) : " + getAlbumWebImagesPath().getAbsolutePath());
+
+                getDisplayPath().mkdirs();
+                getThumbnailPath().mkdirs();
+
+                ProcessBuilder pb = new ProcessBuilder(thumbDispScript, getFinePath().getAbsolutePath(),getAlbumWebImagesPath().getAbsolutePath());
+                Process p = pb.start();     // Start the process.
+                p.waitFor();                // Wait for the process to finish.
+                _logger.info("Script executed successfully");
+            } catch (Exception e) {
+                _logger.error("Error while executing script to create thumbs and displays", e);
+            }
+        }
+        _logger.info("**********************");
+        _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base)/1000 + " seconds"));
+        _logger.info("**********************");
+
     }
 
     /**
@@ -436,10 +470,33 @@ public class Album extends GeneratedAlbum {
         try {
             // this causes eof problems ....
 //            FileUtils.copyFile(photoFile,new File(getFinePath(),photoFile.getName()));
+
+            // either use JAI or ImgScalr:
+
+// *** JAI:
+
+
             RenderedOp fineImage = ImagingHelper.load(photoFile);
-            ExifData exif = new ExifData(photoFile);
             pictureWidth = fineImage.getWidth();
             pictureHeight = fineImage.getHeight();
+
+
+
+
+
+// **** ImgSclr :
+
+/*
+            BufferedImage finePhotoBufferedImage = ImageIO.read(photoFile);
+            pictureWidth = finePhotoBufferedImage.getWidth();
+            pictureHeight = finePhotoBufferedImage.getHeight();
+            RenderedOp fineImage = null; // just not to cause not a compilation problem
+*/
+
+
+            ExifData exif = new ExifData(photoFile);
+
+
             _logger.debug("read width and height");
             Date exifDate;
             exifDate = exif.getPictureTakenDate();
@@ -467,23 +524,48 @@ public class Album extends GeneratedAlbum {
             // import routine checks if photo already exists
             // once imported thumbnailer will run ... (and the ones already 'thumbnailed' ?
 
-            if (createThumbDisp) {
+            if (createThumbDisp ) {
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
-                // create display
-                ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), true);
+
+                //
+/*
+
+// ******  use imgscalr to produce thumb/disp images :
+
+
+                BufferedImage display = Scalr.resize(finePhotoBufferedImage,Scalr.Method.SPEED, Registry.getDisplayPixelsLongerSide());
+                BufferedImage thumbnail = Scalr.resize(finePhotoBufferedImage,Scalr.Method.SPEED, Registry.getThumbnailPixelsLongerSide());
+
+                ImageIO.write(display,"jpg",new File(getDisplayPath(), filename));
+                ImageIO.write(thumbnail,"jpg",new File(getThumbnailPath(), filename));
+
+                // first results: really bad: 121 s instead of 70s with JAI only
+                _logger.info("wrote thumb/disp images via ImgScalr for image : "+ filename);
+
+// ******
+
+*/
+
+                // create thumbnail/display (with JAI operations)
+
+                // now trying new method and commenting following line out ...
+                ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), false);
+
                 // create thumbnail
                 ImagingHelper.createScaledImage(filename, fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), getThumbnailPath(), false);
             }
 
         } catch (IOException e) {
-            _logger.info("Problems while copying the file or acessing the EXIF data of file " + photoFile.getName(), e);
+            _logger.info("Problems while copying the file or accessing the EXIF data of file " + photoFile.getName(), e);
             //noinspection unchecked
             problemFiles.add(photoFile);
+/*
         } catch (UnartigImagingException e1) {
             _logger.info("Problem processing the image; continue with next image", e1);
             //noinspection unchecked
             problemFiles.add(photoFile);
+*/
         } catch (UAPersistenceException e2) {
             _logger.info("Problem saving image; continue with next image", e2);
             //noinspection unchecked

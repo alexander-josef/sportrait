@@ -240,6 +240,15 @@
             <version>1.0.0</version>
         </dependency>
 
+        <!-- use imgscalr to create thumb and display images -->
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
 
