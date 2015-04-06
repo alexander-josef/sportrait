@@ -239,15 +239,25 @@ public class FileUtils
                 // if zip archive contains directories, an error is thrown; check if parent directory is really the fine path!
                 if (destinationFile.isDirectory() || !destinationFile.getParentFile().equals(targetPath)) // equals compares pathnames!
                 {
-                    _logger.error("only Files allowed in uploaded archives; files must not be in directories");
-                    throw new UnartigException("only Files allowed in uploaded archives; files must not be in directories");
-                } else if (!".jpg".equals(destinationFile.getName().substring(destinationFile.getName().lastIndexOf(".")).toLowerCase()))
+                    // file in directory?
+                    _logger.error("Only Files allowed in uploaded archives; files must not be in directories - ignoring entry in ZIP File -- " + destinationFile.getName());
+                    // throw new UnartigException("only Files allowed in uploaded archives; files must not be in directories");
+                }
+                // check for .jpg file:
+                else if ( !destinationFile.getName().contains(".")  || !".jpg".equals(destinationFile.getName().substring(destinationFile.getName().lastIndexOf(".")).toLowerCase()))
                 {
+                    // ignore entry
                     _logger.error("Skipping file in archive;File is not of type jpeg : " + destinationFile.getName());
                 }
-                targetPath.mkdirs();
-                copyFile(zis, destinationFile, false, true);
-                zis.closeEntry();
+                else {
+                    // seems to be a valid file - copy to target location:
+                    targetPath.mkdirs();
+                    copyFile(zis, destinationFile, false, true);
+                    zis.closeEntry();
+                    _logger.info("extracted : " + destinationFile.getName());
+
+                }
+
             }
 
         } catch (FileNotFoundException e)

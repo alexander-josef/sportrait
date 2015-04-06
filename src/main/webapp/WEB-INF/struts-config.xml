@@ -17,6 +17,8 @@
             <form-property name="eventId" type="java.lang.String"/>
             <form-property name="imagePath" type="java.lang.String"/>
             <form-property name="eventCategoryId" type="java.lang.String"/>
+            <form-property name="createThumbDisplay" type="java.lang.Boolean"/>
+
         </form-bean>
 
 
@@ -554,7 +556,7 @@
             nocache="true"
             contentType="text/html;charset=UTF8"
             inputForward="true"
-            maxFileSize="1G"/>
+            maxFileSize="4G"/>
 
     <!-- ======================================== Message Resources Definitions -->
     <message-resources parameter="appSettings" null="false" key="APPSETTINGS"/>
