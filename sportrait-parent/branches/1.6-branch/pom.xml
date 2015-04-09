@@ -780,13 +780,13 @@
         <repository>
             <id>ssh-repo</id>
             <name>unartig m2 repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version . -->
         <snapshotRepository>
             <id>ssh-repo</id>
             <name>unartig m2 snapshot repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
         </snapshotRepository>
     </distributionManagement>
 
