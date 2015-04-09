@@ -13,7 +13,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.13</version>
+    <version>1.6.13-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -780,13 +780,13 @@
         <repository>
             <id>ssh-repo</id>
             <name>unartig m2 repo</name>
-            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://alex@svn.unartig.ch/opt/maven2/repo</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version . -->
         <snapshotRepository>
             <id>ssh-repo</id>
             <name>unartig m2 snapshot repo</name>
-            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://alex@svn.unartig.ch/opt/maven2/repo</url>
         </snapshotRepository>
     </distributionManagement>
 
