@@ -13,7 +13,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.13-SNAPSHOT</version>
+    <version>1.6.13</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
