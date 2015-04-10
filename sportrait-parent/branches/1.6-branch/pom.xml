@@ -218,13 +218,6 @@
         </dependency>
 
 
-<!--
-        <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.5.6</version>
-        </dependency>
--->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -284,66 +277,8 @@
             <!--commented out since it still fails. try the mock implementation for the browser-->
 
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                            <suiteXmlFiles>
-                                <suiteXmlFile>
-                                    src/test/config/sportrait-tests.xml
-                                </suiteXmlFile>
-                            </suiteXmlFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
 
-<!--
-            <plugin>
-                <groupId>org.codehaus.groovy.maven</groupId>
-                <artifactId>gmaven-plugin</artifactId>
-                <version>1.0-rc-1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generateStubs</goal>
-                            <goal>compile</goal>
-                            <goal>generateTestStubs</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
--->
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>selenium-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start-server</goal>
-                        </goals>
-                        <configuration>
-                            <background>true</background>
-                            <debug>true</debug>
-                            <!--<firefoxProfileTemplate>/Users/alexanderjosef/selenium-profile</firefoxProfileTemplate>-->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
 
 
             <!--build system with teamCity has no svn ... until then : -->
@@ -391,26 +326,6 @@
                             <stripVersion>true</stripVersion>
                         </configuration>
 
-                        <!--<id>copy</id>-->
-                        <!--<phase>package</phase>-->
-                        <!--<goals>-->
-                        <!--<goal>copy</goal>-->
-                        <!--</goals>-->
-                        <!--<configuration>-->
-                        <!--<artifactItems>-->
-                        <!--<artifactItem>-->
-                        <!--<groupId>ch.unartig.server</groupId>-->
-                        <!--<artifactId>sportrait_client</artifactId>-->
-                        <!--<type>jar</type>-->
-                        <!--<overWrite>false</overWrite>-->
-                        <!--<outputDirectory>${project.build.directory}/alternateLocation</outputDirectory>-->
-                        <!--<destFileName>optional-new-name.jar</destFileName>-->
-                        <!--</artifactItem>-->
-                        <!--</artifactItems>-->
-                        <!--<outputDirectory>${project.build.directory}/wars</outputDirectory>-->
-                        <!--<overWriteReleases>false</overWriteReleases>-->
-                        <!--<overWriteSnapshots>true</overWriteSnapshots>-->
-                        <!--</configuration>-->
 
 
                     </execution>
@@ -458,55 +373,6 @@
 
                 </configuration>
 
-            </plugin>
-
-
-            <!-- Currently the tomcat plugin is used for the continous integration build on test  -->
-
-            <plugin>
-                <groupId>org.codehaus.cargo</groupId>
-                <artifactId>cargo-maven2-plugin</artifactId>
-                <configuration>
-                    <container>
-                        <containerId>${containerId}</containerId>
-                        <type>remote</type>
-
-
-                    </container>
-
-                    <configuration>
-                        <!--<type>existing</type>-->
-                        <type>runtime</type>
-                        <properties>
-                            <cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
-                            <cargo.remote.username>${tomcatUsername}</cargo.remote.username>
-                            <cargo.remote.password>${tomcatPassword}</cargo.remote.password>
-                            <!--<cargo.servlet.port>8280</cargo.servlet.port>-->
-                        </properties>
-                    </configuration>
-
-                    <deployer>
-                        <!--<type>local</type>-->
-                        <type>remote</type>
-                        <deployables>
-                            <deployable>
-                                <groupId>ch.unartig.server</groupId>
-                                <artifactId>sportrait_web</artifactId>
-                                <type>war</type>
-                                <!--<location>${project.build.directory}/testapp/${warName}.war</location>-->
-                                <!--<location>${project.build.directory}/ROOT.war</location>-->
-                                <properties>
-                                    <context>sportrait</context>
-                                </properties>
-                                <!--optional url to ping to know if deployable is done or not-->
-                                <pingURL>http://localhost:8080/sportrait/index.html</pingURL>
-
-                                <!--optional timeout to ping (default 20000 milliseconds)-->
-                                <pingTimeout>2000</pingTimeout>
-                            </deployable>
-                        </deployables>
-                    </deployer>
-                </configuration>
             </plugin>
 
 
@@ -616,19 +482,7 @@
                     <!--</configuration>-->
                     <!--</plugin>-->
 
-                    <plugin>
-                        <groupId>org.codehaus.cargo</groupId>
-                        <artifactId>cargo-maven2-plugin</artifactId>
-                        <configuration>
-                            <configuration>
-                                <properties>
-                                    <cargo.remote.password>leonard</cargo.remote.password>
-                                </properties>
-                            </configuration>
-                        </configuration>
-
-                    </plugin>
-                </plugins>
+                  </plugins>
             </build>
             <properties>
                 <tomcatUsername>admin</tomcatUsername>
@@ -712,22 +566,7 @@
             </snapshots>
         </repository>
 
-<!--
-        <repository>
-            <id>openqa.org</id>
-            <name>Openqa Repository</name>
-            <url>http://archiva.openqa.org/repository/releases/</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
--->
+
 
     </repositories>
 
