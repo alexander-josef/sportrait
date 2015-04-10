@@ -1,0 +1,45 @@
+##
+## Environment dependant filters configuration file
+## (todo explain the properties, only default values where useful)
+##
+
+# Environment of this installation: "dev" "test" or "prod"
+environment=dev
+
+#
+# Server Settings
+server.httpPort=8080
+server.httpsPort=443
+server.enableSsl=true
+
+# frontenddir only used by tree generator ... remove
+appSettings.frontendDir=/opt/tomcat/sportrait/ROOT
+appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images
+appSettings.webImagesDocumentRoot=/opt/DATA/sportrait/web-images
+appSettings.webImagesContext=web-images
+
+# SMPT-server to be used for the confirmation emails. Currently no authentication possible.
+appSettings.mailHost=localhost
+#appSettings.mailHost=vm2.unartig.ch
+
+##
+## Colorplaza Settings
+##
+
+# Set this flag to true if all sent orders will only contact the colorplaza demo account
+appSettings.colorplaza.demoOrder=true
+# Set this to true to enable the automatic color correction algorithm of colorplaza. "true" of "false"; use "true"
+appSettings.colorplaza.oipsColorcorrection=true
+# Flag for simulating order only. "true" or "false"; "true" if the colorplaza won't be contacted when orders are processed
+appSettings.simulateOrderOnly=true
+
+##
+## Hibernate Settings
+##
+hibernate.showSQL=false
+##
+## Logging
+##
+unartig.loglevel=DEBUG
+logging.folder=/opt/tomcat/logs
+hibernate.loglevel=INFO
