@@ -3,12 +3,12 @@
   <component name="ArtifactManager">
     <artifact type="war" name="sportrait_web:war">
       <output-path>$PROJECT_DIR$/target</output-path>
-      <root id="archive" name="sportrait_web-1.6.13-SNAPSHOT.war">
+      <root id="archive" name="sportrait_web-1.6.20-SNAPSHOT.war">
         <element id="artifact" artifact-name="sportrait_web:war exploded" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="sportrait_web:war exploded">
-      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.13-SNAPSHOT</output-path>
+      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.20-SNAPSHOT</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
@@ -67,6 +67,7 @@
             <element id="library" level="project" name="Maven: com.paypal:paypal_base:1.0.0" />
             <element id="library" level="project" name="Maven: sax:sax:2.0.1" />
             <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
+            <element id="library" level="project" name="Maven: org.imgscalr:imgscalr-lib:4.2" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -305,7 +306,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/sportrait_web.iml" filepath="$PROJECT_DIR$/sportrait_web.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../trunk/web-images-context/web-images-context.iml" filepath="$PROJECT_DIR$/../../trunk/web-images-context/web-images-context.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
@@ -315,7 +315,8 @@
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
   <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="spotrait exploded" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6.0.41" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
+    <configuration default="false" name="spotrait exploded" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6.0.41" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="" show_console_on_std_out="true" show_console_on_std_err="true">
+      <option name="COMMON_VM_ARGUMENTS" value="-Djava.awt.headless=true -server -XX:MaxPermSize=512m -Xms256m -Xmx1024m" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="sportrait_web:war exploded">
@@ -323,11 +324,11 @@
             <option name="CONTEXT_PATH" value="/" />
           </settings>
         </artifact>
-        <artifact name="web-images-context:Web2 exploded">
+        <file path="$USER_HOME$/DEV/sportrait-web/web-images">
           <settings>
             <option name="CONTEXT_PATH" value="/web-images" />
           </settings>
-        </artifact>
+        </file>
       </deployment>
       <server-settings>
         <option name="BASE_DIRECTORY_NAME" value="_sportrait_web" />
@@ -413,6 +414,20 @@
                 </list>
               </option>
               <option name="trunkUrl" value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../trunk/web-images-context">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/branches" />
+                  <option value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="svn+ssh://svn.unartig.ch/opt/svn/repos/sportrait-parent/trunk" />
+              <option name="userinfoInUrl" value="true" />
             </SvnBranchConfiguration>
           </value>
         </entry>
@@ -822,6 +837,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate/3.2.6.ga/hibernate-3.2.6.ga-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.imgscalr:imgscalr-lib:4.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/imgscalr/imgscalr-lib/4.2/imgscalr-lib-4.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/imgscalr/imgscalr-lib/4.2/imgscalr-lib-4.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/imgscalr/imgscalr-lib/4.2/imgscalr-lib-4.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.testng:testng:jdk15:5.5">

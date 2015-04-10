@@ -109,5 +109,6 @@
     <orderEntry type="library" name="Maven: com.paypal:paypal_base:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: sax:sax:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: xerces:xercesImpl:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.imgscalr:imgscalr-lib:4.2" level="project" />
   </component>
 </module>
