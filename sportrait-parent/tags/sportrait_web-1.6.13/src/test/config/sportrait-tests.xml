@@ -1,0 +1,29 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="gidp-sample-integration">
+  <test verbose="2" name="FFIntegrationtests" annotations="JDK">
+  	<parameter name="browser" value="mock"/>
+  	<groups>
+  		<run>
+  			<include name="sportrait-tests"/>
+  		</run>
+  	</groups>
+  	<packages>
+  		<package name="ch.unartig.selenium"/>
+  	</packages>
+  </test>
+
+<!--
+  <test verbose="2" name="IEIntegrationtests" annotations="JDK">
+  	<parameter name="browser" value="iexplore"/>
+  	<groups>
+  		<run>
+  			<include name="it-test"></include>
+  		</run>
+  	</groups>
+  	<packages>
+  		<package name="selenium.groovy.testng"/>
+  	</packages>
+  </test>
+-->
+
+</suite>
