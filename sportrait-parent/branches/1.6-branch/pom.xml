@@ -546,6 +546,12 @@
                 <artifactId>postgresql</artifactId>
                 <version>8.1-407.jdbc3</version>
             </extension>
+            <!--inserted after scpexe command didn't work anymore-->
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>2.4</version>
+            </extension>
         </extensions>
     </build>
 
@@ -780,13 +786,13 @@
         <repository>
             <id>ssh-repo</id>
             <name>unartig m2 repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version . -->
         <snapshotRepository>
             <id>ssh-repo</id>
             <name>unartig m2 snapshot repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <url>scp://svn.unartig.ch/opt/maven2/repo</url>
         </snapshotRepository>
     </distributionManagement>
 
