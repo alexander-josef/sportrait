@@ -90,6 +90,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Relevant for sprotrait? not sure if needed at all ...
+ */
 public class EventGroup extends GeneratedEventGroup
 {
     Logger _logger = Logger.getLogger(getClass().getName());
@@ -202,9 +205,8 @@ public class EventGroup extends GeneratedEventGroup
     public void deleteLevel() throws UAPersistenceException
     {
         _logger.debug("EventGroup.deleteLevel");
-        for (Iterator iterator = getEvents().iterator(); iterator.hasNext();)
-        {
-            Event event = (Event) iterator.next();
+        for (Object o : getEvents()) {
+            Event event = (Event) o;
             event.deleteLevel();
         }
     }

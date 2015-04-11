@@ -14,17 +14,15 @@
         <c:forEach var="eventGroup" items="${photographerAdminBean.eventGroups}" >
             <!-- loop event start: get events with albums for the photographer-->
             <logic:iterate id="event" name="eventGroup" property="eventsWithAlbums(${clientInSession.photographer.photographerId})" indexId="eventIndex">
-                <li>
-                    <span class="yellow right">
+                <li class="albumAdmin">
                         <!--only for admins:-->
-                        <html:link action="/admin/deleteLevel"
-                                   onclick="return confirm('Permanently delete Album? All Photos under this Album will be deleted as well!');"
+                        <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
+                                   onclick="return confirm('Permanently delete Event? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="event" paramProperty="genericLevelId">
                             <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
-                    </span>
 
-                        ${event.eventDateDisplay}, ${eventGroup.city}, ${event.navTitle}
+                        <span class="green">${event.eventDateDisplay}, ${eventGroup.city}, ${event.navTitle}</span>
                 </li>
                 <!-- loop album start: -->
                 <logic:iterate id="album" name="event" property="photographerAlbums(${clientInSession.photographer.photographerId})" indexId="albumIndex">
@@ -42,16 +40,18 @@
 
                         <html:link action="/photographer/admin/edit?genericLevelId=${album.genericLevelId}" styleClass="listLink">
                             <c:if test="${album.publish}">
-                                <span class="green">${album.navTitle}</span>
+                                <span class="green">
                             </c:if>
                             <c:if test="${!album.publish}">
-                                <span class="red">${album.navTitle}</span>
+                                <span class="red">${album.navTitle}
                             </c:if>
+                            ${album.navTitle}
                             <c:if test="${clientInSession.admin}">
                                 <!--admin: show photographer info:-->
-                                <span title="User Profile ID: ${album.photographer.userProfile.userProfileId}">(${album.photographer})</span>
+                                ${album.photographer}
                             </c:if>
                             Fotos: ${album.numberOfPhotos}
+                            </span>
                         </html:link>
 
 
@@ -127,7 +127,7 @@
                     <table class="pricelist_box">
                         <tr>
                             <th>Produkt</th>
-                            <th>Preis & Verfügbarkeit</th>
+                            <th>Preis & Verfï¿½gbarkeit</th>
                         </tr>
                         <c:forEach var="productType" items="${photographerAdminBean.productTypeList}">
                             <tr>
@@ -160,7 +160,7 @@
     <html:form action="/admin/startnumberMapping" method="POST" enctype="multipart/form-data">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (über Unartig Client):</h3></th>
+            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (ï¿½ber Unartig Client):</h3></th>
             <td></td>
             <td></td>
         </tr>
@@ -245,11 +245,11 @@
     <html:form action="/admin/deleteFinishtimeMappings" method="POST">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Alle Startnummer-Zuweisungen löschen!</h3></th>
+            <th><h3 class="orange">Alle Startnummer-Zuweisungen lï¿½schen!</h3></th>
             <td>
                 <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
-                <html:submit value="Loeschen!"onclick="return confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?');"/>
-                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelöscht!</p>
+                <html:submit value="Loeschen!" onclick="return confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?');"/>
+                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelï¿½scht!</p>
             </td>
             <td></td>
         </tr>

@@ -383,8 +383,7 @@ public class AdminAction extends MappingDispatchAction
 
 
     /**
-     * deletes a level and uses cascading to delete all levels that are below that level hierarchy<br>
-     * needs to generate a new tree structure
+     * deletes a level and uses cascading to delete all levels that are below that level hierarchy
      *
      * @param mapping
      * @param form
@@ -397,7 +396,7 @@ public class AdminAction extends MappingDispatchAction
     {
         GenericLevelDAO glDao = new GenericLevelDAO();
         AdminForm adminForm = (AdminForm) form;
-        _logger.warn("Deleting Level : [" + adminForm.getGenericLevelId().toString() + "]");
+        _logger.info("Deleting Level : [" + adminForm.getGenericLevelId().toString() + "]");
 
         GenericLevel level = glDao.load(adminForm.getGenericLevelId());
 
@@ -405,7 +404,7 @@ public class AdminAction extends MappingDispatchAction
         HibernateUtil.beginTransaction();
         try
         {
-            level.deleteLevel();
+            level.deleteLevel(); // call specific implementation of delete method for this level
             glDao.delete(adminForm.getGenericLevelId());
             HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
@@ -416,8 +415,7 @@ public class AdminAction extends MappingDispatchAction
         {
 //            HibernateUtil.finishTransaction();
         }
-        // generate a new tree
-//        new TreeGenerator().generateTreeItems();
+
         return mapping.findForward("success");
     }
 
