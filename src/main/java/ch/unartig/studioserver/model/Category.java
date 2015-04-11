@@ -124,6 +124,8 @@ import java.util.List;
 
 
 /**
+ * Festliche Anlässe / Sportliche Anlässe
+ * --> not relevant anymore for sportrait
  */
 public class Category extends GeneratedCategory
 {
@@ -269,9 +271,8 @@ public class Category extends GeneratedCategory
     public void deleteLevel() throws UAPersistenceException
     {
         _logger.debug("Category.deleteLevel");
-        for (Iterator iterator = getEventGroups().iterator(); iterator.hasNext();)
-        {
-            EventGroup eventGroup = (EventGroup) iterator.next();
+        for (Object o : getEventGroups()) {
+            EventGroup eventGroup = (EventGroup) o;
             eventGroup.deleteLevel();
         }
     }

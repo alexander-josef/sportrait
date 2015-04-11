@@ -668,7 +668,6 @@ public class Album extends GeneratedAlbum {
      * @return a directory
      */
     public File getFinePath() {
-        // todo: what happens if the fineImagesDirectory does not exist?
         File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
         if (!finePath.exists()) {
@@ -714,7 +713,10 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     * delete all photos. all order items that have a photo of this album need to set their photofilename and set the photoid to null
+     * Delete Album:
+     * delete all photos in db<br>
+     * delete files
+     * all order items that have a photo of this album need to set their photofilename and set the photoid to null
      */
     public void deleteLevel() throws UAPersistenceException {
         OrderItemDAO oiDao = new OrderItemDAO();
@@ -727,7 +729,7 @@ public class Album extends GeneratedAlbum {
             photo.setOrderItems(Collections.EMPTY_SET);
         }
 
-
+        // removing reference to photo from orderItems
         for (Object anOrderItemsForAlbum : orderItemsForAlbum) {
             OrderItem orderItem = (OrderItem) anOrderItemsForAlbum;
             orderItem.setPhotoFileName(orderItem.getPhoto().getFilename());
@@ -740,7 +742,14 @@ public class Album extends GeneratedAlbum {
             }
 
         }
-
+        // now delete the album image directories on disk
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(getFinePath());
+            org.apache.commons.io.FileUtils.deleteDirectory(getDisplayPath());
+            org.apache.commons.io.FileUtils.deleteDirectory(getThumbnailPath());
+        } catch (IOException e) {
+            _logger.error(e);
+        }
 
     }
 

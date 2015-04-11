@@ -30,6 +30,10 @@ ul li {
     list-style: none;
 }
 
+
+ul li span { display:block }
+ul li span:hover { background:orange }
+
 ul {
     margin: 0;
     padding: 0;

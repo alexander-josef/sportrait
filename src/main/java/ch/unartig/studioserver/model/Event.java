@@ -108,6 +108,7 @@ import java.util.*;
 
 /**
  * Event class. extends generated class that represents persistent state
+ * z.B. Sola 2015
  *
  * @author Alexander Josef,2005-2006
  */
