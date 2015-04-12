@@ -196,6 +196,17 @@
                     <one-to-many class="ch.unartig.studioserver.model.EventCategory"/>
                 </list>
 
+                <!--mapping needed for cascaded deletion of eventrunner entries when deleting an sports event-->
+                <set name="eventRunners"
+                     lazy="true"
+                     cascade="all-delete-orphan"
+                     >
+                    <key column="eventID" not-null="true"/>
+                    <one-to-many class="ch.unartig.studioserver.model.EventRunner"/>
+                </set>
+
+
+
             </subclass>
 
         </subclass>
