@@ -109,7 +109,7 @@
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="" />
-  <component name="DataSourceManagerImpl" format="xml" hash="4077007788">
+  <component name="DataSourceManagerImpl" format="xml" hash="3774939310">
     <data-source source="LOCAL" name="PostgreSQL - sportrait@localhost" uuid="6fc7383c-6e09-4e3e-965f-f50c01bddc26">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -443,6 +443,8 @@
     <data-source name="PostgreSQL - sportrait@localhost" uuid="6fc7383c-6e09-4e3e-965f-f50c01bddc26">
       <user-name>sportrait</user-name>
       <user-password>dfdfdfc4dfcbdfd8dfdedfc3dfcd</user-password>
+      <schema-pattern>sportrait.pg_catalog sportrait.public</schema-pattern>
+      <default-schemas>sportrait.pg_catalog sportrait.public</default-schemas>
     </data-source>
   </component>
   <component name="libraryTable">
