@@ -261,19 +261,27 @@ public class SportsEvent extends GeneratedSportsEvent
 
     /**
      * Given the inputStream from an uploaded Zip archive, unpack, copy and register the photos with the db
+     * Import of very big files might cause session expiration --> all params are delivered as ID and reloaded
      * <br/> Uses a new Thread for the import process!
      *
      * @param eventCategoryId The Id of the category that will be used to create a new album
      * @param inputStream The archive as a stream
-     * @param client client object, contains photographer object
-     * @param processImages Set true to process the images for thumbnail and display images
-     * @return true for success
+     * @param photographerId used to load photographer and add to sportsalbum
+     *@param processImages Set true to process the images for thumbnail and display images  @return true for success
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public boolean createRegisterSportsAlbum(Long eventCategoryId, InputStream inputStream, Client client, boolean processImages) throws UnartigException
+    public boolean createRegisterSportsAlbum(Long eventCategoryId, InputStream inputStream, String photographerId, boolean processImages) throws UnartigException
     {
-        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        PhotographerDAO photographerDAO = new PhotographerDAO();
+        Photographer photographer = photographerDAO.load(Long.valueOf(photographerId));
+        if (photographer ==null)
+        {
+            _logger.error("Problem importing album: cannot load photographer");
+            throw new UnartigException("photographer == null");
+        }
+
+        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, photographer);
         extractPhotosFor(sportsAlbum, inputStream);
         // giving control to new thread and return.
         Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages);

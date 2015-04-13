@@ -10,6 +10,7 @@
     <h2>Bilder Upload f�r:</h2><br/>
 
     <html:form action="/photographer/createUpload" enctype="multipart/form-data">
+        <html:hidden property="photographerId" value="${clientInSession.photographer.photographerId}"/>
         <h3><span class="errorstyle">Option 1: Bestehendes Album (TODO, funktioniert noch nicht)</span></h3>
         <table class="form">
             <tr>
