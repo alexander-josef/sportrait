@@ -100,6 +100,7 @@ public class SportEventsAction extends MappingDispatchAction
             String eventId = dynaForm.getString("eventId");
             String eventCategoryId = dynaForm.getString("eventCategoryId");
             String fineImageServerPath = dynaForm.getString("imagePath");
+            String photographerId = dynaForm.getString("photographerId");
             FormFile file = (FormFile) dynaForm.get("content");
             Boolean createThumbDisplay = (Boolean) dynaForm.get("createThumbDisplay");
             FormFile importDataFile = (FormFile) dynaForm.get("importData");
@@ -109,7 +110,7 @@ public class SportEventsAction extends MappingDispatchAction
             if (file != null && !"".equals(file.getFileName()) && (fineImageServerPath == null || "".equals(fineImageServerPath)))
             {
                 _logger.info("Going to create album from Zip file");
-                event.createRegisterSportsAlbum(new Long(eventCategoryId), file.getInputStream(),client, true);
+                event.createRegisterSportsAlbum(new Long(eventCategoryId), file.getInputStream(),photographerId, true);
             } else if ((fineImageServerPath != null && !"".equals(fineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
                 _logger.info("Going to create album from temporary path on server");
