@@ -734,14 +734,20 @@ public class Album extends GeneratedAlbum {
             OrderItem orderItem = (OrderItem) anOrderItemsForAlbum;
             orderItem.setPhotoFileName(orderItem.getPhoto().getFilename());
             orderItem.setPhoto(null);
+            orderItem.getProduct().setAlbum(null);
             _logger.debug("trying to save order item : " + orderItem);
+            _logger.debug("trying to save Product : " + orderItem.getProduct());
             try {
+                // save includes cascaded save of product
                 oiDao.saveOrUpdate(orderItem);
             } catch (UAPersistenceException e) {
                 throw new UAPersistenceException("can not save orderitem", e);
             }
 
         }
+
+
+
         // now delete the album image directories on disk
         try {
             org.apache.commons.io.FileUtils.deleteDirectory(getFinePath());
