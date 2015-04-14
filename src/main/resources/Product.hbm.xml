@@ -59,5 +59,15 @@
             <column name="productTypeId" index="Product_ProductType_INDEX"/>
         </many-to-one>
 
+        <many-to-one
+                name="album"
+                class="ch.unartig.studioserver.model.GenericLevel"
+                lazy="false"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <column name="albumId" index="Product_ProductType_INDEX"/>
+        </many-to-one>
+
     </class>
 </hibernate-mapping>
