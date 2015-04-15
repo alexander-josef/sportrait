@@ -44,7 +44,7 @@ public class HibernateFilter implements Filter
     public void init(FilterConfig filterConfig) throws ServletException
     {
         HibernateUtil.init();
-        System.out.println("INITING HIBERNATEFILETER");
+        _logger.info("INITING HIBERNATEFILETER");
         // Initialize hibernate lazily
     }
 

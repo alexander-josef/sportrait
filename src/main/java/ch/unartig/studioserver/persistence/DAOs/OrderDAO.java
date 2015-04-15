@@ -114,7 +114,7 @@ public class OrderDAO
                 .createCriteria(OrderHash.class)
                 .add(Restrictions.eq("hash", orderHashString));
         OrderHash orderHash = (OrderHash) c.uniqueResult();
-        System.out.println("orderHash = " + orderHash);
+        _logger.debug("orderHash = " + orderHash);
         return orderHash != null ? orderHash.getOrder() : null;
     }
 
