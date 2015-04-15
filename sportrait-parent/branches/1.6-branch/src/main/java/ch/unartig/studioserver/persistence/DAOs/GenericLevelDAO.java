@@ -313,12 +313,12 @@ public class GenericLevelDAO
     public List listEventsWithAlbums(EventGroup eventGroup) throws UAPersistenceException
     {
        // Alias on album causes  events to appear more than once .... hence the result tranformer with DISTINCT_ROOT_ENTITY
-        System.out.println("eventGroup = " + eventGroup);
+        _logger.debug("eventGroup = " + eventGroup);
         List eventList = null;
 
         try
         {
-            System.out.println("Creating query no album alias not reloading album in zAlbum render routine....");
+            _logger.debug("Creating query no album alias not reloading album in zAlbum render routine....");
             eventList = HibernateUtil.currentSession().createCriteria(Event.class)
                     .createAlias("albums", "album")
                     .add(Expression.eq("eventGroup", eventGroup))
