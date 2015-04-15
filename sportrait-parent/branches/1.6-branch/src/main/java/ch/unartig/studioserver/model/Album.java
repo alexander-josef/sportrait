@@ -734,7 +734,7 @@ public class Album extends GeneratedAlbum {
             OrderItem orderItem = (OrderItem) anOrderItemsForAlbum;
             orderItem.setPhotoFileName(orderItem.getPhoto().getFilename());
             orderItem.setPhoto(null);
-            orderItem.getProduct().setAlbum(null);
+            orderItem.setProduct(null);
             _logger.debug("trying to save order item : " + orderItem);
             _logger.debug("trying to save Product : " + orderItem.getProduct());
             try {

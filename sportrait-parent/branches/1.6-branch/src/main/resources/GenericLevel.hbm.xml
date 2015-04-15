@@ -265,7 +265,6 @@
                  lazy="false"
                  cascade="all-delete-orphan"
                  order-by="productTypeId"
-                 inverse="true"
                     >
                 <key column="albumId"/>
                 <one-to-many class="ch.unartig.studioserver.model.Product"/>

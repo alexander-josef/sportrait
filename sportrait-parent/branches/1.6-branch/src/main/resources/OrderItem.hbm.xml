@@ -50,7 +50,6 @@
                 class="ch.unartig.studioserver.model.Product"
                 lazy="false"
                 not-null="true"
-                cascade="save-update"
                 >
             <meta attribute="use-in-tostring">true</meta>
             <column name="productId" index="OrderItem_Product_INDEX"/>
