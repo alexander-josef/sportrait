@@ -84,7 +84,7 @@ public class EventCategoryAction extends MappingDispatchAction
             List list = event.getEventCategories();
             if (eventCategory==null || eventCategory.getEventCategoryId()==null)
             {
-                _logger.info("Could not load eventCategory with ID : " + eventCategoryOverviewForm.getString("eventCategoryId" + " -- Showing homepage"));
+                _logger.info("Could not load eventCategory with ID : " + eventCategoryOverviewForm.getString("eventCategoryId") + " -- Showing homepage");
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
                 saveMessages(request, msgs);
                 return mapping.findForward("notFound");
@@ -105,7 +105,7 @@ public class EventCategoryAction extends MappingDispatchAction
         }
         catch(HibernateException he)
         {
-            _logger.info("Could not load eventCategory with ID : " + eventCategoryOverviewForm.getString("eventCategoryId") + " -- Showing homepage",he);
+            _logger.info("Could not load eventCategory with ID : " + eventCategoryOverviewForm.getString("eventCategoryId") + " -- Showing homepage");
             msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
             saveMessages(request, msgs);
             return mapping.findForward("notFound");
