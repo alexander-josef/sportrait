@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+        "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+
+
+    <global>
+
+        <!-- An example global constant
+        <constant>
+            <constant-name>postalCode</constant-name>
+            <constant-value>^\d{5}\d*$</constant-value>
+        </constant>
+        end example-->
+
+    </global>
+
+
+
+    <formset>
+        
+        <form name="checkOutForm">
+
+            <field property="email" depends="required,email" page="0">
+                <msg bundle="ERROR" key="errors.email.invalid" name="email" />
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.email.displayname" name="required"/>
+            </field>
+
+            <field property="emailConfirmation" depends="validwhen" page="0">
+                <msg bundle="ERROR" key="errors.email.nomatch" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>
+                        (emailConfirmation == email)
+                    </var-value>
+                </var>
+            </field>
+
+
+            <field property="firstName" depends="required" page="0">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0 key="checkout.firstname.displayname" name="required"/>
+            </field>
+
+            <field property="lastName" depends="required"  page="0">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.lastName.displayname" name="required"/>
+            </field>
+
+            <field property="addr1" depends="required" page="0">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.addr1.displayname" name="required"/>
+            </field>
+
+            <field property="zipCode" depends="required,integer,minlength,maxlength" page="0">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <msg bundle="ERROR" key="errors.integer" name="integer"/>
+                <msg bundle="ERROR" key="errors.minlength" name="minlength"/>
+                <msg bundle="ERROR" key="errors.maxlength" name="maxlength"/>
+
+                <!--wuerde ein eintrag ohne name reichen ?-->
+                <arg0 key="checkout.zipCode.displayname" name="required"/>
+                <arg0 key="checkout.zipCode.displayname" name="integer"/>
+                <arg0 key="checkout.zipCode.displayname" name="minlength"/>
+                <arg0 key="checkout.zipCode.displayname" name="maxlength"/>
+                <arg1 name="minlength" key="${var:minlength}" resource="false"/>
+                <arg1 name="maxlength" key="${var:maxlength}" resource="false"/>
+                <var>
+                    <var-name>minlength</var-name>
+                    <var-value>4</var-value>
+                </var>
+                <var>
+                    <var-name>maxlength</var-name>
+                    <var-value>5</var-value>
+                </var>
+            </field>
+
+            <field property="city" depends="required" page="0">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.city.displayname" name="required"/>
+            </field>
+
+<!--
+Only used if own credit card processing
+-->
+
+<!--
+
+            <field property="paymentMethod" depends="required" page="1">
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.paymentMethod.displayname" name="required"/>
+            </field>
+
+            <field property="creditCardNumber" depends="creditCard" page="1">
+                <msg bundle="ERROR" key="errors.creditcard.wrongnumber" name="creditCard"/>
+                <arg0  key="${creditCardNumber}" name="required"/>
+            </field>
+
+            <field property="creditCardExpiryMonth" depends="validwhen" page="1">
+                <msg bundle="ERROR" key="errors.creditcard.expiryMonth" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>
+                        ((paymentMethod!='creditCard') or (*this*!='**'))
+                    </var-value>
+                </var>
+            </field>
+
+            <field property="creditCardExpiryYear" depends="validwhen" page="1">
+                <msg bundle="ERROR" key="errors.creditcard.expiryYear" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>
+                        ((paymentMethod!='creditCard') or (*this*!='****'))
+                    </var-value>
+                </var>
+            </field>
+
+            <field property="creditCardNumber" depends="validwhen" page="1">
+                <msg bundle="ERROR" key="errors.creditcard.missing" name="validwhen" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>
+                        ((paymentMethod!='creditCard') or (*this*!=null))
+                    </var-value>
+                </var>
+            </field>
+
+-->
+
+        </form>
+        
+        <form name="customerServiceMessage" >
+            <field property="fromAddress" depends="required,email" >
+                <msg bundle="ERROR" key="errors.email.invalid" name="email"/>
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.email.displayname" name="required"/>
+            </field>
+
+            <field property="fromAddressConfirm" depends="validwhen" page="0">
+                <msg bundle="ERROR" key="errors.email.nomatch" name="validwhen"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>
+                        (fromAddressConfirm == fromAddress)
+                    </var-value>
+                </var>
+            </field>
+
+
+            <field property="sender" depends="required" >
+                <msg bundle="ERROR" key="errors.required" name="required"/>
+                <arg0  key="checkout.lastName.displayname" name="required"/>
+            </field>
+
+        </form>
+    </formset>
+
+
+</form-validation>

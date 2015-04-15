@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class
+            name="ch.unartig.studioserver.model.Order"
+            table="Orders"
+            >
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedOrder</meta>
+
+        <id
+                name="orderId"
+                type="java.lang.Long"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <generator class="native">
+                <param name="sequence">sequence_OrderId</param>
+            </generator>
+        </id>
+        <property
+                name="orderDate"
+                type="timestamp"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="uploadCompletedDate"
+                type="timestamp"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="oipsOrderId"
+                type="java.lang.String"
+                length="255"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <many-to-one
+                name="customer"
+                class="ch.unartig.studioserver.model.Customer"
+                cascade="save-update"
+                lazy="false"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <column name="customerId" index="Order_Customer_INDEX"/>
+        </many-to-one>
+
+        <set name="orderItems"
+             lazy="false"
+             cascade="all-delete-orphan"
+             inverse="true"
+                >
+            <key column="orderId"/>
+            <one-to-many class="ch.unartig.studioserver.model.OrderItem"/>
+        </set>
+
+    </class>
+</hibernate-mapping>
