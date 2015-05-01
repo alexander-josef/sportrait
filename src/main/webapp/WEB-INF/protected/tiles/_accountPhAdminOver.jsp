@@ -33,7 +33,7 @@
 
                     <li class="albumAdmin">
                         <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
-                                   onclick="return confirm('Permanently delete Albem? All Photos under this Album will be deleted as well!');"
+                                   onclick="return confirm('Permanently delete Album? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="album" paramProperty="genericLevelId">
                             <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
