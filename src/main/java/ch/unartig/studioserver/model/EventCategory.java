@@ -37,7 +37,7 @@ package ch.unartig.studioserver.model;
 import ch.unartig.exceptions.UnartigException;
 
 /**
- *
+ * Example: Etappen in Sola
  */
 public class EventCategory extends GeneratedEventCategory
 {

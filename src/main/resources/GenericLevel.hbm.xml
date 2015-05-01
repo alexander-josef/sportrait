@@ -125,12 +125,14 @@
                 <meta attribute="use-in-tostring">true</meta>
             </property>
 
+            <!-- adding caching for set of albums 2015-05-01 -->
             <set name="events"
                  lazy="true"
                  cascade="all-delete-orphan"
                  inverse="true"
                  order-by="eventDate desc"
                     >
+                <cache usage="read-write"/>
                 <key column="eventGroupId"/>
                 <one-to-many class="ch.unartig.studioserver.model.Event"/>
             </set>
@@ -165,12 +167,14 @@
                 <column name="eventGroupId" index="GenericLevel_EventGroup_INDEX"/>
             </many-to-one>
 
+            <!-- adding caching for set of albums 2015-05-01 -->
             <set name="albums"
                  lazy="true"
                  cascade="all-delete-orphan"
                  inverse="true"
                  order-by="genericLevelId"
                     >
+                <cache usage="read-write"/>
                 <key column="eventId"/>
                 <one-to-many class="ch.unartig.studioserver.model.Album"/>
             </set>
@@ -191,6 +195,8 @@
                      <!--inverse="true"-->
 
                     <!--order-by="title"-->
+                    <!-- adding caching for set of albums 2015-05-01 -->
+                    <cache usage="read-write"/>
                     <key column="eventId" not-null="true"/>
                     <list-index column="category_position"/>
                     <one-to-many class="ch.unartig.studioserver.model.EventCategory"/>
@@ -266,6 +272,7 @@
                  cascade="all-delete-orphan"
                  order-by="productTypeId"
                     >
+                <cache usage="read-write"/>
                 <key column="albumId"/>
                 <one-to-many class="ch.unartig.studioserver.model.Product"/>
             </set>
