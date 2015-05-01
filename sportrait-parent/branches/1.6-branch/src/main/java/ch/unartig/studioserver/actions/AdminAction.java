@@ -396,7 +396,8 @@ public class AdminAction extends MappingDispatchAction
     {
         GenericLevelDAO glDao = new GenericLevelDAO();
         AdminForm adminForm = (AdminForm) form;
-        _logger.info("Deleting Level : [" + adminForm.getGenericLevelId().toString() + "]");
+        String levelId = adminForm.getGenericLevelId().toString();
+        _logger.info("Deleting Level : [" + levelId + "]");
 
         GenericLevel level = glDao.load(adminForm.getGenericLevelId());
 
@@ -415,6 +416,9 @@ public class AdminAction extends MappingDispatchAction
         {
 //            HibernateUtil.finishTransaction();
         }
+
+        _logger.info("done deleting level : " + levelId);
+
 
         return mapping.findForward("success");
     }

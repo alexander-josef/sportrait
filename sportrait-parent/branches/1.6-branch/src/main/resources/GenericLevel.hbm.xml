@@ -188,9 +188,11 @@
                 <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsEvent
                 </meta>
 
+                <!-- added inverse=true leads to problems (list-index not updated) - 2015-05-01 -->
                 <list name="eventCategories"
                      lazy="false"
                      cascade="all-delete-orphan"
+                     inverse="false"
                         >
                      <!--inverse="true"-->
 
