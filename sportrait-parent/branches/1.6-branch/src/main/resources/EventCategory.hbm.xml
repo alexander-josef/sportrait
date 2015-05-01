@@ -57,6 +57,7 @@
              cascade="all-delete-orphan"
              inverse="true"
                 >
+            <cache usage="read-write" />
             <key column="eventCategoryId"/>
             <one-to-many class="ch.unartig.studioserver.model.Album"/>
         </set>
