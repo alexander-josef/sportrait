@@ -10,6 +10,7 @@
             lazy="false"
             >
         <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedUserProfile</meta>
+        <cache usage="read-write"/>
 
         <!--<cache usage="read-write"/>-->
         <id
@@ -177,6 +178,7 @@
              table="UserProfiles2UserRoles"
              cascade="save-update"
                 >
+            <cache usage="read-write"/>
             <!--<meta attribute="scope-set">protected</meta>-->
             <!--<meta attribute="scope-get">protected</meta>-->
             <key column="userName" property-ref="userName"/>
