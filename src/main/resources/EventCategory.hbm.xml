@@ -39,6 +39,8 @@
             <meta attribute="use-in-tostring">true</meta>
         </property>
 
+
+        <!--took out update="false" and insert="false" which led to problems. seems to be needed for bi-directional mappings of lists/ 2015-05-01 -->
         <many-to-one
                 name="event"
                 class="ch.unartig.studioserver.model.SportsEvent"
@@ -57,7 +59,10 @@
              cascade="all-delete-orphan"
              inverse="true"
                 >
+<!-- problem with cache while deleting albums
+
             <cache usage="read-write" />
+-->
             <key column="eventCategoryId"/>
             <one-to-many class="ch.unartig.studioserver.model.Album"/>
         </set>
