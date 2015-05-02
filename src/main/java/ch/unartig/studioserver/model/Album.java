@@ -430,25 +430,25 @@ public class Album extends GeneratedAlbum {
 
         setProblemFiles(problemFiles);
 
-        // if createThumbDisp call the batch job (as alternative to create the thumb with java for every registered photo, which is done in registerSinglePhoto)
+        // if createThumbDisp call the batch job to montage a logo on the fine files for the registering album
         // todo implement check and script call
-        if (createThumbDisp & Boolean.FALSE) {
+        if (createThumbDisp) {
             try {
                 // todo: script path in properties file
-                String thumbDispScript = "/Users/alexanderjosef/scripts/createSportraitImages.sh";
-                _logger.info("calling thumb/disp script : " + thumbDispScript);
-                _logger.info("with param 1 (fine path) : " + getFinePath().getAbsolutePath());
-                _logger.info("with param 2 (web-images path) : " + getAlbumWebImagesPath().getAbsolutePath());
+                String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
+                _logger.info("calling logo script : " + logoScriptPath);
+                _logger.info("with param 1 (albumId) : " + getGenericLevelId().toString());
+                _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
 
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
 
-                ProcessBuilder pb = new ProcessBuilder(thumbDispScript, getFinePath().getAbsolutePath(),getAlbumWebImagesPath().getAbsolutePath());
+                ProcessBuilder pb = new ProcessBuilder(logoScriptPath, getGenericLevelId().toString(),Registry.getFineImagesDirectory());
                 Process p = pb.start();     // Start the process.
                 p.waitFor();                // Wait for the process to finish.
                 _logger.info("Script executed successfully");
             } catch (Exception e) {
-                _logger.error("Error while executing script to create thumbs and displays", e);
+                _logger.error("Error while executing script", e);
             }
         }
         _logger.info("**********************");
@@ -458,6 +458,7 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
+     * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
      * @param createThumbDisp set to true to create the display and thumbnail images
      * @param problemFiles    A set of accumulated files that caused problems during improt
      * @param photoFile       The image file to import (in its temporary location)
