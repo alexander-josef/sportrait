@@ -221,6 +221,8 @@ public final class Registry
     private static String webImagesDocumentRoot;
     /*We usually define a different context for web images. This is the first part of the path part in the URL after the host and port (until the second '/')*/
     private static String webImagesContext;
+    /* Path to the script that put the SOLA logo over the images */
+    private static String logosScriptPath;
     public static String jsDirectory = "js/";
     public static String jsTreeDirectory = "js/tree/";
     /*the tree items file name without the language dependant suffix*/
@@ -340,8 +342,7 @@ public final class Registry
     /**
      * will be called upon startup of the Action servlet
      */
-    public static void init()
-    {
+    public static void init() {
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
@@ -357,6 +358,9 @@ public final class Registry
         setWebImagesContext(appSettings.getMessage("webImagesContext"));
         _logger.info("***** web-images context = " + appSettings.getMessage("webImagesContext"));
 
+        setLogosScriptPath(appSettings.getMessage("logosScriptPath"));
+        _logger.info("***** logosScriptPath = " + appSettings.getMessage("logosScriptPath"));
+
         setProjectName(appSettings.getMessage("application.name"));
         setProjectVersion(appSettings.getMessage("application.version"));
         // todo set to enabled again after svn problem on test server is solved
@@ -371,21 +375,18 @@ public final class Registry
 
 
         String oipsOrderPeriod = appSettings.getMessage("oipsOrderPeriod");
-        if (oipsOrderPeriod != null && Long.parseLong(oipsOrderPeriod) > 0)
-        {
+        if (oipsOrderPeriod != null && Long.parseLong(oipsOrderPeriod) > 0) {
             setOipsOrderPeriod(Long.parseLong(oipsOrderPeriod));
         }
 
-        _logger.debug("getMessage oipsColorcorrection: "  +appSettings.getMessage("oipsColorcorrection"));
+        _logger.debug("getMessage oipsColorcorrection: " + appSettings.getMessage("oipsColorcorrection"));
         String oipsColorcorrection = appSettings.getMessage("oipsColorcorrection");
-        if ("false".equals(oipsColorcorrection))
-        {
+        if ("false".equals(oipsColorcorrection)) {
             setOipsColorcorrection("0"); // "0" stand for no colorcorrecion
             _logger.info("**********************************************************");
             _logger.info("getOipsColorcorrection() = " + getOipsColorcorrection());
             _logger.info("**********************************************************");
-        } else
-        {
+        } else {
             setOipsColorcorrection("1"); // "1" stands for colorcorrection enabled (default)
             _logger.info("**********************************************************");
             _logger.info("getOipsColorcorrection() = " + getOipsColorcorrection());
@@ -453,6 +454,14 @@ public final class Registry
     public static void setTreeItemsFilePrefix(String treeItemsFilePrefix)
     {
         Registry.treeItemsFilePrefix = treeItemsFilePrefix;
+    }
+
+    public static void setLogosScriptPath(String logosScriptPath) {
+        Registry.logosScriptPath = logosScriptPath;
+    }
+
+    public static String getLogosScriptPath() {
+        return logosScriptPath;
     }
 
     public float get_imageQuality()

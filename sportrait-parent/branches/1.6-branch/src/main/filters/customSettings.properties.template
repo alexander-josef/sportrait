@@ -18,6 +18,8 @@ appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images
 appSettings.webImagesDocumentRoot=/opt/DATA/sportrait/web-images
 appSettings.webImagesContext=web-images
 
+appSettings.logosScriptPath=/Users/alexanderjosef/scripts/copyLogosComposite.sh
+
 # SMPT-server to be used for the confirmation emails. Currently no authentication possible.
 appSettings.mailHost=localhost
 #appSettings.mailHost=vm2.unartig.ch

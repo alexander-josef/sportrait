@@ -434,8 +434,8 @@ public class Album extends GeneratedAlbum {
         // todo implement check and script call
         if (createThumbDisp) {
             try {
-                // todo: script path in properties file
-                String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
+                // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
+                String logoScriptPath = Registry.getLogosScriptPath();
                 _logger.info("calling logo script : " + logoScriptPath);
                 _logger.info("with param 1 (albumId) : " + getGenericLevelId().toString());
                 _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
