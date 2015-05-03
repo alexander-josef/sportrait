@@ -247,8 +247,8 @@
                 <column name="eventId" index="GenericLevel_Event_INDEX"/>
             </many-to-one>
 
+
             <many-to-one
-                    
                     name="eventCategory"
                     class="ch.unartig.studioserver.model.EventCategory"
                     lazy="false"

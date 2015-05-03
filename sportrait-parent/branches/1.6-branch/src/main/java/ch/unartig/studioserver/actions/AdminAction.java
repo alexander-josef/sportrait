@@ -401,13 +401,15 @@ public class AdminAction extends MappingDispatchAction
 
         GenericLevel level = glDao.load(adminForm.getGenericLevelId());
 
+        _logger.info("... of type :" + level.getLevelType());
 
-        HibernateUtil.beginTransaction();
+
+        // HibernateUtil.beginTransaction();
         try
         {
             level.deleteLevel(); // call specific implementation of delete method for this level
             glDao.delete(adminForm.getGenericLevelId());
-            HibernateUtil.commitTransaction();
+            // HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
         {
             HibernateUtil.rollbackTransaction();
