@@ -59,10 +59,9 @@
              cascade="all-delete-orphan"
              inverse="true"
                 >
-<!-- problem with cache while deleting albums
+<!-- problem with cache while deleting albums -->
 
             <cache usage="read-write" />
--->
             <key column="eventCategoryId"/>
             <one-to-many class="ch.unartig.studioserver.model.Album"/>
         </set>

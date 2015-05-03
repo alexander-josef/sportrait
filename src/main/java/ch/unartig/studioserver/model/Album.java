@@ -716,6 +716,7 @@ public class Album extends GeneratedAlbum {
     /**
      * Delete Album:
      * delete all photos in db<br>
+     * remove references in orderitems
      * delete files
      * all order items that have a photo of this album need to set their photofilename and set the photoid to null
      */
@@ -731,6 +732,7 @@ public class Album extends GeneratedAlbum {
         }
 
         // removing reference to photo from orderItems
+        // todo check performance?
         for (Object anOrderItemsForAlbum : orderItemsForAlbum) {
             OrderItem orderItem = (OrderItem) anOrderItemsForAlbum;
             orderItem.setPhotoFileName(orderItem.getPhoto().getFilename());
@@ -748,7 +750,6 @@ public class Album extends GeneratedAlbum {
         }
 
 
-
         // now delete the album image directories on disk
         try {
             org.apache.commons.io.FileUtils.deleteDirectory(getFinePath());
@@ -757,6 +758,9 @@ public class Album extends GeneratedAlbum {
         } catch (IOException e) {
             _logger.error(e);
         }
+
+        // eventCategory contains reference to album (this caused a temporary problem if caching is turned on for albums in eventcategories)
+        getEventCategory().getAlbums().remove(this);
 
     }
 
