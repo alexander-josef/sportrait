@@ -25,6 +25,7 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 
@@ -32,11 +33,22 @@ import java.util.List;
 
 public class PhotographerDAO
 {
+    Logger _logger = Logger.getLogger(getClass().getName());
+
     public List list() throws UAPersistenceException
     {
-        Criteria c = HibernateUtil.currentSession()
-                .createCriteria(Photographer.class);
-        return c.list();
+        _logger.debug("list() in PhotographerDAO ...");
+        List allPhotographers = null;
+        try {
+            Criteria c = HibernateUtil.currentSession()
+                    .createCriteria(Photographer.class);
+            allPhotographers = c.list();
+            _logger.debug("returning all photographers : " + allPhotographers);
+        } catch (HibernateException e) {
+            _logger.error("Error reading list of photographers",e);
+            e.printStackTrace();
+        }
+        return allPhotographers;
 
     }
 
