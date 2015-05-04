@@ -84,10 +84,13 @@
         </ul>
     </div>
 
+    <%--
     <h2>WAS IST SPORTRAIT</h2>
 
     <p>SPORTRAIT wurde von den Machern von <a href="http://www.unartig.ch">unArtig</a> entwickelt mit dem Ziel, den
         Sportfotoservice attraktiver zu gestalten.</p>
+    --%>
+
     <%--<p>SPORTRAIT lebt von der Initiative vieler unabhängiger Profi- und Amateurfotografen, die Fotos von Sportanlässe an Athletinnen und Athleten verkaufen.</p>--%>
     <%--    <p>SPORTRAIT wurde 2006 von den Machern von <a href="#">unArtig</a> gegründet mit dem Ziel, den Sportfotoservice in
 vielerlei Hinsicht attraktiver zu gestalten.</p>--%>
