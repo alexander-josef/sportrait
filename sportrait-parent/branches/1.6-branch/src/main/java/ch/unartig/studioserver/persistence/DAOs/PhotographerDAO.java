@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PhotographerDAO
@@ -37,6 +38,10 @@ public class PhotographerDAO
 
     public List list() throws UAPersistenceException
     {
+        // on production: error is thrown, probably here
+        return Collections.emptyList();
+
+/*
         _logger.debug("list() in PhotographerDAO ...");
         List allPhotographers = null;
         try {
@@ -49,6 +54,7 @@ public class PhotographerDAO
             e.printStackTrace();
         }
         return allPhotographers;
+*/
 
     }
 
