@@ -323,10 +323,19 @@ public class SportraitAdministrationWindow extends Window
      */
     public List getAllPhotographers()
     {
+        _logger.debug("calling getAllPhotographers()");
         if (client.isValid())
         {
+            _logger.debug("trying to read all photographers ..");
             PhotographerDAO photographerDao = new PhotographerDAO();
-            return photographerDao.list();
+            List photographers = null;
+            try {
+                photographers = photographerDao.list();
+            } catch (UAPersistenceException e) {
+                _logger.error("Error retrieving photographers",e);
+            }
+            _logger.debug("Returning list of photographers from DAO : " + photographers);
+            return photographers;
         } else
         {
             _logger.info("User without admin rights wants to use user administration!");

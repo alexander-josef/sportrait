@@ -213,7 +213,7 @@ public final class Registry
     public static String frontendDirectory = "";
     private static String projectName;
     private static String projectVersion;
-    private static String buildNumber;
+    private static String buildNumber = "99999";
 
     // Where the fine images are located. No document root, not accessible by a web server.
     private static String fineImagesDirectory;
