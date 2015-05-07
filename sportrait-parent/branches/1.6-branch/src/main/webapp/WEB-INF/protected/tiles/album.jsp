@@ -92,7 +92,15 @@
                                  alt="${thumbnail.displayTitle}" title="${thumbnail.displayTitle}"/>
                         </html:link>
                     </li>
-                    <li class="slideBottom">${thumbnail.shortTimeString}</li>
+                    <li class="slideBottom">
+                            ${thumbnail.shortTimeString}
+                        <c:if test="${clientInSession!=null}">
+                            <html:link action="/admin/deletePhoto?photoId=${thisPhotoId}"  >
+                                <html:img page="/images/admin_trash.gif" alt="delete"/>
+                            </html:link>
+                        </c:if>
+
+                    </li>
                 </ul>
             </li>
         </c:forEach>

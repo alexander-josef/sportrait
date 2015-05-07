@@ -278,7 +278,7 @@ Check the following part of the manual for replacing the deprecated use of the c
 
 17.2. Alias and property references
 
-The {cat.*} notation used above is a shorthand for "all properties". Alternatively, you may list the columns explicity, but even then you must let Hibernate inject the SQL column aliases for each property. The placeholder for a column alias is just the property name qualified by the table alias. In the following example, we retrieve Cats from a different table (cat_log) to the one declared in the mapping metadata. Notice that we may even use the property aliases in the where clause if we like. The {}-syntax is not required for named queries. See more in Section 17.3, “Named SQL queries”
+The {cat.*} notation used above is a shorthand for "all properties". Alternatively, you may list the columns explicity, but even then you must let Hibernate inject the SQL column aliases for each property. The placeholder for a column alias is just the property name qualified by the table alias. In the following example, we retrieve Cats from a different table (cat_log) to the one declared in the mapping metadata. Notice that we may even use the property aliases in the where clause if we like. The {}-syntax is not required for named queries. See more in Section 17.3, ï¿½Named SQL queriesï¿½
 
 String sql = "select cat.originalId as {cat.id}, " +
 "cat.mateid as {cat.mate}, cat.sex as {cat.sex}, " +
@@ -991,5 +991,19 @@ Note: if you list each property explicitly, you must include all properties of t
         return retVal;
     }
 
+    /**
+     * DAO method to delete single photo
+     * @param photoId
+     */
+    public void delete(Long photoId) throws UAPersistenceException {
+
+        try
+        {
+            HibernateUtil.currentSession().delete(HibernateUtil.currentSession().load(Photo.class, photoId));
+
+        } catch (HibernateException h) {
+            throw new UAPersistenceException("Could not load and delete Photo by ID, see stack trace", h);
+        }
+    }
 }
 

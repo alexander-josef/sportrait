@@ -153,8 +153,23 @@ todo refactor name albumBean as fast as possible
                     <tr>
                         <td class="frameLeft"></td>
                         <td id="displayImageholder_${display.displayPhoto.orientationSuffix}">
+                            <c:if test="${clientInSession!=null}">
+                                <div>
+                                    <html:link action="/admin/deleteDisplayPhoto?photoId=${display.displayPhotoId}&nextPhotoId=${display.nextPhoto.photoId}"  >
+                                        delete
+                                    </html:link>
+                                </div>
+                            </c:if>
+
                             <img src="${display.displayPhoto.displayUrl}"
                                  alt="${display.displayPhoto.filename} -- ${display.displayPhoto.displayUrl}"/>
+                            <c:if test="${clientInSession!=null}">
+                                <%-- todo: implement deletion of photo --%>
+                                <div>
+                                    <html:link action="/admin/deletePhoto?photoId=${display.displayPhotoId}"  >
+                                        delete
+                                    </html:link>
+                                </div>                            </c:if>
                         </td>
                         <td class="frameRight"></td>
                     </tr>
