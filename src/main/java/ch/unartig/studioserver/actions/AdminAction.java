@@ -381,6 +381,49 @@ public class AdminAction extends MappingDispatchAction
         return mapping.findForward("success");
     }
 
+    /**
+     * In admin mode: delete photo from album or display view
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return
+     * @throws UnartigException
+     */
+    public ActionForward deletePhoto(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
+    {
+        DynaActionForm eventCategoryForm = (DynaActionForm) form;
+        PhotoDAO photoDao = new PhotoDAO();
+
+        _logger.debug("Deleting Photo : " + eventCategoryForm.get("photoId").toString());
+
+        Long photoId = (Long)eventCategoryForm.get("photoId");
+        Long nextPhotoId = (Long)eventCategoryForm.get("nextPhotoId");
+
+        try
+        {
+            photoDao.delete(photoId);
+        } catch (UAPersistenceException e)
+        {
+            _logger.error("can not delete photo with ID"+photoId,e);
+        }
+
+
+
+        if (nextPhotoId!=null)
+        {
+            ActionRedirect redirect = new ActionRedirect(mapping.findForward("success"));
+            redirect.setPath("/display/"+nextPhotoId+"/display.html");
+            return redirect;
+        }
+        else {
+
+            return mapping.findForward("success");
+
+        }
+
+    }
+
 
     /**
      * deletes a level and uses cascading to delete all levels that are below that level hierarchy

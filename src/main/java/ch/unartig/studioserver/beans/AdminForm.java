@@ -77,6 +77,7 @@ public class AdminForm extends ActionForm implements Serializable {
     private String description;
     private Long genericLevelId;
     private Long parentLevelId;
+    private Long photoId;
     private Boolean privateEvent;
     private Boolean noTime;
     private FormFile indexPhoto;
@@ -247,5 +248,13 @@ public class AdminForm extends ActionForm implements Serializable {
             productPrices.put(product.getProductType().getProductTypeId().toString(), product.getPrice().getPriceId().toString());
         }
         _logger.debug("set product-prices map : " + productPrices);
+    }
+
+    public Long getPhotoId() {
+        return photoId;
+    }
+
+    public void setPhotoId(Long photoId) {
+        this.photoId = photoId;
     }
 }

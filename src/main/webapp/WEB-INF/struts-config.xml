@@ -27,6 +27,8 @@
             <form-property name="page" type="java.lang.String"/>
             <form-property name="eventCategoryId" type="java.lang.String"/>
             <form-property name="startNumber" type="java.lang.String"/>
+            <form-property name="photoId" type="java.lang.Long"/>
+            <form-property name="nextPhotoId" type="java.lang.Long"/>
         </form-bean>
 
         <form-bean name="displayForm" type="org.apache.struts.action.DynaActionForm">
@@ -467,6 +469,18 @@
                 name="adminForm">
             <!--roles="unartigadmin">-->
             <forward name="success" path="/photographer/admin/edit.html" redirect="true"/>
+        </action>
+
+        <action path="/admin/deletePhoto" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
+                parameter="deletePhoto"
+                name="eventCategoryForm">
+            <forward name="success" path="/showCategory.html" redirect="true"/>
+        </action>
+
+        <action path="/admin/deleteDisplayPhoto" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
+                parameter="deletePhoto"
+                name="eventCategoryForm">
+            <forward name="success" path="/display/333/display.html" redirect="true"/>
         </action>
 
 
