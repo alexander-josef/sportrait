@@ -1,0 +1,291 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class
+            name="ch.unartig.studioserver.model.GenericLevel"
+            table="GenericLevels" discriminator-value="GENERIC"
+            >
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedGenericLevel</meta>
+        <cache usage="read-write"/>
+
+        <id
+                name="genericLevelId"
+                type="java.lang.Long"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <generator class="native">
+                <param name="sequence">sequence_genericLevelId</param>
+            </generator>
+        </id>
+        <discriminator column="HIERARCHY_LEVEL" type="string"/>
+        <property
+                name="navTitle"
+                type="java.lang.String"
+                length="30"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="longTitle"
+                type="java.lang.String"
+                length="255"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="description"
+                type="text"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="quickAccess"
+                type="java.lang.String"
+                length="255"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="isPrivate"
+                type="java.lang.Boolean"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+        <!-- will this level be accessible? (currently in use for albums)-->
+        <property
+                name="publish"
+                type="java.lang.Boolean"
+                
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="privateAccessCode"
+                type="java.lang.String"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+
+        <!--**********************************-->
+        <!--   Subclasses of GenericLevel:    -->
+        <!--**********************************-->
+
+        <subclass name="ch.unartig.studioserver.model.Category" discriminator-value="CATEGORY">
+            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedCategory</meta>
+            <meta attribute="scope-class" inherit="false">public abstract</meta>
+
+            <set name="eventGroups"
+                 lazy="true"
+                 cascade="all-delete-orphan"
+                 inverse="true"
+                 order-by="navTitle"
+                    >
+                <key column="categoryId"/>
+                <one-to-many class="ch.unartig.studioserver.model.EventGroup"/>
+            </set>
+
+        </subclass>
+
+        <!--ORT-->
+        <subclass
+                name="ch.unartig.studioserver.model.EventGroup"
+                discriminator-value="EVENTGROUP"
+                >
+            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEventGroup</meta>
+            <meta attribute="scope-class" inherit="false">public abstract</meta>
+            <many-to-one
+                    name="category"
+                    class="ch.unartig.studioserver.model.Category"
+                    lazy="false"
+                    cascade="save-update"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+                <column name="categoryId" index="GenericLevel_Category_INDEX"/>
+            </many-to-one>
+            <property
+                    name="zipcode"
+                    type="java.lang.String"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+            </property>
+
+            <property
+                    name="city"
+                    type="java.lang.String"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+            </property>
+
+            <!-- adding caching for set of albums 2015-05-01 -->
+            <set name="events"
+                 lazy="true"
+                 cascade="all-delete-orphan"
+                 inverse="true"
+                 order-by="eventDate desc"
+                    >
+                <cache usage="read-write"/>
+                <key column="eventGroupId"/>
+                <one-to-many class="ch.unartig.studioserver.model.Event"/>
+            </set>
+
+
+        </subclass>
+
+        <!--Sport ANLASS-->
+        <subclass
+                name="ch.unartig.studioserver.model.Event"
+                discriminator-value="EVENT">
+            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedEvent</meta>
+            <meta attribute="scope-class" inherit="false">public abstract</meta>
+
+            <property
+                    name="eventDate"
+                    type="date"/>
+            <property
+                    name="weblink"
+                    type="java.lang.String"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+            </property>
+
+            <many-to-one
+                    name="eventGroup"
+                    class="ch.unartig.studioserver.model.EventGroup"
+                    lazy="false"
+                    cascade="save-update"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+                <column name="eventGroupId" index="GenericLevel_EventGroup_INDEX"/>
+            </many-to-one>
+
+            <!-- adding caching for set of albums 2015-05-01 -->
+            <set name="albums"
+                 lazy="true"
+                 cascade="all-delete-orphan"
+                 inverse="true"
+                 order-by="genericLevelId"
+                    >
+                <cache usage="read-write"/>
+                <key column="eventId"/>
+                <one-to-many class="ch.unartig.studioserver.model.Album"/>
+            </set>
+
+            <!--Sub-subclass for Event: Sports Event (used for SOLA, navigation)-->
+            <subclass
+                    name="ch.unartig.studioserver.model.SportsEvent"
+                    discriminator-value="SPORTSEVENT"
+                    >
+                <meta attribute="scope-class" inherit="false">public abstract</meta>
+                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsEvent
+                </meta>
+
+                <!-- added inverse=true leads to problems (list-index not updated) - 2015-05-01 -->
+                <list name="eventCategories"
+                     lazy="false"
+                     cascade="all-delete-orphan"
+                     inverse="false"
+                        >
+                     <!--inverse="true"-->
+
+                    <!--order-by="title"-->
+                    <!-- adding caching for set of albums 2015-05-01 -->
+                    <cache usage="read-write"/>
+                    <key column="eventId" not-null="true"/>
+                    <list-index column="category_position"/>
+                    <one-to-many class="ch.unartig.studioserver.model.EventCategory"/>
+                </list>
+
+                <!--mapping needed for cascaded deletion of eventrunner entries when deleting an sports event-->
+                <set name="eventRunners"
+                     lazy="true"
+                     cascade="all-delete-orphan"
+                     >
+                    <key column="eventID" not-null="true"/>
+                    <one-to-many class="ch.unartig.studioserver.model.EventRunner"/>
+                </set>
+
+
+
+            </subclass>
+
+        </subclass>
+
+
+        <subclass
+                name="ch.unartig.studioserver.model.Album"
+                discriminator-value="ALBUM">
+            <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedAlbum</meta>
+            <meta attribute="scope-class" inherit="false">public abstract</meta>
+            <property
+                    name="albumTypeString"
+                    type="java.lang.String"/>
+
+            <many-to-one
+                    name="photographer"
+                    class="ch.unartig.studioserver.model.Photographer"
+                    lazy="false"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+                <column name="photographerId" index="GenericLevel_Photographer_INDEX"/>
+            </many-to-one>
+
+            <many-to-one
+                    name="event"
+                    class="ch.unartig.studioserver.model.Event"
+                    lazy="false"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+                <column name="eventId" index="GenericLevel_Event_INDEX"/>
+            </many-to-one>
+
+
+            <many-to-one
+                    name="eventCategory"
+                    class="ch.unartig.studioserver.model.EventCategory"
+                    lazy="false"
+                    >
+                <meta attribute="use-in-tostring">true</meta>
+                <column name="eventCategoryId" index="GenericLevel_EventCategory_INDEX"/>
+            </many-to-one>
+
+
+            <set name="photos"
+                 lazy="true"
+                 cascade="all-delete-orphan"
+                 inverse="true"
+                 order-by="pictureTakenDate"
+                    >
+                <key column="albumId"/>
+                <one-to-many class="ch.unartig.studioserver.model.Photo"/>
+            </set>
+
+            <!--maybe a separate mapping for 'album2products' needs to be introduced-->
+            <set name="products"
+                 lazy="false"
+                 cascade="all-delete-orphan"
+                 order-by="productTypeId"
+                    >
+                <cache usage="read-write"/>
+                <key column="albumId"/>
+                <one-to-many class="ch.unartig.studioserver.model.Product"/>
+            </set>
+
+            <subclass name="ch.unartig.studioserver.model.SportsAlbum" discriminator-value="SPORTSALBUM">
+                <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedSportsAlbum
+                </meta>
+                <meta attribute="scope-class" inherit="false">public abstract</meta>
+
+            </subclass>
+        </subclass>
+
+    </class>
+</hibernate-mapping>
