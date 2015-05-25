@@ -431,7 +431,6 @@ public class Album extends GeneratedAlbum {
         setProblemFiles(problemFiles);
 
         // if createThumbDisp call the batch job to montage a logo on the fine files for the registering album
-        // todo implement check and script call
         if (createThumbDisp) {
             try {
                 // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
@@ -439,12 +438,13 @@ public class Album extends GeneratedAlbum {
                 _logger.info("calling logo script : " + logoScriptPath);
                 _logger.info("with param 1 (albumId) : " + getGenericLevelId().toString());
                 _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
+                _logger.info("*** Output of script will be written to StdOut ***");
 
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
 
                 ProcessBuilder pb = new ProcessBuilder(logoScriptPath, getGenericLevelId().toString(),Registry.getFineImagesDirectory());
-                Process p = pb.start();     // Start the process.
+                Process p = pb.inheritIO().start();     // Start the process.
                 p.waitFor();                // Wait for the process to finish.
                 _logger.info("Script executed successfully");
             } catch (Exception e) {
