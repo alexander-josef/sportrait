@@ -571,7 +571,7 @@
             nocache="true"
             contentType="text/html;charset=UTF8"
             inputForward="true"
-            maxFileSize="4G"/>
+            maxFileSize="10G"/>
 
     <!-- ======================================== Message Resources Definitions -->
     <message-resources parameter="appSettings" null="false" key="APPSETTINGS"/>

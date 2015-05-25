@@ -79,7 +79,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- *
+ * Todo check where this class is still used
  */
 public class AdminUploadAction extends MappingDispatchAction
 {
