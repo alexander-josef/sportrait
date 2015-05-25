@@ -1,0 +1,27 @@
+html {
+    background-color:#828080;
+    font-family: verdana, arial, sans-serif;
+    color:#FFF;
+    font-size:11px
+}
+body, a, div, table, tr, td, th, h1, h2, h3, h4, img, ul, li, p, select,input, form, textarea, fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+a.closeWindow{
+    display:block
+}
+div#popup{
+    margin:10px;
+}
+table.pricelist td, th{
+    padding:0 10px 0 10px;
+    border:1px solid #FFF
+}
+#popup h3{
+    font-size:1.2em;
+    margin-top:14px;
+    margin-bottom:6px;
+    text-align:left;
+}
