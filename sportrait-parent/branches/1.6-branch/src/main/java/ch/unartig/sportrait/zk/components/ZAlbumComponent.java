@@ -142,7 +142,7 @@ public class ZAlbumComponent extends Div
         pricesListbox.setWidth("300px");
         // sort pricelist by price chf : done in mapping
         ArrayList priceList = new ArrayList(productType.getPrices());
-        priceList.add(0, "Nicht verfügbar");
+        priceList.add(0, "Nicht verf√ºgbar");
         final SimpleListModel simpleListModel = new SimpleListModel(priceList);
         pricesListbox.setModel(simpleListModel);
         // select the first entry, "not available"
@@ -224,7 +224,7 @@ public class ZAlbumComponent extends Div
                     }
                 } else
                 {
-                    item.setLabel("Nicht verfügbar");
+                    item.setLabel("Nicht verfÔøΩgbar");
                 }
 
             }

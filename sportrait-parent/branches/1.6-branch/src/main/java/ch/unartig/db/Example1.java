@@ -79,7 +79,7 @@ public class Example1
         }
         else
         {
-            System.out.println("....huärä Scheiss... not connected!");
+            System.out.println("... not connected!");
         }
         System.out.print("releasing connection .....");
         try
