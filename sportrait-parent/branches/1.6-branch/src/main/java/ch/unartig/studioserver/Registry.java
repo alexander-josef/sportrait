@@ -297,7 +297,7 @@ public final class Registry
      */
     public static final String _MAIL_HOST = "localhost";
     public static String _mailHost = _MAIL_HOST;
-    private static String mailFromAddress = "unartiginfo@unartig.ch";
+    private static String mailFromAddress = "info@unartig.ch";
     public static final String _GENDER_MALE_CODE = "m";
     /**
      * time-interval in minutes to be shown in overview

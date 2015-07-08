@@ -9,7 +9,7 @@
     </description>
     <context-param>
         <param-name>webmaster</param-name>
-        <param-value>unartiginfo@unartig.ch</param-value>
+        <param-value>info@unartig.ch</param-value>
     </context-param>
     <!--
 
