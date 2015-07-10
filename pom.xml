@@ -656,16 +656,17 @@
     <distributionManagement>
         <!-- use the following if you're not using a snapshot version. -->
         <!-- the authentication settings can be put to settings.xml (in [your homedir]/.m2/settings.xml) -->
+        <!-- updated 2015-07 to accommodate the new location of the maven2 repo on aws1.sportrait.com -->
         <repository>
             <id>ssh-repo</id>
-            <name>unartig m2 repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <name>sportrait m2 repo</name>
+            <url>scpexe://aws1.sportrait.com/opt/maven2/repo</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version . -->
         <snapshotRepository>
             <id>ssh-repo</id>
-            <name>unartig m2 snapshot repo</name>
-            <url>scpexe://svn.unartig.ch/opt/maven2/repo</url>
+            <name>sportrait m2 snapshot repo</name>
+            <url>scpexe://aws1.sportrait.com/opt/maven2/repo</url>
         </snapshotRepository>
     </distributionManagement>
 
