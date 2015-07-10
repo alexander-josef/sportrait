@@ -658,13 +658,13 @@
         <!-- the authentication settings can be put to settings.xml (in [your homedir]/.m2/settings.xml) -->
         <!-- updated 2015-07 to accommodate the new location of the maven2 repo on aws1.sportrait.com -->
         <repository>
-            <id>ssh-repo</id>
+            <id>ssh-mvn-repo</id>
             <name>sportrait m2 repo</name>
             <url>scpexe://aws1.sportrait.com/opt/maven2/repo</url>
         </repository>
         <!-- use the following if you ARE using a snapshot version . -->
         <snapshotRepository>
-            <id>ssh-repo</id>
+            <id>ssh-mvn-repo</id>
             <name>sportrait m2 snapshot repo</name>
             <url>scpexe://aws1.sportrait.com/opt/maven2/repo</url>
         </snapshotRepository>
