@@ -380,6 +380,8 @@ public class SportsEvent extends GeneratedSportsEvent
 
     private void extractPhotosFor(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException
     {
+        // todo-files: change / use put method of storage-provider interface
+        // do we need a temp location for uploaded files?
         File finePath = sportsAlbum.getFinePath();
         _logger.debug("Extracting files to fine path : " + finePath);
         FileUtils.extractFlatZipArchive(fileInputStream, finePath);
@@ -407,7 +409,7 @@ public class SportsEvent extends GeneratedSportsEvent
             } catch (UnartigException e)
             {
                 _logger.error("Cannot count photos of eventcategory");
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
         return retVal;

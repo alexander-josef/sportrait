@@ -94,7 +94,7 @@ public class SportsAlbumMapper
 
     private SportsAlbumMapper()
     {
-        //To change body of created methods use File | Settings | File Templates.
+
     }
 
     /**

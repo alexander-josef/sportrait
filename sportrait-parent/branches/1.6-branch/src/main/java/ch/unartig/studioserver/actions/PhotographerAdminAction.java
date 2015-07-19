@@ -95,11 +95,11 @@ public class PhotographerAdminAction extends MappingDispatchAction
 
             } catch (IllegalAccessException e)
             {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
                 throw new UnartigException(e);
             } catch (InvocationTargetException e)
             {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
                 throw new UnartigException(e);
             }
 
@@ -149,11 +149,11 @@ public class PhotographerAdminAction extends MappingDispatchAction
             BeanUtils.copyProperties(photographer, photographerForm);
         } catch (IllegalAccessException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             throw new UnartigException(e);
         } catch (InvocationTargetException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             throw new UnartigException(e);
         }
 

@@ -203,7 +203,7 @@ public class MailUtil
             return localizedBody;
         } catch (UnartigInvalidArgument unartigInvalidArgument)
         {
-            unartigInvalidArgument.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            unartigInvalidArgument.printStackTrace();
             return new StringBuffer("INVALID ARGUMENT");
         }
 

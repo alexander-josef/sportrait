@@ -637,7 +637,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
     }
 
     /**
-     * Upload all images for the current order:<br/>
+     * Upload all images for the current order to colorplaza:<br/>
      * create a set of ordered images; NOTE: ordered images is not equal to ordered items!
      *
      * @throws Exception If image server is not ready
@@ -1089,7 +1089,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
         } catch (Exception e)
         {
             _logger.error("ERROR in getting OIPS Server");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
         // assert getServer != null;

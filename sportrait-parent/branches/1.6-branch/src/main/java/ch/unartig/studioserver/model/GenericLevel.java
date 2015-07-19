@@ -369,7 +369,7 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
 
     public int compareTo(Object o)
     {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     /**
@@ -464,7 +464,7 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
      */
     public boolean isSportsEventLevel()
     {
-        return false;  //To change body of created methods use File | Settings | File Templates.
+        return false;
     }
 
     /**
@@ -540,11 +540,13 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
 
     public void makeWebImagesPath()
     {
+        // todo-files: delete? not all levels have an image path anyway
         new File(Registry.getWebImagesDocumentRoot(),getGenericLevelId().toString()).mkdirs();
     }
 
     public void makeFineImagesPath()
     {
+        // todo-files: delete? not all levels have an image path anyway
         new File(Registry.getFineImagesDirectory(),getGenericLevelId().toString()).mkdirs();
     }
 }

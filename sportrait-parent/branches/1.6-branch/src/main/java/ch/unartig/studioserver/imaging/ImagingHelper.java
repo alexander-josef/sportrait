@@ -130,10 +130,10 @@ public class ImagingHelper
             _logger.debug("ImagingHelper.saveJpg : image encoded");
         } catch (FileNotFoundException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (IOException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
 
     }
@@ -165,6 +165,10 @@ public class ImagingHelper
             {
                 graphics2D.drawImage(getWatermark(sourceWidth,sourceHeight), 0, 0, null);
             }
+
+            // todo-files
+            // still used?
+            // need to store the file with storage-provider?
             ImageIO.write(result, "jpg", file);
 
         } catch (FileNotFoundException e)

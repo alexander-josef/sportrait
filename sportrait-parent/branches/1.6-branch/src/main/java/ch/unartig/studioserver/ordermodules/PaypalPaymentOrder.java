@@ -29,7 +29,6 @@ import java.util.Map;
  * User: ajosef
  * Date: 12.02.11
  * Time: 16:46
- * To change this template use File | Settings | File Templates.
  */
 public class PaypalPaymentOrder implements PhotoOrderIF {
     static Logger _logger = Logger.getLogger("PaypalPaymentOrder");
@@ -190,7 +189,7 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
     }
 
     public void setUnartigCustomer(Customer customer) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
 
@@ -365,11 +364,11 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
     }
 
     public void setErrorCode(int errorCode) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public int getErrorCode() {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return 0;
     }
 
     public boolean isDemoOrderMode() {

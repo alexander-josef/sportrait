@@ -278,7 +278,7 @@ public class Album extends GeneratedAlbum {
     }
 
     public StringBuffer composeTreeItem() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public List listChildrenForNavTree() {
@@ -298,7 +298,7 @@ public class Album extends GeneratedAlbum {
     }
 
     public String getEventDateDisplay() {
-        return getEvent().getEventDateDisplay();  //To change body of implemented methods use File | Settings | File Templates.
+        return getEvent().getEventDateDisplay();
     }
 
 
@@ -340,6 +340,9 @@ public class Album extends GeneratedAlbum {
      * example:
      * CIMG1114.JPG;3264;2448;2/18/07
      *
+     * ZIP archive contains import.txt as well as display / thumbnail folders
+     * optionally only import.txt is uploaded in archive
+     *
      * @param importDataStream
      * @param isZipArchive
      */
@@ -351,7 +354,8 @@ public class Album extends GeneratedAlbum {
                 ZipEntry zipEntry;
                 // importDataStream is zip file
                 ZipInputStream zis = new ZipInputStream(importDataStream);
-                // make sure pathes exists:
+                // todo-files: no need for file system directories:
+                // make sure paths for thumbnails and displays exists:
                 boolean thumbOk = true;
                 if (!getThumbnailPath().exists()) {
                     thumbOk = getThumbnailPath().mkdirs();
@@ -367,6 +371,7 @@ public class Album extends GeneratedAlbum {
                     if (zipEntry.getName().toLowerCase().startsWith("fine/")) {
                         throw new RuntimeException("fine images not yet supported");
                     }
+                    // todo-files: replace with storage-provider method
                     FileUtils.copyFile(zis, new File(this.getAlbumWebImagesPath(), zipEntry.getName()), false, true);
                 }
                 File importFile = new File(this.getAlbumWebImagesPath(), "import.txt");
@@ -414,6 +419,8 @@ public class Album extends GeneratedAlbum {
         _logger.debug("registerPhoto 1, " + System.currentTimeMillis());
 
         // all fine fotos in the DATA path of the album
+        // todo-files
+        // solve with listing from storage provider. create new list method in interface
         File[] filesInAlbumFinePath = getFinePath().listFiles(new FileUtils.JpgFileFilter());
         Set problemFiles = new HashSet();
 
@@ -460,8 +467,8 @@ public class Album extends GeneratedAlbum {
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
      * @param createThumbDisp set to true to create the display and thumbnail images
-     * @param problemFiles    A set of accumulated files that caused problems during improt
-     * @param photoFile       The image file to import (in its temporary location)
+     * @param problemFiles    A set of accumulated files that caused problems during import
+     * @param photoFile       The image file to import (in its temporary location) // todo-files: temporary?
      */
     public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, File photoFile) {
         Integer pictureWidth;
@@ -477,6 +484,7 @@ public class Album extends GeneratedAlbum {
 // *** JAI:
 
 
+            // todo-files : use bufferedImage instead of file?
             RenderedOp fineImage = ImagingHelper.load(photoFile);
             pictureWidth = fineImage.getWidth();
             pictureHeight = fineImage.getHeight();
@@ -518,6 +526,7 @@ public class Album extends GeneratedAlbum {
             _logger.debug("***********  " + pictureTakenDate + "  **************");
 
             Photo photo = new Photo(filename, this, pictureWidth, pictureHeight, pictureTakenDate, displayTitle);
+            // add to db:
             add(photo);
             // check if photo already exists?
             // copy file?
@@ -526,6 +535,7 @@ public class Album extends GeneratedAlbum {
             // once imported thumbnailer will run ... (and the ones already 'thumbnailed' ?
 
             if (createThumbDisp ) {
+                // todo-files: should not be necessary here / put in storage-provider implementation
                 getDisplayPath().mkdirs();
                 getThumbnailPath().mkdirs();
 
@@ -596,6 +606,7 @@ public class Album extends GeneratedAlbum {
             throw new UnartigException("fine Path does not exist or is not directory");
         }
         _logger.debug("Going to process fineImages in directory : " + getFinePath().getAbsolutePath());
+        // todo-files
         File[] fineImages = getFinePath().listFiles(new FileUtils.JpgFileFilter());
         Double displayScale;
         Double thumbnailScale;
@@ -669,6 +680,8 @@ public class Album extends GeneratedAlbum {
      * @return a directory
      */
     public File getFinePath() {
+        // todo-files : what to return in case of storage-provider implementation?
+        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
         File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
         if (!finePath.exists()) {
@@ -678,17 +691,21 @@ public class Album extends GeneratedAlbum {
     }
 
     private File getThumbnailPath() {
-        File albumWebImagesPath = getAlbumWebImagesPath();
-        return new File(albumWebImagesPath, Registry.getThumbnailPath());
+        // todo-files : what to return in case of storage-provider implementation?
+        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
+        return new File(getAlbumWebImagesPath(), Registry.getThumbnailPath());
     }
 
 
     private File getDisplayPath() {
-        File albumPath = getAlbumWebImagesPath();
-        return new File(albumPath, Registry.getDisplayPath());
+        // todo-files : what to return in case of storage-provider implementation?
+        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
+        return new File(getAlbumWebImagesPath(), Registry.getDisplayPath());
     }
 
     private File getAlbumWebImagesPath() {
+        // todo-files : what to return in case of storage-provider implementation?
+        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
         return new File(Registry.getWebImagesDocumentRoot(), getGenericLevelId().toString());
     }
 

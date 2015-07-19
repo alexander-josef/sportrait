@@ -131,7 +131,7 @@ public class Uploader extends Thread
             _logger.error("IO-error in uploader thread. stopping thread", e);
         } catch (UnartigException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             throw new RuntimeException("Error in Uploader Thread");
         }
     }
@@ -150,11 +150,13 @@ public class Uploader extends Thread
         if (imageDirectory != null && !"".equals(imageDirectory))
         {
             // copy images only if temp path available and not same as album path
+
             File sourceDir = new File(imageDirectory);
             // todo: can fine path be null and throw exception? --> log meaningful message
             if (!sourceDir.equals(album.getFinePath()))
             {
                 _logger.debug("imageDir.isDirectory() = " + sourceDir.isDirectory());
+                // todo-files
                 FileUtils.copyDir(sourceDir, album.getFinePath(), new FileUtils.JpgFileFilter());
             }
         }
@@ -172,6 +174,7 @@ public class Uploader extends Thread
             File tempSingleImageFile = new File(tempSingleImagePath);
 
             // create the Fine File
+            // todo-files
             File finePhotoFile = new File(album.getFinePath(), tempSingleImageFile.getName());
             // Copy temp to fine file
             FileUtils.copyFile(tempSingleImageFile, finePhotoFile);
@@ -181,7 +184,7 @@ public class Uploader extends Thread
             _logger.debug("Done with registering photo [" + finePhotoFile.getAbsolutePath() + "]");
         } else
         {
-            throw new RuntimeException("Uploader in unexcepted state. Stopping import of photos");
+            throw new RuntimeException("Uploader in unexpected state. Stopping import of photos");
         }
 
     }

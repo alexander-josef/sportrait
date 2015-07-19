@@ -143,7 +143,7 @@ public class ReportingDAO
             retVal = criteria.list();
             _logger.debug("NON ADMIN QUERY : Size of list : " + retVal.size());
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return retVal;
@@ -198,7 +198,7 @@ public class ReportingDAO
                 "   oi.photo.album.photographer.photographerId," +
                 "   oi.photo.album.photographer.userProfile.lastName," +
                 "   oi.photo.album.photographer.userProfile.firstName," +
-                "   sum(oi.quantity) as productsSold, " +
+                "   sum(oi.quantity)," +
                 "   sum(oi.quantity * oi.product.price.priceCHF), " +
                 "   YEAR(oi.order.uploadCompletedDate), " +
                 "   MONTH(oi.order.uploadCompletedDate)" +
@@ -217,22 +217,6 @@ public class ReportingDAO
             _logger.error("Query error : ",e);
             throw new RuntimeException(e);
         }
-        // todo debug remove me:
-//        for (int i = 0; i < reportObjectList.size(); i++)
-//        {
-//            Object[] objects = (Object[]) reportObjectList.get(i);
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            for (int j = 0; j < objects.length; j++)
-//            {
-//                Object object = objects[j];
-//                System.out.println("object.getClass().getName() = " + object.getClass().getName());
-//            }
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//            System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-//        }
 
 
         return orderItems;

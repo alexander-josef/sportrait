@@ -97,7 +97,7 @@ public  class ReportSalesPerPhotographerMonths extends MonthlyReport
      */
     public String getRowLabel1(ReportMonthlySalesSummary summaryEntry)
     {
-        return summaryEntry.getPhotographerFirstName()+" " + summaryEntry.getPhotographerLastName();  //To change body of implemented methods use File | Settings | File Templates.
+        return summaryEntry.getPhotographerFirstName()+" " + summaryEntry.getPhotographerLastName();
     }
 
     /**
@@ -106,7 +106,7 @@ public  class ReportSalesPerPhotographerMonths extends MonthlyReport
      */
     public String getRowLabel2(ReportMonthlySalesSummary summaryEntry)
     {
-        return "n.a.";  //To change body of implemented methods use File | Settings | File Templates.
+        return "n.a.";
     }
 
     /**
@@ -115,7 +115,7 @@ public  class ReportSalesPerPhotographerMonths extends MonthlyReport
      */
     public String getRowLabel3(ReportMonthlySalesSummary summaryEntry)
     {
-        return "n.a.";  //To change body of implemented methods use File | Settings | File Templates.
+        return "n.a.";
     }
 
     /**

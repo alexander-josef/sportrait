@@ -261,7 +261,7 @@ public class AlbumBean extends AbstractAlbumBean
 
     protected void setPhotosForCurrentSession()
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     /**
@@ -283,7 +283,7 @@ public class AlbumBean extends AbstractAlbumBean
     public String getActionString()
     {
         // implement if needed
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
 

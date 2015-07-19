@@ -176,7 +176,7 @@ public class AdminUploadAction extends MappingDispatchAction
      * </pre>
      *
      * @param request
-     * @return eventPath where the files will be uploaded
+     * @return AlbumID EventPath where the files will be uploaded
      * @throws Exception
      */
     private Long uploadSingleAlbum(HttpServletRequest request) throws Exception
@@ -188,6 +188,7 @@ public class AdminUploadAction extends MappingDispatchAction
 //            debugRequest(request);
         }
 
+        // todo: use Fileupload - difference?
         DiskFileUpload fu = new DiskFileUpload();
         // set max size ; -1 unlimited
         fu.setSizeMax(-1);

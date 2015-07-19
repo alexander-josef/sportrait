@@ -107,7 +107,7 @@ public class SportsAlbum extends GeneratedSportsAlbum
 /*
     public Photo getFirstPhotoInAlbumAndSelection() throws UnartigException
     {
-        return super.getFirstPhotoInAlbumAndSelection();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getFirstPhotoInAlbumAndSelection();
     }
 */
 
