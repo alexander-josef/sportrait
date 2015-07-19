@@ -131,7 +131,7 @@ public class SportEventsAction extends MappingDispatchAction
         } catch (NumberFormatException e)
         {
             _logger.error("error setting ID", e);
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (Exception e)
         {
             _logger.error("unartig exception ", e);

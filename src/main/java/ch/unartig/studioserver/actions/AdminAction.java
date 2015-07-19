@@ -567,7 +567,7 @@ public class AdminAction extends MappingDispatchAction
     }
 
     /**
-     * provide a ParentLeveltVisitor
+     * provide a ParentLevelVisitor
      *
      * @param adminForm
      * @return ParentLevelVisitor Implementation

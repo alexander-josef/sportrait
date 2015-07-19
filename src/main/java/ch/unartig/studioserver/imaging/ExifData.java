@@ -47,6 +47,8 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
+
+// todo: still in use?
 public class ExifData
 {
     Logger logger = Logger.getLogger(getClass().getName());
@@ -80,6 +82,7 @@ public class ExifData
      */
     public ExifData(File photoFile)
     {
+        // todo-files : change constructor to receive a bufferedInputStream?
         this.photoFile = photoFile;
 
         try
@@ -90,7 +93,7 @@ public class ExifData
         } catch (FileNotFoundException e)
         {
             logger.error("Could not open File: " + photoFile);
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -224,13 +227,13 @@ public class ExifData
                 } catch (IOException e)
                 {
                     logger.error("got an IO exception ....");
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 }
 
                 logger.info("Reading Date; year:  " + year + " month: " + month + " day : " + day + " hour " + hour + " minute : " + minute + " second : " + second);
             } catch (IOException e)
             {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             } catch (NumberFormatException e)
             {
                 logger.warn("Number Format Exception; cannot read date from file");

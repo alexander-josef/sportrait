@@ -143,7 +143,7 @@ public class Category extends GeneratedCategory
         } catch (UnartigException e)
         {
             _logger.error("visitor threw exception",e);
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
     public Category(String navTitle, String longTitle, String description)

@@ -85,7 +85,7 @@ public class CustomerServiceAction extends MappingDispatchAction
             utf8String = new String(stringBytesISO, "UTF-8");
         } catch (UnsupportedEncodingException e)
         {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         _logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         _logger.debug("encoding : " + request.getCharacterEncoding());
@@ -104,7 +104,7 @@ public class CustomerServiceAction extends MappingDispatchAction
 //            System.out.println("decoded = " + decoded);
 //        } catch (UnsupportedEncodingException e)
 //        {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//            e.printStackTrace();
 //        }
 
         _logger.info("Sending customer service email : \n" + "sender = " + sender + "\n" + "fromAdrress = " + fromAddress + "\n" + "contactPhone = " + contactPhone+ "\n" + "subject = " + "sportrait.com : "+ subject + "\n" + "message = " + bodyContactPhone + "\n");

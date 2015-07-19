@@ -179,6 +179,7 @@ public class Photo extends GeneratedPhoto
      */
     public File getFile()
     {
+        // todo-files: replace with storage-provider method
         return new File(getAlbum().getFinePath().toString(), getFilename());
     }
 

@@ -97,11 +97,11 @@ public class EventCategoryAction extends MappingDispatchAction
         } catch (IllegalAccessException e)
         {
             _logger.error("problem with params");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (InvocationTargetException e)
         {
             _logger.error("problem with params");
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
         catch(HibernateException he)
         {

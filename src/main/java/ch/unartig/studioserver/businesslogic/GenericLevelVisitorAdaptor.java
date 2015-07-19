@@ -42,21 +42,21 @@ public class GenericLevelVisitorAdaptor implements GenericLevelVisitor
 {
 
     public void visit(Category category) throws UnartigException {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public void visit(EventGroup eventGroup) throws UAPersistenceException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public void visit(Event event) throws UAPersistenceException
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public void visit(Album album) 
     {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 }

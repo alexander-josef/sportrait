@@ -188,7 +188,7 @@ public class FileUtils
     /**
      * copy a File from a source File to a destination output stream
      * @param source the source File
-     * @param destination the destimation output stream
+     * @param destination the destination output stream
      * @throws IOException
      */
     public static void copyFile(File source, OutputStream destination) throws IOException
@@ -277,7 +277,7 @@ public class FileUtils
             } catch (IOException e)
             {
                 _logger.error("input stream does not close");
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         }
 

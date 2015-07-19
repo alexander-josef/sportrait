@@ -109,7 +109,7 @@ public class EventGroup extends GeneratedEventGroup
         } catch (UAPersistenceException e)
         {
             _logger.error("visitor threw exception", e);
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 
@@ -122,7 +122,7 @@ public class EventGroup extends GeneratedEventGroup
 
     public StringBuffer composeTreeItem()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     /**
@@ -172,7 +172,7 @@ public class EventGroup extends GeneratedEventGroup
 
     public String getEventDateDisplay()
     {
-        return "";  //To change body of implemented methods use File | Settings | File Templates.
+        return "";
     }
 
 
