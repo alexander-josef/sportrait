@@ -192,6 +192,9 @@
  ****************************************************************/
 package ch.unartig.studioserver;
 
+import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
+import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
+import ch.unartig.studioserver.storageProvider.LocalFileStorageProvider;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
@@ -250,6 +253,10 @@ public final class Registry
     public static float _ImageSharpFactor = _SHARP_FACTOR_STANDARD;
 
     public static long oipsOrderPeriod;
+
+
+
+    public static FileStorageProviderInterface fileStorageProvider;
 
     public static final String _STRATEGY_IMPL_PACKAGE = "ch.unartig.studioserver.businesslogic.";
     public static final String _POPULATOR_STRATEGY_SUFFIX = "PopulatorImpl";
@@ -332,7 +339,7 @@ public final class Registry
 
 
     /**
-     * class won't be instatiated, hence private constructor
+     * class won't be instantiated, hence private constructor
      */
     public Registry()
     {
@@ -394,6 +401,10 @@ public final class Registry
         }
 
 
+        _logger.info("Setting FileStorageProvider to Local File storage (default)");
+        // fileStorageProvider = new LocalFileStorageProvider();
+        fileStorageProvider = new AwsS3FileStorageProvider();
+        // Options: LocalFileStorageProvider , AwsS3FileStorageProvider
     }
 
 
@@ -615,4 +626,10 @@ public final class Registry
     public static String getBuildNumber() {
         return buildNumber;
     }
+
+    public static FileStorageProviderInterface getFileStorageProvider() {
+        return fileStorageProvider;
+    }
+
+
 }

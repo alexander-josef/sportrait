@@ -242,6 +242,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.10.21</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -566,7 +572,7 @@
         <repository>
             <id>http-repo</id>
             <name>unArtig maven2 repo</name>
-            <url>http://svn.unartig.ch/maven2</url>
+            <url>http://maven.unartig.ch/maven2</url>
             <releases>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>

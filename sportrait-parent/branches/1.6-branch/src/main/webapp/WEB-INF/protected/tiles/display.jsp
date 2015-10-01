@@ -162,7 +162,7 @@ todo refactor name albumBean as fast as possible
                             </c:if>
 
                             <img src="${display.displayPhoto.displayUrl}"
-                                 alt="${display.displayPhoto.filename} -- ${display.displayPhoto.displayUrl}"/>
+                                 alt="${display.displayPhoto.filename}"/>
                             <c:if test="${clientInSession!=null}">
                                 <%-- todo: implement deletion of photo --%>
                                 <div>
