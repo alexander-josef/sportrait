@@ -14,6 +14,13 @@ public interface FileStorageProviderInterface {
 
 
     /**
+     * Todo: check how it's used // check if getFinePath still makes sense as interface method
+     */
+    public void getFinePath();
+
+
+
+    /**
      * Authenticate (if necessary) and set default settings (e.g. region) for storage provider
      * @param credentials
      */
