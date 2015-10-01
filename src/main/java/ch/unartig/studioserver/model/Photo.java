@@ -61,6 +61,7 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.studioserver.Registry;
+import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -154,12 +155,12 @@ public class Photo extends GeneratedPhoto
 
     public String getThumbnailUrl()
     {
-        return "/" + Registry.getWebImagesContext()+"/" + getAlbum().getGenericLevelId().toString() + "/" + Registry.getThumbnailPath() + getFilename();
+        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
     }
 
     public String getDisplayUrl()
     {
-        return "/" + Registry.getWebImagesContext()+"/" + getAlbum().getGenericLevelId().toString() + "/" + Registry.getDisplayPath() + getFilename();
+        return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
     }
 
     public boolean equals(Object obj)
@@ -167,20 +168,16 @@ public class Photo extends GeneratedPhoto
         return this.getPhotoId().equals(((Photo) obj).getPhotoId());
     }
 
-    public String getAbsoluteFilename()
-    {
-        return getFile().getAbsolutePath();
-    }
 
 
     /**
      *
-     * @return the fine file as File object
+     * @return The fine file as File object todo-files: change to InputStream getContent()
      */
     public File getFile()
     {
-        // todo-files: replace with storage-provider method
-        return new File(getAlbum().getFinePath().toString(), getFilename());
+        FileStorageProviderInterface fileStorageProvider = Registry.getFileStorageProvider();
+        return fileStorageProvider.getFile(getAlbum(), getFilename());
     }
 
     /**

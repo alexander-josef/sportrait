@@ -68,6 +68,15 @@
             <element id="library" level="project" name="Maven: sax:sax:2.0.1" />
             <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
             <element id="library" level="project" name="Maven: org.imgscalr:imgscalr-lib:4.2" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.10.21" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.10.21" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.10.21" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.3.6" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.3.3" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" />
+            <element id="library" level="project" name="Maven: joda-time:joda-time:2.8.1" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -250,7 +259,11 @@
     </group>
   </component>
   <component name="ProjectDictionaryState">
-    <dictionary name="alexanderjosef" />
+    <dictionary name="alexanderjosef">
+      <words>
+        <w>alexanderjosef</w>
+      </words>
+    </dictionary>
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -504,6 +517,72 @@
         <root url="jar://$MAVEN_REPOSITORY$/ch/unartig/server/sportrait_client/0.7/sportrait_client-0.7-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: com.amazonaws:aws-java-sdk-core:1.10.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.amazonaws:aws-java-sdk-kms:1.10.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.amazonaws:aws-java-sdk-s3:1.10.21">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: com.paypal:paypal_base:1.0.0">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/paypal/paypal_base/1.0.0/paypal_base-1.0.0.jar!/" />
@@ -724,6 +803,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/jdom/jdom/1.0/jdom-1.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: joda-time:joda-time:2.8.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.8.1/joda-time-2.8.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.8.1/joda-time-2.8.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.8.1/joda-time-2.8.1-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: junit:junit:3.8.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
@@ -777,6 +867,28 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.0/geronimo-j2ee_1.4_spec-1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.httpcomponents:httpclient:4.3.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.httpcomponents:httpcore:4.3.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.ws.commons:ws-commons-util:1.0.1">

@@ -1,5 +1,7 @@
 package ch.unartig.studioserver.storageProvider;
 
+import ch.unartig.studioserver.model.Album;
+
 import java.io.File;
 
 /**
@@ -22,9 +24,8 @@ public interface FileStorageProviderInterface {
 
     /**
      * Authenticate (if necessary) and set default settings (e.g. region) for storage provider
-     * @param credentials
      */
-    public void initStorageProvider(Object credentials);
+    public void initStorageProvider();
 
     /**
      * Store a file
@@ -35,10 +36,12 @@ public interface FileStorageProviderInterface {
 
     /**
      * Retrieve a stored file from the storage provider
-     * @param key
-     * @return File that matches the key in the given storage (bucket?)
+     *
+     * @param album The album where the file is from
+     * @param filename Name of the file (within the album)
+     * @return File that matches the key in the given storage (bucket?) // Todo: return a InputStream instead ?
      */
-    public File getFile(String key);
+    public File getFile(Album album, String filename);
 
     /**
      * Delete a file with the given key from the storage provider
@@ -46,4 +49,8 @@ public interface FileStorageProviderInterface {
      */
     public void delete(String key);
 
+    String getThumbnailUrl(String genericLevelId, String filename);
+
+
+    String getDisplayUrl(String genericLevelId, String filename);
 }
