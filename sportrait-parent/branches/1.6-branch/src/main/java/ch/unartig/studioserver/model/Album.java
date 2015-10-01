@@ -680,7 +680,9 @@ public class Album extends GeneratedAlbum {
      * @return a directory
      */
     public File getFinePath() {
-        // todo-files : what to return in case of storage-provider implementation?
+
+        // todo-files : what to return in case of storage-provider implementation? Check usage.
+        // --> return file  in case of local file storage? return prefix in case of cloud storage (and also file storage?)
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
         File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
@@ -769,6 +771,7 @@ public class Album extends GeneratedAlbum {
 
         // now delete the album image directories on disk
         try {
+            // todo-files
             org.apache.commons.io.FileUtils.deleteDirectory(getFinePath());
             org.apache.commons.io.FileUtils.deleteDirectory(getDisplayPath());
             org.apache.commons.io.FileUtils.deleteDirectory(getThumbnailPath());

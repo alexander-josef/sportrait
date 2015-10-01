@@ -157,6 +157,9 @@ public class Uploader extends Thread
             {
                 _logger.debug("imageDir.isDirectory() = " + sourceDir.isDirectory());
                 // todo-files
+                // copy from one (temp) dir to an album fine directory, using a JPG filter
+                // in case of external storage provider: first copy to local file storage (sourceDir) and then upload to albumFinePath?
+                // --> remains open until clarified!
                 FileUtils.copyDir(sourceDir, album.getFinePath(), new FileUtils.JpgFileFilter());
             }
         }
@@ -164,7 +167,7 @@ public class Uploader extends Thread
 
         if (tempSingleImagePath ==null || "".equals(tempSingleImagePath))
         {
-            // not a single image import: register all fine fotos this albums fine path
+            // not a single image import: register all fine photos this albums fine path
             album.registerPhotos(createThumbnailDisplay);
         }
         else if (tempSingleImagePath != null)
@@ -184,6 +187,7 @@ public class Uploader extends Thread
             _logger.debug("Done with registering photo [" + finePhotoFile.getAbsolutePath() + "]");
         } else
         {
+            _logger.error("Uploader in unexpected state. Stopping import of photos");
             throw new RuntimeException("Uploader in unexpected state. Stopping import of photos");
         }
 
