@@ -400,6 +400,7 @@
                 name="uploadForm"
                 scope="request">
             <forward name="success" path=".sportraitAccountPhUpload" redirect="true"/>
+            <!-- todo: extend with success message -->
         </action>
 
         <!-- Show overview of the photographer's albums

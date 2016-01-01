@@ -80,6 +80,7 @@ public class SportEventsAction extends MappingDispatchAction
      * c) import in db 
      * d) success or failure message
      * <p/>
+     * This method called from upload page in admin section on sportrait site and handles all upload actions
      *
      * @param mapping
      * @param form
@@ -88,7 +89,6 @@ public class SportEventsAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    @SuppressWarnings({"JavaDoc", "UnusedDeclaration"})
     public ActionForward createUpload(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
     {
         UploadBean uploadBean = new UploadBean();
@@ -99,7 +99,7 @@ public class SportEventsAction extends MappingDispatchAction
             DynaActionForm dynaForm = (DynaActionForm) form;
             String eventId = dynaForm.getString("eventId");
             String eventCategoryId = dynaForm.getString("eventCategoryId");
-            String fineImageServerPath = dynaForm.getString("imagePath");
+            String tempFineImageServerPath = dynaForm.getString("imagePath"); // the temporary fine images path (local to the web server) as given by the upload form)
             String photographerId = dynaForm.getString("photographerId");
             FormFile file = (FormFile) dynaForm.get("content");
             Boolean createThumbDisplay = (Boolean) dynaForm.get("createThumbDisplay");
@@ -107,17 +107,17 @@ public class SportEventsAction extends MappingDispatchAction
             SportsEvent event = (SportsEvent) glDao.load(new Long(eventId), SportsEvent.class);
             _logger.debug("params : [" + eventId + "] [" + eventCategoryId + "]");
 
-            if (file != null && !"".equals(file.getFileName()) && (fineImageServerPath == null || "".equals(fineImageServerPath)))
+            if (file != null && !"".equals(file.getFileName()) && (tempFineImageServerPath == null || "".equals(tempFineImageServerPath)))
             {
-                _logger.info("Going to create album from Zip file");
-                event.createRegisterSportsAlbum(new Long(eventCategoryId), file.getInputStream(),photographerId, true);
-            } else if ((fineImageServerPath != null && !"".equals(fineImageServerPath)) && (file == null || file.getFileSize()==0) )
+                _logger.info("Going to create album from Zip file (1st option on upload page)");
+                event.createSportsAlbumFromZipArchive(new Long(eventCategoryId), file.getInputStream(), photographerId, true);
+            } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
-                _logger.info("Going to create album from temporary path on server");
-                event.createRegisterSportsAlbum(new Long(eventCategoryId), fineImageServerPath, client, createThumbDisplay);
-            } else if (importDataFile!=null && (fineImageServerPath == null || "".equals(fineImageServerPath))  )
+                _logger.info("Going to create album from temporary path on server (2nd option after <Import starten> with a given path has been chosen");
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), tempFineImageServerPath, client, createThumbDisplay);
+            } else if (importDataFile!=null && (tempFineImageServerPath == null || "".equals(tempFineImageServerPath))  )
             {
-                _logger.info("Going to create album from import data file only (no fine images)");
+                _logger.info("Going to create album from import data file only (no fine images) - 3rd option, zip-file with csv data given");
                 String fileName = importDataFile.getFileName();
                 event.importAlbumFromImportDataOnly(new Long(eventCategoryId), importDataFile.getInputStream(),client, fileName.toLowerCase().endsWith(".zip"));
             } else
@@ -150,7 +150,6 @@ public class SportEventsAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    @SuppressWarnings({"JavaDoc", "UnusedDeclaration"})
     public ActionForward accountPhUpload(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
     {
         UploadBean uploadBean = new UploadBean();
@@ -173,7 +172,6 @@ public class SportEventsAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    @SuppressWarnings({"JavaDoc", "UnusedDeclaration"})
     public ActionForward bulkImportEvents(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
     {
         _logger.debug("bulk import of events");
@@ -213,7 +211,6 @@ public class SportEventsAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    @SuppressWarnings({"JavaDoc", "UnusedDeclaration"})
     public ActionForward event(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     {
         String forward = "success";

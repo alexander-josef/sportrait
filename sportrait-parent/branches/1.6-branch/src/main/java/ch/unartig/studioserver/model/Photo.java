@@ -171,6 +171,7 @@ public class Photo extends GeneratedPhoto
 
 
     /**
+     * Return photo file by given fileStorageProvider (changed since S3 Migration)
      *
      * @return The fine file as File object todo-files: change to InputStream getContent()
      */
