@@ -244,17 +244,17 @@ public class SportsEvent extends GeneratedSportsEvent
      * <br/> Uses a new Thread for the import process!
      *
      * @param eventCategoryId Sports Category Id as String as passed from view
-     * @param fineImageServerPath Path with high-res images local on the server
+     * @param tempFineImageServerPath temp path with high-res images local on the server
      * @param client Client object, containing photographer object
      * @param createThumbDisplay
      * @return true for success
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean createRegisterSportsAlbum(Long eventCategoryId, String fineImageServerPath, Client client, Boolean createThumbDisplay) throws UnartigException
+    public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay) throws UnartigException
     {
         SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
         // giving control to new thread and return.
-        Thread uploader = new Uploader(fineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay);
+        Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay);
         uploader.start();
         return true;
     }
@@ -271,7 +271,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public boolean createRegisterSportsAlbum(Long eventCategoryId, InputStream inputStream, String photographerId, boolean processImages) throws UnartigException
+    public boolean createSportsAlbumFromZipArchive(Long eventCategoryId, InputStream inputStream, String photographerId, boolean processImages) throws UnartigException
     {
         PhotographerDAO photographerDAO = new PhotographerDAO();
         Photographer photographer = photographerDAO.load(Long.valueOf(photographerId));

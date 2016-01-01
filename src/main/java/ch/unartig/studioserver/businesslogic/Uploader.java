@@ -57,20 +57,20 @@ public class Uploader extends Thread
     private Logger _logger = Logger.getLogger(getClass().getName());
 
 //    Enumeration enumeration = new String[]{"dd", "ss"};
-    private String imageDirectory;
+    private String tempImageDirectory;
     private Long albumId;
     private Boolean createThumbnailDisplay;
     private String tempSingleImagePath;
 
     /**
-     * If ImagePath = null or Album Image Path : ignore; else copy from temp imageDirectory to the album image path
-     * @param imageDirectory Either the temporary fine directory on the server, or the fine folder under DATA if the archive has been extracted there.
+     * If ImagePath = null or Album Image Path : ignore; else copy from temp tempImageDirectory to the album image path
+     * @param tempFineImageServerPath Either the temporary fine directory on the server, or the fine folder under DATA if the archive has been extracted there.
      * @param albumId
-     * @param processImages set to true if thumbnail and display images shall be created using JAI
+     * @param processImages set to true if thumbnail and display images shall be created
      */
-    public Uploader(String imageDirectory, Long albumId, Boolean processImages)
+    public Uploader(String tempFineImageServerPath, Long albumId, Boolean processImages)
     {
-        this.imageDirectory = imageDirectory;
+        this.tempImageDirectory = tempFineImageServerPath;
         this.albumId = albumId;
         if (processImages == null || processImages == Boolean.FALSE)
         {
@@ -99,7 +99,7 @@ public class Uploader extends Thread
     }
 
     /**
-     *
+     * Will be called from uploader applet Action (only usage so far)
      * @param tempSingleImagePath The complete Path of the temporary single image file to upload
      */
     public void uploadSingleImage(String tempSingleImagePath)
@@ -107,7 +107,7 @@ public class Uploader extends Thread
         this.tempSingleImagePath = tempSingleImagePath;
         if (albumId!=null && tempSingleImagePath!=null && !"".equals(tempSingleImagePath))
         {
-            imageDirectory=null;
+            tempImageDirectory =null;
             // this will start a separate thread and call the run method in this class.
             this.start();
             _logger.debug("Thread for registering single photo started. Image ["+tempSingleImagePath+"]");
@@ -137,7 +137,7 @@ public class Uploader extends Thread
     }
 
     /**
-     * If ImagePath = null or Album Image Path : ignore; else copy from temp imageDirectory to the album image path
+     * If temporary ImagePath = null or Album Image Path : ignore; else copy from tempImageDirectory to the album image path
      * @throws IOException
      * @throws UnartigException
      */
@@ -147,20 +147,19 @@ public class Uploader extends Thread
         GenericLevelDAO glDao = new GenericLevelDAO();
         Album album = (Album) glDao.load(albumId, Album.class);
 
-        if (imageDirectory != null && !"".equals(imageDirectory))
+        if (tempImageDirectory != null && !"".equals(tempImageDirectory))
         {
             // copy images only if temp path available and not same as album path
-
-            File sourceDir = new File(imageDirectory);
+            File tempSourceDir = new File(tempImageDirectory);
             // todo: can fine path be null and throw exception? --> log meaningful message
-            if (!sourceDir.equals(album.getFinePath()))
+            if (!tempSourceDir.equals(album.getFinePath()))
             {
-                _logger.debug("imageDir.isDirectory() = " + sourceDir.isDirectory());
+                _logger.debug("imageDir.isDirectory() = " + tempSourceDir.isDirectory());
                 // todo-files
                 // copy from one (temp) dir to an album fine directory, using a JPG filter
-                // in case of external storage provider: first copy to local file storage (sourceDir) and then upload to albumFinePath?
+                // in case of external storage provider: first copy to local file storage (tempSourceDir) and then upload to albumFinePath?
                 // --> remains open until clarified!
-                FileUtils.copyDir(sourceDir, album.getFinePath(), new FileUtils.JpgFileFilter());
+                FileUtils.copyDir(tempSourceDir, album.getFinePath(), new FileUtils.JpgFileFilter());
             }
         }
 

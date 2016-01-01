@@ -84,12 +84,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         } catch (AmazonClientException e) {
             e.printStackTrace();
         }
-        System.out.println("Content-Type: "  + object.getObjectMetadata().getContentType());
-        File destFile = new File(filename); // temp file? where?
+        _logger.debug("S3 File Content-Type: "  + object.getObjectMetadata().getContentType());
+        File destFile = new File(filename);
         try {
             FileUtils.copyFile(object.getObjectContent(), destFile);
         } catch (IOException e) {
-            _logger.info("Cannot not read file from S3 Storage");
+            _logger.info("Cannot not read file from S3 Storage ("+key+"/"+bucketName+")");
             return null;
         }
         return destFile;
@@ -100,6 +100,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     public String getThumbnailUrl(String genericLevelId, String filename) {
+
+        // example:
+        // https://s3-eu-west-1.amazonaws.com/photos.sportrait.com/web-images/163/thumbnail/sola14_e01_fm_0005.JPG
+        // AWS S3 resource needs to be publicly readable
+
         String url = "https://s3-eu-west-1.amazonaws.com/" + bucketName +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getThumbnailPath() + filename;
         return url;
     }
