@@ -6,6 +6,7 @@ import ch.unartig.studioserver.model.Album;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by alexanderjosef on 19.07.15.
@@ -37,6 +38,15 @@ public interface FileStorageProviderInterface {
      */
     // key == filename??
     public void putFile(Album album, File file) throws UAPersistenceException;
+
+    /**
+     * Store a file based on an output stream
+     * @param album
+     * @param file File to be stored as Output Stream
+     * @param name Name of the file to be stored (only last part, without path)
+     * @throws UAPersistenceException
+     */
+    public void putFile(Album album, OutputStream file, String name) throws UAPersistenceException;
 
     /**
      * Retrieve a stored file from the storage provider

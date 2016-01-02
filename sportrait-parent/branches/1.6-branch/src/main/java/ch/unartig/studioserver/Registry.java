@@ -219,6 +219,7 @@ public final class Registry
     private static String buildNumber = "99999";
 
     // Where the fine images are located. No document root, not accessible by a web server.
+    // example: /Users/alexanderjosef/DEV/sportrait-web/fine-images
     private static String fineImagesDirectory;
     // We need the document root and the context for web-images! document root = /opt/DATA/sportrait/web-images ; context web-images
     private static String webImagesDocumentRoot;
@@ -403,8 +404,8 @@ public final class Registry
 
         // todo-files: set fileStorageProvider according to configuration
         _logger.info("Setting FileStorageProvider to Local File storage (default)");
-        fileStorageProvider = new LocalFileStorageProvider();
-        // fileStorageProvider = new AwsS3FileStorageProvider();
+        // fileStorageProvider = new LocalFileStorageProvider();
+        fileStorageProvider = new AwsS3FileStorageProvider();
         // Options: LocalFileStorageProvider , AwsS3FileStorageProvider
     }
 

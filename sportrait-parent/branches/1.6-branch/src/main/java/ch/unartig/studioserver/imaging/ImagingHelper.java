@@ -62,6 +62,8 @@ import com.sun.media.jai.codec.JPEGEncodeParam;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.RenderedOp;
@@ -127,7 +129,7 @@ public class ImagingHelper
             encParam.setQuality(quality);
             ImageEncoder encoder = ImageCodec.createImageEncoder("JPEG", os, encParam);
             encoder.encode(sampledOp);
-            _logger.debug("ImagingHelper.saveJpg : image encoded");
+            _logger.debug("ImagingHelper.createJpgImage : image encoded");
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
@@ -141,15 +143,14 @@ public class ImagingHelper
 
     /**
      * Using the renderedOP save the image as a jpg file.
-     *
-     * @param image
+     *  @param image original image to be scaled
      * @param quality : A setting of 0.0 produces the highest compression ratio, with a sacrifice to image quality. The default value is 0.75
-     * @param file    File to save
-     * @param applyWatermark set to true to apply a watermark over the resulting image
-     * @return true for success
+     * @param applyWatermark set to true to apply a watermark over the resulting image  @return true for success
      */
-    public static boolean saveJpg(RenderedOp image, float quality, File file, boolean applyWatermark)
+    public static OutputStream createJpgImage(RenderedOp image, float quality, boolean applyWatermark)
     {
+        // return variable:
+        OutputStream scaledImageResult = new ByteArrayOutputStream();
         try
         {
             BufferedImage sourceImage = image.getAsBufferedImage();
@@ -167,20 +168,19 @@ public class ImagingHelper
             }
 
             // todo-files
-            // still used?
-            // need to store the file with storage-provider?
-            ImageIO.write(result, "jpg", file);
+            // write to an output stream that is returned
+
+            ImageIO.write(result, "jpg", scaledImageResult);
+
 
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
-            return false;
         } catch (IOException e)
         {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return scaledImageResult;
     }
 
     /**
@@ -281,31 +281,29 @@ public class ImagingHelper
 
     /**
      * Creates a new image based on the passed renderedOp.
-     *
      * @param fineImage        the source for the new image
      * @param scale
-     * @param newImageFile
      * @param quality
      * @param imageSharpFactor
      * @param applyWatermark
      */
-    public static void createNewImage(RenderedOp fineImage, Double scale, File newImageFile, float quality, float imageSharpFactor, boolean applyWatermark)
+    public static OutputStream createNewImage(RenderedOp fineImage, Double scale, float quality, float imageSharpFactor, boolean applyWatermark)
     {
-        _logger.debug("Going to create new Image [" + newImageFile.getName() + "]from File : " + fineImage.toString() + " using scale :  " + scale);
-        RenderedOp sharpThumbImage;
-        RenderedOp thumbImage;
+        _logger.debug("Going to create new Image from File : " + fineImage.toString() + " using scale :  " + scale);
+        RenderedOp sharpScaledImage;
+        RenderedOp scaledImage;
         try
         {
-            thumbImage = reSample(fineImage, scale);
-            sharpThumbImage = unSharpen(thumbImage, imageSharpFactor);
+            scaledImage = reSample(fineImage, scale);
+            sharpScaledImage = unSharpen(scaledImage, imageSharpFactor);
         } catch (Exception e)
         {
             _logger.info("rendering threw exception. probably rendering result is bigger than original; using original image instead");
             _logger.debug("Exception: ", e);
-            sharpThumbImage = fineImage;
+            sharpScaledImage = fineImage;
         }
         // todo check return value; report problem images
-        saveJpg(sharpThumbImage, quality, newImageFile, applyWatermark);
+        return createJpgImage(sharpScaledImage, quality, applyWatermark);
     }
 
     /**
@@ -342,19 +340,20 @@ public class ImagingHelper
     }
 
     /**
-     * Given an Image, create a scaled copy from that image.
-     *
-     * @param newImageFileName
+     * Given an Image (renderedOP), create a scaled copy from that image.
+     * Helper method to calculate scale factor
      * @param sourceImage      Source photo rendered op
      * @param longerSidePixels target image longer side in pixels
-     * @param path             Path to create new image in
      * @param applyWatermark
      */
-    public static void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark) {
+    public static OutputStream createScaledImage(RenderedOp sourceImage, double longerSidePixels, boolean applyWatermark) {
         Double scale;
         scale = longerSidePixels / (double) ImagingHelper.getMaxWidthOrHightOf(sourceImage);
-        File newFile = new File(path, newImageFileName);
-        createNewImage(sourceImage, scale, newFile, Registry._imageQuality, Registry._ImageSharpFactor, applyWatermark);
+        // public static void createScaledImage(String newImageFileName, RenderedOp sourceImage, double longerSidePixels, File path, boolean applyWatermark) {
+
+        // File newFile = new File(path, newImageFileName);
+
+        return createNewImage(sourceImage, scale, Registry._imageQuality, Registry._ImageSharpFactor, applyWatermark);
 //        _logger.info("wrote new file " + newFile.getAbsolutePath());
     }
 }
