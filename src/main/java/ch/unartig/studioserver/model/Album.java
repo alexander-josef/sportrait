@@ -195,7 +195,6 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
-import ch.unartig.exceptions.UnartigImagingException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
@@ -207,12 +206,8 @@ import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
-import org.apache.commons.io.filefilter.FalseFileFilter;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.media.jai.RenderedOp;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -409,35 +404,50 @@ public class Album extends GeneratedAlbum {
 
 
     /**
-     * Register all photos from the 'fine' Path in the db; reads the EXIF picture-take date and enters it for every photo record<br/>
-     * Needed: fine photos in appropriate location
+     * Register all photos from the temporary 'fine' Path in the db; reads the EXIF picture-take date and enters it for every photo record<br/>
+     * <p/> Needed: temporary fine photos
+     * <p/> copies the temp file to it's final location according to the given fileStorageProvider
      * <p/> This method shall fail gracefully with a exception message in case a photo can not be registered (corrupt file, not a foto-file etc.)
      *
+     * @param tempSourceDir This is the path given in the import UI as temporary location where the files to be imported have been uploaded
      * @param createThumbDisp set to true to create the display and thumbnail images
      */
-    public void registerPhotos(boolean createThumbDisp) {
-        _logger.debug("registerPhoto 1, " + System.currentTimeMillis());
+    public void registerPhotos(File tempSourceDir, boolean createThumbDisp) {
+        _logger.debug("start registerPhotos, " + System.currentTimeMillis());
 
         // all fine fotos in the DATA path of the album
         // todo-files
         // solve with listing from storage provider. create new list method in interface
-        File[] filesInAlbumFinePath = getFinePath().listFiles(new FileUtils.JpgFileFilter());
+
+
+        // loop through temp directory on local file system with uploaded files
+        File[] filesInTempSourceDir = tempSourceDir.listFiles(new FileUtils.JpgFileFilter());
+        // File[] filesInTempSourceDir = getFinePath().listFiles(new FileUtils.JpgFileFilter());
+
         Set problemFiles = new HashSet();
 
         int i;
         // include performance measure
         long base = System.currentTimeMillis();
-        for (i = 0; i < filesInAlbumFinePath.length; i++) {
-            _logger.debug("registerPhoto 2, " + System.currentTimeMillis());
-            File photoFile = filesInAlbumFinePath[i];
-            // don't create ThumbDisp, this is done with the bash script
+        for (i = 0; i < filesInTempSourceDir.length; i++) {
+            _logger.debug("registerPhoto "+i+", " + System.currentTimeMillis());
+            File photoFile = filesInTempSourceDir[i];
+
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
+            // copy file to final location (given by storage provider)
+            Registry.fileStorageProvider.putFile(this,photoFile);
+
         }
 
 
         setProblemFiles(problemFiles);
 
         // if createThumbDisp call the batch job to montage a logo on the fine files for the registering album
+        // todo: introduce separate flag for logo montage˙
+
+        /////////////////////////////////
+        // Copy Logo on display images //
+        /////////////////////////////////
         if (createThumbDisp) {
             try {
                 // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";

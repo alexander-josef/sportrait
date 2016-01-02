@@ -143,31 +143,22 @@ public class Uploader extends Thread
      */
     private void doImport() throws IOException, UnartigException
     {
-        // todo why load album again?
+        // todo why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID. To prevent session timeout issues? Not important, this process is not done frequently.
         GenericLevelDAO glDao = new GenericLevelDAO();
         Album album = (Album) glDao.load(albumId, Album.class);
+        File tempSourceDir = null;
 
         if (tempImageDirectory != null && !"".equals(tempImageDirectory))
         {
-            // copy images only if temp path available and not same as album path
-            File tempSourceDir = new File(tempImageDirectory);
-            // todo: can fine path be null and throw exception? --> log meaningful message
-            if (!tempSourceDir.equals(album.getFinePath()))
-            {
-                _logger.debug("imageDir.isDirectory() = " + tempSourceDir.isDirectory());
-                // todo-files
-                // copy from one (temp) dir to an album fine directory, using a JPG filter
-                // in case of external storage provider: first copy to local file storage (tempSourceDir) and then upload to albumFinePath?
-                // --> remains open until clarified!
-                FileUtils.copyDir(tempSourceDir, album.getFinePath(), new FileUtils.JpgFileFilter());
-            }
+            tempSourceDir = new File(tempImageDirectory);
+            _logger.debug("imageDir.isDirectory() = " + tempSourceDir.isDirectory());
         }
 
 
-        if (tempSingleImagePath ==null || "".equals(tempSingleImagePath))
+        if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir!=null)
         {
             // not a single image import: register all fine photos this albums fine path
-            album.registerPhotos(createThumbnailDisplay);
+            album.registerPhotos(tempSourceDir,createThumbnailDisplay);
         }
         else if (tempSingleImagePath != null)
         {

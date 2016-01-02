@@ -1,8 +1,11 @@
 package ch.unartig.studioserver.storageProvider;
 
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Album;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by alexanderjosef on 19.07.15.
@@ -29,10 +32,11 @@ public interface FileStorageProviderInterface {
 
     /**
      * Store a file
+     * @param album
      * @param file file to be stored
      */
     // key == filename??
-    public void putFile(File file);
+    public void putFile(Album album, File file) throws UAPersistenceException;
 
     /**
      * Retrieve a stored file from the storage provider

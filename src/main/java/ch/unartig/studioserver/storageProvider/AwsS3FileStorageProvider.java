@@ -1,5 +1,6 @@
 package ch.unartig.studioserver.storageProvider;
 
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.util.FileUtils;
@@ -67,8 +68,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
 
-    public void putFile(File file) {
+    public void putFile(Album album, File file) throws UAPersistenceException {
 
+        // not yet implemented
+        throw new RuntimeException("Method 'putFile' in Class AwsS3FileStorageProvider not implemented yet");
     }
 
     public File getFile(Album album, String filename) {
@@ -84,7 +87,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         } catch (AmazonClientException e) {
             e.printStackTrace();
         }
-        _logger.debug("S3 File Content-Type: "  + object.getObjectMetadata().getContentType());
+        _logger.debug("S3 File Content-Type: " + object.getObjectMetadata().getContentType());
         File destFile = new File(filename);
         try {
             FileUtils.copyFile(object.getObjectContent(), destFile);

@@ -329,7 +329,7 @@ public class SportsEvent extends GeneratedSportsEvent
     }
 
     /**
-     * If Album already exists it will be loaded and returned
+     * If Album already exists it will be loaded and returned (album defined as set of photos of a category from a photographer)
      * Transactional creation of a sports album if none exists for the given photographer and category.
      *
      *
@@ -347,7 +347,7 @@ public class SportsEvent extends GeneratedSportsEvent
             sportsAlbum = glDao.getSportsAlbumFor(photographer, eventCategory);
         } catch (UAPersistenceException e)
         {
-            throw new RuntimeException("There is already an Album for this photographer and this category",e);
+            throw new RuntimeException("More than one Album for this photographer and category; exiting",e);
         }
         if (sportsAlbum == null)
         {

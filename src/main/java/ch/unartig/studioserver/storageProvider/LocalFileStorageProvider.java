@@ -1,10 +1,13 @@
 package ch.unartig.studioserver.storageProvider;
 
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * SPORTRAIT / unartig AG
@@ -26,8 +29,18 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
 
     }
 
-    public void putFile(File file) {
-
+    public void putFile(Album album, File photoFile) throws UAPersistenceException {
+        File destFile = new File(album.getFinePath(),photoFile.getName());
+        try {
+            // only copy file if it's not already in the album directory
+            if (!album.getFinePath().equals(photoFile.getParentFile()))
+            {
+                FileUtils.copyFile(photoFile, destFile);
+            }
+        } catch (IOException e) {
+            _logger.error("Error while saving photo to local file system",e);
+            throw new UAPersistenceException(e);
+        }
     }
 
     public File getFile(Album album, String filename) {
