@@ -207,6 +207,7 @@ import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
 
+import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.RenderedOp;
 import java.io.*;
 import java.util.*;
@@ -415,7 +416,6 @@ public class Album extends GeneratedAlbum {
     public void registerPhotos(File tempSourceDir, boolean createThumbDisp) {
         _logger.debug("start registerPhotos, " + System.currentTimeMillis());
 
-        // all fine fotos in the DATA path of the album
         // todo-files
         // solve with listing from storage provider. create new list method in interface
 
@@ -432,11 +432,9 @@ public class Album extends GeneratedAlbum {
         for (i = 0; i < filesInTempSourceDir.length; i++) {
             _logger.debug("registerPhoto "+i+", " + System.currentTimeMillis());
             File photoFile = filesInTempSourceDir[i];
-
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
             // copy file to final location (given by storage provider)
             Registry.fileStorageProvider.putFile(this,photoFile);
-
         }
 
 
@@ -450,6 +448,9 @@ public class Album extends GeneratedAlbum {
         /////////////////////////////////
         if (createThumbDisp) {
             try {
+                // todo-files
+                // find solution for logo montage
+
                 // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
                 String logoScriptPath = Registry.getLogosScriptPath();
                 _logger.info("calling logo script : " + logoScriptPath);
@@ -481,6 +482,10 @@ public class Album extends GeneratedAlbum {
      * @param photoFile       The image file to import (in its temporary location) // todo-files: temporary?
      */
     public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, File photoFile) {
+
+
+        // todo-files: if param photoFile comes from temp local file system we are fine. Otherwise a new solution needs to be found.
+
         Integer pictureWidth;
         Integer pictureHeight;
         Date pictureTakenDate;
@@ -571,10 +576,20 @@ public class Album extends GeneratedAlbum {
                 // create thumbnail/display (with JAI operations)
 
                 // now trying new method and commenting following line out ...
-                ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), false);
-
+                OutputStream scaledDisplayImage = ImagingHelper.createScaledImage(fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), false);
+                // todo store image using storage provider
+                Registry.fileStorageProvider.putFile(this, scaledDisplayImage, photoFile.getName());
                 // create thumbnail
-                ImagingHelper.createScaledImage(filename, fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), getThumbnailPath(), false);
+                OutputStream scaledThumbnailImage = ImagingHelper.createScaledImage(fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), false);
+                // todo store image using storage provider
+                Registry.fileStorageProvider.putFile(this, scaledThumbnailImage, photoFile.getName());
+
+
+
+                // ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), false);
+
+
+
             }
 
         } catch (IOException e) {
@@ -628,12 +643,12 @@ public class Album extends GeneratedAlbum {
             // DISPLAY : (apply watermark)
             displayScale = Registry.getDisplayPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
             File displayFile = new File(getDisplayPath(), image.getName());
-            ImagingHelper.createNewImage(fineImage, displayScale, displayFile, Registry._imageQuality, Registry._ImageSharpFactor, true);
+            ImagingHelper.createNewImage(fineImage, displayScale, Registry._imageQuality, Registry._ImageSharpFactor, true);
 
             // THUMBNAIL:
             thumbnailScale = Registry.getThumbnailPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
             File thumbnailFile = new File(getThumbnailPath(), image.getName());
-            ImagingHelper.createNewImage(fineImage, thumbnailScale, thumbnailFile, Registry._imageQuality, Registry._ImageSharpFactor, false);
+            ImagingHelper.createNewImage(fineImage, thumbnailScale, Registry._imageQuality, Registry._ImageSharpFactor, false);
         }
     }
 
@@ -688,6 +703,7 @@ public class Album extends GeneratedAlbum {
      * Creates all directories if needed
      *
      * @return a directory
+     * @deprecated
      */
     public File getFinePath() {
 
@@ -702,6 +718,11 @@ public class Album extends GeneratedAlbum {
         return finePath;
     }
 
+    /**
+     *
+     * @return
+     * @deprecated
+     */
     private File getThumbnailPath() {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
@@ -709,12 +730,22 @@ public class Album extends GeneratedAlbum {
     }
 
 
+    /**
+     *
+     * @return
+     * @deprecated
+     */
     private File getDisplayPath() {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
         return new File(getAlbumWebImagesPath(), Registry.getDisplayPath());
     }
 
+    /**
+     *
+     * @return
+     * @deprecated
+     */
     private File getAlbumWebImagesPath() {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface

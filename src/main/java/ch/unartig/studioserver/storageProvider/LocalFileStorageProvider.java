@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * SPORTRAIT / unartig AG
@@ -30,6 +31,8 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
     }
 
     public void putFile(Album album, File photoFile) throws UAPersistenceException {
+
+        // todo-files: not only for fine images!!
         File destFile = new File(album.getFinePath(),photoFile.getName());
         try {
             // only copy file if it's not already in the album directory
@@ -41,6 +44,12 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
             _logger.error("Error while saving photo to local file system",e);
             throw new UAPersistenceException(e);
         }
+    }
+
+    public void putFile(Album album, OutputStream file, String name) throws UAPersistenceException {
+
+
+        throw new RuntimeException("not implemented yet");
     }
 
     public File getFile(Album album, String filename) {

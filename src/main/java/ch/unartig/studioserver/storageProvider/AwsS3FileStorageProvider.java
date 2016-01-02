@@ -11,12 +11,10 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * SPORTRAIT / unartig AG
@@ -68,10 +66,57 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
 
-    public void putFile(Album album, File file) throws UAPersistenceException {
+    public void putFile(Album album, File photoFile) throws UAPersistenceException {
 
-        // not yet implemented
-        throw new RuntimeException("Method 'putFile' in Class AwsS3FileStorageProvider not implemented yet");
+
+        _logger.debug("Uploading a new object to S3 from a file\n");
+
+        // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
+        try {
+            // todo: not only for fine images!
+            String key = "fine-images/"+album.getGenericLevelId()+"/"+Registry.getFinePath()+photoFile.getName();
+            s3.putObject(new PutObjectRequest(bucketName, key, photoFile));
+        } catch (AmazonClientException e) {
+            _logger.error("Problem putting photo to S3", e);
+            throw new UAPersistenceException(e);
+        }
+
+
+    }
+
+    /**
+     * Store a file based on an output stream
+     *
+     * @param album
+     * @param image
+     * @param name
+     * @throws ch.unartig.exceptions.UAPersistenceException
+     */
+    public void putFile(Album album, OutputStream image, String name) throws UAPersistenceException {
+
+        // todo: not only for display!
+        ByteArrayOutputStream bois = (ByteArrayOutputStream)image;
+        ByteArrayInputStream bais = new ByteArrayInputStream(bois.toByteArray());
+
+        String key = "web-images/"+album.getGenericLevelId()+"/"+Registry.getDisplayPath()+name;
+
+        // set the correct content type: (otherwise an image won't be displayed by the browser but the file will be downloaded)
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType("image/jpeg");
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
+        // set access control to public read:
+        putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+        s3.putObject(putObjectRequest);
+
+        // close bois / bais?
+
+        try {
+            bais.close();
+            bois.close();
+        } catch (IOException e) {
+            throw new UAPersistenceException(e);
+        }
+
     }
 
     public File getFile(Album album, String filename) {
@@ -99,6 +144,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     public void delete(String key) {
+
+        // s3.deleteObject(bucketName, key);
 
     }
 
