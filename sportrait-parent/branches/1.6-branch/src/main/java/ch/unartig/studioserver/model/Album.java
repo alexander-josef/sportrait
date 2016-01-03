@@ -207,7 +207,6 @@ import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
 
-import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.RenderedOp;
 import java.io.*;
 import java.util.*;
@@ -273,9 +272,7 @@ public class Album extends GeneratedAlbum {
         setDescription(description);
     }
 
-    public StringBuffer composeTreeItem() {
-        return null;
-    }
+
 
     public List listChildrenForNavTree() {
         return Collections.EMPTY_LIST;
@@ -420,9 +417,8 @@ public class Album extends GeneratedAlbum {
         // solve with listing from storage provider. create new list method in interface
 
 
-        // loop through temp directory on local file system with uploaded files
+        // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
         File[] filesInTempSourceDir = tempSourceDir.listFiles(new FileUtils.JpgFileFilter());
-        // File[] filesInTempSourceDir = getFinePath().listFiles(new FileUtils.JpgFileFilter());
 
         Set problemFiles = new HashSet();
 
@@ -434,7 +430,7 @@ public class Album extends GeneratedAlbum {
             File photoFile = filesInTempSourceDir[i];
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
             // copy file to final location (given by storage provider)
-            Registry.fileStorageProvider.putFile(this,photoFile);
+            Registry.fileStorageProvider.putFineImage(this, photoFile);
         }
 
 
@@ -577,12 +573,10 @@ public class Album extends GeneratedAlbum {
 
                 // now trying new method and commenting following line out ...
                 OutputStream scaledDisplayImage = ImagingHelper.createScaledImage(fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), false);
-                // todo store image using storage provider
-                Registry.fileStorageProvider.putFile(this, scaledDisplayImage, photoFile.getName());
+                Registry.fileStorageProvider.putDisplayImage(this, scaledDisplayImage, photoFile.getName());
                 // create thumbnail
                 OutputStream scaledThumbnailImage = ImagingHelper.createScaledImage(fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), false);
-                // todo store image using storage provider
-                Registry.fileStorageProvider.putFile(this, scaledThumbnailImage, photoFile.getName());
+                Registry.fileStorageProvider.putThumbnailImage(this, scaledThumbnailImage, photoFile.getName());
 
 
 

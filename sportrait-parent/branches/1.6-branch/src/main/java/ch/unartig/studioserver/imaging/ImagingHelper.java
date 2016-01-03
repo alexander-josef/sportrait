@@ -143,9 +143,11 @@ public class ImagingHelper
 
     /**
      * Using the renderedOP save the image as a jpg file.
-     *  @param image original image to be scaled
+     *
+     * @param image original image to be scaled
      * @param quality : A setting of 0.0 produces the highest compression ratio, with a sacrifice to image quality. The default value is 0.75
-     * @param applyWatermark set to true to apply a watermark over the resulting image  @return true for success
+     * @param applyWatermark set to true to apply a watermark over the resulting image
+     * @return ByteArrayOutputStream with that contains the resulting image
      */
     public static OutputStream createJpgImage(RenderedOp image, float quality, boolean applyWatermark)
     {
@@ -167,7 +169,6 @@ public class ImagingHelper
                 graphics2D.drawImage(getWatermark(sourceWidth,sourceHeight), 0, 0, null);
             }
 
-            // todo-files
             // write to an output stream that is returned
 
             ImageIO.write(result, "jpg", scaledImageResult);
@@ -302,7 +303,6 @@ public class ImagingHelper
             _logger.debug("Exception: ", e);
             sharpScaledImage = fineImage;
         }
-        // todo check return value; report problem images
         return createJpgImage(sharpScaledImage, quality, applyWatermark);
     }
 

@@ -22,15 +22,11 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
         // no need for constructor instructions
     }
 
-    public void getFinePath() {
-
-    }
-
     public void initStorageProvider() {
 
     }
 
-    public void putFile(Album album, File photoFile) throws UAPersistenceException {
+    public void putFineImage(Album album, File photoFile) throws UAPersistenceException {
 
         // todo-files: not only for fine images!!
         File destFile = new File(album.getFinePath(),photoFile.getName());
@@ -46,13 +42,17 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
         }
     }
 
-    public void putFile(Album album, OutputStream file, String name) throws UAPersistenceException {
+    public void putDisplayImage(Album album, OutputStream file, String name) throws UAPersistenceException {
 
 
         throw new RuntimeException("not implemented yet");
     }
 
-    public File getFile(Album album, String filename) {
+    public void putThumbnailImage(Album album, OutputStream scaledThumbnailImage, String name) {
+        // todo-files implement
+    }
+
+    public File getFineImageFile(Album album, String filename) {
         // the "Path" in an abstract sense. Here for local file storage provider it's the file system path, but could
         // be just some kind of identifying prefix in a could storage provider
         return new File(album.getFinePath().toString(), filename);
@@ -69,4 +69,6 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
     public String getDisplayUrl(String genericLevelId, String filename) {
         return "/" + Registry.getWebImagesContext()+"/" + genericLevelId + "/" + Registry.getDisplayPath() + filename;
     }
+
+
 }
