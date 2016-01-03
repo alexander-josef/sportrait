@@ -20,13 +20,6 @@ public interface FileStorageProviderInterface {
 
 
     /**
-     * Todo: check how it's used // check if getFinePath still makes sense as interface method
-     */
-    public void getFinePath();
-
-
-
-    /**
      * Authenticate (if necessary) and set default settings (e.g. region) for storage provider
      */
     public void initStorageProvider();
@@ -37,16 +30,25 @@ public interface FileStorageProviderInterface {
      * @param file file to be stored
      */
     // key == filename??
-    public void putFile(Album album, File file) throws UAPersistenceException;
+    public void putFineImage(Album album, File file) throws UAPersistenceException;
 
     /**
-     * Store a file based on an output stream
-     * @param album
+     * Store a display file based on an output stream
+     * @param album Reference to album
      * @param file File to be stored as Output Stream
      * @param name Name of the file to be stored (only last part, without path)
      * @throws UAPersistenceException
      */
-    public void putFile(Album album, OutputStream file, String name) throws UAPersistenceException;
+    public void putDisplayImage(Album album, OutputStream file, String name) throws UAPersistenceException;
+
+    /**
+     * Store a thumbnail file based on an scaled output stream
+     * @param album Reference to album
+     * @param scaledThumbnailImage File to be stored as Output Stream
+     * @param name Name of the file to be stored (only last part, without path)
+     * @throws UAPersistenceException
+     */
+    void putThumbnailImage(Album album, OutputStream scaledThumbnailImage, String name);
 
     /**
      * Retrieve a stored file from the storage provider
@@ -55,7 +57,7 @@ public interface FileStorageProviderInterface {
      * @param filename Name of the file (within the album)
      * @return File that matches the key in the given storage (bucket?) // Todo: return a InputStream instead ?
      */
-    public File getFile(Album album, String filename);
+    public File getFineImageFile(Album album, String filename);
 
     /**
      * Delete a file with the given key from the storage provider
@@ -67,4 +69,6 @@ public interface FileStorageProviderInterface {
 
 
     String getDisplayUrl(String genericLevelId, String filename);
+
+
 }

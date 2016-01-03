@@ -60,13 +60,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         _logger.debug("===========================================\n");
     }
 
-    public void getFinePath() {
 
-    }
-
-
-
-    public void putFile(Album album, File photoFile) throws UAPersistenceException {
+    public void putFineImage(Album album, File photoFile) throws UAPersistenceException {
 
 
         _logger.debug("Uploading a new object to S3 from a file\n");
@@ -88,39 +83,27 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * Store a file based on an output stream
      *
      * @param album
-     * @param image
+     * @param scaledImage
      * @param name
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public void putFile(Album album, OutputStream image, String name) throws UAPersistenceException {
-
-        // todo: not only for display!
-        ByteArrayOutputStream bois = (ByteArrayOutputStream)image;
-        ByteArrayInputStream bais = new ByteArrayInputStream(bois.toByteArray());
+    public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
 
         String key = "web-images/"+album.getGenericLevelId()+"/"+Registry.getDisplayPath()+name;
 
-        // set the correct content type: (otherwise an image won't be displayed by the browser but the file will be downloaded)
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType("image/jpeg");
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
-        // set access control to public read:
-        putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
-        s3.putObject(putObjectRequest);
-
-        // close bois / bais?
-
-        try {
-            bais.close();
-            bois.close();
-        } catch (IOException e) {
-            throw new UAPersistenceException(e);
-        }
+        putImage((ByteArrayOutputStream) scaledImage, key);
 
     }
 
-    public File getFile(Album album, String filename) {
-        _logger.debug("Downloading an object");
+    public void putThumbnailImage(Album album, OutputStream scaledImage, String name) {
+
+        String key = "web-images/"+album.getGenericLevelId()+"/"+Registry.getThumbnailPath() + name;
+
+        putImage((ByteArrayOutputStream) scaledImage, key);
+    }
+
+    public File getFineImageFile(Album album, String filename) {
+        _logger.debug("Downloading an s3 fine image");
 
         // example for key: fine-images/163/fine/sola14_e01_fm_0005.JPG
 
@@ -147,6 +130,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         // s3.deleteObject(bucketName, key);
 
+        // todo-files: implement
+        throw new RuntimeException("not implemented yet");
+
     }
 
     public String getThumbnailUrl(String genericLevelId, String filename) {
@@ -155,6 +141,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // https://s3-eu-west-1.amazonaws.com/photos.sportrait.com/web-images/163/thumbnail/sola14_e01_fm_0005.JPG
         // AWS S3 resource needs to be publicly readable
 
+        // todo: parameter
         String url = "https://s3-eu-west-1.amazonaws.com/" + bucketName +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getThumbnailPath() + filename;
         return url;
     }
@@ -165,10 +152,35 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // https://s3-eu-west-1.amazonaws.com/photos.sportrait.com/web-images/163/display/sola14_e01_fm_0005.JPG
         // AWS S3 resource needs to be publicly readable
 
+        // todo: parameter
         String url = "https://s3-eu-west-1.amazonaws.com/" + bucketName +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getDisplayPath() + filename;
         return url;
 
     }
+
+
+
+    private void putImage(ByteArrayOutputStream scaledImage, String key) {
+        ByteArrayInputStream bais = new ByteArrayInputStream(scaledImage.toByteArray());
+
+        // set the correct content type: (otherwise an image won't be displayed by the browser but the file will be downloaded)
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType("image/jpeg");
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
+        // set access control to public read:
+        putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+        s3.putObject(putObjectRequest);
+
+        // close bois / bais?
+
+        try {
+            bais.close();
+            scaledImage.close();
+        } catch (IOException e) {
+            throw new UAPersistenceException(e);
+        }
+    }
+
 
 
 }

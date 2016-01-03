@@ -178,7 +178,7 @@ public class Photo extends GeneratedPhoto
     public File getFile()
     {
         FileStorageProviderInterface fileStorageProvider = Registry.getFileStorageProvider();
-        return fileStorageProvider.getFile(getAlbum(), getFilename());
+        return fileStorageProvider.getFineImageFile(getAlbum(), getFilename());
     }
 
     /**
