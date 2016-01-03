@@ -573,10 +573,10 @@ public class Album extends GeneratedAlbum {
 
                 // now trying new method and commenting following line out ...
                 OutputStream scaledDisplayImage = ImagingHelper.createScaledImage(fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), false);
-                Registry.fileStorageProvider.putDisplayImage(this, scaledDisplayImage, photoFile.getName());
+                Registry.fileStorageProvider.putDisplayImage(this, scaledDisplayImage, filename);
                 // create thumbnail
                 OutputStream scaledThumbnailImage = ImagingHelper.createScaledImage(fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), false);
-                Registry.fileStorageProvider.putThumbnailImage(this, scaledThumbnailImage, photoFile.getName());
+                Registry.fileStorageProvider.putThumbnailImage(this, scaledThumbnailImage, filename);
 
 
 
