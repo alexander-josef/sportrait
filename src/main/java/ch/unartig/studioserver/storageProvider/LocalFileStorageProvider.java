@@ -6,6 +6,7 @@ import ch.unartig.studioserver.model.Album;
 import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,11 +29,10 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
 
     public void putFineImage(Album album, File photoFile) throws UAPersistenceException {
 
-        // todo-files: not only for fine images!!
-        File destFile = new File(album.getFinePath(),photoFile.getName());
+        File destFile = new File(getFinePath(album),photoFile.getName());
         try {
             // only copy file if it's not already in the album directory
-            if (!album.getFinePath().equals(photoFile.getParentFile()))
+            if (!getFinePath(album).equals(photoFile.getParentFile()))
             {
                 FileUtils.copyFile(photoFile, destFile);
             }
@@ -42,20 +42,24 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
         }
     }
 
-    public void putDisplayImage(Album album, OutputStream file, String name) throws UAPersistenceException {
+    public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
 
+        File path = new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
 
-        throw new RuntimeException("not implemented yet");
+        saveFile((ByteArrayOutputStream) scaledImage, name, path);
     }
 
-    public void putThumbnailImage(Album album, OutputStream scaledThumbnailImage, String name) {
-        // todo-files implement
+
+    public void putThumbnailImage(Album album, OutputStream scaledImage, String name) {
+
+        File path = new File(getAlbumWebImagesPath(album), Registry.getThumbnailPath());
+
+        saveFile((ByteArrayOutputStream) scaledImage, name, path);
     }
 
     public File getFineImageFile(Album album, String filename) {
-        // the "Path" in an abstract sense. Here for local file storage provider it's the file system path, but could
-        // be just some kind of identifying prefix in a could storage provider
-        return new File(album.getFinePath().toString(), filename);
+
+        return new File(getFinePath(album).toString(), filename);
     }
 
     public void delete(String key) {
@@ -71,4 +75,36 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
     }
 
 
+
+
+    private void saveFile(ByteArrayOutputStream scaledImage, String name, File path) {
+        File destFile = new File (path,name);
+        try {
+            FileUtils.copyFile(scaledImage.toByteArray(), destFile);
+        } catch (IOException e) {
+            _logger.error("problem saving display image to local file system, see thrown exception",e);
+            throw new UAPersistenceException("Problem saving display image to local file system",e);
+        }
+    }
+
+    /**
+     * New method in local file storage provider to return a local fine images path
+     * @return
+     * @param album
+     */
+    private File getFinePath(Album album) {
+
+        File albumFinePath = new File(Registry.getFineImagesDirectory(), album.getGenericLevelId().toString());
+        File finePath = new File(albumFinePath, Registry.getFinePath());
+        if (!finePath.exists()) {
+            finePath.mkdirs();
+        }
+        return finePath;
+    }
+
+    private File getAlbumWebImagesPath(Album album) {
+        // todo-files : refactor Album.java to not use this method anymore
+        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
+        return new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
+    }
 }

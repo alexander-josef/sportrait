@@ -232,9 +232,9 @@ public final class Registry
     /*the tree items file name without the language dependant suffix*/
     private static String treeItemsFilePrefix = "tree_items_";
     // todo confusing: distinguish between the serverFinePath and the fine directory
-    private static String finePath = "fine/";
-    private static String thumbnailPath = "thumbnail/";
-    private static String displayPath = "display/";
+    private static String finePath = "fine/"; // used in all storage providers as path denominator
+    private static String thumbnailPath = "thumbnail/"; // used in all storage providers as path denominator
+    private static String displayPath = "display/"; // used in all storage providers as path denominator
     public static final String _PORTRAIT_MODE_SUFFIX = "portrait";
     private static Integer displayPixelsLongerSide = 380; // used to be 484 for unartig.ch and the beginning of sportrait
     private static Integer thumbnailPixelsLongerSide = 100;
@@ -404,8 +404,8 @@ public final class Registry
 
         // todo-files: set fileStorageProvider according to configuration
         _logger.info("Setting FileStorageProvider to Local File storage (default)");
-        // fileStorageProvider = new LocalFileStorageProvider();
-        fileStorageProvider = new AwsS3FileStorageProvider();
+        fileStorageProvider = new LocalFileStorageProvider();
+        // fileStorageProvider = new AwsS3FileStorageProvider();
         // Options: LocalFileStorageProvider , AwsS3FileStorageProvider
     }
 
@@ -436,7 +436,8 @@ public final class Registry
     }
 
     /**
-     * The absolute path on the server underneath the webimages are served. Usually in a different virtual host or context.
+     * The (local) absolute path on the server underneath the webimages are served. Usually in a different virtual host or context.
+     * example: "/Users/alexanderjosef/DEV/sportrait-web/fine-images"
      * @return
      */
     public static String getWebImagesDocumentRoot()
