@@ -400,6 +400,18 @@ public class Album extends GeneratedAlbum {
         }
     }
 
+    /**
+     * Register photos that are already at the file system provider location
+     * @param createThumbnailDisplay
+     */
+    public void registerPhotos(Boolean createThumbnailDisplay) {
+
+        _logger.debug("start registerPhotos, " + System.currentTimeMillis());
+
+        File[] photoFiles = Registry.getFileStorageProvider().getFineImages(this);
+
+        // todo-files call register single photos , check old file
+    }
 
     /**
      * Register all photos from the temporary 'fine' Path in the db; reads the EXIF picture-take date and enters it for every photo record<br/>
@@ -407,11 +419,11 @@ public class Album extends GeneratedAlbum {
      * <p/> copies the temp file to it's final location according to the given fileStorageProvider
      * <p/> This method shall fail gracefully with a exception message in case a photo can not be registered (corrupt file, not a foto-file etc.)
      *
-     * @param tempSourceDir This is the path given in the import UI as temporary location where the files to be imported have been uploaded
+     * @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
      * @param createThumbDisp set to true to create the display and thumbnail images
      */
-    public void registerPhotos(File tempSourceDir, boolean createThumbDisp) {
-        _logger.debug("start registerPhotos, " + System.currentTimeMillis());
+    public void registerPhotosFromTempLocation(File tempSourceDir, boolean createThumbDisp) {
+        _logger.debug("start registerPhotosFromTempLocation, " + System.currentTimeMillis());
 
         // todo-files
         // solve with listing from storage provider. create new list method in interface
@@ -426,7 +438,7 @@ public class Album extends GeneratedAlbum {
         // include performance measure
         long base = System.currentTimeMillis();
         for (i = 0; i < filesInTempSourceDir.length; i++) {
-            _logger.debug("registerPhoto "+i+", " + System.currentTimeMillis());
+            _logger.debug("register Photo "+i+", " + System.currentTimeMillis());
             File photoFile = filesInTempSourceDir[i];
             registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
             // copy file to final location (given by storage provider)
@@ -471,6 +483,9 @@ public class Album extends GeneratedAlbum {
 
     }
 
+
+
+
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
      * @param createThumbDisp set to true to create the display and thumbnail images
@@ -495,7 +510,6 @@ public class Album extends GeneratedAlbum {
 // *** JAI:
 
 
-            // todo-files : use bufferedImage instead of file?
             RenderedOp fineImage = ImagingHelper.load(photoFile);
             pictureWidth = fineImage.getWidth();
             pictureHeight = fineImage.getHeight();
@@ -1005,6 +1019,7 @@ public class Album extends GeneratedAlbum {
         }
         return false;
     }
+
 
 
     /**

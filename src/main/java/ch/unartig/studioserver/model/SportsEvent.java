@@ -59,10 +59,8 @@ import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -252,7 +250,7 @@ public class SportsEvent extends GeneratedSportsEvent
      */
     public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay) throws UnartigException
     {
-        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
         // giving control to new thread and return.
         Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay);
         uploader.start();
@@ -281,8 +279,9 @@ public class SportsEvent extends GeneratedSportsEvent
             throw new UnartigException("photographer == null");
         }
 
-        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, photographer);
-        extractPhotosFor(sportsAlbum, inputStream);
+        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
+        // put the photos from the archive to its correct file storage location: (no temp files)
+        sportsAlbum.extractPhotosFromArchive(inputStream);
         // giving control to new thread and return.
         Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages);
         _logger.info("Starting Uploader Thread ...");
@@ -301,7 +300,7 @@ public class SportsEvent extends GeneratedSportsEvent
      */
     public boolean importAlbumFromImportDataOnly(Long eventCategoryId, InputStream inputStream, Client client, boolean isZipArchive) throws UnartigException
     {
-        SportsAlbum sportsAlbum = getSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
         sportsAlbum.registerPhotosFromImportData(inputStream, isZipArchive);
         return true;
     }
@@ -309,7 +308,7 @@ public class SportsEvent extends GeneratedSportsEvent
 
 
     /**
-     * @see SportsEvent#getSportsAlbumFor(Long,Photographer)
+     * @see SportsEvent#getOrCreateSportsAlbumFor(Long,Photographer)
      * @param eventCategoryId
      * @param photographerId
      * @return
@@ -320,7 +319,7 @@ public class SportsEvent extends GeneratedSportsEvent
         SportsAlbum album;
         try
         {
-            album = getSportsAlbumFor(eventCategoryId,phDao.load(photographerId));
+            album = getOrCreateSportsAlbumFor(eventCategoryId, phDao.load(photographerId));
         } catch (UAPersistenceException e)
         {
             throw new RuntimeException("can not get sports album",e);
@@ -337,7 +336,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param photographer Photographer who owns the new album
      * @return the newly created album
      */
-    public SportsAlbum getSportsAlbumFor(Long eventCategoryId, Photographer photographer) throws UAPersistenceException
+    public SportsAlbum getOrCreateSportsAlbumFor(Long eventCategoryId, Photographer photographer) throws UAPersistenceException
     {
         SportsAlbum sportsAlbum;
         GenericLevelDAO glDao = new GenericLevelDAO();
@@ -376,15 +375,6 @@ public class SportsEvent extends GeneratedSportsEvent
             }
         }
         return sportsAlbum;
-    }
-
-    private void extractPhotosFor(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException
-    {
-        // todo-files: change / use put method of storage-provider interface
-        // do we need a temp location for uploaded files?
-        File finePath = sportsAlbum.getFinePath();
-        _logger.debug("Extracting files to fine path : " + finePath);
-        FileUtils.extractFlatZipArchive(fileInputStream, finePath);
     }
 
 

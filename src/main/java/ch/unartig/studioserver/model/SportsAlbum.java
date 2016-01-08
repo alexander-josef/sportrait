@@ -46,6 +46,11 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.Registry;
+import ch.unartig.util.FileUtils;
+
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -90,6 +95,20 @@ public class SportsAlbum extends GeneratedSportsAlbum
     public boolean isSportsAlbumLevel()
     {
         return true;
+    }
+
+    /**
+     * Method extracts zip archive to file storage provider
+     * @param fileInputStream InputStream that contains an Zip archive with Photos
+     * @throws ch.unartig.exceptions.UnartigException
+     */
+    void extractPhotosFromArchive(InputStream fileInputStream) throws UnartigException
+    {
+        // todo-files:
+        // do we need a temp location for uploaded files?
+        // shall we upload to file storage provider directly?
+
+        Registry.getFileStorageProvider().putFilesFromArchive(this,fileInputStream);
     }
 
 /*

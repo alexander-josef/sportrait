@@ -3,9 +3,11 @@ package ch.unartig.studioserver.storageProvider;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.SportsAlbum;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -31,6 +33,16 @@ public interface FileStorageProviderInterface {
      */
     // key == filename??
     public void putFineImage(Album album, File file) throws UAPersistenceException;
+
+
+    /**
+     * Given a zip archive as InputStream, upload the photo files in the archive to the file storage
+     * @param sportsAlbum
+     * @param fileInputStream
+     * @throws UnartigException
+     */
+    void putFilesFromArchive(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException;
+
 
     /**
      * Store a display file based on an output stream
@@ -60,6 +72,13 @@ public interface FileStorageProviderInterface {
     public File getFineImageFile(Album album, String filename);
 
     /**
+     * Return an array of fine images that belong to an album
+     * @return
+     * @param album
+     */
+    File[] getFineImages(Album album);
+
+    /**
      * Delete a file with the given key from the storage provider
      * @param key The key that identifies the file to be deleted in the bucket (??) of the storage provider
      */
@@ -69,6 +88,7 @@ public interface FileStorageProviderInterface {
 
 
     String getDisplayUrl(String genericLevelId, String filename);
+
 
 
 }

@@ -157,10 +157,13 @@ public class Uploader extends Thread
 
         if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir!=null)
         {
-            // not a single image import: register all fine photos this albums fine path
-            album.registerPhotos(tempSourceDir,createThumbnailDisplay);
-        }
-        else if (tempSingleImagePath != null)
+            // not a single image import: register all photos, either from a tempSourceDir of from this albums file storage provider location
+            album.registerPhotosFromTempLocation(tempSourceDir, createThumbnailDisplay);
+        } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir==null) {
+            // not a single image import, photos are already at file storage provider location. no temporary file path
+            album.registerPhotos(createThumbnailDisplay);
+
+        } else if (tempSingleImagePath != null)
         {
             // single image photo
             Set problemFiles = new HashSet();

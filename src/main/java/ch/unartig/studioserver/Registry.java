@@ -194,7 +194,6 @@ package ch.unartig.studioserver;
 
 import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
-import ch.unartig.studioserver.storageProvider.LocalFileStorageProvider;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
@@ -404,9 +403,9 @@ public final class Registry
 
         // todo-files: set fileStorageProvider according to configuration
         _logger.info("Setting FileStorageProvider to Local File storage (default)");
-        fileStorageProvider = new LocalFileStorageProvider();
-        // fileStorageProvider = new AwsS3FileStorageProvider();
-        // Options: LocalFileStorageProvider , AwsS3FileStorageProvider
+        // fileStorageProvider = new LocalFileSystemStorageProvider();
+        fileStorageProvider = new AwsS3FileStorageProvider();
+        // Options: LocalFileSystemStorageProvider , AwsS3FileStorageProvider
     }
 
 
