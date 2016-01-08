@@ -1,25 +1,24 @@
 package ch.unartig.studioserver.storageProvider;
 
 import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * SPORTRAIT / unartig AG
  * Created by alexanderjosef on 01.10.15.
  */
-public class LocalFileStorageProvider implements FileStorageProviderInterface{
+public class LocalFileSystemStorageProvider implements FileStorageProviderInterface{
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
-    public LocalFileStorageProvider() {
+    public LocalFileSystemStorageProvider() {
         // no need for constructor instructions
     }
 
@@ -62,6 +61,11 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
         return new File(getFinePath(album).toString(), filename);
     }
 
+    public File[] getFineImages(Album album) {
+
+        throw new RuntimeException("not implemented yet");
+    }
+
     public void delete(String key) {
 
     }
@@ -74,12 +78,17 @@ public class LocalFileStorageProvider implements FileStorageProviderInterface{
         return "/" + Registry.getWebImagesContext()+"/" + genericLevelId + "/" + Registry.getDisplayPath() + filename;
     }
 
-
+    public void putFilesFromArchive(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException {
+        File finePath = getFinePath(sportsAlbum);
+        _logger.debug("Extracting files to fine path : " + finePath);
+        FileUtils.extractFlatZipArchive(fileInputStream, finePath);
+    }
 
 
     private void saveFile(ByteArrayOutputStream scaledImage, String name, File path) {
         File destFile = new File (path,name);
         try {
+            // check piped output stream. performance? memory?
             FileUtils.copyFile(scaledImage.toByteArray(), destFile);
         } catch (IOException e) {
             _logger.error("problem saving display image to local file system, see thrown exception",e);
