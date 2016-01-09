@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 /**
  * Created by alexanderjosef on 19.07.15.
@@ -72,11 +73,19 @@ public interface FileStorageProviderInterface {
     public File getFineImageFile(Album album, String filename);
 
     /**
-     * Return an array of fine images that belong to an album
+     * Method to register fine photos that are already in the correct place in the respective storage provider (i.e. local folder or a path on S3, identified by Album ID)
+     * @param album The album that the fine photos, that will be registered, belong to. It contains the information to retrieve the storage location
+     * @param createThumbnailDisplay Flag to indicate if thumbnails and display images shall be created as will
+     * @return a Set of files that caused problems and could not be implemented
+     */
+    Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay);
+
+    /**
+     * Return the number of stored fine images that belong to an album
      * @return
      * @param album
      */
-    File[] getFineImages(Album album);
+    int getNumberOfFineImageFiles(Album album);
 
     /**
      * Delete a file with the given key from the storage provider

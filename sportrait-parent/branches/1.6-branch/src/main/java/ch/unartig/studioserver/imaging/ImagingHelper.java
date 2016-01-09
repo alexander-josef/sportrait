@@ -55,10 +55,7 @@ package ch.unartig.studioserver.imaging;
 
 import ch.unartig.exceptions.UnartigImagingException;
 import ch.unartig.studioserver.Registry;
-import com.sun.media.jai.codec.FileSeekableStream;
-import com.sun.media.jai.codec.ImageCodec;
-import com.sun.media.jai.codec.ImageEncoder;
-import com.sun.media.jai.codec.JPEGEncodeParam;
+import com.sun.media.jai.codec.*;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
@@ -111,8 +108,10 @@ public class ImagingHelper
 
     public static RenderedOp readImage(InputStream stream)
     {
-
-        return JAI.create("stream", stream);
+        SeekableStream seekableStream;
+        seekableStream = SeekableStream.wrapInputStream(stream, true);
+        // seekableStream = new MemoryCacheSeekableStream(stream);
+        return JAI.create("stream", seekableStream);
     }
 
     /**

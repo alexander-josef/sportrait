@@ -47,6 +47,7 @@ import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -82,7 +83,7 @@ public class Uploader extends Thread
     }
 
     /**
-     * Simple constructor without image or directory path
+     * Simple constructor without image or directory path (called by applet action only)
      * @param albumId
      * @param processImages set to true if thumnail and display images shall be created using JAI
      */
@@ -155,17 +156,16 @@ public class Uploader extends Thread
         }
 
 
-        if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir!=null)
+        if (tempSourceDir!=null && (tempSingleImagePath ==null || "".equals(tempSingleImagePath)) )
         {
-            // not a single image import: register all photos, either from a tempSourceDir of from this albums file storage provider location
+            // not a single image import: register all photos from a tempSourceDir locally on server
             album.registerPhotosFromTempLocation(tempSourceDir, createThumbnailDisplay);
         } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir==null) {
             // not a single image import, photos are already at file storage provider location. no temporary file path
             album.registerPhotos(createThumbnailDisplay);
-
         } else if (tempSingleImagePath != null)
         {
-            // single image photo
+            // single image photo (probably only used by applet)
             Set problemFiles = new HashSet();
             File tempSingleImageFile = new File(tempSingleImagePath);
 
@@ -176,7 +176,7 @@ public class Uploader extends Thread
             FileUtils.copyFile(tempSingleImageFile, finePhotoFile);
 
             // register using the fine file
-            album.registerSinglePhoto(createThumbnailDisplay, problemFiles, finePhotoFile);
+            album.registerSinglePhoto(createThumbnailDisplay, problemFiles, new FileInputStream(finePhotoFile), finePhotoFile.getName());
             _logger.debug("Done with registering photo [" + finePhotoFile.getAbsolutePath() + "]");
         } else
         {

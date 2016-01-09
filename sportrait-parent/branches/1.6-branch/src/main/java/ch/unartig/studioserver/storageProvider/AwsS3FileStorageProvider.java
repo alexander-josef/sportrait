@@ -17,10 +17,9 @@ import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 /**
  * SPORTRAIT / unartig AG
@@ -132,11 +131,76 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return destFile;
     }
 
-    public File[] getFineImages(Album album) {
-
-        // todo only tests here ...
+    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay) {
 
 
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("fine-images/" + album.getGenericLevelId() + "/fine/").
+                withDelimiter("/");
+
+        ObjectListing objects;
+        // loop through all listed objects - might be truncated and needs to be called several times
+        do {
+            objects = s3.listObjects(listObjectsRequest);
+
+            for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
+                S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
+                String key = s3ObjectSummary.getKey();
+                String filename = key.substring(key.lastIndexOf("/")+1);
+
+                // todo : check if photo is already registered for album in DB?
+
+                final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
+                album.registerSinglePhoto(createThumbnailDisplay,album.getProblemFiles(),objectContent, filename);
+            }
+            listObjectsRequest.setMarker(objects.getNextMarker());
+        } while (objects.isTruncated());
+
+        // todo: clean up the return value - problem files can be added directly in album
+        return null;
+    }
+
+    /**
+     * todo implement
+     * @param album
+     * @return
+     */
+    public int getNumberOfFineImageFiles(Album album) {
+
+
+
+        // todo-files: Problem ! we don't want to create all files of an album if the fine photos live on S3 !
+        // instead:
+        // create method to count # of files in an album and return n (in FileSystemStorageProvider)
+        // loop through n outside of file storage provider
+        // file storage provider provides method to return file[n]
+
+        // album.getNumberOfPhotos() --> counts photos in DB, not on file system!!
+
+        File[] retVal;
+
+        ListObjectsRequest listObjectRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("fine-images/" + album.getGenericLevelId() + "/fine/").
+                withDelimiter("/");
+
+        ObjectListing objectListing = s3.listObjects(listObjectRequest);
+
+
+        final int size = objectListing.getObjectSummaries().size();
+        retVal = new File[size];
+        for (int i = 0; i < size; i++) {
+            S3ObjectSummary s3ObjectSummary = objectListing.getObjectSummaries().get(i);
+
+            final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, s3ObjectSummary.getKey())).getObjectContent();
+
+        }
+
+
+
+
+        /*
         ListObjectsRequest listObjectRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix("fine-images/").
@@ -149,17 +213,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             _logger.debug(s);
         }
 
-        listObjectRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
-                withPrefix("fine-images/175/fine/").
-                withDelimiter("/");
-
-        ObjectListing objectListing2 = s3.listObjects(listObjectRequest);
-
-        for (int i = 0; i < objectListing2.getObjectSummaries().size(); i++) {
-            S3ObjectSummary s3ObjectSummary = objectListing2.getObjectSummaries().get(i);
-
-        }
+        */
 
 
 
@@ -193,8 +247,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
         ObjectListing objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
 
-*/
-        return new File[0];
+*/        throw new RuntimeException("not implemented");
+
     }
 
     public void delete(String key) {
@@ -253,6 +307,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // set the correct content type: (otherwise an image won't be displayed by the browser but the file will be downloaded)
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType("image/jpeg");
+        metadata.setContentLength(scaledImage.size());
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
         // set access control to public read:
         putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);

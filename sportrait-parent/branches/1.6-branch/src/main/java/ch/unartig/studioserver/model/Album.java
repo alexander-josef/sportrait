@@ -401,16 +401,29 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     * Register photos that are already at the file system provider location
+     * Register photos that are already at the file system providers location (no temp folder available)
      * @param createThumbnailDisplay
      */
     public void registerPhotos(Boolean createThumbnailDisplay) {
 
         _logger.debug("start registerPhotos, " + System.currentTimeMillis());
 
-        File[] photoFiles = Registry.getFileStorageProvider().getFineImages(this);
+        // todo-files: test
 
-        // todo-files call register single photos , check old file
+
+        // Try passing the method to register the photos in Album class (we don't want to mix file system and sportrait registration logic) - java lambdas?
+        // Registry.getFileStorageProvider().registerStoredFinePhotos(this,album.createThumbnailDisplay::registersinglephoto(), createThumbnailDisplay);
+
+
+        // in File storage provider: go through Folder of Album and register all valid photo stored in album-folder; store problem files
+        problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay);
+
+
+
+        // todo: what about logo montage? check album#registerTempPhotos
+        // todo: logo montage must come after thumb / disp generation!
+
+
     }
 
     /**
@@ -426,6 +439,8 @@ public class Album extends GeneratedAlbum {
         _logger.debug("start registerPhotosFromTempLocation, " + System.currentTimeMillis());
 
         // todo-files
+        // replace tempSourceDir with an interface like "AlbumSourceDir" ??
+        // AlbumSourceDir would have different implementations according to file storage
         // solve with listing from storage provider. create new list method in interface
 
 
@@ -440,9 +455,13 @@ public class Album extends GeneratedAlbum {
         for (i = 0; i < filesInTempSourceDir.length; i++) {
             _logger.debug("register Photo "+i+", " + System.currentTimeMillis());
             File photoFile = filesInTempSourceDir[i];
-            registerSinglePhoto(createThumbDisp, problemFiles, photoFile);
+            try {
+                registerSinglePhoto(createThumbDisp, problemFiles, new FileInputStream(photoFile), photoFile.getName());
             // copy file to final location (given by storage provider)
             Registry.fileStorageProvider.putFineImage(this, photoFile);
+            } catch (FileNotFoundException e) {
+                _logger.error("Could not register photo from temporary location, skipping : "+photoFile.getAbsolutePath(),e);
+            }
         }
 
 
@@ -466,8 +485,6 @@ public class Album extends GeneratedAlbum {
                 _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
                 _logger.info("*** Output of script will be written to StdOut ***");
 
-                getDisplayPath().mkdirs();
-                getThumbnailPath().mkdirs();
 
                 ProcessBuilder pb = new ProcessBuilder(logoScriptPath, getGenericLevelId().toString(),Registry.getFineImagesDirectory());
                 Process p = pb.inheritIO().start();     // Start the process.
@@ -481,6 +498,7 @@ public class Album extends GeneratedAlbum {
         _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base)/1000 + " seconds"));
         _logger.info("**********************");
 
+        // todo: delete files from temp location?
     }
 
 
@@ -490,9 +508,10 @@ public class Album extends GeneratedAlbum {
      * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
      * @param createThumbDisp set to true to create the display and thumbnail images
      * @param problemFiles    A set of accumulated files that caused problems during import
-     * @param photoFile       The image file to import (in its temporary location) // todo-files: temporary?
+     * @param photoFileContentStream       The image file input stream to be registered
+     * @param filename The filename used for registering the photo in the db photos table
      */
-    public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, File photoFile) {
+    public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, InputStream photoFileContentStream, String filename) {
 
 
         // todo-files: if param photoFile comes from temp local file system we are fine. Otherwise a new solution needs to be found.
@@ -500,7 +519,6 @@ public class Album extends GeneratedAlbum {
         Integer pictureWidth;
         Integer pictureHeight;
         Date pictureTakenDate;
-        String filename;
         try {
             // this causes eof problems ....
 //            FileUtils.copyFile(photoFile,new File(getFinePath(),photoFile.getName()));
@@ -508,9 +526,13 @@ public class Album extends GeneratedAlbum {
             // either use JAI or ImgScalr:
 
 // *** JAI:
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            FileUtils.copyFile(photoFileContentStream, baos);
+            byte[] bytes = baos.toByteArray();
 
-
-            RenderedOp fineImage = ImagingHelper.load(photoFile);
+            // todo-files test
+            // RenderedOp fineImage = ImagingHelper.load(photoFile);
+            RenderedOp fineImage = ImagingHelper.readImage(new ByteArrayInputStream(bytes));
             pictureWidth = fineImage.getWidth();
             pictureHeight = fineImage.getHeight();
 
@@ -528,7 +550,10 @@ public class Album extends GeneratedAlbum {
 */
 
 
-            ExifData exif = new ExifData(photoFile);
+            // todo-files test
+            // ExifData exif = new ExifData(photoFile);
+            ExifData exif = new ExifData(bytes);
+            // todo: switch to metadata-extractor, see task on kanban board
 
 
             _logger.debug("read width and height");
@@ -540,11 +565,11 @@ public class Album extends GeneratedAlbum {
                 pictureTakenDate = new Date(exifDate.getTime());
             } else {
                 pictureTakenDate = new Date(0);
-                _logger.error("Unable to determine date of file : " + photoFile.getName());
-                //noinspection unchecked
-                problemFiles.add(photoFile);
+                _logger.error("Unable to determine date of file");
+
+                //problemFiles.add(photoFile);
             }
-            filename = photoFile.getName();
+
             String displayTitle = filename;
 
             _logger.debug("filename : " + filename);
@@ -560,11 +585,7 @@ public class Album extends GeneratedAlbum {
             // once imported thumbnailer will run ... (and the ones already 'thumbnailed' ?
 
             if (createThumbDisp ) {
-                // todo-files: should not be necessary here / put in storage-provider implementation
-                getDisplayPath().mkdirs();
-                getThumbnailPath().mkdirs();
 
-                //
 /*
 
 // ******  use imgscalr to produce thumb/disp images :
@@ -601,9 +622,9 @@ public class Album extends GeneratedAlbum {
             }
 
         } catch (IOException e) {
-            _logger.info("Problems while copying the file or accessing the EXIF data of file " + photoFile.getName(), e);
+            _logger.info("Problems while copying the file or accessing the EXIF data of file " + filename, e);
             //noinspection unchecked
-            problemFiles.add(photoFile);
+            problemFiles.add(filename);
 /*
         } catch (UnartigImagingException e1) {
             _logger.info("Problem processing the image; continue with next image", e1);
@@ -613,11 +634,11 @@ public class Album extends GeneratedAlbum {
         } catch (UAPersistenceException e2) {
             _logger.info("Problem saving image; continue with next image", e2);
             //noinspection unchecked
-            problemFiles.add(photoFile);
+            problemFiles.add(filename);
         } catch (Exception e3) {
             _logger.info("unknown error; continue with next image", e3);
             //noinspection unchecked
-            problemFiles.add(photoFile);
+            problemFiles.add(filename);
         }
     }
 
