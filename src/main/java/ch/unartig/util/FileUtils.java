@@ -305,7 +305,7 @@ public class FileUtils
     {
         if (!sourceDir.isDirectory() || !destDir.isDirectory())
         {
-            throw new IOException("two directories neede");
+            throw new IOException("two directories needed");
         }
         File[] files;
         if (fileFilter==null)

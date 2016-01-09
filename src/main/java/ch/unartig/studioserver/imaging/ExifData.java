@@ -48,7 +48,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-// todo: still in use?
 public class ExifData
 {
     Logger logger = Logger.getLogger(getClass().getName());
@@ -69,8 +68,11 @@ public class ExifData
     // set either to Motorola or Intel byte order:
     private int byteOrder = -1;
     private BufferedInputStream buffStream = null;
-    private File photoFile;
+    private byte[] photoFileBytes;
 
+    /**
+     * todo needed?
+     */
     public ExifData()
     {
     }
@@ -83,7 +85,6 @@ public class ExifData
     public ExifData(File photoFile)
     {
         // todo-files : change constructor to receive a bufferedInputStream?
-        this.photoFile = photoFile;
 
         try
         {
@@ -95,6 +96,13 @@ public class ExifData
             logger.error("Could not open File: " + photoFile);
             e.printStackTrace();
         }
+    }
+
+    public ExifData(byte[] photoFileBytes) {
+        this.photoFileBytes = photoFileBytes;
+        buffStream = new BufferedInputStream(new ByteArrayInputStream(photoFileBytes));
+        buffStream.mark(1000);
+        logger.info("Reading from Input Stream");
     }
 
     /**
@@ -147,7 +155,7 @@ public class ExifData
             }
             logger.debug("found offset: " + offset);
 
-            date = readDateFromStream(photoFile, offset);
+            date = readDateFromStream(offset);
         } else
         {
             logger.error("could not read byte order!");
@@ -159,12 +167,11 @@ public class ExifData
     /**
      * reading the EXIF-date according to the specifications. see www.exif.org
      *
-     * @param photoFile
      * @param dateOffset
      * @return
      * @throws IOException
      */
-    private Date readDateFromStream(File photoFile, long dateOffset) throws IOException
+    private Date readDateFromStream(long dateOffset) throws IOException
     {
 
         DataInputStream dataStream = null;
@@ -179,7 +186,7 @@ public class ExifData
         try
         {   // data stream starts at beginning of TIFF header
             // TIFF header starts either as 0x4949 (II for Intel byte order) or as 0x4d4d (MM for Motorola Byte order)
-            dataStream = new DataInputStream(parseFor(new BufferedInputStream(new FileInputStream(photoFile)), byteOrderTag));
+            dataStream = new DataInputStream(parseFor(new BufferedInputStream(new ByteArrayInputStream(photoFileBytes)), byteOrderTag));
         } catch (FileNotFoundException e)
         {
             e.printStackTrace();
@@ -243,7 +250,7 @@ public class ExifData
         } else
         {
             logger.error("could not skip to the date fields ... end of file?");
-            logger.error("Date Fields were not found in File " + photoFile.getName());
+            logger.error("Date Fields were not found in stream");
             return null;
         }
         calendar = Calendar.getInstance();

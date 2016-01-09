@@ -9,6 +9,7 @@ import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.Set;
 
 /**
  * SPORTRAIT / unartig AG
@@ -43,8 +44,10 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
     public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
 
-        File path = new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
 
+        File path = new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
+        // make sure path exists
+        path.mkdir();
         saveFile((ByteArrayOutputStream) scaledImage, name, path);
     }
 
@@ -52,7 +55,8 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
     public void putThumbnailImage(Album album, OutputStream scaledImage, String name) {
 
         File path = new File(getAlbumWebImagesPath(album), Registry.getThumbnailPath());
-
+        // make sure path exists
+        path.mkdir();
         saveFile((ByteArrayOutputStream) scaledImage, name, path);
     }
 
@@ -61,9 +65,35 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         return new File(getFinePath(album).toString(), filename);
     }
 
-    public File[] getFineImages(Album album) {
 
-        throw new RuntimeException("not implemented yet");
+    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay) {
+        // todo test
+        // loop through album directory on local file system with uploaded files
+        File[] files = getFinePath(album).listFiles(new FileUtils.JpgFileFilter());
+
+        int i;
+        for (i = 0; i < files.length; i++) {
+            _logger.debug("register Photo "+i+", " + System.currentTimeMillis());
+            File photoFile = files[i];
+
+            // todo : check if photo is already registered for album in DB?
+
+
+            try {
+                album.registerSinglePhoto(createThumbnailDisplay, album.getProblemFiles(), new FileInputStream(photoFile), photoFile.getName());
+            } catch (FileNotFoundException e) {
+                _logger.info("Photo can not be loaded : " + photoFile.getAbsolutePath()+"; skipping",e);
+            }
+        }
+
+        // todo: what about logo montage? check album#registerTempPhotos
+
+        return null;
+    }
+
+    public int getNumberOfFineImageFiles(Album album) {
+
+        return  (getFinePath(album).listFiles(new FileUtils.JpgFileFilter())).length;
     }
 
     public void delete(String key) {
@@ -105,15 +135,14 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
         File albumFinePath = new File(Registry.getFineImagesDirectory(), album.getGenericLevelId().toString());
         File finePath = new File(albumFinePath, Registry.getFinePath());
-        if (!finePath.exists()) {
-            finePath.mkdirs();
-        }
+        finePath.mkdirs();
         return finePath;
     }
 
-    private File getAlbumWebImagesPath(Album album) {
-        // todo-files : refactor Album.java to not use this method anymore
-        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
+    private File getAlbumWebImagesPath(Album album) throws UAPersistenceException {
+
+        File path = new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
+        path.mkdirs();
+        return path;
     }
 }

@@ -281,7 +281,9 @@ public class SportsEvent extends GeneratedSportsEvent
 
         SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
         // put the photos from the archive to its correct file storage location: (no temp files)
+        // this might take a long time! todo: put in separate thread?
         sportsAlbum.extractPhotosFromArchive(inputStream);
+
         // giving control to new thread and return.
         Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages);
         _logger.info("Starting Uploader Thread ...");
