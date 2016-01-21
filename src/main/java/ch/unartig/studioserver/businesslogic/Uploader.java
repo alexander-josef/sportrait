@@ -40,10 +40,10 @@
 package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public class Uploader extends Thread
     private String tempImageDirectory;
     private Long albumId;
     private Boolean createThumbnailDisplay;
-    private String tempSingleImagePath;
+    private File tempSingleImageFile; // absolute filename to a image file in a temporary location. only used by the upload applet (JUploadAction)
 
     /**
      * If ImagePath = null or Album Image Path : ignore; else copy from temp tempImageDirectory to the album image path
@@ -101,17 +101,17 @@ public class Uploader extends Thread
 
     /**
      * Will be called from uploader applet Action (only usage so far)
-     * @param tempSingleImagePath The complete Path of the temporary single image file to upload
+     * @param tempSingleImageFile The complete Path of the temporary single image file to upload
      */
-    public void uploadSingleImage(String tempSingleImagePath)
+    public void uploadSingleImage(File tempSingleImageFile)
     {
-        this.tempSingleImagePath = tempSingleImagePath;
-        if (albumId!=null && tempSingleImagePath!=null && !"".equals(tempSingleImagePath))
+        this.tempSingleImageFile = tempSingleImageFile;
+        if (albumId!=null && tempSingleImageFile!=null && !"".equals(tempSingleImageFile))
         {
             tempImageDirectory =null;
             // this will start a separate thread and call the run method in this class.
             this.start();
-            _logger.debug("Thread for registering single photo started. Image ["+tempSingleImagePath+"]");
+            _logger.debug("Thread for registering single photo started. Image ["+tempSingleImageFile+"]");
         }
     }
 
@@ -150,28 +150,23 @@ public class Uploader extends Thread
 
 
 
-        if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImagePath ==null || "".equals(tempSingleImagePath)) )
+        if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImageFile ==null || "".equals(tempSingleImageFile)) )
         {
             // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir
             album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay);
-        } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
+        } else if ((tempSingleImageFile ==null || "".equals(tempSingleImageFile)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
             // not a single image import, photos are already at file storage provider location. no temporary file path
             album.registerPhotos(createThumbnailDisplay);
-        } else if (tempSingleImagePath != null)
+        } else if (tempSingleImageFile != null)
         {
-            // single image photo (probably only used by applet)
+            // single image photo (only used by applet)
             Set problemFiles = new HashSet();
-            File tempSingleImageFile = new File(tempSingleImagePath);
 
-            // create the Fine File
-            // todo-files
-            File finePhotoFile = new File(album.getFinePath(), tempSingleImageFile.getName());
-            // Copy temp to fine file
-            FileUtils.copyFile(tempSingleImageFile, finePhotoFile);
+            Registry.getFileStorageProvider().putFineImage(album, tempSingleImageFile);
 
             // register using the fine file
-            album.registerSinglePhoto(createThumbnailDisplay, problemFiles, new FileInputStream(finePhotoFile), finePhotoFile.getName());
-            _logger.debug("Done with registering photo [" + finePhotoFile.getAbsolutePath() + "]");
+            album.registerSinglePhoto(createThumbnailDisplay, problemFiles, new FileInputStream(tempSingleImageFile), tempSingleImageFile.getName());
+            _logger.debug("Done with registering photo [" + tempSingleImageFile.getAbsolutePath() + "]");
         } else
         {
             _logger.error("Uploader in unexpected state. Stopping import of photos");

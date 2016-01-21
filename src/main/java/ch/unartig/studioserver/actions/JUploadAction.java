@@ -327,7 +327,7 @@ public class JUploadAction extends Action
     private void unartigImport(Album album, PrintWriter out, File targetFile)
     {
         Uploader uploaderThread = new Uploader(album.getGenericLevelId(), true);
-        uploaderThread.uploadSingleImage(targetFile.getAbsolutePath());
+        uploaderThread.uploadSingleImage(targetFile);
         out.println("****************************************************************");
         out.println("unArtig IMPORTING.... file:["+targetFile.getAbsolutePath()+"]");
         out.println("****************************************************************");

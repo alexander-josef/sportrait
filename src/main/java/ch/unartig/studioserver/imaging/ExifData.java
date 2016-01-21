@@ -70,33 +70,6 @@ public class ExifData
     private BufferedInputStream buffStream = null;
     private byte[] photoFileBytes;
 
-    /**
-     * todo needed?
-     */
-    public ExifData()
-    {
-    }
-
-    /**
-     * public Constructor; needs a file and sets the buffered file reader
-     *
-     * @param photoFile
-     */
-    public ExifData(File photoFile)
-    {
-        // todo-files : change constructor to receive a bufferedInputStream?
-
-        try
-        {
-            buffStream = new BufferedInputStream(new FileInputStream(photoFile));
-            buffStream.mark(1000);
-            logger.info("Reading from : " + photoFile.getName());
-        } catch (FileNotFoundException e)
-        {
-            logger.error("Could not open File: " + photoFile);
-            e.printStackTrace();
-        }
-    }
 
     public ExifData(byte[] photoFileBytes) {
         this.photoFileBytes = photoFileBytes;

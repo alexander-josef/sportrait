@@ -185,7 +185,7 @@ public class DownloadImageBean
             {
                 // digital negativ copy the file to the output stream
                 _logger.info("streaming the digital negativ");
-                FileUtils.copyFile(photo.getFile(), os);
+                FileUtils.copyFile(photo.getFileContent(), os);
             } else // everything else
             {
                 _logger.info("Not a digital product; streaming standard preview size");
@@ -211,7 +211,7 @@ public class DownloadImageBean
         Integer originalWidthPixels = photo.isOrientationLandscape() ? photo.getWidthPixels() : photo.getHeightPixels();
         resampleFactor = longerSidePixels / (double) originalWidthPixels.intValue();
         _logger.debug("sample factor :" + resampleFactor);
-        ImagingHelper.reSample(photo.getFile(), resampleFactor, os, 0.75f);
+        ImagingHelper.reSample(photo.getFileContent(), resampleFactor, os, 0.75f);
     }
 
     /**

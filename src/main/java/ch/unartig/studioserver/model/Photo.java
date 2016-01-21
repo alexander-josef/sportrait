@@ -63,7 +63,7 @@ package ch.unartig.studioserver.model;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 
-import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -173,12 +173,12 @@ public class Photo extends GeneratedPhoto
     /**
      * Return photo file by given fileStorageProvider (changed since S3 Migration)
      *
-     * @return The fine file as File object todo-files: change to InputStream getContent()
+     * @return The fine file content as InputStream from the storage provider
      */
-    public File getFile()
+    public InputStream getFileContent()
     {
         FileStorageProviderInterface fileStorageProvider = Registry.getFileStorageProvider();
-        return fileStorageProvider.getFineImageFile(getAlbum(), getFilename());
+        return fileStorageProvider.getFineImageFileContent(getAlbum(), getFilename());
     }
 
     /**
