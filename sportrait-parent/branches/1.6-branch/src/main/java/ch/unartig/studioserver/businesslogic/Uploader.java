@@ -152,8 +152,7 @@ public class Uploader extends Thread
 
         if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImagePath ==null || "".equals(tempSingleImagePath)) )
         {
-            // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir locally on server
-            // todo-files: test: use string (for path or bucket key) not File:
+            // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir
             album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay);
         } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
             // not a single image import, photos are already at file storage provider location. no temporary file path

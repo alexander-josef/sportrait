@@ -238,7 +238,7 @@ public class SportsEvent extends GeneratedSportsEvent
 
 
     /**
-     * Given a path on the server with 'fine' images, copy and register the photos with the db.
+     * Given a temporary path (or key) with 'fine' images, copy and register the photos with the db.
      * <br/> Uses a new Thread for the import process!
      *
      * @param eventCategoryId Sports Category Id as String as passed from view
