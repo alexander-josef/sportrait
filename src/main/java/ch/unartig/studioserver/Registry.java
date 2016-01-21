@@ -404,8 +404,8 @@ public final class Registry
 
         // todo-files: set fileStorageProvider according to configuration
         _logger.info("Setting FileStorageProvider to Local File storage (default)");
-        fileStorageProvider = new LocalFileSystemStorageProvider();
-        // fileStorageProvider = new AwsS3FileStorageProvider();
+        // fileStorageProvider = new LocalFileSystemStorageProvider();
+        fileStorageProvider = new AwsS3FileStorageProvider();
         // Options: LocalFileSystemStorageProvider , AwsS3FileStorageProvider
     }
 

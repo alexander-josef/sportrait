@@ -23,7 +23,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
 
     public LocalFileSystemStorageProvider() {
-        // no need for constructor instructions
+        // no need for constructor instructions (i.e. initialization of File System Storage)
     }
 
     public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp) {
@@ -69,7 +69,6 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         ///////////////////////////////
         if (createThumbDisp) {
             try {
-                // todo-files
                 // find solution for logo montage with S3 implementation
 
                 // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";

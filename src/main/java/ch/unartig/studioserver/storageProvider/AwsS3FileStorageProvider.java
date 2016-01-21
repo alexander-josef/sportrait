@@ -7,6 +7,7 @@ import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
@@ -76,7 +77,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
         try {
             // todo: not only for fine images!
-            String key = "fine-images/"+album.getGenericLevelId()+"/"+Registry.getFinePath()+photoFile.getName();
+            String key = getFineImageKey(album, photoFile.getName());
             s3.putObject(new PutObjectRequest(bucketName, key, photoFile));
         } catch (AmazonClientException e) {
             _logger.error("Problem putting photo to S3", e);
@@ -114,7 +115,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         // example for key: fine-images/163/fine/sola14_e01_fm_0005.JPG
 
-        String key = "fine-images/"+album.getGenericLevelId()+"/"+Registry.getFinePath()+filename;
+        // todo: reusable helper method do get key:
+        String key = getFineImageKey(album, filename);
         GetObjectRequest objectRequest = new GetObjectRequest(bucketName, key);
         S3Object object = null;
         try {
@@ -131,6 +133,16 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             return null;
         }
         return destFile;
+    }
+
+    /**
+     * Helper method for fine image key
+     * @param album
+     * @param filename
+     * @return
+     */
+    private String getFineImageKey(Album album, String filename) {
+        return "fine-images/"+album.getGenericLevelId()+"/"+ Registry.getFinePath()+filename;
     }
 
     public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay) {
@@ -166,7 +178,73 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp) {
 
 
-        // todo implement
+        long base = System.currentTimeMillis();
+
+        // loop through jpeg files on S3
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix(tempSourceDir).
+                withDelimiter("/");
+
+        ObjectListing objects;
+
+        // loop through all listed objects - might be truncated and needs to be called several times
+        do {
+            objects = s3.listObjects(listObjectsRequest);
+
+            for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
+                _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
+
+                S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
+                String key = s3ObjectSummary.getKey();
+                String filename = key.substring(key.lastIndexOf("/")+1);
+
+                // todo : check if photo is already registered for album in DB?
+
+                final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
+                // call registerSinglePhoto for each file
+                album.registerSinglePhoto(createThumbDisp,album.getProblemFiles(),objectContent, filename);
+                // move file to correct location (set the right bucket key)
+
+
+                String fineImageDestinationKey = getFineImageKey(album,filename);
+                moveObject(key, fineImageDestinationKey);
+                // todo: put logo on images
+
+            }
+            listObjectsRequest.setMarker(objects.getNextMarker());
+        } while (objects.isTruncated());
+
+        // handle problem files
+
+        _logger.info("**********************");
+        _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base) / 1000 + " seconds"));
+        _logger.info("**********************");
+
+    }
+
+    /**
+     * Helper method to move an object from a temporary location to its final location.
+     * First copy to destination, then delete source
+     * @param sourceKey
+     * @param destinationKey
+     * @return True if copy was successful, false otherwise
+     */
+    private boolean moveObject(String sourceKey, String destinationKey) {
+        try {
+            CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName,sourceKey,bucketName,destinationKey);
+            s3.copyObject(copyObjectRequest);
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
+            s3.deleteObject(deleteObjectRequest);
+        } catch (AmazonServiceException ase) {
+            _logger.error("Amazon Service Exception while moving File",ase);
+            return false;
+        } catch (AmazonClientException e) {
+            _logger.error("Amazon Client Exception while moving file",e);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -370,7 +448,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             // loop through input stream while there are more zip entries
             while ((zipEntry = zis.getNextEntry()) != null)
             {
-                String key = "fine-images/"+album.getGenericLevelId()+"/"+Registry.getFinePath()+zipEntry.getName();
+                String key = getFineImageKey(album, zipEntry.getName());
 
                 if (zipEntry.isDirectory() || zipEntry.getName().contains("/")) {
                     // is zip entry a directory or file in a directory?

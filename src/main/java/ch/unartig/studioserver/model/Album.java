@@ -438,7 +438,6 @@ public class Album extends GeneratedAlbum {
     public void registerPhotosFromTempLocation(String tempSourceDir, boolean createThumbDisp) {
         _logger.debug("start registerPhotosFromTempLocation, " + System.currentTimeMillis());
 
-        // todo-files
         // replace tempSourceDir with an interface like "AlbumSourceDir" ??
         // AlbumSourceDir would have different implementations according to file storage
         // solve with listing from storage provider. create new list method in interface
