@@ -17,6 +17,8 @@ import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -161,8 +163,14 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return null;
     }
 
+    public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp) {
+
+
+        // todo implement
+    }
+
     /**
-     * todo implement
+     * todo implement / use for showing number of photos when importing from temp location
      * @param album
      * @return
      */
@@ -281,6 +289,25 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         String url = "https://s3-eu-west-1.amazonaws.com/" + bucketName +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getDisplayPath() + filename;
         return url;
 
+    }
+
+    public List<String> getUploadPaths() {
+        // todo implement
+
+        ArrayList<String> retVal = new ArrayList();
+        ListObjectsRequest listObjectRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("upload/").
+                withDelimiter("/");
+        List<String> objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
+
+        for (String s : objectListing) {
+            System.out.println(s);
+            _logger.debug(s);
+            retVal.add(s);
+        }
+
+        return retVal;
     }
 
     public void putFilesFromArchive(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException {

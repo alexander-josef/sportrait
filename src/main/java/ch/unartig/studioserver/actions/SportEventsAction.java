@@ -100,6 +100,8 @@ public class SportEventsAction extends MappingDispatchAction
             String eventId = dynaForm.getString("eventId");
             String eventCategoryId = dynaForm.getString("eventCategoryId");
             String tempFineImageServerPath = dynaForm.getString("imagePath"); // the temporary fine images path (local to the web server) as given by the upload form)
+            String storageProviderUploadPath = dynaForm.getString("storageProviderUploadPath"); // chosen path (or actually the bucket key) as chosen in the web form
+            String s3Upload = dynaForm.getString("s3Upload"); // chosen path (or actually the bucket key) as chosen in the web form
             String photographerId = dynaForm.getString("photographerId");
             FormFile file = (FormFile) dynaForm.get("content");
             Boolean createThumbDisplay = (Boolean) dynaForm.get("createThumbDisplay");
@@ -111,6 +113,13 @@ public class SportEventsAction extends MappingDispatchAction
             {
                 _logger.info("Going to create album from Zip file (1st option on upload page)");
                 event.createSportsAlbumFromZipArchive(new Long(eventCategoryId), file.getInputStream(), photographerId, true);
+            } else if (!s3Upload.equals(""))
+            {
+                _logger.info("Going to import an album from uploaded Files in S3 'upload' Folder : " + storageProviderUploadPath);
+                // todo : call in event?
+                // todo: same as next option?
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, createThumbDisplay);
+
             } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
                 _logger.info("Going to create album from temporary path on server (2nd option after <Import starten> with a given path has been chosen");
@@ -127,9 +136,11 @@ public class SportEventsAction extends MappingDispatchAction
             }
             uploadBean.setSportsEvent(event);
             // todo insert success message to be shown with the new page
+            // do we need the upload bean in the new request?
             request.setAttribute("uploadBean", uploadBean);
         } catch (NumberFormatException e)
         {
+            // todo: correct error handling (if sportsEventId is not set, for example, see line 107)
             _logger.error("error setting ID", e);
             e.printStackTrace();
         } catch (Exception e)
@@ -157,7 +168,10 @@ public class SportEventsAction extends MappingDispatchAction
         if (eventId != null && !"".equals(eventId))
         {
             uploadBean.setSportsEventById(eventId);
+            // set temporary upload paths on S3: (only after event has been chosen -> performance)
+            uploadBean.setUploadPaths(Registry.getFileStorageProvider().getUploadPaths());
         }
+
         request.setAttribute("uploadBean", uploadBean);
         return mapping.findForward("success");
     }

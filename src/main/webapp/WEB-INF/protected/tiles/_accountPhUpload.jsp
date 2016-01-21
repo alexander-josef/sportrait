@@ -11,29 +11,8 @@
 
     <html:form action="/photographer/createUpload" enctype="multipart/form-data">
         <html:hidden property="photographerId" value="${clientInSession.photographer.photographerId}"/>
-        <h3><span class="errorstyle">Option 1: Bestehendes Album (TODO, funktioniert noch nicht)</span></h3>
         <table class="form">
-            <tr>
-                <td><span class="bold">Album:</span></td>
-                <td>
-                        <%--wie viele events anzeigen? letzte zwei wochen? was machen fuer andere events?--%>
-                    <select name="albumId">
-                        <option>Engadiner Skimarathon; Start</option>
-                        <option>Marathon Z�rich; Impressionen</option>
-                        <option>Marathon Z?rich; M 20</option>
-                        <option>CSI Luzern; Samstag</option>
-                    </select>
-                </td>
-                <td>Bestehendes Album ausw�hlen</td>
-            </tr>
-            <tr>
-                <td><span class="bold">Upload-Quelle:</span></td>
-                <td><input type="file" name="pictureSource" size="30"/></td>
-                <td>Kommentar_2</td>
-            </tr>
-            <tr>
-                <td colspan=3><h3><br/><span class="errorstyle">Option 2: Neues Album erstellen</span></h3></td>
-            </tr>
+
             <tr>
                 <td><span class="bold">Event:</span></td>
                 <td>
@@ -55,9 +34,53 @@
                 </td>
                 <td>&nbsp;(bestehende Kategorie w�hlen oder neue erstellen)</td>
             </tr>
+
             <tr>
                 <td colspan=3/>
             </tr>
+
+            <tr>
+                <td colspan=3><h3><br/><span class="errorstyle">Import aus Upload Verzeichnis in S3</span></h3></td>
+            </tr>
+
+            <tr>
+                <td><span class="bold">Pfad in Upload Verzeichnis:</span></td>
+                <td>
+                    <html:select name="uploadBean" property="storageProviderUploadPath">
+                        <html:option value="">-- Pfad wählen --</html:option>
+                        <html:optionsCollection name="uploadBean" property="uploadPaths"  />
+                    </html:select>
+                </td>
+                <td>&nbsp;Pfad aus "upload" Verzeichnis in S3 auswählen</td>
+            </tr>
+            <tr>
+                <td colspan="3"><html:submit value="Hochgeladene Files in Sportrait importieren" property="s3Upload"/></td>
+            </tr>
+
+            <tr>
+                <td colspan=3><h3><br/><span class="errorstyle">Option 1: Bestehendes Album erstellen (TODO)</span></h3></td>
+            </tr>            <tr>
+                <td><span class="bold">Album:</span></td>
+                <td>
+                        <%--wie viele events anzeigen? letzte zwei wochen? was machen fuer andere events?--%>
+                    <select name="albumId">
+                        <option>Engadiner Skimarathon; Start</option>
+                        <option>Marathon Z�rich; Impressionen</option>
+                        <option>Marathon Z?rich; M 20</option>
+                        <option>CSI Luzern; Samstag</option>
+                    </select>
+                </td>
+                <td>Bestehendes Album ausw�hlen</td>
+            </tr>
+            <tr>
+                <td><span class="bold">Upload-Quelle:</span></td>
+                <td><input type="file" name="pictureSource" size="30"/></td>
+                <td>Kommentar_2</td>
+            </tr>
+            <tr>
+                <td colspan=3><h3><br/><span class="errorstyle">Option 2: Neues Album erstellen</span></h3></td>
+            </tr>
+
             <tr>
                 <td><span class="bold">Upload-Quelle:</span></td>
                 <td>

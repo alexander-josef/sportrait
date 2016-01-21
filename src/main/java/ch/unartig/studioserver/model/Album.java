@@ -205,6 +205,7 @@ import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.studioserver.storageProvider.LocalFileSystemStorageProvider;
 import ch.unartig.util.FileUtils;
 
 import javax.media.jai.RenderedOp;
@@ -431,11 +432,10 @@ public class Album extends GeneratedAlbum {
      * <p/> Needed: temporary fine photos
      * <p/> copies the temp file to it's final location according to the given fileStorageProvider
      * <p/> This method shall fail gracefully with a exception message in case a photo can not be registered (corrupt file, not a foto-file etc.)
-     *
-     * @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
+     *  @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
      * @param createThumbDisp set to true to create the display and thumbnail images
      */
-    public void registerPhotosFromTempLocation(File tempSourceDir, boolean createThumbDisp) {
+    public void registerPhotosFromTempLocation(String tempSourceDir, boolean createThumbDisp) {
         _logger.debug("start registerPhotosFromTempLocation, " + System.currentTimeMillis());
 
         // todo-files
@@ -445,63 +445,10 @@ public class Album extends GeneratedAlbum {
 
 
         // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
-        File[] filesInTempSourceDir = tempSourceDir.listFiles(new FileUtils.JpgFileFilter());
-
-        Set problemFiles = new HashSet();
-
-        int i;
-        // include performance measure
-        long base = System.currentTimeMillis();
-        for (i = 0; i < filesInTempSourceDir.length; i++) {
-            _logger.debug("register Photo "+i+", " + System.currentTimeMillis());
-            File photoFile = filesInTempSourceDir[i];
-            try {
-                registerSinglePhoto(createThumbDisp, problemFiles, new FileInputStream(photoFile), photoFile.getName());
-            // copy file to final location (given by storage provider)
-            Registry.fileStorageProvider.putFineImage(this, photoFile);
-            } catch (FileNotFoundException e) {
-                _logger.error("Could not register photo from temporary location, skipping : "+photoFile.getAbsolutePath(),e);
-            }
-        }
-
-
-        setProblemFiles(problemFiles);
-
-        // if createThumbDisp call the batch job to montage a logo on the fine files for the registering album
-        // todo: introduce separate flag for logo montage˙
-
-        /////////////////////////////////
-        // Copy Logo on display images //
-        /////////////////////////////////
-        if (createThumbDisp) {
-            try {
-                // todo-files
-                // find solution for logo montage
-
-                // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
-                String logoScriptPath = Registry.getLogosScriptPath();
-                _logger.info("calling logo script : " + logoScriptPath);
-                _logger.info("with param 1 (albumId) : " + getGenericLevelId().toString());
-                _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
-                _logger.info("*** Output of script will be written to StdOut ***");
-
-
-                ProcessBuilder pb = new ProcessBuilder(logoScriptPath, getGenericLevelId().toString(),Registry.getFineImagesDirectory());
-                Process p = pb.inheritIO().start();     // Start the process.
-                p.waitFor();                // Wait for the process to finish.
-                _logger.info("Script executed successfully");
-            } catch (Exception e) {
-                _logger.error("Error while executing script", e);
-            }
-        }
-        _logger.info("**********************");
-        _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base)/1000 + " seconds"));
-        _logger.info("**********************");
+        Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp);
 
         // todo: delete files from temp location?
     }
-
-
 
 
     /**
@@ -514,7 +461,6 @@ public class Album extends GeneratedAlbum {
     public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, InputStream photoFileContentStream, String filename) {
 
 
-        // todo-files: if param photoFile comes from temp local file system we are fine. Otherwise a new solution needs to be found.
 
         Integer pictureWidth;
         Integer pictureHeight;
