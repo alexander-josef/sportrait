@@ -205,7 +205,6 @@ import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.studioserver.storageProvider.LocalFileSystemStorageProvider;
 import ch.unartig.util.FileUtils;
 
 import javax.media.jai.RenderedOp;
@@ -366,9 +365,10 @@ public class Album extends GeneratedAlbum {
                         throw new RuntimeException("fine images not yet supported");
                     }
                     // todo-files: replace with storage-provider method
-                    FileUtils.copyFile(zis, new File(this.getAlbumWebImagesPath(), zipEntry.getName()), false, true);
+                    // files are in directories: "/thumbnail" oder "/display"
+                    FileUtils.copyFile(zis, new File(Album.getAlbumWebImagesPath(this), zipEntry.getName()), false, true);
                 }
-                File importFile = new File(this.getAlbumWebImagesPath(), "import.txt");
+                File importFile = new File(Album.getAlbumWebImagesPath(this), "import.txt");
                 if (importFile.exists()) {
                     br = new BufferedReader(new FileReader(importFile));
                 } else {
@@ -409,12 +409,8 @@ public class Album extends GeneratedAlbum {
 
         _logger.debug("start registerPhotos, " + System.currentTimeMillis());
 
-        // todo-files: test
-
-
         // Try passing the method to register the photos in Album class (we don't want to mix file system and sportrait registration logic) - java lambdas?
         // Registry.getFileStorageProvider().registerStoredFinePhotos(this,album.createThumbnailDisplay::registersinglephoto(), createThumbnailDisplay);
-
 
         // in File storage provider: go through Folder of Album and register all valid photo stored in album-folder; store problem files
         problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay);
@@ -475,8 +471,6 @@ public class Album extends GeneratedAlbum {
             FileUtils.copyFile(photoFileContentStream, baos);
             byte[] bytes = baos.toByteArray();
 
-            // todo-files test
-            // RenderedOp fineImage = ImagingHelper.load(photoFile);
             RenderedOp fineImage = ImagingHelper.readImage(new ByteArrayInputStream(bytes));
             pictureWidth = fineImage.getWidth();
             pictureHeight = fineImage.getHeight();
@@ -495,8 +489,6 @@ public class Album extends GeneratedAlbum {
 */
 
 
-            // todo-files test
-            // ExifData exif = new ExifData(photoFile);
             ExifData exif = new ExifData(bytes);
             // todo: switch to metadata-extractor, see task on kanban board
 
@@ -589,44 +581,6 @@ public class Album extends GeneratedAlbum {
 
 
     /**
-     * Process all images in the fine folder and create:
-     * - display folder and images
-     * - thumbnail folder and images<br/>
-     * <p>Fine Folder must exist!</p>
-     *
-     * @throws ch.unartig.exceptions.UnartigException
-     *
-     */
-    public void processImages() throws UnartigException {
-        getDisplayPath().mkdirs();
-        getThumbnailPath().mkdirs();
-        // all fine fineImages:
-        if (getFinePath() == null || !getFinePath().isDirectory()) {
-            throw new UnartigException("fine Path does not exist or is not directory");
-        }
-        _logger.debug("Going to process fineImages in directory : " + getFinePath().getAbsolutePath());
-        // todo-files
-        File[] fineImages = getFinePath().listFiles(new FileUtils.JpgFileFilter());
-        Double displayScale;
-        Double thumbnailScale;
-        for (int i = 0; i < fineImages.length; i++) {
-            File image = fineImages[i];
-            _logger.debug(" ... image : " + image.getName());
-            RenderedOp fineImage = ImagingHelper.load(image);
-
-            // DISPLAY : (apply watermark)
-            displayScale = Registry.getDisplayPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
-            File displayFile = new File(getDisplayPath(), image.getName());
-            ImagingHelper.createNewImage(fineImage, displayScale, Registry._imageQuality, Registry._ImageSharpFactor, true);
-
-            // THUMBNAIL:
-            thumbnailScale = Registry.getThumbnailPixelsLongerSide().doubleValue() / (double) ImagingHelper.getMaxWidthOrHightOf(fineImage);
-            File thumbnailFile = new File(getThumbnailPath(), image.getName());
-            ImagingHelper.createNewImage(fineImage, thumbnailScale, Registry._imageQuality, Registry._ImageSharpFactor, false);
-        }
-    }
-
-    /**
      * overriden for album: go to the album-action
      *
      * @return album action link
@@ -672,25 +626,7 @@ public class Album extends GeneratedAlbum {
 
     }
 
-    /**
-     * Returns the absolute 'fine'-path for the directory of the high-res images of this album<br/>
-     * Creates all directories if needed
-     *
-     * @return a directory
-     * @deprecated
-     */
-    public File getFinePath() {
 
-        // todo-files : what to return in case of storage-provider implementation? Check usage.
-        // --> return file  in case of local file storage? return prefix in case of cloud storage (and also file storage?)
-        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        File albumFinePath = new File(Registry.getFineImagesDirectory(), getGenericLevelId().toString());
-        File finePath = new File(albumFinePath, Registry.getFinePath());
-        if (!finePath.exists()) {
-            finePath.mkdirs();
-        }
-        return finePath;
-    }
 
     /**
      *
@@ -700,7 +636,7 @@ public class Album extends GeneratedAlbum {
     private File getThumbnailPath() {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(getAlbumWebImagesPath(), Registry.getThumbnailPath());
+        return new File(getAlbumWebImagesPath(this), Registry.getThumbnailPath());
     }
 
 
@@ -712,18 +648,19 @@ public class Album extends GeneratedAlbum {
     private File getDisplayPath() {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(getAlbumWebImagesPath(), Registry.getDisplayPath());
+        return new File(getAlbumWebImagesPath(this), Registry.getDisplayPath());
     }
 
     /**
      *
      * @return
      * @deprecated
+     * @param album
      */
-    private File getAlbumWebImagesPath() {
+    private static File getAlbumWebImagesPath(Album album) {
         // todo-files : what to return in case of storage-provider implementation?
         // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(Registry.getWebImagesDocumentRoot(), getGenericLevelId().toString());
+        return new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
     }
 
     public void setProblemFiles(Set problemFiles) {
@@ -731,6 +668,9 @@ public class Album extends GeneratedAlbum {
     }
 
     public Set getProblemFiles() {
+        if (problemFiles==null) {
+            problemFiles = new HashSet();
+        }
         return problemFiles;
     }
 
@@ -786,11 +726,8 @@ public class Album extends GeneratedAlbum {
 
         // now delete the album image directories on disk
         try {
-            // todo-files
-            org.apache.commons.io.FileUtils.deleteDirectory(getFinePath());
-            org.apache.commons.io.FileUtils.deleteDirectory(getDisplayPath());
-            org.apache.commons.io.FileUtils.deleteDirectory(getThumbnailPath());
-        } catch (IOException e) {
+            Registry.getFileStorageProvider().deletePhotos(this);
+        } catch (UAPersistenceException e) {
             _logger.error(e);
         }
 

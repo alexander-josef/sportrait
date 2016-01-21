@@ -333,7 +333,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
                 }
 
                 getImageServer();
-                uploadImages();
+                 // uploadImages();
                 confirmOrder();
                 _logger.info("order has been processed");
             } catch (Exception e)
@@ -667,7 +667,9 @@ public class CoplaPhotoOrder implements PhotoOrderIF
             {
                 // todo: check for zero ordered photos
                 Photo photo = (Photo) orderedPhoto;
-                File imageFile = photo.getFile();
+                // File imageFile = photo.getFileContent();
+                // not working anymore
+                File imageFile = new File("blabla");
 
                 _logger.debug("imageFile.getAbsolutePath() = " + imageFile.getAbsolutePath());
                 _logger.debug("imageFile.isFile() = " + imageFile.isFile());

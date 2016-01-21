@@ -5,10 +5,7 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsAlbum;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Set;
 
@@ -71,7 +68,7 @@ public interface FileStorageProviderInterface {
      * @param filename Name of the file (within the album)
      * @return File that matches the key in the given storage (bucket?) // Todo: return a InputStream instead ?
      */
-    public File getFineImageFile(Album album, String filename);
+    public InputStream getFineImageFileContent(Album album, String filename) throws UAPersistenceException;
 
     /**
      * Method to register fine photos that are already in the correct place in the respective storage provider (i.e. local folder or a path on S3, identified by Album ID)
@@ -93,9 +90,9 @@ public interface FileStorageProviderInterface {
     /**
      * Return the number of stored fine images that belong to an album
      * @return
-     * @param album
+     * @param key
      */
-    int getNumberOfFineImageFiles(Album album);
+    int getNumberOfFineImageFiles(String key);
 
     /**
      * Delete a file with the given key from the storage provider
@@ -115,4 +112,5 @@ public interface FileStorageProviderInterface {
      */
     List <String> getUploadPaths();
 
+    void deletePhotos(Album album) throws UAPersistenceException;
 }

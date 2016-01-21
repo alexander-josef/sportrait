@@ -22,7 +22,7 @@ public class DownloadPhotoAction extends Action {
     Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
-     * Send back high res foto via http servlet repsonse. Check if album of photo has free digital option
+     * Send back high res photo via http servlet response. Check if album of photo has free digital option
      * @param actionMapping
      * @param actionForm
      * @param request
@@ -45,11 +45,12 @@ public class DownloadPhotoAction extends Action {
                 httpServletResponse.setContentType("image/JPG");
                 httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"" + photo.getFilename() + "\"");
                 // What's the content length? set content-length header:
-                httpServletResponse.setContentLength((int) photo.getFile().length());
+                // todo: if needed, add a method in Photo do receive content length.
+                // httpServletResponse.setContentLength((int) photo.getFileContent().length());
                 // copy the file to the outputstream:
                 // digital negativ copy the file to the output stream
                 _logger.info("streaming the digital negativ");
-                FileUtils.copyFile(photo.getFile(), httpServletResponse.getOutputStream());
+                FileUtils.copyFile(photo.getFileContent(), httpServletResponse.getOutputStream());
             } catch (IOException e) {
                 // for example if high-res file was not found ...
                 throw new UnartigException("cannot stream photo for download ...", e);

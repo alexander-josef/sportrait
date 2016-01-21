@@ -110,7 +110,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         putImage((ByteArrayOutputStream) scaledImage, key);
     }
 
-    public File getFineImageFile(Album album, String filename) {
+    public InputStream getFineImageFileContent(Album album, String filename) {
         _logger.debug("Downloading an s3 fine image");
 
         // example for key: fine-images/163/fine/sola14_e01_fm_0005.JPG
@@ -122,17 +122,13 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         try {
             object = s3.getObject(objectRequest);
         } catch (AmazonClientException e) {
-            e.printStackTrace();
+            _logger.error("cannot get fine image file from s3 for filename : " + filename, e);
+            throw new UAPersistenceException(e);
         }
         _logger.debug("S3 File Content-Type: " + object.getObjectMetadata().getContentType());
-        File destFile = new File(filename);
-        try {
-            FileUtils.copyFile(object.getObjectContent(), destFile);
-        } catch (IOException e) {
-            _logger.info("Cannot not read file from S3 Storage ("+key+"/"+bucketName+")");
-            return null;
-        }
-        return destFile;
+        _logger.debug("S3 File Content-Length: " + object.getObjectMetadata().getContentLength());
+
+        return object.getObjectContent();
     }
 
     /**
@@ -207,13 +203,21 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 // move file to correct location (set the right bucket key)
 
 
+                // todo: move only when registration is successful
                 String fineImageDestinationKey = getFineImageKey(album,filename);
                 moveObject(key, fineImageDestinationKey);
                 // todo: put logo on images
 
+                // todo: check this method for applying a watermark and use it for logos
+                // ImagingHelper.createNewImage(fineImage, displayScale, Registry._imageQuality, Registry._ImageSharpFactor, true);
+
+
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
+
+        // if empty, delete temp path on S3
+        delete(tempSourceDir);
 
         // handle problem files
 
@@ -248,58 +252,23 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     /**
-     * todo implement / use for showing number of photos when importing from temp location
-     * @param album
+     * Use for showing number of photos when importing from temp location
+     * @param key
      * @return
      */
-    public int getNumberOfFineImageFiles(Album album) {
+    public int getNumberOfFineImageFiles(String key) {
 
-
-
-        // todo-files: Problem ! we don't want to create all files of an album if the fine photos live on S3 !
-        // instead:
-        // create method to count # of files in an album and return n (in FileSystemStorageProvider)
-        // loop through n outside of file storage provider
-        // file storage provider provides method to return file[n]
-
-        // album.getNumberOfPhotos() --> counts photos in DB, not on file system!!
-
-        File[] retVal;
 
         ListObjectsRequest listObjectRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
-                withPrefix("fine-images/" + album.getGenericLevelId() + "/fine/").
+                withPrefix(key).
                 withDelimiter("/");
-
         ObjectListing objectListing = s3.listObjects(listObjectRequest);
 
-
-        final int size = objectListing.getObjectSummaries().size();
-        retVal = new File[size];
-        for (int i = 0; i < size; i++) {
-            S3ObjectSummary s3ObjectSummary = objectListing.getObjectSummaries().get(i);
-
-            final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, s3ObjectSummary.getKey())).getObjectContent();
-
-        }
+        return objectListing.getObjectSummaries().size();
 
 
 
-
-        /*
-        ListObjectsRequest listObjectRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
-                withPrefix("fine-images/").
-                withDelimiter("/");
-        List<String> objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
-
-        for (int i = 0; i < objectListing.size(); i++) {
-            String s = objectListing.get(i);
-            System.out.println(s);
-            _logger.debug(s);
-        }
-
-        */
 
 
 
@@ -333,16 +302,14 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
         ObjectListing objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
 
-*/        throw new RuntimeException("not implemented");
+*/
+
 
     }
 
     public void delete(String key) {
 
-        // s3.deleteObject(bucketName, key);
-
-        // todo-files: implement
-        throw new RuntimeException("not implemented yet");
+        s3.deleteObject(bucketName, key);
 
     }
 
@@ -370,7 +337,6 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     public List<String> getUploadPaths() {
-        // todo implement
 
         ArrayList<String> retVal = new ArrayList();
         ListObjectsRequest listObjectRequest = new ListObjectsRequest().
@@ -379,13 +345,58 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
         List<String> objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
 
-        for (String s : objectListing) {
-            System.out.println(s);
-            _logger.debug(s);
-            retVal.add(s);
+        // list all common prefixes:
+        for (String prefix : objectListing) {
+            _logger.debug(prefix);
+            retVal.add(prefix);
         }
 
         return retVal;
+    }
+
+    public void deletePhotos(Album album) throws UAPersistenceException {
+
+        // todo: helper methods for fine / display / thumbnail paths
+
+        ListObjectsRequest listObjectsRequest;
+
+        listObjectsRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("fine-images/" + album.getGenericLevelId() + "/fine/").
+                withDelimiter("/");
+
+        deleteFromListObject(listObjectsRequest);
+
+        listObjectsRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("web-images/" + album.getGenericLevelId() + "/display/").
+                withDelimiter("/");
+
+        deleteFromListObject(listObjectsRequest);
+
+        listObjectsRequest = new ListObjectsRequest().
+                withBucketName(bucketName).
+                withPrefix("web-images/" + album.getGenericLevelId() + "/thumbnail/").
+                withDelimiter("/");
+
+        deleteFromListObject(listObjectsRequest);
+
+
+    }
+
+    private void deleteFromListObject(ListObjectsRequest listObjectsRequest) {
+        ObjectListing objects;
+        // loop through all listed objects - might be truncated and needs to be called several times
+        do {
+            objects = s3.listObjects(listObjectsRequest);
+
+            for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
+                S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
+                s3.deleteObject(bucketName,s3ObjectSummary.getKey());
+
+            }
+            listObjectsRequest.setMarker(objects.getNextMarker());
+        } while (objects.isTruncated());
     }
 
     public void putFilesFromArchive(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException {

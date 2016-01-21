@@ -127,7 +127,6 @@ public class UnartigActionServlet extends ActionServlet
         {
             logger.info("Init security");
             CryptoUtil.setPrng(SecureRandom.getInstance("SHA1PRNG"));
-//            new TreeGenerator().generateTreeItems();
 //            logger.info("new navigation tree for tigra tree menu generated!");
         }
         catch (NoSuchAlgorithmException e)
@@ -135,6 +134,8 @@ public class UnartigActionServlet extends ActionServlet
             logger.error("Exception while creating SecureRandom instance",e);
              throw new ServletException("initialization failed",e);
          }
+
+        // todo: clean up. Remove order service if not needed anymore
         PhotoOrderService orderService = PhotoOrderService.getInstance();
         // no service needed to batch-process orders currently:
 //        orderService.startService();

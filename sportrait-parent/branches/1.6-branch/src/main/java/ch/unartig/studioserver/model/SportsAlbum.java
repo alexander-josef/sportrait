@@ -104,10 +104,6 @@ public class SportsAlbum extends GeneratedSportsAlbum
      */
     void extractPhotosFromArchive(InputStream fileInputStream) throws UnartigException
     {
-        // todo-files:
-        // do we need a temp location for uploaded files?
-        // shall we upload to file storage provider directly?
-
         Registry.getFileStorageProvider().putFilesFromArchive(this,fileInputStream);
     }
 

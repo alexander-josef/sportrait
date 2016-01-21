@@ -26,6 +26,20 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         // no need for constructor instructions (i.e. initialization of File System Storage)
     }
 
+    public void deletePhotos(Album album) throws UAPersistenceException {
+        try {
+            org.apache.commons.io.FileUtils.deleteDirectory(getFinePath(album));
+            org.apache.commons.io.FileUtils.deleteDirectory(getDisplayPath(album));
+            org.apache.commons.io.FileUtils.deleteDirectory(getThumbnailPath(album));
+
+        } catch (IOException e) {
+            _logger.error("Error while deleting photos: ",e);
+            throw new UAPersistenceException(e);
+        }
+    }
+
+
+
     public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp) {
 
         File tempSourceDir = null;
@@ -129,9 +143,14 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         saveFile((ByteArrayOutputStream) scaledImage, name, path);
     }
 
-    public File getFineImageFile(Album album, String filename) {
+    public InputStream getFineImageFileContent(Album album, String filename) throws UAPersistenceException {
 
-        return new File(getFinePath(album).toString(), filename);
+        try {
+            return new FileInputStream(new File(getFinePath(album).toString(), filename));
+        } catch (FileNotFoundException e) {
+            _logger.error("Cannot read fine image file from local file system. Filename : " + filename,e);
+            throw new UAPersistenceException(e);
+        }
     }
 
 
@@ -160,13 +179,17 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         return null;
     }
 
-    public int getNumberOfFineImageFiles(Album album) {
 
-        return  (getFinePath(album).listFiles(new FileUtils.JpgFileFilter())).length;
+    public int getNumberOfFineImageFiles(String key) {
+
+        // todo implement : use to show how many files in temp location
+
+        return  0;
     }
 
     public void delete(String key) {
 
+        // todo implement
     }
 
     public String getThumbnailUrl(String genericLevelId, String filename) {
@@ -179,6 +202,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
     public List<String> getUploadPaths() {
         // todo implement
+
         return Collections.emptyList();
     }
 
@@ -213,6 +237,22 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         return finePath;
     }
 
+    private File getThumbnailPath(Album album) {
+
+        return new File(getAlbumWebImagesPath(album), Registry.getThumbnailPath());
+    }
+
+    private File getDisplayPath(Album album) {
+
+        return new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
+    }
+
+    /**
+     *
+     * @param album
+     * @return
+     * @throws UAPersistenceException
+     */
     private File getAlbumWebImagesPath(Album album) throws UAPersistenceException {
 
         File path = new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());

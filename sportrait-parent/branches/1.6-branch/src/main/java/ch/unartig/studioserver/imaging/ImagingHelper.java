@@ -59,8 +59,6 @@ import com.sun.media.jai.codec.*;
 import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.RenderedOp;
@@ -305,36 +303,21 @@ public class ImagingHelper
         return createJpgImage(sharpScaledImage, quality, applyWatermark);
     }
 
-    /**
-     * todo: this does not perform well ... find a better method to find photo dimensions (external EXIF library ?)
-     *
-     * @param photoFile
-     * @return # of width-pixels for passed photo
-     */
-    public static Integer getPixelsWidth(File photoFile) throws UnartigImagingException
-    {
-        return load(photoFile).getWidth();
-    }
-
-    public static Integer getPixelsHeight(File photoFile) throws UnartigImagingException
-    {
-        return load(photoFile).getHeight();
-    }
 
     /**
      * generic resample function
      *
-     * @param file           the file to resample
+     * @param imageFileContent           the file to resample
      * @param resampleFactor
      * @param os             OutputStream
      * @param quality
      * @throws ch.unartig.exceptions.UnartigImagingException
      *          from load; file not found or similar
      */
-    public static void reSample(File file, Double resampleFactor, OutputStream os, float quality) throws UnartigImagingException
+    public static void reSample(InputStream imageFileContent, Double resampleFactor, OutputStream os, float quality) throws UnartigImagingException
     {
 //        PipedOutputStream retVal = new PipedOutputStream();
-        RenderedOp sampledOp = reSample(load(file), resampleFactor);
+        RenderedOp sampledOp = reSample(readImage(imageFileContent), resampleFactor);
         renderJpg(sampledOp, os, quality);
     }
 

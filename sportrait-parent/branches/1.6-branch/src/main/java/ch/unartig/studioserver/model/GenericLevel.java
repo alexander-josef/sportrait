@@ -538,15 +538,5 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
         }
     }
 
-    public void makeWebImagesPath()
-    {
-        // todo-files: delete? not all levels have an image path anyway
-        new File(Registry.getWebImagesDocumentRoot(),getGenericLevelId().toString()).mkdirs();
-    }
 
-    public void makeFineImagesPath()
-    {
-        // todo-files: delete? not all levels have an image path anyway
-        new File(Registry.getFineImagesDirectory(),getGenericLevelId().toString()).mkdirs();
-    }
 }

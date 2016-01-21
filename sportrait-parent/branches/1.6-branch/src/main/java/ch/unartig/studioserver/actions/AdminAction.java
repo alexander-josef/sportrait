@@ -383,6 +383,7 @@ public class AdminAction extends MappingDispatchAction
 
     /**
      * In admin mode: delete photo from album or display view
+     * Does *not* delete actual file, only DB entry
      * @param mapping
      * @param form
      * @param request
@@ -908,13 +909,13 @@ public class AdminAction extends MappingDispatchAction
      */
     private void finishLevelUpdate(GenericLevel newLevel, AdminForm adminForm, HttpServletRequest request) throws UnartigException
     {
-        newLevel.makeWebImagesPath();
-        newLevel.makeFineImagesPath();
+        // commented out - not needed for sportrait.
+        // newLevel.makeWebImagesPath();
+        // newLevel.makeFineImagesPath();
         if (!newLevel.isCategoryLevel() && adminForm.getIndexPhoto()!=null && adminForm.getIndexPhoto().getFileSize() != 0)
         { // no index picture for category and no new indexphoto if field is empty
             writeIndexPhotoFile(adminForm, newLevel);
         }
-//        new TreeGenerator().generateTreeItems();
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("admin.updated.level"));
         msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("admin.updated.navtree"));
