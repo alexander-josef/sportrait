@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -80,6 +81,15 @@ public interface FileStorageProviderInterface {
      */
     Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay);
 
+
+    /**
+     * Method to register (and import) photos that are located at at temp location withing the storage provide (i.e. local temp folder on server file system or temp path at S3)
+     * @param album
+     * @param tempSourceDir
+     * @param createThumbDisp
+     */
+    void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp);
+
     /**
      * Return the number of stored fine images that belong to an album
      * @return
@@ -99,5 +109,10 @@ public interface FileStorageProviderInterface {
     String getDisplayUrl(String genericLevelId, String filename);
 
 
+    /**
+     * Return a list of temporary upload paths; list consists of keys to the paths. todo define key
+     * @return
+     */
+    List <String> getUploadPaths();
 
 }

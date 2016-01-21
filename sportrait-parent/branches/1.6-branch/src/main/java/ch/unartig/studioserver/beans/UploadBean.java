@@ -32,6 +32,7 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,6 +43,10 @@ public class UploadBean
 {
     private String eventCategoryId;
     private SportsEvent sportsEvent;
+    private List<UploadPath> uploadPaths;
+    private String storageProviderUploadPath;
+    private String s3Upload;
+
 
 
     /**
@@ -116,5 +121,33 @@ public class UploadBean
         {
             throw new RuntimeException("Error loading Sports event : ",e);
         }
+    }
+
+
+    public void setUploadPaths(List<String> uploadPaths) {
+        this.uploadPaths = new ArrayList<UploadPath>();
+        for (String s : uploadPaths) {
+            this.uploadPaths.add(new UploadPath(s));
+        }
+    }
+
+    public List<UploadPath> getUploadPaths() {
+        return uploadPaths!=null?uploadPaths: Collections.EMPTY_LIST;
+    }
+
+    public String getStorageProviderUploadPath() {
+        return storageProviderUploadPath;
+    }
+
+    public void setStorageProviderUploadPath(String storageProviderUploadPath) {
+        this.storageProviderUploadPath = storageProviderUploadPath;
+    }
+
+    public String getS3Upload() {
+        return s3Upload;
+    }
+
+    public void setS3Upload(String s3Upload) {
+        this.s3Upload = s3Upload;
     }
 }

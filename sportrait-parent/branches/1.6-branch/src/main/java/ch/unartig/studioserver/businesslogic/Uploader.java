@@ -144,23 +144,18 @@ public class Uploader extends Thread
      */
     private void doImport() throws IOException, UnartigException
     {
-        // todo why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID. To prevent session timeout issues? Not important, this process is not done frequently.
+        // why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID. To prevent session timeout issues? Not important, this process is not done frequently.
         GenericLevelDAO glDao = new GenericLevelDAO();
         Album album = (Album) glDao.load(albumId, Album.class);
-        File tempSourceDir = null;
 
-        if (tempImageDirectory != null && !"".equals(tempImageDirectory))
+
+
+        if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImagePath ==null || "".equals(tempSingleImagePath)) )
         {
-            tempSourceDir = new File(tempImageDirectory);
-            _logger.debug("imageDir.isDirectory() = " + tempSourceDir.isDirectory());
-        }
-
-
-        if (tempSourceDir!=null && (tempSingleImagePath ==null || "".equals(tempSingleImagePath)) )
-        {
-            // not a single image import: register all photos from a tempSourceDir locally on server
-            album.registerPhotosFromTempLocation(tempSourceDir, createThumbnailDisplay);
-        } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && tempSourceDir==null) {
+            // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir locally on server
+            // todo-files: test: use string (for path or bucket key) not File:
+            album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay);
+        } else if ((tempSingleImagePath ==null || "".equals(tempSingleImagePath)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
             // not a single image import, photos are already at file storage provider location. no temporary file path
             album.registerPhotos(createThumbnailDisplay);
         } else if (tempSingleImagePath != null)

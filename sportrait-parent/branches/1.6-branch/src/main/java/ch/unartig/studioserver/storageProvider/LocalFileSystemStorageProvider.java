@@ -9,6 +9,9 @@ import ch.unartig.util.FileUtils;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,6 +24,73 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
     public LocalFileSystemStorageProvider() {
         // no need for constructor instructions
+    }
+
+    public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp) {
+
+        File tempSourceDir = null;
+
+
+        if (tempImageDirectory != null && !"".equals(tempImageDirectory))
+        {
+            tempSourceDir = new File(tempImageDirectory);
+            _logger.debug("imageDir.isDirectory() = " + tempSourceDir.isDirectory());
+        }
+
+
+        File[] filesInTempSourceDir = tempSourceDir.listFiles(new FileUtils.JpgFileFilter());
+
+        Set problemFiles = new HashSet();
+
+        int i;
+        // include performance measure
+        long base = System.currentTimeMillis();
+        for (i = 0; i < filesInTempSourceDir.length; i++) {
+            _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
+            File photoFile = filesInTempSourceDir[i];
+            try {
+                album.registerSinglePhoto(createThumbDisp, problemFiles, new FileInputStream(photoFile), photoFile.getName());
+            // copy file to final location (given by storage provider)
+            Registry.fileStorageProvider.putFineImage(album, photoFile);
+            } catch (FileNotFoundException e) {
+                _logger.error("Could not register photo from temporary location, skipping : " + photoFile.getAbsolutePath(), e);
+            }
+        }
+
+
+        album.setProblemFiles(problemFiles);
+
+        // if createThumbDisp call the batch job to montage a logo on the fine files
+        // only after photos have been imported and scaled down to thumbnails and display images!
+        // todo: introduce separate flag for logo montage˙
+
+        /////////////////////////////////
+        // Copy Logo on fine images   //
+        ///////////////////////////////
+        if (createThumbDisp) {
+            try {
+                // todo-files
+                // find solution for logo montage with S3 implementation
+
+                // String logoScriptPath = "/Users/alexanderjosef/scripts/copyLogosComposite.sh";
+                String logoScriptPath = Registry.getLogosScriptPath();
+                _logger.info("calling logo script : " + logoScriptPath);
+                _logger.info("with param 1 (albumId) : " + album.getGenericLevelId().toString());
+                _logger.info("with param 2 (fine images directory) : " + Registry.getFineImagesDirectory());
+                _logger.info("*** Output of script will be written to StdOut ***");
+
+
+                ProcessBuilder pb = new ProcessBuilder(logoScriptPath, album.getGenericLevelId().toString(),Registry.getFineImagesDirectory());
+                Process p = pb.inheritIO().start();     // Start the process.
+                p.waitFor();                // Wait for the process to finish.
+                _logger.info("Script executed successfully");
+            } catch (Exception e) {
+                _logger.error("Error while executing script", e);
+            }
+        }
+        _logger.info("**********************");
+        _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base) / 1000 + " seconds"));
+        _logger.info("**********************");
     }
 
     public void initStorageProvider() {
@@ -106,6 +176,11 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
     public String getDisplayUrl(String genericLevelId, String filename) {
         return "/" + Registry.getWebImagesContext()+"/" + genericLevelId + "/" + Registry.getDisplayPath() + filename;
+    }
+
+    public List<String> getUploadPaths() {
+        // todo implement
+        return Collections.emptyList();
     }
 
     public void putFilesFromArchive(SportsAlbum sportsAlbum, InputStream fileInputStream) throws UnartigException {
