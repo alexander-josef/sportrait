@@ -40,7 +40,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
 
 
-    public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp) {
+    public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp, boolean applyLogoOnFineImages) {
 
         File tempSourceDir = null;
 
@@ -63,7 +63,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
             _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
             File photoFile = filesInTempSourceDir[i];
             try {
-                album.registerSinglePhoto(createThumbDisp, problemFiles, new FileInputStream(photoFile), photoFile.getName());
+                album.registerSinglePhoto(problemFiles, new FileInputStream(photoFile), photoFile.getName(), createThumbDisp, applyLogoOnFineImages);
             // copy file to final location (given by storage provider)
             Registry.fileStorageProvider.putFineImage(album, photoFile);
             } catch (FileNotFoundException e) {
@@ -125,6 +125,13 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         }
     }
 
+    public void putFineImage(Album album, OutputStream fineImageAsOutputStream, String fineImageFileName) {
+        File path = new File(getFinePath(album), Registry.getFinePath());
+        // make sure path exists
+        path.mkdir();
+        saveFile((ByteArrayOutputStream) fineImageAsOutputStream, fineImageFileName, path);
+    }
+
     public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
 
 
@@ -154,7 +161,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
     }
 
 
-    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay) {
+    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
         // todo test
         // loop through album directory on local file system with uploaded files
         File[] files = getFinePath(album).listFiles(new FileUtils.JpgFileFilter());
@@ -168,13 +175,12 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
 
             try {
-                album.registerSinglePhoto(createThumbnailDisplay, album.getProblemFiles(), new FileInputStream(photoFile), photoFile.getName());
+                album.registerSinglePhoto(album.getProblemFiles(), new FileInputStream(photoFile), photoFile.getName(), createThumbnailDisplay, applyLogoOnFineImages);
             } catch (FileNotFoundException e) {
                 _logger.info("Photo can not be loaded : " + photoFile.getAbsolutePath()+"; skipping",e);
             }
         }
 
-        // todo: what about logo montage? check album#registerTempPhotos
 
         return null;
     }
@@ -189,6 +195,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
 
     public void delete(String key) {
 
+        throw new RuntimeException("not implemented!");
         // todo implement
     }
 

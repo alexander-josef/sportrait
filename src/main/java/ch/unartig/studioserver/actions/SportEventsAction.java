@@ -108,22 +108,23 @@ public class SportEventsAction extends MappingDispatchAction
             FormFile importDataFile = (FormFile) dynaForm.get("importData");
             SportsEvent event = (SportsEvent) glDao.load(new Long(eventId), SportsEvent.class);
             _logger.debug("params : [" + eventId + "] [" + eventCategoryId + "]");
+            boolean applyLogoOnFineImages = Registry.getApplyLogoOrWatermarkOnFineImage(); // copy logos on fine files while importing? --> todo: input field on admin page
 
             if (file != null && !"".equals(file.getFileName()) && (tempFineImageServerPath == null || "".equals(tempFineImageServerPath)))
             {
                 _logger.info("Going to create album from Zip file (1st option on upload page)");
-                event.createSportsAlbumFromZipArchive(new Long(eventCategoryId), file.getInputStream(), photographerId, true);
+                event.createSportsAlbumFromZipArchive(new Long(eventCategoryId), file.getInputStream(), photographerId, true,applyLogoOnFineImages);
             } else if (!s3Upload.equals(""))
             {
                 _logger.info("Going to import an album from uploaded Files in S3 'upload' Folder : " + storageProviderUploadPath);
                 // todo : call in event?
                 // todo: same as next option?
-                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, createThumbDisplay);
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, true,applyLogoOnFineImages);
 
             } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
                 _logger.info("Going to create album from temporary path on server (2nd option after <Import starten> with a given path has been chosen");
-                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), tempFineImageServerPath, client, createThumbDisplay);
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), tempFineImageServerPath, client, createThumbDisplay, applyLogoOnFineImages);
             } else if (importDataFile!=null && (tempFineImageServerPath == null || "".equals(tempFineImageServerPath))  )
             {
                 _logger.info("Going to create album from import data file only (no fine images) - 3rd option, zip-file with csv data given");

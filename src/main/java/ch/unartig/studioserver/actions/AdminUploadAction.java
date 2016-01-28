@@ -55,12 +55,9 @@ package ch.unartig.studioserver.actions;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
-import ch.unartig.util.FileUtils;
-import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -72,9 +69,7 @@ import org.apache.struts.actions.MappingDispatchAction;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -128,7 +123,7 @@ public class AdminUploadAction extends MappingDispatchAction
         Boolean processImages = (Boolean) dynaForm.get("processImages");
 
         // giving control to new thread and return.
-        Thread uploader  = new Uploader(imagePath,album.getGenericLevelId(),processImages);
+        Thread uploader  = new Uploader(imagePath,album.getGenericLevelId(),processImages, false);
         uploader.start();
 
         return mapping.findForward("showSingleAlbumUpload");

@@ -247,10 +247,9 @@ public final class Registry
     private static String orderConfirmationFromAddress = "info@sportrait.com";
 
 
-    public static final float _IMAGE_QUALITY_STANDARD = 0.75F;
+    public static final float _IMAGE_QUALITY_STANDARD = 0.75F; // used for saving thumbnail and display JPGs
+    public static final float _IMAGE_QUALITY_FINE = 0.96F; // used for logo montage on fine images (should result in similar file size as originals)
     public static final float _SHARP_FACTOR_STANDARD = 0.5F;
-    /*image generation props  : */
-    public static float _imageQuality = _IMAGE_QUALITY_STANDARD;
     public static float _ImageSharpFactor = _SHARP_FACTOR_STANDARD;
 
     public static long oipsOrderPeriod;
@@ -337,6 +336,9 @@ public final class Registry
     public static final String _AD_BANNER_RIGHT_POSITION = "right";
     public static final String _ROLE_PHOTOGRAPHER = "photographer";
     public static final String _ROLE_UNARTIGADMIN = "unartigadmin";
+    private static String logosOverlayPortraitFile;
+    private static String logosOverlayLandscapeFile;
+    private static boolean applyLogoOrWatermarkOnFineImage;
 
 
     /**
@@ -368,6 +370,16 @@ public final class Registry
 
         setLogosScriptPath(appSettings.getMessage("logosScriptPath"));
         _logger.info("***** logosScriptPath = " + appSettings.getMessage("logosScriptPath"));
+
+        setLogosOverlayPortraitFile(appSettings.getMessage("logosOverlayPortraitFile"));
+        _logger.info("***** logosOverlayPortraitFile = " + appSettings.getMessage("logosOverlayPortraitFile"));
+
+        setLogosOverlayLandscapeFile(appSettings.getMessage("logosOverlayLandscapeFile"));
+        _logger.info("***** logosOverlayLandscapeFile = " + appSettings.getMessage("logosOverlayLandscapeFile"));
+
+        setApplyLogoOrWatermarkOnFineImage("true".equals(appSettings.getMessage("applyLogoOrWatermarkOnFineImage")));
+        _logger.info("***** applyLogoOrWatermarkOnFineImage = " + appSettings.getMessage("applyLogoOrWatermarkOnFineImage"));
+
 
         setProjectName(appSettings.getMessage("application.name"));
         setProjectVersion(appSettings.getMessage("application.version"));
@@ -476,16 +488,6 @@ public final class Registry
 
     public static String getLogosScriptPath() {
         return logosScriptPath;
-    }
-
-    public float get_imageQuality()
-    {
-        return _imageQuality;
-    }
-
-    public void set_imageQuality(float _imageQuality)
-    {
-        Registry._imageQuality = _imageQuality;
     }
 
     public static String getMailHost()
@@ -635,4 +637,32 @@ public final class Registry
     }
 
 
+    public static void setLogosOverlayPortraitFile(String logosOverlayPortraitFile) {
+        Registry.logosOverlayPortraitFile = logosOverlayPortraitFile;
+    }
+
+    public static String getLogosOverlayPortraitFile() {
+        return logosOverlayPortraitFile;
+    }
+
+
+    public static void setLogosOverlayLandscapeFile(String logosOverlayLandscapeFile) {
+        Registry.logosOverlayLandscapeFile = logosOverlayLandscapeFile;
+    }
+
+    public static String getLogosOverlayLandscapeFile() {
+        return logosOverlayLandscapeFile;
+    }
+
+    public static boolean getApplyLogoOrWatermarkOnFineImage() {
+        return applyLogoOrWatermarkOnFineImage;
+    }
+
+    public static boolean isApplyLogoOrWatermarkOnFineImage() {
+        return applyLogoOrWatermarkOnFineImage;
+    }
+
+    public static void setApplyLogoOrWatermarkOnFineImage(boolean applyLogoOrWatermarkOnFineImage) {
+        Registry.applyLogoOrWatermarkOnFineImage = applyLogoOrWatermarkOnFineImage;
+    }
 }

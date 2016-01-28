@@ -76,13 +76,23 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
         try {
-            // todo: not only for fine images!
             String key = getFineImageKey(album, photoFile.getName());
             s3.putObject(new PutObjectRequest(bucketName, key, photoFile));
         } catch (AmazonClientException e) {
             _logger.error("Problem putting photo to S3", e);
             throw new UAPersistenceException(e);
         }
+
+
+    }
+
+    public void putFineImage(Album album, OutputStream fineImageAsOutputStream, String fineImageFileName) {
+        _logger.debug("Uploading a new fine image object to S3 from an output stream \n");
+
+        String key = getFineImageKey(album, fineImageFileName);
+
+        putImage((ByteArrayOutputStream) fineImageAsOutputStream, key, false);
+        // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
 
 
     }
@@ -99,7 +109,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = "web-images/"+album.getGenericLevelId()+"/"+Registry.getDisplayPath()+name;
 
-        putImage((ByteArrayOutputStream) scaledImage, key);
+        putImage((ByteArrayOutputStream) scaledImage, key, true);
 
     }
 
@@ -107,7 +117,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = "web-images/"+album.getGenericLevelId()+"/"+Registry.getThumbnailPath() + name;
 
-        putImage((ByteArrayOutputStream) scaledImage, key);
+        putImage((ByteArrayOutputStream) scaledImage, key, true);
     }
 
     public InputStream getFineImageFileContent(Album album, String filename) {
@@ -138,10 +148,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * @return
      */
     private String getFineImageKey(Album album, String filename) {
+        // todo: parameters
         return "fine-images/"+album.getGenericLevelId()+"/"+ Registry.getFinePath()+filename;
     }
 
-    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay) {
+    public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
 
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
@@ -162,7 +173,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 // todo : check if photo is already registered for album in DB?
 
                 final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
-                album.registerSinglePhoto(createThumbnailDisplay,album.getProblemFiles(),objectContent, filename);
+                album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbnailDisplay, applyLogoOnFineImages);
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
@@ -171,7 +182,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return null;
     }
 
-    public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp) {
+    public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
 
 
         long base = System.currentTimeMillis();
@@ -190,34 +201,30 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
             for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
                 _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
+                String filename = "null";
 
-                S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
-                String key = s3ObjectSummary.getKey();
-                String filename = key.substring(key.lastIndexOf("/")+1);
+                try {
+                    S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
+                    String key = s3ObjectSummary.getKey();
+                    filename = key.substring(key.lastIndexOf("/")+1);
 
-                // todo : check if photo is already registered for album in DB?
+                    // todo : check if photo is already registered for album in DB?
 
-                final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
-                // call registerSinglePhoto for each file
-                album.registerSinglePhoto(createThumbDisp,album.getProblemFiles(),objectContent, filename);
-                // move file to correct location (set the right bucket key)
-
-
-                // todo: move only when registration is successful
-                String fineImageDestinationKey = getFineImageKey(album,filename);
-                moveObject(key, fineImageDestinationKey);
-                // todo: put logo on images
-
-                // todo: check this method for applying a watermark and use it for logos
-                // ImagingHelper.createNewImage(fineImage, displayScale, Registry._imageQuality, Registry._ImageSharpFactor, true);
-
-
+                    final S3ObjectInputStream objectContent;
+                    objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
+                    album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
+                    if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album,filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
+                        moveObject(key, getFineImageKey(album,filename));
+                    } else if (!key.equals(getFineImageKey(album,filename))) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
+                        delete(key);
+                    }
+                } catch (AmazonClientException e) {
+                    _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
+                }
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
 
-        // if empty, delete temp path on S3
-        delete(tempSourceDir);
 
         // handle problem files
 
@@ -309,6 +316,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     public void delete(String key) {
 
+        // exception handling? if key is folder and folder is not empty?
         s3.deleteObject(bucketName, key);
 
     }
@@ -412,11 +420,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
     /**
-     *
-     * @param scaledImage
+     *  @param scaledImage
      * @param key
+     * @param setPublicReadAccess
      */
-    private void putImage(ByteArrayOutputStream scaledImage, String key) {
+    private void putImage(ByteArrayOutputStream scaledImage, String key, boolean setPublicReadAccess) {
         // todo: check piped output stream. performance? memory?
         ByteArrayInputStream bais = new ByteArrayInputStream(scaledImage.toByteArray());
 
@@ -426,7 +434,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         metadata.setContentLength(scaledImage.size());
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
         // set access control to public read:
-        putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+        if (setPublicReadAccess) {
+            putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+        }
         s3.putObject(putObjectRequest);
 
         // close bois / bais?
