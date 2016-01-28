@@ -18,7 +18,13 @@ appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images
 appSettings.webImagesDocumentRoot=/opt/DATA/sportrait/web-images
 appSettings.webImagesContext=web-images
 
+# Used to run script on local fine image file resources (not used anymore with S3 storage)
 appSettings.logosScriptPath=/Users/alexanderjosef/scripts/copyLogosComposite.sh
+
+# Used when processing a single image on any storage provider
+appSettings.logosOverlayPortraitFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-portrait-120-percent.png
+appSettings.logosOverlayLandscapeFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-landscape-120-percent.png
+applyLogoOrWatermarkOnFineImage=true
 
 # SMPT-server to be used for the confirmation emails. Currently no authentication possible.
 appSettings.mailHost=localhost

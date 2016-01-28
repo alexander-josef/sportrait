@@ -203,6 +203,12 @@ public class DownloadImageBean
         }
     }
 
+    /**
+     * Todo: check if still used
+     * @param photo
+     * @param os
+     * @throws UnartigImagingException
+     */
     private void stream400x600Photo(Photo photo, OutputStream os) throws UnartigImagingException
     {
         _logger.info("processing digi foto 600 * 400");

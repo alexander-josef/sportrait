@@ -245,14 +245,15 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param tempFineImageServerPath temp path with high-res images local on the server
      * @param client Client object, containing photographer object
      * @param createThumbDisplay
+     * @param applyLogoOnFineImages
      * @return true for success
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay) throws UnartigException
+    public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
     {
         SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
         // giving control to new thread and return.
-        Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay);
+        Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
         uploader.start();
         return true;
     }
@@ -261,15 +262,15 @@ public class SportsEvent extends GeneratedSportsEvent
      * Given the inputStream from an uploaded Zip archive, unpack, copy and register the photos with the db
      * Import of very big files might cause session expiration --> all params are delivered as ID and reloaded
      * <br/> Uses a new Thread for the import process!
-     *
-     * @param eventCategoryId The Id of the category that will be used to create a new album
+     *  @param eventCategoryId The Id of the category that will be used to create a new album
      * @param inputStream The archive as a stream
      * @param photographerId used to load photographer and add to sportsalbum
-     *@param processImages Set true to process the images for thumbnail and display images  @return true for success
+     * @param processImages Set true to process the images for thumbnail and display images  @return true for success
+     * @param applyLogoOnFineImages Set to true if a logo shall be copied on all fine files
      * @throws ch.unartig.exceptions.UnartigException
      *
      */
-    public boolean createSportsAlbumFromZipArchive(Long eventCategoryId, InputStream inputStream, String photographerId, boolean processImages) throws UnartigException
+    public boolean createSportsAlbumFromZipArchive(Long eventCategoryId, InputStream inputStream, String photographerId, boolean processImages, boolean applyLogoOnFineImages) throws UnartigException
     {
         PhotographerDAO photographerDAO = new PhotographerDAO();
         Photographer photographer = photographerDAO.load(Long.valueOf(photographerId));
@@ -285,7 +286,7 @@ public class SportsEvent extends GeneratedSportsEvent
         sportsAlbum.extractPhotosFromArchive(inputStream);
 
         // giving control to new thread and return.
-        Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages);
+        Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages, applyLogoOnFineImages);
         _logger.info("Starting Uploader Thread ...");
         uploader.start();
         return true;

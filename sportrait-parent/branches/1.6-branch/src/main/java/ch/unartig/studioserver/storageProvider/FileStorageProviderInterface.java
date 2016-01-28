@@ -33,6 +33,14 @@ public interface FileStorageProviderInterface {
     // key == filename??
     public void putFineImage(Album album, File file) throws UAPersistenceException;
 
+    /**
+     * Store a file (given as output stream) to the fine image location for the album
+     * @param album
+     * @param fineImageAsOutputStream
+     * @param fineImageFileName
+     */
+    void putFineImage(Album album, OutputStream fineImageAsOutputStream, String fineImageFileName);
+
 
     /**
      * Given a zip archive as InputStream, upload the photo files in the archive to the file storage
@@ -74,9 +82,10 @@ public interface FileStorageProviderInterface {
      * Method to register fine photos that are already in the correct place in the respective storage provider (i.e. local folder or a path on S3, identified by Album ID)
      * @param album The album that the fine photos, that will be registered, belong to. It contains the information to retrieve the storage location
      * @param createThumbnailDisplay Flag to indicate if thumbnails and display images shall be created as will
+     * @param applyLogoOnFineImages
      * @return a Set of files that caused problems and could not be implemented
      */
-    Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay);
+    Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay, boolean applyLogoOnFineImages);
 
 
     /**
@@ -84,8 +93,9 @@ public interface FileStorageProviderInterface {
      * @param album
      * @param tempSourceDir
      * @param createThumbDisp
+     * @param applyLogoOnFineImages
      */
-    void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp);
+    void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages);
 
     /**
      * Return the number of stored fine images that belong to an album
@@ -113,4 +123,5 @@ public interface FileStorageProviderInterface {
     List <String> getUploadPaths();
 
     void deletePhotos(Album album) throws UAPersistenceException;
+
 }

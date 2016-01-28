@@ -404,8 +404,9 @@ public class Album extends GeneratedAlbum {
     /**
      * Register photos that are already at the file system providers location (no temp folder available)
      * @param createThumbnailDisplay
+     * @param applyLogoOnFineImages true if logo shall be copied on fine photos
      */
-    public void registerPhotos(Boolean createThumbnailDisplay) {
+    public void registerPhotos(Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
 
         _logger.debug("start registerPhotos, " + System.currentTimeMillis());
 
@@ -413,14 +414,7 @@ public class Album extends GeneratedAlbum {
         // Registry.getFileStorageProvider().registerStoredFinePhotos(this,album.createThumbnailDisplay::registersinglephoto(), createThumbnailDisplay);
 
         // in File storage provider: go through Folder of Album and register all valid photo stored in album-folder; store problem files
-        problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay);
-
-
-
-        // todo: what about logo montage? check album#registerTempPhotos
-        // todo: logo montage must come after thumb / disp generation!
-
-
+        problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay,applyLogoOnFineImages);
     }
 
     /**
@@ -428,32 +422,29 @@ public class Album extends GeneratedAlbum {
      * <p/> Needed: temporary fine photos
      * <p/> copies the temp file to it's final location according to the given fileStorageProvider
      * <p/> This method shall fail gracefully with a exception message in case a photo can not be registered (corrupt file, not a foto-file etc.)
-     *  @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
+     * @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
      * @param createThumbDisp set to true to create the display and thumbnail images
+     * @param applyLogoOnFineImages set to true if logo needs to be copied on all fine images
      */
-    public void registerPhotosFromTempLocation(String tempSourceDir, boolean createThumbDisp) {
+    public void registerPhotosFromTempLocation(String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
         _logger.debug("start registerPhotosFromTempLocation, " + System.currentTimeMillis());
 
-        // replace tempSourceDir with an interface like "AlbumSourceDir" ??
-        // AlbumSourceDir would have different implementations according to file storage
-        // solve with listing from storage provider. create new list method in interface
-
-
         // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
-        Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp);
-
-        // todo: delete files from temp location?
+        Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp, applyLogoOnFineImages);
+        // after registering fine images, delete the temp folder on the file storage provider
+        Registry.getFileStorageProvider().delete(tempSourceDir);
     }
 
 
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
-     * @param createThumbDisp set to true to create the display and thumbnail images
      * @param problemFiles    A set of accumulated files that caused problems during import
      * @param photoFileContentStream       The image file input stream to be registered
      * @param filename The filename used for registering the photo in the db photos table
+     * @param createThumbDisp set to true to create the display and thumbnail images
+     * @param applyLogoOnFineImages
      */
-    public void registerSinglePhoto(boolean createThumbDisp, Set problemFiles, InputStream photoFileContentStream, String filename) {
+    public void registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
 
 
 
@@ -541,7 +532,7 @@ public class Album extends GeneratedAlbum {
 
 */
 
-                // create thumbnail/display (with JAI operations)
+                // create thumbnail/display and fine image with logo overlay (with JAI operations)
 
                 // now trying new method and commenting following line out ...
                 OutputStream scaledDisplayImage = ImagingHelper.createScaledImage(fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), false);
@@ -549,13 +540,13 @@ public class Album extends GeneratedAlbum {
                 // create thumbnail
                 OutputStream scaledThumbnailImage = ImagingHelper.createScaledImage(fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), false);
                 Registry.fileStorageProvider.putThumbnailImage(this, scaledThumbnailImage, filename);
+            }
 
-
-
-                // ImagingHelper.createScaledImage(filename, fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), getDisplayPath(), false);
-
-
-
+            // create new Fine with logo montage ?
+            if (applyLogoOnFineImages) {
+                OutputStream fineImageWithLogo = ImagingHelper.createJpgImage(fineImage, Registry._IMAGE_QUALITY_FINE, true);
+                // in case of logo / watermark montage, the new fine will be put to the right location
+                Registry.fileStorageProvider.putFineImage(this, fineImageWithLogo, filename);
             }
 
         } catch (IOException e) {

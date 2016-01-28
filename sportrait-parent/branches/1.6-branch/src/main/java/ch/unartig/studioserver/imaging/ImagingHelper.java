@@ -58,7 +58,12 @@ import ch.unartig.studioserver.Registry;
 import com.sun.media.jai.codec.*;
 import org.apache.log4j.Logger;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.JAI;
 import javax.media.jai.KernelJAI;
 import javax.media.jai.RenderedOp;
@@ -73,9 +78,6 @@ import java.net.URL;
 public class ImagingHelper
 {
     static Logger _logger = Logger.getLogger(ImagingHelper.class.getName());
-    // todo add to resource file, application config
-    private static final String _RESOURCE_WATERMARK_LANDSCAPE = "/images/watermark2_quer.png";
-    private static final String _RESOURCE_WATERMARK_PORTRAIT = "/images/watermark2_hoch.png";
 
     /**
      * loads an image from disk and returns a RenderedOp
@@ -120,6 +122,7 @@ public class ImagingHelper
     private static void renderJpg(RenderedOp sampledOp, OutputStream os, float quality)
     {
         // todo : robust exception handling
+        // todo: check if still used. only used for streaming a 400x600 download in unartig.ch
         JPEGEncodeParam encParam = new JPEGEncodeParam();
         try
         {
@@ -163,20 +166,26 @@ public class ImagingHelper
             _logger.debug("Using a watermark ??? : " + applyWatermark);
             if (applyWatermark)
             {
-                graphics2D.drawImage(getWatermark(sourceWidth,sourceHeight), 0, 0, null);
+                // get scaled watermark : see next line, width / height - quality of scaled image?
+                graphics2D.drawImage(getWatermark(sourceWidth, sourceHeight), 0, 0,sourceWidth,sourceHeight, null);
             }
 
             // write to an output stream that is returned
 
-            ImageIO.write(result, "jpg", scaledImageResult);
+            // use ImageWriter to set quality of produced jpg
+            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
+            ImageOutputStream ios = ImageIO.createImageOutputStream(scaledImageResult);
+            writer.setOutput(ios);
+            ImageWriteParam param = writer.getDefaultWriteParam();
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT); // Needed see javadoc
+            param.setCompressionQuality(quality); // from 0 - 1 ; defaults to 0.75f
+            writer.write(null,new IIOImage(result,null,null),param); // param needs to be passed
 
 
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
         } catch (IOException e)
         {
             e.printStackTrace();
+            _logger.error("Error saving JPG image",e);
         }
         return scaledImageResult;
     }
@@ -192,28 +201,24 @@ public class ImagingHelper
     {
          if (sourceWidth > sourceHeight)
         {
-            _logger.debug("Trying to read landscape watermark image.... ");
-            URL test = ImagingHelper.class.getResource(_RESOURCE_WATERMARK_LANDSCAPE);
-            _logger.debug("Resource as File :  Path : " + test.getFile());
-            InputStream is = ImagingHelper.class.getResourceAsStream(_RESOURCE_WATERMARK_LANDSCAPE);
+            _logger.debug("Trying to read landscape watermark/logos image from file system ... ");
+            InputStream is = new FileInputStream(Registry.getLogosOverlayLandscapeFile());
             BufferedImage bufferedImage = ImageIO.read(is);
-            _logger.debug("Read landscape watermark image!!");
+            _logger.debug("Read landscape watermark image : " + Registry.getLogosOverlayLandscapeFile());
             return bufferedImage;
         } else
         {
-            _logger.debug("Trying to read portrait watermark image.... ");
-            URL test = ImagingHelper.class.getResource(_RESOURCE_WATERMARK_PORTRAIT);
-            _logger.debug("Resource as File :  Path : " + test.getFile());
-            InputStream is = ImagingHelper.class.getResourceAsStream(_RESOURCE_WATERMARK_PORTRAIT);
+            _logger.debug("Trying to read portrait watermark/logos image from file system ... ");
+            InputStream is = new FileInputStream(Registry.getLogosOverlayPortraitFile());
             BufferedImage bufferedImage = ImageIO.read(is);
-            _logger.debug("Read portrait watermark image!!");
+            _logger.debug("Read portrait watermark image ; " + Registry.getLogosOverlayPortraitFile());
             return bufferedImage;
         }
     }
 
     /**
      * Todo error handling ! For example, if a small image is rescaled, an exception might happen ... try with an index pic
-     *
+     * Re-Samples an image by the scaleFactor. Uses JAI
      * @param image
      * @param scaleFactor
      * @return image
@@ -278,10 +283,10 @@ public class ImagingHelper
     }
 
     /**
-     * Creates a new image based on the passed renderedOp.
+     * Creates a new image based on the passed renderedOp. Image will be sharpened
      * @param fineImage        the source for the new image
      * @param scale
-     * @param quality
+     * @param quality Quality factor for saving JPGs. From 0 - 1 (best quality). Defaults to 0.75f
      * @param imageSharpFactor
      * @param applyWatermark
      */
@@ -335,7 +340,7 @@ public class ImagingHelper
 
         // File newFile = new File(path, newImageFileName);
 
-        return createNewImage(sourceImage, scale, Registry._imageQuality, Registry._ImageSharpFactor, applyWatermark);
+        return createNewImage(sourceImage, scale, Registry._IMAGE_QUALITY_STANDARD, Registry._ImageSharpFactor, applyWatermark);
 //        _logger.info("wrote new file " + newFile.getAbsolutePath());
     }
 }

@@ -60,6 +60,7 @@ public class Uploader extends Thread
 //    Enumeration enumeration = new String[]{"dd", "ss"};
     private String tempImageDirectory;
     private Long albumId;
+    private final boolean applyLogoOnFineImages;
     private Boolean createThumbnailDisplay;
     private File tempSingleImageFile; // absolute filename to a image file in a temporary location. only used by the upload applet (JUploadAction)
 
@@ -68,11 +69,13 @@ public class Uploader extends Thread
      * @param tempFineImageServerPath Either the temporary fine directory on the server, or the fine folder under DATA if the archive has been extracted there.
      * @param albumId
      * @param processImages set to true if thumbnail and display images shall be created
+     * @param applyLogoOnFineImages
      */
-    public Uploader(String tempFineImageServerPath, Long albumId, Boolean processImages)
+    public Uploader(String tempFineImageServerPath, Long albumId, Boolean processImages, boolean applyLogoOnFineImages)
     {
         this.tempImageDirectory = tempFineImageServerPath;
         this.albumId = albumId;
+        this.applyLogoOnFineImages = applyLogoOnFineImages;
         if (processImages == null || processImages == Boolean.FALSE)
         {
             this.createThumbnailDisplay = Boolean.FALSE;
@@ -85,11 +88,12 @@ public class Uploader extends Thread
     /**
      * Simple constructor without image or directory path (called by applet action only)
      * @param albumId
-     * @param processImages set to true if thumnail and display images shall be created using JAI
+     * @param processImages set to true if thumbnail and display images shall be created using JAI
      */
     public Uploader(Long albumId, Boolean processImages)
     {
         this.albumId = albumId;
+        this.applyLogoOnFineImages = true; // useful assumption??
         if (processImages == null || processImages == Boolean.FALSE)
         {
             this.createThumbnailDisplay = Boolean.FALSE;
@@ -153,10 +157,10 @@ public class Uploader extends Thread
         if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImageFile ==null || "".equals(tempSingleImageFile)) )
         {
             // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir
-            album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay);
+            album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay,applyLogoOnFineImages);
         } else if ((tempSingleImageFile ==null || "".equals(tempSingleImageFile)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
-            // not a single image import, photos are already at file storage provider location. no temporary file path
-            album.registerPhotos(createThumbnailDisplay);
+            // not a single image import, photos are already at file storage provider location (Uploaded via ZIP file). no temporary file path
+            album.registerPhotos(createThumbnailDisplay,applyLogoOnFineImages);
         } else if (tempSingleImageFile != null)
         {
             // single image photo (only used by applet)
@@ -165,7 +169,7 @@ public class Uploader extends Thread
             Registry.getFileStorageProvider().putFineImage(album, tempSingleImageFile);
 
             // register using the fine file
-            album.registerSinglePhoto(createThumbnailDisplay, problemFiles, new FileInputStream(tempSingleImageFile), tempSingleImageFile.getName());
+            album.registerSinglePhoto(problemFiles, new FileInputStream(tempSingleImageFile), tempSingleImageFile.getName(), createThumbnailDisplay, applyLogoOnFineImages);
             _logger.debug("Done with registering photo [" + tempSingleImageFile.getAbsolutePath() + "]");
         } else
         {
