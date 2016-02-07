@@ -13,7 +13,7 @@ server.httpsPort=443
 server.enableSsl=true
 
 # frontenddir only used by tree generator ... remove
-appSettings.frontendDir=/opt/tomcat/sportrait/ROOT
+#appSettings.frontendDir=/Users/alexanderjosef/Pictures/sportrait/ROOT
 appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images
 appSettings.webImagesDocumentRoot=/opt/DATA/sportrait/web-images
 appSettings.webImagesContext=web-images
