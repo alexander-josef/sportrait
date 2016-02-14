@@ -256,7 +256,7 @@ public final class Registry
 
 
 
-    public static FileStorageProviderInterface fileStorageProvider;
+    public static FileStorageProviderInterface fileStorageProvider; // Implementation of the configured file storage provider class (either local file storage or AWS S3
 
     public static final String _STRATEGY_IMPL_PACKAGE = "ch.unartig.studioserver.businesslogic.";
     public static final String _POPULATOR_STRATEGY_SUFFIX = "PopulatorImpl";
@@ -339,6 +339,7 @@ public final class Registry
     private static String logosOverlayPortraitFile;
     private static String logosOverlayLandscapeFile;
     private static boolean applyLogoOrWatermarkOnFineImage;
+    private static String s3BucketName;
 
 
     /**
@@ -352,7 +353,7 @@ public final class Registry
     /**
      * will be called upon startup of the Action servlet
      */
-    public static void init() {
+    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
@@ -414,11 +415,14 @@ public final class Registry
         }
 
 
-        // todo-files: set fileStorageProvider according to configuration
-        _logger.info("Setting FileStorageProvider to Local File storage (default)");
-        // fileStorageProvider = new LocalFileSystemStorageProvider();
-        fileStorageProvider = new AwsS3FileStorageProvider();
-        // Options: LocalFileSystemStorageProvider , AwsS3FileStorageProvider
+        /******************* Storage Provider / AWS S3 Settings ******************/
+        _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
+        s3BucketName = appSettings.getMessage("awsS3BucketName"); // must be set before instantiation of fileStorageProvider class
+
+        _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
+        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
+        /************************************************************************/
+
     }
 
 
@@ -664,5 +668,9 @@ public final class Registry
 
     public static void setApplyLogoOrWatermarkOnFineImage(boolean applyLogoOrWatermarkOnFineImage) {
         Registry.applyLogoOrWatermarkOnFineImage = applyLogoOrWatermarkOnFineImage;
+    }
+
+    public static String getS3BucketName() {
+        return s3BucketName;
     }
 }
