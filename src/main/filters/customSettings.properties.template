@@ -1,5 +1,7 @@
 ##
 ## Environment dependant filters configuration file
+## Properties in appSettings.properties will be replaced by the values in this file
+## IMPORTANT : DO NOT FORGET TO UPDATE appSettings.properties WHEN INTRODUCING NEW PROPERTIES HERE
 ## (todo explain the properties, only default values where useful)
 ##
 
@@ -24,7 +26,13 @@ appSettings.logosScriptPath=/Users/alexanderjosef/scripts/copyLogosComposite.sh
 # Used when processing a single image on any storage provider
 appSettings.logosOverlayPortraitFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-portrait-120-percent.png
 appSettings.logosOverlayLandscapeFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-landscape-120-percent.png
-applyLogoOrWatermarkOnFineImage=true
+appSettings.applyLogoOrWatermarkOnFineImage=true
+
+# File storage settings / Amazon Web Services (S3) Settings
+fileStorageSettings.awsS3BucketName=int.photos.sportrait.com
+fileStorageSettings.fileStorageProviderImplementation = ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider
+# Options: LocalFileSystemStorageProvider or AwsS3FileStorageProvider
+
 
 # SMPT-server to be used for the confirmation emails. Currently no authentication possible.
 appSettings.mailHost=localhost

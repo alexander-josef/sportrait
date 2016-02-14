@@ -121,10 +121,10 @@ public class UnartigActionServlet extends ActionServlet
     {
         logger.debug("@@ init unartig action servlet  WITH   STRUTS");
         logger.debug("Calling init on Registry");
-        Registry.init();
-
         try
         {
+        Registry.init();
+
             logger.info("Init security");
             CryptoUtil.setPrng(SecureRandom.getInstance("SHA1PRNG"));
 //            logger.info("new navigation tree for tigra tree menu generated!");
@@ -133,7 +133,16 @@ public class UnartigActionServlet extends ActionServlet
         {
             logger.error("Exception while creating SecureRandom instance",e);
              throw new ServletException("initialization failed",e);
-         }
+         } catch (ClassNotFoundException e) {
+            logger.error("Exception during Servlet init, class not found", e);
+            throw new ServletException("initialization failed",e);
+        } catch (InstantiationException e) {
+            logger.error("Exception during Servlet init, cannot instantiate class", e);
+            throw new ServletException("initialization failed",e);
+        } catch (IllegalAccessException e) {
+            logger.error("Exception during Servlet init", e);
+            throw new ServletException("initialization failed",e);
+        }
 
         // todo: clean up. Remove order service if not needed anymore
         PhotoOrderService orderService = PhotoOrderService.getInstance();
