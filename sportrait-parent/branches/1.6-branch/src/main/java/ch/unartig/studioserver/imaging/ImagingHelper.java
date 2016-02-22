@@ -142,7 +142,7 @@ public class ImagingHelper
 
 
     /**
-     * Using the renderedOP save the image as a jpg file.
+     * Using the renderedOP save the image as a jpg file. Apply Watermark / Logo montage if "applyWatermark" parameter is true
      *
      * @param image original image to be scaled
      * @param quality : A setting of 0.0 produces the highest compression ratio, with a sacrifice to image quality. The default value is 0.75
@@ -163,11 +163,23 @@ public class ImagingHelper
             Graphics2D graphics2D = result.createGraphics();
 
             graphics2D.drawImage(sourceImage, 0, 0, null);
-            _logger.debug("Using a watermark ??? : " + applyWatermark);
+            _logger.debug("Using a watermark ? : " + applyWatermark);
             if (applyWatermark)
             {
                 // get scaled watermark : see next line, width / height - quality of scaled image?
-                graphics2D.drawImage(getWatermark(sourceWidth, sourceHeight), 0, 0,sourceWidth,sourceHeight, null);
+                //graphics2D.drawImage(getWatermark(sourceWidth, sourceHeight), 0, 0,sourceWidth,sourceHeight, null);
+                // montage the 2 watermark elements separately - just apply two "drawImage" operations!
+                BufferedImage logoImage = getLogoImage();
+                graphics2D.drawImage(logoImage, 0, 0, null); // position: upper right corner
+                BufferedImage sponsorBar = getSponsorBar();
+                if (sponsorBar.getWidth() >= sourceWidth) {
+                    _logger.error("sponsor bar width >= width of source image!");
+                } else {
+                    _logger.debug("Putting sponsor bar on image ...");
+                    int width = (sourceWidth - sponsorBar.getWidth()) / 2; // sponsor bar width must be smaller than image width!
+                    int height = sourceHeight - sponsorBar.getHeight();
+                    graphics2D.drawImage(sponsorBar, width, height,null);// position : height = height of source - sponsorBar height; width: (source width - sponsorbar width) /2
+                }
             }
 
             // write to an output stream that is returned
@@ -184,11 +196,35 @@ public class ImagingHelper
 
         } catch (IOException e)
         {
+            // todo: error treatment. If only logo montage fails, continue and save image
             e.printStackTrace();
             _logger.error("Error saving JPG image",e);
         }
         return scaledImageResult;
     }
+
+
+    /**
+     * Return the logo image that can be put onto the images
+     * @return
+     * @throws IOException
+     */
+    private static BufferedImage getLogoImage() throws IOException {
+        _logger.debug("Trying to read Sola logo png image from file system ... ");
+        return ImageIO.read(new FileInputStream("/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-logo-upper-left.png"));
+    }
+
+
+    /**
+     * Return the sponsors bar that will be put at the bottom of the images
+     * @return
+     * @throws IOException
+     */
+    private static BufferedImage getSponsorBar() throws IOException {
+        _logger.debug("Trying to read sola sponsor bar png image from file system ... ");
+        return ImageIO.read(new FileInputStream("/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-bar-bottom.png"));
+    }
+
 
     /**
      * Return a alpha-transparent Watermark in either landscape or portrait orientation, depending on width and height of the source

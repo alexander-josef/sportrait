@@ -207,6 +207,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                     S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
                     String key = s3ObjectSummary.getKey();
                     filename = key.substring(key.lastIndexOf("/")+1);
+                    _logger.debug("Reading file :"+ filename);
 
                     // todo : check if photo is already registered for album in DB?
 
