@@ -340,6 +340,8 @@ public final class Registry
     private static String logosOverlayLandscapeFile;
     private static boolean applyLogoOrWatermarkOnFineImage;
     private static String s3BucketName;
+    private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
+    private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
 
 
     /**
@@ -380,6 +382,13 @@ public final class Registry
 
         setApplyLogoOrWatermarkOnFineImage("true".equals(appSettings.getMessage("applyLogoOrWatermarkOnFineImage")));
         _logger.info("***** applyLogoOrWatermarkOnFineImage = " + appSettings.getMessage("applyLogoOrWatermarkOnFineImage"));
+
+        setLogoImageFile(appSettings.getMessage("logoImageFile"));
+        _logger.info("***** logoImageFile = " + appSettings.getMessage("logoImageFile"));
+
+        setSponsorBarFile(appSettings.getMessage("sponsorBarFile"));
+        _logger.info("***** sponsorBarFile = " + appSettings.getMessage("sponsorBarFile"));
+
 
 
         setProjectName(appSettings.getMessage("application.name"));
@@ -672,5 +681,21 @@ public final class Registry
 
     public static String getS3BucketName() {
         return s3BucketName;
+    }
+
+    public static String getSponsorBarFile() {
+        return sponsorBarFile;
+    }
+
+    public static void setSponsorBarFile(String sponsorBarFile) {
+        Registry.sponsorBarFile = sponsorBarFile;
+    }
+
+    public static String getLogoImageFile() {
+        return logoImageFile;
+    }
+
+    public static void setLogoImageFile(String logoImageFile) {
+        Registry.logoImageFile = logoImageFile;
     }
 }
