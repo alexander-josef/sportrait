@@ -210,13 +210,9 @@ public class ImagingHelper
      * @throws IOException
      */
     private static BufferedImage getLogoImage() throws IOException {
-        // todo parameter
-        _logger.debug("Trying to read Sola logo png image from file system ... ");
-        String filename = "/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-logo-upper-left.png";
-
-        _logger.debug("Read logo image for montage : " + Registry.getLogoImageFile());
-
-        return ImageIO.read(new FileInputStream(filename));
+        String logoImageFile = Registry.getLogoImageFile();
+        _logger.debug("Read logo image for montage : " + logoImageFile);
+        return ImageIO.read(new FileInputStream(logoImageFile));
     }
 
 
@@ -226,13 +222,9 @@ public class ImagingHelper
      * @throws IOException
      */
     private static BufferedImage getSponsorBar() throws IOException {
-        // todo parameter
-        _logger.debug("Trying to read sola sponsor bar png image from file system ... ");
-        String filename = "/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-bar-bottom.png";
-
-        _logger.debug("Read sponsor bar for montage : " + Registry.getSponsorBarFile());
-
-        return ImageIO.read(new FileInputStream(filename));
+        String sponsorBarFile = Registry.getSponsorBarFile();
+        _logger.debug("Read sponsor bar for montage : " + sponsorBarFile);
+        return ImageIO.read(new FileInputStream(sponsorBarFile));
     }
 
 
