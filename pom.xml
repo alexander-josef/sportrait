@@ -468,8 +468,27 @@
             <properties>
                 <appConfigFilterFile>prod.properties</appConfigFilterFile>
             </properties>
+        </profile>
 
+        <!-- Use this profile for testing on aws3 -->
+        <profile>
+            <id>test</id>
+            <build>
 
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_Test</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>test.properties</appConfigFilterFile>
+            </properties>
         </profile>
 
 
@@ -490,30 +509,6 @@
             </build>
             <properties>
                 <appConfigFilterFile>vm2-test.properties</appConfigFilterFile>
-            </properties>
-
-
-        </profile>
-
-        <profile>
-            <id>test</id>
-            <build>
-
-                <plugins>
-                    <!--<plugin>-->
-                    <!--<groupId>org.apache.maven.plugins</groupId>-->
-                    <!--<artifactId>maven-war-plugin</artifactId>-->
-                    <!--<configuration>-->
-                    <!--<warName>ROOT</warName>-->
-                    <!--</configuration>-->
-                    <!--</plugin>-->
-
-                  </plugins>
-            </build>
-            <properties>
-                <tomcatUsername>admin</tomcatUsername>
-                <tomcatPassword>leonard</tomcatPassword>
-                <appConfigFilterFile>vm1-test.properties</appConfigFilterFile>
             </properties>
 
 

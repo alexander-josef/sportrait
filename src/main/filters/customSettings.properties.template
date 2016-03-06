@@ -26,6 +26,8 @@ appSettings.logosScriptPath=/Users/alexanderjosef/scripts/copyLogosComposite.sh
 # Used when processing a single image on any storage provider
 appSettings.logosOverlayPortraitFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-portrait-120-percent.png
 appSettings.logosOverlayLandscapeFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-2015-landscape-120-percent.png
+appSettings.logoImageFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-logo-upper-left.png
+appSettings.sponsorBarFile=/Users/alexanderjosef/Pictures/work-folder-sportrait-images/sponsoren-logo-overlay/sola-sponsors-bar-bottom.png
 appSettings.applyLogoOrWatermarkOnFineImage=true
 
 # File storage settings / Amazon Web Services (S3) Settings
