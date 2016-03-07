@@ -42,6 +42,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.32-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.34-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.36-SNAPSHOT" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

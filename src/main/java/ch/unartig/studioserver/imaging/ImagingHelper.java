@@ -223,7 +223,7 @@ public class ImagingHelper
      */
     private static BufferedImage getSponsorBar() throws IOException {
         String sponsorBarFile = Registry.getSponsorBarFile();
-        _logger.debug("Read sponsor bar for montage : " + sponsorBarFile);
+        _logger.debug("Read sponsor-bar image for montage : " + sponsorBarFile);
         return ImageIO.read(new FileInputStream(sponsorBarFile));
     }
 
