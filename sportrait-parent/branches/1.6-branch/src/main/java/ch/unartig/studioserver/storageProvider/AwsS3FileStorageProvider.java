@@ -206,18 +206,22 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 try {
                     S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
                     String key = s3ObjectSummary.getKey();
-                    filename = key.substring(key.lastIndexOf("/")+1);
-                    _logger.debug("Reading file :"+ filename);
+                    if (key != null && !key.substring(key.lastIndexOf("/")+1).isEmpty()) { // filename not null or empty
+                        filename = key.substring(key.lastIndexOf("/") + 1);
+                        _logger.debug("Reading file :" + filename);
 
-                    // todo : check if photo is already registered for album in DB?
+                        // todo : check if photo is already registered for album in DB?
 
-                    final S3ObjectInputStream objectContent;
-                    objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
-                    album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
-                    if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album,filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
-                        moveObject(key, getFineImageKey(album,filename));
-                    } else if (!key.equals(getFineImageKey(album,filename))) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
-                        delete(key);
+                        final S3ObjectInputStream objectContent;
+                        objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
+                        album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
+                        if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album, filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
+                            moveObject(key, getFineImageKey(album, filename));
+                        } else if (!key.equals(getFineImageKey(album, filename))) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
+                            delete(key);
+                        }
+                    } else {
+                        _logger.info("s3 object key either empty or null, skipping entry");
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
