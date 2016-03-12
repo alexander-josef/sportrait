@@ -221,7 +221,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                             delete(key);
                         }
                     } else {
-                        _logger.info("s3 object key either empty or null, skipping entry");
+                        _logger.info("s3 object is not a file, skipping entry for key : " + key);
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
