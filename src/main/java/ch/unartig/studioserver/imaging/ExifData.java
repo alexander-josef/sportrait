@@ -75,7 +75,7 @@ public class ExifData
         this.photoFileBytes = photoFileBytes;
         buffStream = new BufferedInputStream(new ByteArrayInputStream(photoFileBytes));
         buffStream.mark(1000);
-        logger.info("Reading from Input Stream");
+        logger.debug("Reading from Input Stream");
     }
 
     /**
@@ -84,7 +84,7 @@ public class ExifData
      */
     public Date getPictureTakenDate() throws IOException
     {
-        logger.info("getPictureTakenDate 1, "  + System.currentTimeMillis());
+        logger.debug("getPictureTakenDate 1, "  + System.currentTimeMillis());
 
         Date date;
         // check for null file stream and non-exif file
@@ -210,7 +210,7 @@ public class ExifData
                     e.printStackTrace();
                 }
 
-                logger.info("Reading Date; year:  " + year + " month: " + month + " day : " + day + " hour " + hour + " minute : " + minute + " second : " + second);
+                logger.debug("Reading Date; year:  " + year + " month: " + month + " day : " + day + " hour " + hour + " minute : " + minute + " second : " + second);
             } catch (IOException e)
             {
                 e.printStackTrace();
@@ -261,14 +261,14 @@ public class ExifData
      */
     private int setByteOrder() throws IOException
     {
-        logger.info("setByteOrder start, "  + System.currentTimeMillis());
+        logger.debug("setByteOrder start, "  + System.currentTimeMillis());
         // first token to look for: Exif (on null '00' at the end)
         BufferedInputStream in = parseFor(buffStream, EXIF);
         int readValue;
         // jump to the end of the tag and read next value
         in.skip(EXIF.length + 1);
         readValue = in.read();
-        logger.info("setByteOrder 2, "  + System.currentTimeMillis());
+        logger.debug("setByteOrder 2, "  + System.currentTimeMillis());
 
         // check if we reached end of file
         if (readValue != -1)
@@ -279,7 +279,7 @@ public class ExifData
             { // looks like Motorola
                 if (in.read() == Integer.parseInt("4d", 16))
                 {
-                    logger.info("Motorola Byte Order, "  + System.currentTimeMillis());
+                    logger.debug("Motorola Byte Order, "  + System.currentTimeMillis());
                     byteOrder = MOTOROLA;
                     byteOrderTag = MOTOROLA_BYTE_ORDER_TAG;
                 } else
@@ -293,7 +293,7 @@ public class ExifData
                 { // looks like INTEL
                     if (in.read() == Integer.parseInt("49", 16))
                     {
-                        logger.info("Intel Byte Order");
+                        logger.debug("Intel Byte Order");
                         byteOrder = INTEL;
                         byteOrderTag = INTEL_BYTE_ORDER_TAG;
                     } else

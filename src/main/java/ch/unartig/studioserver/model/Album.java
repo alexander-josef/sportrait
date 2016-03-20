@@ -487,7 +487,7 @@ public class Album extends GeneratedAlbum {
             _logger.debug("read width and height");
             Date exifDate;
             exifDate = exif.getPictureTakenDate();
-            _logger.info("registerPhoto 3, " + System.currentTimeMillis());
+            _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
 
             if (exifDate != null) {
                 pictureTakenDate = new Date(exifDate.getTime());
