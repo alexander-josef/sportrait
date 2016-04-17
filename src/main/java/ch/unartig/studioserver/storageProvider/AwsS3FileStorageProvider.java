@@ -264,32 +264,27 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     /**
-     * Use for showing number of photos when importing from temp location
-     * @param key
+     * Use for showing number of photos when importing from temp location.
+     * (implementation checks for truncated object lists and works also for object size > 1'000)
+     * @param key the aws s3 prefix-key (or "folder")
      * @return
      */
     public int getNumberOfFineImageFiles(String key) {
 
-
-        ListObjectsRequest listObjectRequest = new ListObjectsRequest().
+        int fileCount=0;
+        ObjectListing objectListing;
+        ListObjectsRequest listObjectRequest;
+        listObjectRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix(key).
                 withDelimiter("/");
-        ObjectListing objectListing = s3.listObjects(listObjectRequest);
+        do {
+            objectListing = s3.listObjects(listObjectRequest);
+            listObjectRequest.setMarker(objectListing.getNextMarker());
+            fileCount += objectListing.getObjectSummaries().size();
+        } while (objectListing.isTruncated());
 
-        return objectListing.getObjectSummaries().size();
-        // some snippets from internet searches:
-/*
-        for (final S3ObjectSummary objectSummary: objectListing.getObjectSummaries()) {
-            final String key = objectSummary.getKey();
-            if (S3Asset.isImmediateDescendant(prefix, key)) {
-                final String relativePath = getRelativePath(prefix, key);
-                System.out.println(relativePath);
-            }
-        }
-*/
-
-
+        return fileCount;
     }
 
     public void delete(String key) {
