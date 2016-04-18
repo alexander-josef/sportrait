@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class
+            name="ch.unartig.studioserver.model.Photographer"
+            table="Photographers"
+            >
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhotographer</meta>
+
+        <cache usage="read-write"/>
+        <id
+                name="photographerId"
+                type="java.lang.Long"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <!--use id to check equality. CAUTION: comparing entities that have not yet been saved (and don't have and id) ????-->
+            <meta attribute="use-in-equals">true</meta>
+
+            <generator class="foreign">
+                <param name="property">userProfile</param>
+            </generator>
+        </id>
+
+        <!--more than one photographer per userprofile ??-->
+        <one-to-one
+                name="userProfile"
+                class="ch.unartig.studioserver.model.UserProfile"
+                constrained="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </one-to-one>
+
+        <set name="albums"
+             lazy="true"
+             inverse="true"
+                >
+            <key column="photographerId"/>
+            <one-to-many class="ch.unartig.studioserver.model.Album"/>
+        </set>
+
+        <property
+                name="cameraModel"
+                type="java.lang.String"
+                length="255"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="website"
+                type="java.lang.String"
+                length="255"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="contactInformation"
+                type="text"
+                not-null="false"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+ 
+    </class>
+</hibernate-mapping>
