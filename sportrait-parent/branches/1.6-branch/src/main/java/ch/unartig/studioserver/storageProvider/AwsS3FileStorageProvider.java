@@ -29,6 +29,7 @@ import java.util.zip.ZipInputStream;
  * Created by alexanderjosef on 01.10.15.
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
+    private static final String FINE_IMAGES_PREFIX = "fine-images";
     Logger _logger = Logger.getLogger(getClass().getName());
 
     AmazonS3 s3;
@@ -149,7 +150,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      */
     private String getFineImageKey(Album album, String filename) {
         // todo: parameters
-        return "fine-images/"+album.getGenericLevelId()+"/"+ Registry.getFinePath()+filename;
+        return FINE_IMAGES_PREFIX + "/" +album.getGenericLevelId()+"/"+ Registry.getFinePath()+filename;
     }
 
     public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
@@ -157,7 +158,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
-                withPrefix("fine-images/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
+                withPrefix(FINE_IMAGES_PREFIX + "/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
                 withDelimiter("/");
 
         ObjectListing objects;
@@ -347,10 +348,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         ListObjectsRequest listObjectsRequest;
 
         // delete fine images
-        // todo: configuration parameter for "fine-images"
         listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
-                withPrefix("fine-images/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
+                withPrefix(FINE_IMAGES_PREFIX + "/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
                 withDelimiter("/");
 
         deleteFromListObject(listObjectsRequest);
