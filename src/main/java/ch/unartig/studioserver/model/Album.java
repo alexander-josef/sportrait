@@ -682,7 +682,7 @@ public class Album extends GeneratedAlbum {
      * Delete Album:
      * delete all photos in db<br>
      * remove references in orderitems
-     * delete files
+     * delete files from storage provider (local file system / S3)
      * all order items that have a photo of this album need to set their photofilename and set the photoid to null
      */
     public void deleteLevel() throws UAPersistenceException {
