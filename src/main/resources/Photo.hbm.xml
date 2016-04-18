@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class
+            name="ch.unartig.studioserver.model.Photo"
+            table="Photos"
+            >
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedPhoto</meta>
+        <cache usage="read-write"/>
+
+        <id
+                name="photoId"
+                type="java.lang.Long"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <generator class="native">
+                <param name="sequence">sequence_photoId</param>
+            </generator>
+        </id>
+
+        <property
+                name="filename"
+                type="java.lang.String"
+                length="255"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="displayTitle"
+                type="java.lang.String"
+                length="255"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="widthPixels"
+                type="java.lang.Integer"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="heightPixels"
+                type="java.lang.Integer"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="pictureTakenDate"
+                type="timestamp"
+                length="255"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <property
+                name="uploadDate"
+                type="timestamp"
+                length="255"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+
+        <set name="orderItems"
+             lazy="true"
+             inverse="true"
+             cascade="save-update"
+                >
+            <key column="photoId"/>
+            <one-to-many class="ch.unartig.studioserver.model.OrderItem"/>
+        </set>
+
+        <set name="photoSubjects"
+             lazy="true"
+             table="PhotoSubjects2Photos"
+             cascade="save-update">
+            <!--<meta attribute="scope-set">protected</meta>-->
+            <!--<meta attribute="scope-get">protected</meta>-->
+            <key column="photoId"/>
+            <many-to-many class="ch.unartig.studioserver.model.PhotoSubject" column="photoSubjectId"/>
+        </set>
+
+        <many-to-one
+                name="album"
+                class="ch.unartig.studioserver.model.Album"
+                lazy="false"
+                not-null="true"
+                >
+            <meta attribute="use-in-tostring">true</meta>
+            <column name="albumId" index="Photo_Album_INDEX"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>
