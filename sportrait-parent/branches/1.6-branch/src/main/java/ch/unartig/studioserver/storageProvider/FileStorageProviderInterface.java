@@ -122,6 +122,11 @@ public interface FileStorageProviderInterface {
      */
     List <String> getUploadPaths();
 
+    /**
+     * Delete all fine / thumbnail / display images from the storage provider
+     * @param album
+     * @throws UAPersistenceException
+     */
     void deletePhotos(Album album) throws UAPersistenceException;
 
 }

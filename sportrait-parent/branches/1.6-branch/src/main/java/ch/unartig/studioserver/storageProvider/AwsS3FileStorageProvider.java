@@ -346,6 +346,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         ListObjectsRequest listObjectsRequest;
 
+        // delete fine images
         // todo: configuration parameter for "fine-images"
         listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
@@ -354,6 +355,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         deleteFromListObject(listObjectsRequest);
 
+        // delete display images
         listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix(Registry.getWebImagesContext() +"/" + album.getGenericLevelId() + "/"+ Registry.getDisplayPath()).
@@ -361,6 +363,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         deleteFromListObject(listObjectsRequest);
 
+        // delete thumbnail images
         listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix(Registry.getWebImagesContext() +"/" + album.getGenericLevelId() + "/"+ Registry.getThumbnailPath()).
