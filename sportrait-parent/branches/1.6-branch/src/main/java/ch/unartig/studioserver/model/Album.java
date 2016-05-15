@@ -606,7 +606,7 @@ public class Album extends GeneratedAlbum {
             getPhotos().add(photo);
             phDao.saveOrUpdate(photo);
             HibernateUtil.commitTransaction();
-            _logger.info("wrote photo with id : " + photo.getPhotoId().toString());
+            _logger.info("wrote photo (filename/id) : " + photo.getFilename()+"/"+photo.getPhotoId().toString());
         } catch (UAPersistenceException e) {
             HibernateUtil.rollbackTransaction();
             _logger.error("error while saving photo", e);
