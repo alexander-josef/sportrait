@@ -3,12 +3,12 @@
   <component name="ArtifactManager">
     <artifact type="war" name="sportrait_web:war">
       <output-path>$PROJECT_DIR$/target</output-path>
-      <root id="archive" name="sportrait_web-1.6.37-SNAPSHOT.war">
+      <root id="archive" name="sportrait_web-1.6.38-SNAPSHOT.war">
         <element id="artifact" artifact-name="sportrait_web:war exploded" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="sportrait_web:war exploded">
-      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.37-SNAPSHOT</output-path>
+      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.38-SNAPSHOT</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
@@ -119,7 +119,7 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="DataSourceManagerImpl" format="xml" hash="37734529">
+  <component name="DataSourceManagerImpl" format="xml" hash="1639332598">
     <data-source source="LOCAL" name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -139,6 +139,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
+  <component name="IdProvider" IDEtalkID="6500DF6484F42D12AACBABB61D73517E" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
