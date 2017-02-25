@@ -25,6 +25,10 @@
     -->
 
     <filter>
+        <!-- PLEASE NOTE: Security filter only works with Tomcat 6 (or less, probably)
+        for more details see:
+        https://sourceforge.net/p/securityfilter/mailman/message/28030971/
+        -->
         <filter-name>Security Filter</filter-name>
         <filter-class>org.securityfilter.filter.SecurityFilter</filter-class>
         <init-param>
