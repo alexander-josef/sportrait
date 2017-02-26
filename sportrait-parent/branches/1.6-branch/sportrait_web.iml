@@ -40,9 +40,11 @@
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/hibernate-plugin" isTestSource="false" generated="true" />
       <excludeFolder url="file://$MODULE_DIR$/target/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target/maven-archiver" />
+      <excludeFolder url="file://$MODULE_DIR$/target/maven-status" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.32-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.34-SNAPSHOT" />
       <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.36-SNAPSHOT" />
+      <excludeFolder url="file://$MODULE_DIR$/target/sportrait_web-1.6.38-SNAPSHOT" />
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
