@@ -676,7 +676,7 @@ public class ShoppingCart extends ActionForm implements Serializable, NavigableO
         updatePrices();
         if (!updated)
         {
-            throw new UnartigInvalidArgument("no vaild product to update");
+            throw new UnartigInvalidArgument("no valid product to update");
         }
     }
 
