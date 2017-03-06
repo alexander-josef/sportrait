@@ -148,10 +148,20 @@
         <action path="/privacy" forward=".sportraitprivacy"/>
         <action path="/explainDigital" forward=".sportraitExplainDigital"/>
         <action path="/faq" forward=".sportraitFAQ"/>
+
         <!--This action is configured with the securityfilter and causes the user principal to be removed from the session:-->
-        <action path="/logout" forward="/index.html" />
 
         <!-- =========================================== Customer pages -->
+        <!-- =========================================== Google Sign-In actions / token authentication -->
+
+        <action path="/tokensignin" type="ch.unartig.studioserver.actions.AuthenticationAction"
+                parameter="tokensignin">
+        </action>
+
+        <action path="/logout" type="ch.unartig.studioserver.actions.AuthenticationAction"
+                parameter="signOut">
+            <forward name="success" path="/index.html" redirect="true"/>
+        </action>
         <!-- =========================================== Security Filter / Authentication pages -->
         <action path="/authError" type="ch.unartig.studioserver.actions.SportraitHomeAction"
                 parameter="authError">
@@ -380,7 +390,7 @@
         <!-- ##################################################### -->
 
         <!-- ===============                    ================= -->
-        <!-- =============== Photographer pages ================= -->
+        <!-- =============== Photographer pages (protected) ================= -->
         <!-- ===============                    ================= -->
 
         <action path="/photographer/main-zul" type="ch.unartig.studioserver.actions.PhotographerAdminAction"

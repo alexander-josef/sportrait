@@ -46,7 +46,7 @@ public class Client
     private List<String> authorizedRoleNames;
 
     /**
-     * Default Constructor
+     * Default Constructor; sets server URL and initializes the authorized roles list object
      *
      * @param request The HttpServletRequest is needed to extract the server URL that is to be stored with this client.
      */
@@ -59,13 +59,14 @@ public class Client
 
     /**
      * Set the username as field to this session object, set the role names as list of strings
-     * @param username username of authenticated user
+     * @param username username of authenticated user. Used to be from the Principal object, or from verified google login
      * @throws UAPersistenceException
      */
     public void init(String username)
     {
         UserProfileDAO userprofileDao = new UserProfileDAO();
 
+        // todo: check if username exists in DB!
         UserProfile userProfile = userprofileDao.load(username);
         this.username = username;
         for (Object o : userProfile.getRoles()) {
@@ -93,6 +94,7 @@ public class Client
 
     public UserProfile getUserProfile()
     {
+        // todo: fixme: why load again? set as object in init() call
         UserProfileDAO userProfileDao = new UserProfileDAO();
         return userProfileDao.load(username);
     }
@@ -109,7 +111,7 @@ public class Client
     }
 
     /**
-     * This server's URL; to be used with the download url, for exmaple, or the client applet.
+     * This server's URL; to be used with the download url, for example, or the client applet.
      *
      * @return String with client's URL to the server
      */

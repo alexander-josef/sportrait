@@ -68,15 +68,24 @@
             <element id="library" level="project" name="Maven: sax:sax:2.0.1" />
             <element id="library" level="project" name="Maven: xerces:xercesImpl:2.4.0" />
             <element id="library" level="project" name="Maven: org.imgscalr:imgscalr-lib:4.2" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.10.21" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.10.21" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.10.21" />
-            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.3.6" />
-            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.3.3" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.97" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.97" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.97" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.2" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.4" />
+            <element id="library" level="project" name="Maven: software.amazon.ion:ion-java:1.0.2" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.6" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.6" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Maven: joda-time:joda-time:2.8.1" />
+            <element id="library" level="project" name="Maven: com.amazonaws:jmespath-java:1.11.97" />
+            <element id="library" level="project" name="Maven: com.google.api-client:google-api-client:1.22.0" />
+            <element id="library" level="project" name="Maven: com.google.oauth-client:google-oauth-client:1.22.0" />
+            <element id="library" level="project" name="Maven: com.google.http-client:google-http-client:1.22.0" />
+            <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:1.3.9" />
+            <element id="library" level="project" name="Maven: com.google.http-client:google-http-client-jackson2:1.22.0" />
+            <element id="library" level="project" name="Maven: com.google.guava:guava-jdk5:17.0" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -119,7 +128,7 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="DataSourceManagerImpl" format="xml" hash="1639332598">
+  <component name="DataSourceManagerImpl" format="xml" hash="456004548">
     <data-source source="LOCAL" name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -535,70 +544,158 @@
         <root url="jar://$MAVEN_REPOSITORY$/ch/unartig/server/sportrait_client/0.7/sportrait_client-0.7-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-core:1.10.21">
+    <library name="Maven: com.amazonaws:aws-java-sdk-core:1.11.97">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.97/aws-java-sdk-core-1.11.97.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.97/aws-java-sdk-core-1.11.97-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.10.21/aws-java-sdk-core-1.10.21-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.97/aws-java-sdk-core-1.11.97-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-kms:1.10.21">
+    <library name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.97">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.97/aws-java-sdk-kms-1.11.97.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.97/aws-java-sdk-kms-1.11.97-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.10.21/aws-java-sdk-kms-1.10.21-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.97/aws-java-sdk-kms-1.11.97-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-s3:1.10.21">
+    <library name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.97">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.97/aws-java-sdk-s3-1.11.97.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.97/aws-java-sdk-s3-1.11.97-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.10.21/aws-java-sdk-s3-1.10.21-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.97/aws-java-sdk-s3-1.11.97-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0">
+    <library name="Maven: com.amazonaws:jmespath-java:1.11.97">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.97/jmespath-java-1.11.97.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.97/jmespath-java-1.11.97-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.5.0/jackson-annotations-2.5.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.97/jmespath-java-1.11.97-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3">
+    <library name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.5.3/jackson-core-2.5.3-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3">
+    <library name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.6">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.6.6/jackson-core-2.6.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.6.6/jackson-core-2.6.6-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.5.3/jackson-databind-2.5.3-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.6.6/jackson-core-2.6.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.6/jackson-databind-2.6.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.6/jackson-databind-2.6.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.6/jackson-databind-2.6.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.6.6/jackson-dataformat-cbor-2.6.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.6.6/jackson-dataformat-cbor-2.6.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.6.6/jackson-dataformat-cbor-2.6.6-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.api-client:google-api-client:1.22.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/api-client/google-api-client/1.22.0/google-api-client-1.22.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/api-client/google-api-client/1.22.0/google-api-client-1.22.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/api-client/google-api-client/1.22.0/google-api-client-1.22.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.code.findbugs:jsr305:1.3.9">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.guava:guava-jdk5:17.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-jdk5/17.0/guava-jdk5-17.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-jdk5/17.0/guava-jdk5-17.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/guava/guava-jdk5/17.0/guava-jdk5-17.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.http-client:google-http-client-jackson2:1.22.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client-jackson2/1.22.0/google-http-client-jackson2-1.22.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client-jackson2/1.22.0/google-http-client-jackson2-1.22.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client-jackson2/1.22.0/google-http-client-jackson2-1.22.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.http-client:google-http-client:1.22.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client/1.22.0/google-http-client-1.22.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client/1.22.0/google-http-client-1.22.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/http-client/google-http-client/1.22.0/google-http-client-1.22.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.google.oauth-client:google-oauth-client:1.22.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/oauth-client/google-oauth-client/1.22.0/google-oauth-client-1.22.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/oauth-client/google-oauth-client/1.22.0/google-oauth-client-1.22.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/google/oauth-client/google-oauth-client/1.22.0/google-oauth-client-1.22.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.paypal:paypal_base:1.0.0">
@@ -887,26 +984,26 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/geronimo/specs/geronimo-j2ee_1.4_spec/1.0/geronimo-j2ee_1.4_spec-1.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apache.httpcomponents:httpclient:4.3.6">
+    <library name="Maven: org.apache.httpcomponents:httpclient:4.5.2">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.apache.httpcomponents:httpcore:4.3.3">
+    <library name="Maven: org.apache.httpcomponents:httpcore:4.4.4">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.4/httpcore-4.4.4.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.4/httpcore-4.4.4-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.4/httpcore-4.4.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.ws.commons:ws-commons-util:1.0.1">
@@ -1083,6 +1180,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/securityfilter/securityfilter/2.0/securityfilter-2.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: software.amazon.ion:ion-java:1.0.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/software/amazon/ion/ion-java/1.0.2/ion-java-1.0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/software/amazon/ion/ion-java/1.0.2/ion-java-1.0.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/software/amazon/ion/ion-java/1.0.2/ion-java-1.0.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: sslext:sslext:1.2-0">

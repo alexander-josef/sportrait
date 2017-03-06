@@ -176,14 +176,18 @@ public class UnartigActionServlet extends ActionServlet
         }
         logger.debug("@@ processing doGet()");
         logger.debug("@@ processing requestURL : "  + httpServletRequest.getRequestURL());
-        handleClientAuthorization(httpServletRequest);
+        // todo: handle new authentication
+        // authentication now handled by clientside js call
+        // handleClientAuthorization(httpServletRequest);
         super.doGet(httpServletRequest, httpServletResponse);
     }
 
+    // todo: remove
     public void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException
     {
         logger.debug("@@ processing doPost()");
-        handleClientAuthorization(httpServletRequest);
+        // todo: handle new authentication
+        // handleClientAuthorization(httpServletRequest);
         // this removes the userprofile from this thread. If used later, a new session shall be attached to a new thread
         super.doPost(httpServletRequest, httpServletResponse);
     }
@@ -227,6 +231,8 @@ public class UnartigActionServlet extends ActionServlet
     /**
      * We need a 'Client' Object in the session to identify a logged in client.
      * Check the client status: do we have an authorized user? make sure the Client object is up-to-date in the session
+     * This gets checked for every request that is handled by the Action Servlet (todo: check if really necessary?)
+     * todo : this is probably not needed anymore with social sign in based on client side JS
      * @param request HttpRequest
      * @return the authorized client or null
      */
