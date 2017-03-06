@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>Sportrait Server</display-name>
     <description>
-        Photo Presentation and sales framework. (c) unartig AG 2005-2008
+        SPORTRAIT web app. (c) unartig AG / Alexander Josef 2005-2017
     </description>
     <context-param>
         <param-name>webmaster</param-name>
@@ -24,11 +24,12 @@
 
     -->
 
+<!--
     <filter>
-        <!-- PLEASE NOTE: Security filter only works with Tomcat 6 (or less, probably)
+        &lt;!&ndash; PLEASE NOTE: Security filter only works with Tomcat 6 (or less, probably)
         for more details see:
         https://sourceforge.net/p/securityfilter/mailman/message/28030971/
-        -->
+        &ndash;&gt;
         <filter-name>Security Filter</filter-name>
         <filter-class>org.securityfilter.filter.SecurityFilter</filter-class>
         <init-param>
@@ -41,7 +42,10 @@
             <param-name>validate</param-name>
             <param-value>true</param-value>
         </init-param>
-        <!--
+
+
+
+        &lt;!&ndash;
               <init-param>
                  <param-name>loginSubmitPattern</param-name>
                  <param-value>/logMeIn</param-value>
@@ -50,13 +54,19 @@
                     "j_security_check" which is a special flag user by app servers for container managed security.
                  </description>
               </init-param>
-        -->
+        &ndash;&gt;
     </filter>
+-->
+
+<!--
+
+** removing securityfilter for new oauth2 based login
 
     <filter-mapping>
         <filter-name>Security Filter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+-->
     <filter>
         <filter-name>HibernateFilter</filter-name>
         <filter-class>ch.unartig.studioserver.persistence.util.HibernateFilter</filter-class>

@@ -2,6 +2,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <form action="j_security_check" method="POST">
     <table class="form">
         <tr>
@@ -27,7 +28,7 @@
             <td>
                 <html:image styleClass="left" 
                        page="/images/buttons/bt_login_de.gif"
-                       title="Login für aktive User"/>
+                       title="Login fï¿½r aktive User"/>
             </td>
         </tr>
         <tr>
@@ -49,4 +50,7 @@
         </tr>
 
     </table>
+
+
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
 </form>

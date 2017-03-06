@@ -5,5 +5,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
 <c:if test="${clientInSession!=null}">
-        <div id="loginMessage">Hallo <b> ${clientInSession.photographer.fullName}!</b>&nbsp; <html:link styleClass="expliziterLink" action="/logout">Logout</html:link></div>
+        <div id="loginMessage">Hallo <b> ${clientInSession.photographer.fullName}!</b>&nbsp; <html:link onclick="signOut()" styleClass="expliziterLink" action="/logout">Logout</html:link>
+        </div>
+    <%--Todo : insert Google Logout here--%>
 </c:if>

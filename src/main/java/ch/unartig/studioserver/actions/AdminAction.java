@@ -708,22 +708,6 @@ public class AdminAction extends MappingDispatchAction
         request.setAttribute("productTypeList", productTypeList);
     }
 
-    /**
-     * triggers the generations of a new tree items file
-     *
-     * @param mapping
-     * @param form
-     * @param request
-     * @param response
-     * @return
-     * @throws UAPersistenceException
-     */
-    public ActionForward generateNavTree(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
-    {
-        new TreeGenerator().generateTreeItems();
-        request.setAttribute("navTree", "check the tree_itmes.js files for the result");
-        return mapping.findForward("navTree");
-    }
 
     /**
      * trigger an oips order process without using the timer
