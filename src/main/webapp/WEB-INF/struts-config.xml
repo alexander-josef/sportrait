@@ -396,9 +396,12 @@
         <action path="/photographer/main-zul" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
                 parameter="login">
             <forward name="success" path=".photographer-zul"/>
-                </action>
+        </action>
 
-        <action path="/photographer/main" forward=".photographer"/>
+        <action path="/photographer/main"
+                roles="unartigadmin"
+                forward=".photographer"/>
+
         <!-- Show the upload Page; let's you chose a category for a an event and either a zip file with fotos or a path on the server with photos: -->
         <action path="/photographer/admin/upload" type="ch.unartig.studioserver.actions.SportEventsAction"
                 parameter="accountPhUpload"
@@ -444,8 +447,7 @@
         <action path="/photographer/toggleAlbumPublishStatus" type="ch.unartig.studioserver.actions.AdminAction"
                 scope="request"
                 parameter="toggleAlbumPublishStatus"
-                name="adminForm">
-            <!--roles="unartigadmin">-->
+                name="adminForm" roles="unartigadmin">
             <forward name="levelOverview" path="/photographer/admin/edit.html" redirect="true"/>
         </action>
 
@@ -579,8 +581,10 @@
                 inputForward="true"/>
     -->
 
+    <!-- new custom request processor that handles the security roles of the client object (after login with Google Sign-In)
+     Extends the SecureTilesRequestProcessor-->
     <controller
-            processorClass="org.apache.struts.action.SecureTilesRequestProcessor"
+            processorClass="ch.unartig.controller.UnartigCustomSecurityRequestProcessor"
             nocache="true"
             contentType="text/html;charset=UTF8"
             inputForward="true"
