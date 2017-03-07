@@ -181,7 +181,10 @@
             <cache usage="read-write"/>
             <!--<meta attribute="scope-set">protected</meta>-->
             <!--<meta attribute="scope-get">protected</meta>-->
-            <key column="userName" property-ref="userName"/>
+
+            <!-- removed the property-ref attribute after going away from SecurityFilter; now the expected userProfileId will be used,
+            with no dependency on the username anymore -->
+            <key column="userName"/>
             <many-to-many class="ch.unartig.studioserver.model.UserRole" column="roleName" property-ref="roleName"/>
         </set>
 

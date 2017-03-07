@@ -128,7 +128,7 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="DataSourceManagerImpl" format="xml" hash="456004548">
+  <component name="DataSourceManagerImpl" format="xml" hash="2478056212">
     <data-source source="LOCAL" name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
