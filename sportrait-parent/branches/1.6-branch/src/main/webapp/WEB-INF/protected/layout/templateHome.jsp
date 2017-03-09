@@ -29,16 +29,29 @@
             var xhr = new XMLHttpRequest();
 //            Caution !! Use https when not working locally! ID token sent to server in plain text otherwise
             // todo: use correct environment. How??
-            xhr.open('POST', 'http://localhost:8080/tokensignin.html');
+            xhr.open('POST', '<html:rewrite action="/tokensignin" />');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                console.log('Signed in as: ' + xhr.responseText);
+            xhr.onload = function () {
+                if (xhr.responseText=="unauthorized") {
+                    console.log('not authorized, logging out');
+                    window.alert("your user is not registered");
+                    signOut();
+                } else {
+                    console.log('Signed in');
+                }
             };
             xhr.send('idtoken=' + id_token);
 
         }
 
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                console.log('User signed out.');
+            });
+        }
     </script>
+
 </head>
 <body id="bodyHome">
 <center id="window">

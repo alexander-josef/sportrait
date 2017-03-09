@@ -7,8 +7,9 @@
 <html:xhtml/>
 <html>
 <head>
-    <script src="https://apis.google.com/js/platform.js" async defer ></script>
-    <meta name="google-signin-client_id" content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+          content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
@@ -17,8 +18,11 @@
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
 
-    <%-- Google Sign-In js functions --%>
+    <%-- Google Sign-In js functions
+         Function called by Google Sign-In button on success
+     --%>
     <script>
+
 
         function onSignIn(googleUser) {
 
@@ -29,10 +33,18 @@
             var xhr = new XMLHttpRequest();
 //            Caution !! Use https when not working locally! ID token sent to server in plain text otherwise
             // todo: use correct environment. How??
-            xhr.open('POST', 'http://localhost:8080/tokensignin.html');
+            xhr.open('POST', '<html:rewrite action="/tokensignin" />');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                console.log('Signed in as: ' + xhr.responseText);
+            xhr.onload = function () {
+                signinResponse = xhr.responseText;
+                console.log("response: " + signinResponse);
+                if (signinResponse=="unauthorized") {
+                    console.log('not authorized, logging out');
+                    window.alert("your user is not registered");
+                    signOut();
+                } else {
+                    console.log('Signed in');
+                }
             };
             xhr.send('idtoken=' + id_token);
 

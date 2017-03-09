@@ -101,6 +101,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.SecureRandom;
@@ -142,6 +143,11 @@ public class UnartigActionServlet extends ActionServlet
         } catch (IllegalAccessException e) {
             logger.error("Exception during Servlet init", e);
             throw new ServletException("initialization failed",e);
+        } catch (GeneralSecurityException e) {
+            logger.error("Exception during Servlet init,e");
+            throw new ServletException("initialization failed", e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         // todo: clean up. Remove order service if not needed anymore

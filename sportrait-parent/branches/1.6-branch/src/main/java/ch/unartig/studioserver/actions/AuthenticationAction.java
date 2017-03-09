@@ -54,17 +54,9 @@ public class AuthenticationAction extends MappingDispatchAction {
      */
     public ActionForward tokensignin(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException, GeneralSecurityException {
 
-
-        // Set up the HTTP transport and JSON factory
-        // todo: set to registry. set only once
-        HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
-        JsonFactory jsonFactory = Utils.getDefaultJsonFactory();
-
-
-
-
         String idTokenString = request.getParameter("idtoken");
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
+                .Builder(Registry.getGoogleHttpTransport(), Registry.getGoogleJasonFactory())
                 .setAudience(Collections.singletonList(CLIENT_ID))
                         // Or, if multiple clients access the backend:
                         //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
@@ -79,42 +71,48 @@ public class AuthenticationAction extends MappingDispatchAction {
 
             Client client = new Client(request);
 
-            request.getSession().setAttribute("googleIdToken", idToken);
+//            request.getSession().setAttribute("googleIdToken", idToken);
             // set username to client object and store in session:
             String username = idToken.getPayload().getSubject();
             // todo: using the "username" currently on the userprofile table.
             // column should be something like "exeternalSubjectID" ...
-            client.init(username);
-            request.getSession(true).setAttribute(Registry._SESSION_CLIENT_NAME,client);
+            if (client.init(username)) {
+                request.getSession(true).setAttribute(Registry._SESSION_CLIENT_NAME,client);
 
-            GoogleIdToken.Payload payload = idToken.getPayload();
+                GoogleIdToken.Payload payload = idToken.getPayload();
 
-            // Print user identifier
-            String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
+                // Print user identifier
+                String userId = payload.getSubject();
+                System.out.println("User ID: " + userId);
 
-            // Get profile information from payload
-            String email = payload.getEmail();
-            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-            String name = (String) payload.get("name");
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
-            String familyName = (String) payload.get("family_name");
-            String givenName = (String) payload.get("given_name");
+                // Get profile information from payload
+                String email = payload.getEmail();
+                boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+                String name = (String) payload.get("name");
+                String pictureUrl = (String) payload.get("picture");
+                String locale = (String) payload.get("locale");
+                String familyName = (String) payload.get("family_name");
+                String givenName = (String) payload.get("given_name");
 
-            // Use or store profile information
-            // ...
-            // Todo: check if user is in DB (use userID as link to server db)
+                httpServletResponse.getWriter().print("Authorized User Id ; " + userId);
+
+            } else {
+                // authenticated google user not found in db
+                httpServletResponse.getWriter().print("unauthorized");
+
+            }
+
 
         } else {
             System.out.println("Invalid ID token.");
             // todo: what to do in this case?
             // logout?
+            httpServletResponse.getWriter().print("Invalid ID token");
+
         }
 
 
 
-        httpServletResponse.getWriter().print("Hello World");
         return null;
     }
 
