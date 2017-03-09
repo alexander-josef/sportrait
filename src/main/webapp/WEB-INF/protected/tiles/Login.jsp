@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <form action="j_security_check" method="POST">
+
     <table class="form">
         <tr>
             <td class="formLead">Username</td>
@@ -52,5 +53,4 @@
     </table>
 
 
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
 </form>

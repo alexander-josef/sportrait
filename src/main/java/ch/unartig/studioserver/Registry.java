@@ -195,8 +195,16 @@ package ch.unartig.studioserver;
 import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 import ch.unartig.studioserver.storageProvider.LocalFileSystemStorageProvider;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.util.Utils;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 /**
  * Global Registry class for constants and fields from properties file
@@ -342,6 +350,8 @@ public final class Registry
     private static String s3BucketName;
     private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
+    private static JsonFactory googleJasonFactory;
+    private static NetHttpTransport googleHttpTransport;
 
 
     /**
@@ -355,7 +365,7 @@ public final class Registry
     /**
      * will be called upon startup of the Action servlet
      */
-    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException {
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
@@ -388,7 +398,6 @@ public final class Registry
 
         setSponsorBarFile(appSettings.getMessage("sponsorBarFile"));
         _logger.info("***** sponsorBarFile = " + appSettings.getMessage("sponsorBarFile"));
-
 
 
         setProjectName(appSettings.getMessage("application.name"));
@@ -431,6 +440,11 @@ public final class Registry
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
         fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
         /************************************************************************/
+
+        // Set up the HTTP transport and JSON factory for the google sign-in actions
+        setGoogleJasonFactory(Utils.getDefaultJsonFactory());
+        setGoogleHttpTransport(GoogleNetHttpTransport.newTrustedTransport());
+
 
     }
 
@@ -697,5 +711,21 @@ public final class Registry
 
     public static void setLogoImageFile(String logoImageFile) {
         Registry.logoImageFile = logoImageFile;
+    }
+
+    public static void setGoogleJasonFactory(JsonFactory googleJasonFactory) {
+        Registry.googleJasonFactory = googleJasonFactory;
+    }
+
+    public static JsonFactory getGoogleJasonFactory() {
+        return googleJasonFactory;
+    }
+
+    public static void setGoogleHttpTransport(NetHttpTransport googleHttpTransport) {
+        Registry.googleHttpTransport = googleHttpTransport;
+    }
+
+    public static NetHttpTransport getGoogleHttpTransport() {
+        return googleHttpTransport;
     }
 }

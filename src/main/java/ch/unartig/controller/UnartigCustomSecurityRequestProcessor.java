@@ -23,6 +23,7 @@ public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestPro
             throws IOException, ServletException
     {
         // Is this action protected by role requirements?
+        logger.debug("calling custom request processor. Request: " + request.getRequestURL());
         String roles[] = mapping.getRoleNames();
         if ((roles == null) || (roles.length < 1)) {
             return (true);

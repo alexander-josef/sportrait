@@ -60,20 +60,28 @@ public class Client
     /**
      * Set the username as field to this session object, set the role names as list of strings
      * @param username username of authenticated user. Used to be from the Principal object, or from verified google login
+     * @return true if initialization is successful and userprofile has been assigned to client object.
+     * False, if no userprofile with provided username exists
      * @throws UAPersistenceException
      */
-    public void init(String username)
+    public boolean init(String username)
     {
         UserProfileDAO userprofileDao = new UserProfileDAO();
 
         // todo: check if username exists in DB!
         UserProfile userProfile = userprofileDao.load(username);
-        this.username = username;
-        for (Object o : userProfile.getRoles()) {
-            UserRole userRole = (UserRole) o;
-            this.authorizedRoleNames.add(userRole.getRoleName());
+        if (userProfile!=null) {
+            this.username = username;
+            for (Object o : userProfile.getRoles()) {
+                UserRole userRole = (UserRole) o;
+                this.authorizedRoleNames.add(userRole.getRoleName());
+            }
+            _logger.debug("found userprofile for user : " + userProfile.getFirstName() + " " + userProfile.getLastName());
+            return true;
         }
-        _logger.debug("found userprofile for user : " + userProfile.getFirstName() + " " + userProfile.getLastName());
+        else {
+            return false;
+        }
     }
 
     /**
