@@ -7,6 +7,9 @@
 <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
 <c:if test="${clientInSession!=null}">
     <script>
+        <%-- see here for details about initializing the gapi library before signin out:
+        http://stackoverflow.com/questions/30945798/html-php-google-single-sign-on-signout-will-throw-cannot-read-property-getauth
+        --%>
         function signOut() {
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {

@@ -394,7 +394,8 @@
         <!-- ===============                    ================= -->
 
         <action path="/photographer/main-zul" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
-                parameter="login">
+                parameter="login"
+                roles="unartigadmin">
             <forward name="success" path=".photographer-zul"/>
         </action>
 
@@ -405,6 +406,7 @@
         <!-- Show the upload Page; let's you chose a category for a an event and either a zip file with fotos or a path on the server with photos: -->
         <action path="/photographer/admin/upload" type="ch.unartig.studioserver.actions.SportEventsAction"
                 parameter="accountPhUpload"
+                roles="unartigadmin"
                 >
             <forward name="success" path=".sportraitAccountPhUpload" redirect="false"/>
         </action>
@@ -413,7 +415,8 @@
         <action path="/photographer/createUpload" type="ch.unartig.studioserver.actions.SportEventsAction"
                 parameter="createUpload"
                 name="uploadForm"
-                scope="request">
+                scope="request"
+                roles="unartigadmin">
             <forward name="success" path=".sportraitAccountPhUpload" redirect="true"/>
             <!-- todo: extend with success message -->
         </action>
@@ -424,6 +427,7 @@
                 scope="request"
                 name="adminForm"
                 parameter="getOverview"
+                roles="unartigadmin"
                 >
             <forward name="levelOverview" path=".photographerAlbumEdit"/>
         </action>
@@ -433,12 +437,14 @@
                 scope="request"
                 name="adminForm"
                 parameter="updateLevel"
+                roles="unartigadmin"
                 >
             <forward name="success" path="/photographer/admin/edit.html"/>
         </action>
         <!-- Store Album updates; Products etc.  -->
         <action path="/photographer/logout" type="ch.unartig.studioserver.actions.AdminAction"
                 parameter="logout"
+                roles="unartigadmin"
                 >
             <forward name="success" path="/index.html"/>
         </action>
@@ -447,7 +453,8 @@
         <action path="/photographer/toggleAlbumPublishStatus" type="ch.unartig.studioserver.actions.AdminAction"
                 scope="request"
                 parameter="toggleAlbumPublishStatus"
-                name="adminForm" roles="unartigadmin">
+                name="adminForm"
+                roles="unartigadmin">
             <forward name="levelOverview" path="/photographer/admin/edit.html" redirect="true"/>
         </action>
 
@@ -456,16 +463,16 @@
         <action path="/admin/startnumberMapping" type="ch.unartig.studioserver.actions.AdminAction"
                 scope="request"
                 parameter="startnumberMapping"
-                name="sportsAlbumMappingForm">
-            <!--roles="unartigadmin">-->
+                name="sportsAlbumMappingForm"
+                roles="unartigadmin">
             <forward name="success" path="/photographer/admin/edit.html"/>
         </action>
 
         <action path="/admin/finishtimeMapping" type="ch.unartig.studioserver.actions.AdminAction"
                 scope="request"
                 parameter="finishtimeMapping"
-                name="sportsAlbumMappingForm">
-            <!--roles="unartigadmin">-->
+                name="sportsAlbumMappingForm"
+                roles="unartigadmin">
             <forward name="success" path="/photographer/admin/edit.html"/>
         </action>
 
@@ -473,28 +480,30 @@
         <action path="/admin/deleteFinishtimeMappings" type="ch.unartig.studioserver.actions.AdminAction"
                 scope="request"
                 parameter="deleteFinishtimeMappings"
-                name="sportsAlbumMappingForm">
-            <!--roles="unartigadmin">-->
+                name="sportsAlbumMappingForm"
+                roles="unartigadmin">
             <forward name="success" path="/photographer/admin/edit.html" redirect="true"/>
         </action>
 
 
         <action path="/admin/deleteLevel" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
                 parameter="deleteLevel"
-                name="adminForm">
-            <!--roles="unartigadmin">-->
+                name="adminForm"
+                roles="unartigadmin">
             <forward name="success" path="/photographer/admin/edit.html" redirect="true"/>
         </action>
 
         <action path="/admin/deletePhoto" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
                 parameter="deletePhoto"
-                name="eventCategoryForm">
+                name="eventCategoryForm"
+                roles="unartigadmin">
             <forward name="success" path="/showCategory.html" redirect="true"/>
         </action>
 
         <action path="/admin/deleteDisplayPhoto" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
                 parameter="deletePhoto"
-                name="eventCategoryForm">
+                name="eventCategoryForm"
+                roles="unartigadmin">
             <forward name="success" path="/display/333/display.html" redirect="true"/>
         </action>
 
@@ -515,19 +524,23 @@
 
         <!-- =========================================== Admin pages -->
         <!--  shows a very simple page to upload events in a text file with a certain format : -->
-        <action path="/admin/editEvents" forward=".uploadEditEvents"/>
+        <action path="/admin/editEvents"
+                forward=".uploadEditEvents"
+                roles="unartigadmin"/>
 
         <!-- Import events and show upload page again  -->
         <action path="/admin/bulkImportEvents" type="ch.unartig.studioserver.actions.SportEventsAction" scope="request"
                 parameter="bulkImportEvents"
                 name="uploadForm"
+                roles="unartigadmin"
                 >
             <forward name="success" path=".uploadEditEvents" redirect="true"/>
         </action>
 
-        <!-- Present a list with all regisutered Photographers -->
+        <!-- Present a list with all registered Photographers -->
         <action path="/admin/listPhotographers" type="ch.unartig.studioserver.actions.PhotographerAdminAction"
                 parameter="listPhotographers"
+                roles="unartigadmin"
                 >
             <forward name="success" path=".listPhotographers" redirect="false"/>
         </action>
@@ -537,6 +550,7 @@
                 scope="request"
                 parameter="editCreatePhotographer"
                 name="photographerForm"
+                roles="unartigadmin"
                 >
             <forward name="success" path=".editPhotographer" redirect="false"/>
         </action>
@@ -546,13 +560,18 @@
                 scope="request"
                 parameter="saveUpdatePhotographer"
                 name="photographerForm"
+                roles="unartigadmin"
                 >
             <forward name="success" path="/admin/editCreatePhotographer.html" redirect="false"/>
             <!--<forward name="success" path="/admin/editCreatePhotographer.html" redirect="false"/>-->
         </action>
 
 
-        <action path="/admin/triggerOrder" type="ch.unartig.studioserver.actions.AdminAction" parameter="triggerOrder">
+        <action path="/admin/triggerOrder"
+                type="ch.unartig.studioserver.actions.AdminAction"
+                parameter="triggerOrder"
+                roles="unartigadmin"
+                >
             <forward name="showAdminPage" path=".uploadEditEvents" redirect="true"/>
         </action>
 
@@ -560,12 +579,14 @@
         <!--####################### JUpload Action #######################-->
         <!--########### this action is called by the upload applet #######-->
         <!--##############################################################-->
+        <!-- todo: protect? -->
         <action path="/jupload/upload" type="ch.unartig.studioserver.actions.JUploadAction"/>
 
         <!--##############################################################-->
         <!--################## REST Service Action #######################-->
         <!--########### this action is called by the upload applet #######-->
         <!--##############################################################-->
+        <!-- todo: protect? -->
         <action path="/api/events" type="ch.unartig.studioserver.actions.RestServiceAction"/>
 
     </action-mappings>
