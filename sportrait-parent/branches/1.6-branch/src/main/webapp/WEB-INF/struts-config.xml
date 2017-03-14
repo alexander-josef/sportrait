@@ -162,6 +162,8 @@
                 parameter="signOut">
             <forward name="success" path="/index.html" redirect="true"/>
         </action>
+
+
         <!-- =========================================== Security Filter / Authentication pages -->
         <action path="/authError" type="ch.unartig.studioserver.actions.SportraitHomeAction"
                 parameter="authError">

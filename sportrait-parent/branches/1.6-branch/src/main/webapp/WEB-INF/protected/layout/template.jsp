@@ -31,8 +31,6 @@
             var id_token = googleUser.getAuthResponse().id_token;
 
             var xhr = new XMLHttpRequest();
-//            Caution !! Use https when not working locally! ID token sent to server in plain text otherwise
-            // todo: use correct environment. How??
             xhr.open('POST', '<html:rewrite action="/tokensignin" />');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function () {

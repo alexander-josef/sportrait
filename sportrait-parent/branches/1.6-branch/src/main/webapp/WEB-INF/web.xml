@@ -24,49 +24,6 @@
 
     -->
 
-<!--
-    <filter>
-        &lt;!&ndash; PLEASE NOTE: Security filter only works with Tomcat 6 (or less, probably)
-        for more details see:
-        https://sourceforge.net/p/securityfilter/mailman/message/28030971/
-        &ndash;&gt;
-        <filter-name>Security Filter</filter-name>
-        <filter-class>org.securityfilter.filter.SecurityFilter</filter-class>
-        <init-param>
-            <description>Configuration file location (this is the default value)</description>
-            <param-name>config</param-name>
-            <param-value>/WEB-INF/securityfilter-config.xml</param-value>
-        </init-param>
-        <init-param>
-            <description>Validate config file if set to true</description>
-            <param-name>validate</param-name>
-            <param-value>true</param-value>
-        </init-param>
-
-
-
-        &lt;!&ndash;
-              <init-param>
-                 <param-name>loginSubmitPattern</param-name>
-                 <param-value>/logMeIn</param-value>
-                 <description>
-                    As an example a login form can define "logMeIn" as it action in place of the standard
-                    "j_security_check" which is a special flag user by app servers for container managed security.
-                 </description>
-              </init-param>
-        &ndash;&gt;
-    </filter>
--->
-
-<!--
-
-** removing securityfilter for new oauth2 based login
-
-    <filter-mapping>
-        <filter-name>Security Filter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
--->
     <filter>
         <filter-name>HibernateFilter</filter-name>
         <filter-class>ch.unartig.studioserver.persistence.util.HibernateFilter</filter-class>
