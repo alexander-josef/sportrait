@@ -36,6 +36,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     final private String bucketName = Registry.getS3BucketName();
     final private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
     private final static String awsS3Url = "s3.amazonaws.com";
+    // todo: http or https
+    // see for example: http://stackoverflow.com/questions/3048236/amazon-s3-https-ssl-is-it-possible
     private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3Url;
 
 
