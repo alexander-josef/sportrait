@@ -504,6 +504,9 @@
       <Port>5050</Port>
     </configuration>
   </component>
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/main/resources/db-update-scripts/userprofiles-for-google-sign-in.sql" dialect="PostgreSQL" />
+  </component>
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>
