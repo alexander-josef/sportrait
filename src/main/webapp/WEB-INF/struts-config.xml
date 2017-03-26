@@ -513,14 +513,18 @@
         <!--download ordered photos-->
         <action path="/order/*/download" type="ch.unartig.studioserver.actions.DownloadOrderAction"
                 parameter="{1}">
+<!--
             <set-property property="secure" value="false"/>
+-->
             <forward name="success" path=".orderDownload"/>
         </action>
 
         <!-- download free photos  -->
         <action path="/downloadPhoto" type="ch.unartig.studioserver.actions.DownloadPhotoAction"
                 parameter="{1}">
+<!--
             <set-property property="secure" value="false"/>
+-->
             <forward name="success" path=".orderDownload"/>
         </action>
 
