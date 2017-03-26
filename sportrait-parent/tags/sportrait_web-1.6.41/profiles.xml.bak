@@ -1,0 +1,9 @@
+<profiles>
+    <profile>
+        <id>prod</id>
+        <properties>
+            <name>build.configuration.properties</name>
+            <value>prod.properties</value>
+        </properties>
+    </profile>
+</profiles>
