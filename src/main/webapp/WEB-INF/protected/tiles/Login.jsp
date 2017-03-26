@@ -3,7 +3,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<form action="j_security_check" method="POST">
 
     <table class="form">
         <tr>
@@ -27,9 +26,12 @@
         <tr>
             <td></td>
             <td>
-                <html:image styleClass="left" 
-                       page="/images/buttons/bt_login_de.gif"
-                       title="Login f�r aktive User"/>
+
+                <%--@elvariable id="clientInSession" type="ch.unartig.controller.Client"--%>
+                <c:if test="${clientInSession==null}">
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                </c:if>
+
             </td>
         </tr>
         <tr>
@@ -53,4 +55,3 @@
     </table>
 
 
-</form>
