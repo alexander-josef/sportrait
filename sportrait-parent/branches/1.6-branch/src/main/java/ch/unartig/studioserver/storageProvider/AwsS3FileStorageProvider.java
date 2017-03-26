@@ -34,11 +34,13 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     AmazonS3 s3;
     final private String bucketName = Registry.getS3BucketName();
-    final private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
-    private final static String awsS3Url = "s3.amazonaws.com";
+    final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
+//    private final static String awsS3Url = "s3.amazonaws.com";
+    private final static String awsS3RegionUrl = "s3-"+ awsRegion+".amazonaws.com";
     // todo: http or https
     // see for example: http://stackoverflow.com/questions/3048236/amazon-s3-https-ssl-is-it-possible
-    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3Url;
+//    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3RegionUrl;
+    private String bucketHttpsUrl = "https://" + awsS3RegionUrl+"/"+bucketName;
 
 
     public AwsS3FileStorageProvider() {
@@ -308,7 +310,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     public String getThumbnailUrl(String genericLevelId, String filename) {
         // todo: introduce a sportrait.com cname for "photos.sportrait.com.s3.amazonaws.com" and use a sportrait.com URL
         // todo: https not possible; certificate for domain name that includes the bucket name must exist. Change if https is needed
-        return bucketUrlWithoutRegion + "/" + Registry.getWebImagesContext() + "/" + genericLevelId + "/" + Registry.getThumbnailPath() + filename;
+        return bucketHttpsUrl + "/" + Registry.getWebImagesContext() + "/" + genericLevelId + "/" + Registry.getThumbnailPath() + filename;
     }
 
     /**
@@ -321,7 +323,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     public String getDisplayUrl(String genericLevelId, String filename) {
         // todo: use following style (exclude Region): http://photos.sportrait.com.s3.amazonaws.com/web-images/176/display/sola14_e01_fm_0005.JPG
         // todo: introduce a sportrait.com cname for "photos.sportrait.com.s3.amazonaws.com" and use a sportrait.com URL
-        return bucketUrlWithoutRegion +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getDisplayPath() + filename;
+        return bucketHttpsUrl +"/"+ Registry.getWebImagesContext() +"/"+ genericLevelId +"/"+ Registry.getDisplayPath() + filename;
 
     }
 
