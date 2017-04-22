@@ -176,7 +176,7 @@ public class UnartigActionServlet extends ActionServlet
         if ("HEAD".equals(httpServletRequest.getMethod())) {
 
             // commit response, return. nothing to do.
-            logger.info("HEAD request .... returning without forwarding to the controler.");
+            logger.info("HEAD request .... returning without forwarding to the controller.");
             httpServletResponse.flushBuffer();
             return;
         }
