@@ -81,6 +81,7 @@ public class Photo extends GeneratedPhoto
     }
 
     private SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat hoursMinutesSecondsDateFormatter = new SimpleDateFormat("HH:mm:ss");
 
 
     /**
@@ -150,7 +151,7 @@ public class Photo extends GeneratedPhoto
      */
     public String getShortTimeString()
     {
-        return df.format(getPictureTakenDate());
+        return hoursMinutesSecondsDateFormatter.format(getPictureTakenDate());
     }
 
     public String getThumbnailUrl()

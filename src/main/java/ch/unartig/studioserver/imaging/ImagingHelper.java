@@ -169,6 +169,8 @@ public class ImagingHelper
                 // get scaled watermark : see next line, width / height - quality of scaled image?
                 //graphics2D.drawImage(getWatermark(sourceWidth, sourceHeight), 0, 0,sourceWidth,sourceHeight, null);
                 // montage the 2 watermark elements separately - just apply two "drawImage" operations!
+                // no scaling of the overlaying images. The logos / sponsor bar needs to have the right dimension to fit on the high res image
+                // todo: introduce scaling of high res logo / overlay images to fit the high res photo images nicely
                 BufferedImage logoImage = getLogoImage();
                 graphics2D.drawImage(logoImage, 0, 0, null); // position: upper right corner
                 BufferedImage sponsorBar = getSponsorBar();
@@ -198,7 +200,7 @@ public class ImagingHelper
         {
             // todo: error treatment. If only logo montage fails, continue and save image
             e.printStackTrace();
-            _logger.error("Error saving JPG image",e);
+            _logger.error("Error saving JPG image - continue with image processing",e);
         }
         return scaledImageResult;
     }
