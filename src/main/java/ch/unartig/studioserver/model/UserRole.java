@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 /**
  *
  * @author Alexander Josef, unartig AG 2007
- * the persistent information stored in the table is queried by the DataSourceRealm authenticator
+ * Update 2017-05-01 : DataSourceRealm authenticator does not exist anymore
  */
 public class UserRole extends GeneratedUserRole{
     static Logger _logger = Logger.getLogger(UserRole.class);
