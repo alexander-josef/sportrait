@@ -13,16 +13,16 @@
 
     <p class="longText">
         Diese Allgemeinen Geschäftsbedingungen gelten für alle natürlichen oder juristischen Personen oder
-        rechtsfähigen Personengesellschaften, die mit der unartig AG im Zusammenhang mit der Dienstleistung "SPORTrait" in
-        einer Geschäftsbeziehung stehen. Für alle Angebote, Bestellungen und Leistungen, insbesondere für die Benutzung
-        der Internet-Plattform www.sportrait.com der unartig AG sind ausschließlich die nachfolgenden
+        rechtsfähigen Personengesellschaften, die die Dienstleistung "SPORTrait" nutzen.
+        Für alle Angebote, Bestellungen und Leistungen, insbesondere für die Benutzung
+        der Internet-Plattform www.sportrait.com sind ausschließlich die nachfolgenden
         Allgemeinen Geschäftsbedingungen maßgebend. Von diesen Bedingungen abweichende Vereinbarungen sind nur
-        wirksam, wenn sie schriftlich getroffen und von der unartig AG akzeptiert wurden. Die aktuellen und geltenden
+        wirksam, wenn sie schriftlich getroffen und akzeptiert wurden. Die aktuellen und geltenden
         Allgemeinen Geschäftsbedingungen sind unter www.sportrait.com (AGB) zu finden.
     </p>
 
     <p class="longText"><span class="bold">Die Dienstleistung "SPORTRAIT"</span><br/>SPORTRAIT ist eine Dienstleistung
-        der unartig AG. Über SPORTRAIT bieten Sportfotografen ihre Fotos Athletinnen und Athleten an. SPORTRAIT verkauft
+        von Alexander Josef (früher unartig AG). Über SPORTRAIT bieten Sportfotografen ihre Fotos Athletinnen und Athleten an. SPORTRAIT verkauft
         die Sportfotos in Vertretung der Sportfotografen.
     </p>
 
@@ -49,16 +49,16 @@
     </p>
 
     <p class="longText"><span class="bold">Veröffentlichung von Fotos</span><br/>Die Verantwortung für die
-        Veröffentlichung der Fotos auf www.sportrait.com trägt der Anbieter der Fotos (Fotograf). Die unartig AG ist bemüht, bei der Publikation der Fotos darauf zu achten,
-        dass keine persönlichen Rechte verletzt werden.<br/>
-        Bei Beanstandungen können sich Kunden über das <html:link action="/contact">Kontaktformular</html:link> bei der unartig AG melden.
-        Die unartig AG bearbeitet Anfragen von Kunden oder Beanstandungen innerhalb von 24 Stunden.<br/>
-        Die unartig AG geht davon aus, dass der Anbieter der Fotos (Fotograf) über das Nutzungsrecht zum Verkauf der Fotos verfügt.
+        Veröffentlichung der Fotos auf www.sportrait.com trägt der Anbieter der Fotos (Fotograf). SPORTRAIT achtet bei der Publikation der Fotos darauf,
+        keine persönlichen Rechte zu verletzen<br/>
+        Bei Beanstandungen können sich Kunden über das <html:link action="/contact">Kontaktformular</html:link> bei SPORTRAIT melden.
+        SPORTRAIT bearbeitet Anfragen von Kunden oder Beanstandungen innerhalb von 24 Stunden.<br/>
+        SPORTRAIT geht davon aus, dass der Anbieter der Fotos (Fotograf) über das Nutzungsrecht zum Verkauf der Fotos verfügt.
     </p>
 
     <p class="longText"><span class="bold">Datenschutz</span><br/>Die Bestimmungen zum Datenschutz können
         <html:link action="/privacy">hier</html:link>&nbsp;gefunden werden.</p>
 
-    <p class="longText"><span class="bold">Gerichtsstand</span><br/>Der Gerichtsstand der unartig AG ist Zürich.</p>
+    <p class="longText"><span class="bold">Gerichtsstand</span><br/>Der Gerichtsstand der SPORTRAIT ist Wil SG.</p>
 
 </div>

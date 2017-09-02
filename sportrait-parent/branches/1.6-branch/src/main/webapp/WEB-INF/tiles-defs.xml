@@ -98,11 +98,6 @@
         <!--<put name="content2" value="/WEB-INF/protected/tiles/Login_Ghost.jsp"/>-->
     </definition>
 
-    <definition name=".sportraitcopyright" extends=".sportraitcontact">
-        <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCopyright.jsp"/>
-        <put name="content1" value="/WEB-INF/protected/tiles/copyright.jsp"/>
-    </definition>
-
     <definition name=".sportraitprivacy" extends=".sportraitcontact">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titlePrivacy.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/privacy.jsp"/>

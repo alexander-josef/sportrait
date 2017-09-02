@@ -11,7 +11,7 @@
 --
 -- Userprofile
 --
-INSERT INTO userprofiles (userprofileid, username, "password", firstname, lastname, emailaddress, phone, phonemobile, title, addr1, addr2, zipcode, city, state, country, gender) VALUES (1, 'admin', 'le0nard', 'Sportrait Admin', 'unartig AG', 'admin@unartig.ch', '23', '23', 'Mischter', 'adsf', 'adsf', '2232', 'zueri', 'zh', 'ch', 'm');
+INSERT INTO userprofiles (userprofileid, username, "password", firstname, lastname, emailaddress, phone, phonemobile, title, addr1, addr2, zipcode, city, state, country, gender) VALUES (1, 'admin', 'le0nard', 'Sportrait Admin', 'SPORTRAIT', 'admin@unartig.ch', '23', '23', 'Mischter', 'adsf', 'adsf', '2232', 'zueri', 'zh', 'ch', 'm');
 
 --
 -- Userroles
@@ -30,7 +30,7 @@ INSERT INTO userprofiles2userroles (username, rolename) VALUES ('admin', 'photog
 --
 -- Photographers (IMPORTANT: needed for every userprofile)
 --
-INSERT INTO photographers VALUES (1,'Nikon D2xs', 'www.sportrait.com', 'unartig AG, 8006 Zuerich / Switzerland');
+INSERT INTO photographers VALUES (1,'Nikon D2xs', 'www.sportrait.com', 'SPORTRAIT, 8006 Zuerich / Switzerland');
 --
 -- Set up categories (Sportarten)
 --

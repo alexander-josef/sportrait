@@ -181,7 +181,7 @@
 </tr>
 <tr>
     <td></td>
-    <td class="formLead" colspan="2">SPORTRAIT, unartig AG, Hörnlistrasse 21, 9500 Wil SG, Tel: +41 (0)79 600 3561</td>
+    <td class="formLead" colspan="2">SPORTRAIT, Alexander Josef, Hörnlistrasse 21, 9500 Wil SG, Tel: +41 79 600 3561</td>
 </tr>
 </table>
 </html:form>

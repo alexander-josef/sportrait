@@ -15,7 +15,7 @@
     <p class="longText"><span class="bold">Allgemein</span><br/>
         Beim Zugriff auf die Website www.sportrait.com und
         beim Bestellen von Produkten über diese Webseite fallen persönliche Daten
-        an, die aufgezeichnet werden. Die unartig AG
+        an, die aufgezeichnet werden. SPORTRAIT
         ist bemüht, diese persönlichen Daten auf transparente Weise zu sammeln und vertraulich
         zu bearbeiten. Die folgende Datenschutzerklärung umfasst in Kürze einige Punkte
         zur Information unserer Kundinnen und Kunden und Website-Besucher.</p>
@@ -55,7 +55,7 @@
         Die Angabe von persönlichen Daten wie Name, Vorname, Adresse und E-Mail ist
         freiwillig und nur zwingend, wenn vom Besucher der Webseite eine kostenpflichtige Dienstleistung in Anspruch
         genommen wird, die die Angabe dieser Daten unerlässlich macht, beispielsweise bei der Bestellung
-        eines Fotos. Die E-Mail Adresse wird von der unartig AG nur zur Abwicklung der Bestellung verwendet, oder um
+        eines Fotos. Die E-Mail Adresse wird von SPORTRAIT nur zur Abwicklung der Bestellung verwendet, oder um
         einen Kunden zu kontaktieren, wenn Schwierigkeiten bei der Abwicklung einer Bestellung
         auftreten.
     </p>
@@ -67,7 +67,8 @@
         der Bestellung.
     </p>
 
-    <p class="longText">Beim Kauf eines Fotos wird der Käufer oder die Käuferin automatisch Kunde (Kundin) des Anbieters,
+<%--
+    <p class="longText">Beim Kauf eines Fotos wird der Käufer oder die Käuferin automatisch Kunde des Anbieters,
         des Fotografen. Daher müssen dem Kunden Angaben wie Name, Vorname und Adresse des Fotografen beim Kauf eines Fotos
         mitgeteilt werden. Umgekehrt werden dem Fotografen die persönlichen Daten des Kunden nicht automatisch mitgeteilt.
         Der Fotograf hat aber das Anrecht, diese Daten (Vorname, Name und Adresse des Kunden) bei der unartig AG anzufordern.
@@ -79,6 +80,8 @@
         einverstanden und verpflichtet sich somit, die Daten der Kundinnen und Kunden vertraulich zu
         behandeln und in keiner Form und unter keinen Umständen Dritten zugänglich zu machen.
     </p>
+--%>
+<%--
 
     <p class="longText"><span class="bold">Persönliche Daten registrierter Fotografen</span><br/>
         Neben denen im Abschnitt "Gesammelte Informationen aller Besucher" beschriebenen Daten, werden
@@ -91,8 +94,8 @@
         verpflichtet den Fotografen, die oben erwähnten Daten dem Käufer zur Verfügung zu stellen.<br/>
         Die Daten registrierten Fotografen werden ausser im oben beschrieben Fall oder
         ohne exlizite Einwilligung des Fotografen nicht an Dritte weitergegeben.
-
-    <p></p>
+    </p>
+--%>
 
     <p class="longText"><span class="bold">Das Publizieren von Fotos</span><br/>
         Wenn nicht ausdrücklich vom Veranstalter eines Anlasses anders verlangt, sind
@@ -101,16 +104,9 @@
         die Publikation der Fotos auf www.sportrait.com obliegt dem Fotografen
         (Anbieter der Fotos).<br/>
         Es obliegt ebenfalls der Verantwortung des Fotografen sicherzustellen, dass er die entsprechenden
-        Nutzungsrechte für die von ihm auf www.sportrait.com publizierten Fotos hat. Die unartig AG lehnt jegliche
+        Nutzungsrechte für die von ihm auf www.sportrait.com publizierten Fotos hat. SPORTRAIT lehnt jegliche
         Haftung im Fall einer Verletzung von Nutzungsrechten durch den Fotografen (Anbieter der Fotos) ab.
     </p>
-
-    <p class="longText">Wünscht eine Person, dass die Publizierung eines Fotos,
-        das dieselbe Person darstellt, auf www.sportrait.com rückgängig gemacht wird,
-        hat die Person die Möglichkeit, sich in einem ersten Schritt an den Fotografen, in
-        einem zweiten Schritt aber an die unartig AG zu wenden. Die unartig AG kommt einem
-        solchen Wunsch selbstverständlich gerne und so schnell wie möglich (innerhalb von maximal 24 Stunden
-        nach Eingang der Anfrage) nach.</p>
 
 
     <p class="longText">Wenn Sie weitere Fragen zu dieser Datenschutzerklärung haben,
