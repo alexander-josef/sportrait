@@ -438,6 +438,8 @@ public class SportsAlbumMapper
 
     /**
      * Reads line by line the bip-time file and maps it
+     * Values need to be delimited by tab
+     * todo: extend to different delimiters used in csv format (comma, semicolon)
      *
      * @throws UnartigException
      */

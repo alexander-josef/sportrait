@@ -175,7 +175,7 @@ den Anlass, zu dem du Fotos publizieren mˆchtest, nicht findest, dann melde die
     Dritte abgetreten hast, ist die Publikation auf SPORTRAIT absolut bedenkenlos. Wenn Du aber zum Beispiel Fotos
     anderer Fotografen publizierst,
     bist Du daf¸r verantwortlich, die entsprechenden Nutzungsrechte zu erwerben.<br/>
-    Bei der Verletzung von Nutzungsrechten lehnt die unartig AG jegliche Haftung ab.
+    Bei der Verletzung von Nutzungsrechten lehnt SPORTRAIT jegliche Haftung ab.
 </p>
 
 <p class="longText"><a name="042"></a><b>Welche Fotos darf ich bei SPORTRAIT nicht publizieren?</b>&nbsp;<a href="#">nach
@@ -184,8 +184,7 @@ den Anlass, zu dem du Fotos publizieren mˆchtest, nicht findest, dann melde die
     Sportanlass stehen, sollen auf SPORTRAIT
     nicht publiziert werden. Fotos die pornografischen oder sexistischen Inhalt haben, oder Gewalt darstellen haben auf
     SPORTRAIT nichts verloren. Fotos, die das
-    Persˆnlichkeitsrecht verletzen oder einer Person schaden kˆnnen, sind auf SPORTRAIT nicht zu publizieren.<br/>
-    Werden Fotos mit solchen Inhalten oder Wirkung auf SPORTRAIT publiziert, wird die unartig AG entsprechend reagieren.
+    Persˆnlichkeitsrecht verletzen oder einer Person schaden kˆnnen, sind auf SPORTRAIT nicht zu publizieren.
 </p>
 
 <p class="longText"><a name="044"></a><b>Darf ich Fotos von Dritten auf SPORTRAIT publizieren?</b>&nbsp;<a href="#">nach

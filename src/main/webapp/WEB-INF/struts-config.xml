@@ -144,7 +144,6 @@
         <action path="/agb" forward=".sportraitagb"/>
         <action path="/contact" forward=".sportraitcontact"/>
         <action path="/about" forward=".sportraitAbout"/>
-        <action path="/copyright" forward=".sportraitcopyright"/>
         <action path="/privacy" forward=".sportraitprivacy"/>
         <action path="/explainDigital" forward=".sportraitExplainDigital"/>
         <action path="/faq" forward=".sportraitFAQ"/>

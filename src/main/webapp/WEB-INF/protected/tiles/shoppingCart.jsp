@@ -149,7 +149,7 @@
                         ? by Fotograf: &nbsp;${photo.displayPhoto.photographer.fullName}&nbsp;--&nbsp;
                         </c:if>
                         --%>
-                    <p style="width:743px;padding:1px 0;margin-bottom:10px;"> © by Fotograf: <span class="bold">unartig AG</span>
+                    <p style="width:743px;padding:1px 0;margin-bottom:10px;"> © by Fotograf: <span class="bold">SPORTRAIT</span>
                         --
                         Filename: <span class="bold">${photo.displayTitle}</span></p>
                 </td>
