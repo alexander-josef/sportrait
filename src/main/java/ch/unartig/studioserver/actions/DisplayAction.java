@@ -78,13 +78,12 @@ import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.beans.DisplayBean;
+import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
+import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
 import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,28 +107,47 @@ public class DisplayAction extends Action
      * @return
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws UnartigException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, UnartigSessionExpiredException
+    public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)
+
     {
+        DynaActionForm sportsAlbumForm = (DynaActionForm) actionForm;
+
         DisplayBean displayBean;
         String photoPath = actionMapping.getParameter();
         _logger.debug("actionMapping.getParameter() = " + photoPath);
         String photoIdString = photoPath.split("/")[0];
         Long displayPhotoId = new Long(photoIdString);
         displayBean = new DisplayBean(displayPhotoId);
+        Album albumFromPhotoID = displayBean.getAlbumFromPhoto(); // needed in case of deep linking. Could we avoid it? Don't think so. Check for performance penalties (SQL)
         // or just the photo list??
         AbstractAlbumBean albumBean = SessionHelper.getAlbumBeanFromSession(request);
-        if (albumBean == null)
+        if (albumBean == null // we're called without an album in the session - we need to load an album from the given URL parameter (display photo ID?)
+                || !albumFromPhotoID.getEventCategory().getEventCategoryId().equals(((SportsAlbumBean)albumBean).getEventCategory().getEventCategoryId())) // we're called from a deeplink - eventcategory in session differs from photoId in URL - reload! todo: ugly: casting
         {
             _logger.info("album not found in session ... reloading ...");
-            albumBean = AbstractAlbumBean.getInstance(displayBean.getAlbumFromPhoto());
-            albumBean.reloadPhotosTemplate(displayPhotoId);
+            albumBean = albumFromPhotoID.getAlbumBean();
+            try {
+                albumBean.reloadPhotosTemplate(displayPhotoId);
+            } catch (UnartigException e) {
+                _logger.warn(e);
+                // todo handle exception
+            }
             request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR,albumBean);
             _logger.debug("set albumbean to session");
         }
+        // else we assume the correct album is in the session. is it?
+
         displayBean.setAlbumBean(albumBean);
 
-        displayBean.processDisplayBean();
+        try {
+            displayBean.processDisplayBean();
+        } catch (UnartigException e) {
+            _logger.warn(e);
+            // todo: check why we don't get here in case of an exception
+            // todo handle exception
+        }
 
+        sportsAlbumForm.set("page",String.valueOf(albumBean.getPage())); // make sure page is set in dynaactionform in case the page number has been newly calculated
         request.setAttribute("display", displayBean);
         return actionMapping.findForward("display");
     }

@@ -35,6 +35,7 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 
 /**
  * Example: Etappen in Sola
@@ -64,13 +65,14 @@ public class EventCategory extends GeneratedEventCategory
      * @return true if category has photos
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean hasPublishedPhotos() throws UnartigException
-    {
-        for (Object o : getAlbums())
-        {
+    public boolean hasPublishedPhotos() throws UnartigException {
+        // coming from deep links, albums can not be loaded lazily ...
+        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
+        setAlbums(eventCategoryDAO.load(this.getEventCategoryId()).getAlbums()); // make sure we get a session and reload / re-attach albums from eventCategory
+
+        for (Object o : getAlbums()) {
             Album album = (Album) o;
-            if (album.getPublish() &&  album.getNumberOfPhotos() > 0)
-            {
+            if (album.getPublish() && album.getNumberOfPhotos() > 0) {
                 return true;
             }
         }

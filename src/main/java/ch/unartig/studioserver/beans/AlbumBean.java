@@ -261,7 +261,7 @@ public class AlbumBean extends AbstractAlbumBean
 
     protected void setPhotosForCurrentSession()
     {
-
+        _logger.debug("doing nothing - setPhotosForCurrentSession() called for AlbumBean");
     }
 
     /**

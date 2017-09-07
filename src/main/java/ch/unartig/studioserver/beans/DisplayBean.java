@@ -74,10 +74,12 @@ import ch.unartig.studioserver.businesslogic.NavigationHelper;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Product;
+import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -103,7 +105,7 @@ public class DisplayBean implements NavigableObject
     }
 
     /**
-     * main mehtod called from action;
+     * main method called from action;
      * <br> will populate all the necessary information to display the display-view of the album
      * <br> Album can be null
      * <br> set the back to album link using the navigationhelper object
@@ -124,7 +126,6 @@ public class DisplayBean implements NavigableObject
             if (!loadPhotosFromAlbumBean())
             {
                 _logger.warn("Can not load Photos for display view after reload!!!");
-                throw new UnartigException("Not possible to load album bean");
             }
         }
         NavigationHelper.setBackToAlbumLink(this,albumBean);
@@ -153,8 +154,16 @@ public class DisplayBean implements NavigableObject
      */
     private boolean loadPhotosFromAlbumBean() throws UnartigException
     {
-        ListIterator albumPhotosIterator = albumBean.getPhotos().listIterator();
-        _logger.debug("loading photos from album; found ["+albumBean.getPhotos().size()+"] photos");
+        // first make sure we have photos in the album bean
+        ListIterator albumPhotosIterator;
+        List albumBeanPhotos = albumBean.getPhotos();
+        if (albumBeanPhotos != null) {
+            albumPhotosIterator = albumBeanPhotos.listIterator();
+        } else {
+            _logger.warn("no photos found in album bean");
+            return false;
+        }
+        _logger.debug("loading photos from album; found ["+ albumBeanPhotos.size()+"] photos");
         while (albumPhotosIterator.hasNext())
         {
             Photo photo = (Photo) albumPhotosIterator.next();
@@ -169,7 +178,7 @@ public class DisplayBean implements NavigableObject
                 if (albumPhotosIterator.hasNext())
                 {// next photo exists, ok, set nextphoto
                     _logger.debug("next photo exists, ok, set nextphoto");
-                    nextPhoto = (Photo)albumBean.getPhotos().get(albumPhotosIterator.nextIndex());
+                    nextPhoto = (Photo) albumBeanPhotos.get(albumPhotosIterator.nextIndex());
                 }
                 else if (displayPhoto.equals(albumBean.getLastPhotoInAlbumAndSelection()))
                 { // display photo = last photo in album
@@ -212,12 +221,15 @@ public class DisplayBean implements NavigableObject
     }
 
     /**
-     *
-     * @return
+     * Used for example with deep links? When only a photo ID has been passed by the URL parameters?
+     * @return Returns the album sub class where the photo with the photoId resides in
      * @throws UAPersistenceException
      */
     public Album getAlbumFromPhoto() throws UAPersistenceException
     {
+        // todo check and improve: why is this method  called several times when a display photo is shown?????
+        // todo improve by storing the album in the bean?
+
         PhotoDAO photoDao= new PhotoDAO();
         Album retVal = photoDao.load(displayPhotoId).getAlbum();
         _logger.debug("returning :" + retVal);

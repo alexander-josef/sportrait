@@ -33,10 +33,12 @@
             <form-property name="nextPhotoId" type="java.lang.Long"/>
         </form-bean>
 
+<!--
         <form-bean name="displayForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="page" type="java.lang.String"/>
             <form-property name="albumId" type="java.lang.String"/>
         </form-bean>
+-->
 
         <form-bean
                 name="shoppingCart"
@@ -197,10 +199,10 @@
             <forward name="notFound" path="/index.html" redirect="false"/>
         </action>
 
+        <!-- removed scope="request" for form because of deep linking improvements AJ 20170908 -->
         <action path="/display/**" type="ch.unartig.studioserver.actions.DisplayAction"
-                scope="request"
                 parameter="{1}"
-                name="displayForm">
+                name="eventCategoryForm">
             <forward name="albumFallback" path="/index.html"/>
             <forward name="display" path=".sportraitDisplay"/>
         </action>

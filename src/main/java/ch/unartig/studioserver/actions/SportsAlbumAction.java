@@ -67,6 +67,7 @@ import java.lang.reflect.InvocationTargetException;
  * delegate
  *
  * @author Alexander Josef 2006
+ * @deprecated still used somewhere? (AJ 2017-09-03)
  */
 public class SportsAlbumAction extends Action
 {
