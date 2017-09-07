@@ -61,17 +61,17 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.model.EventCategory;
-import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.model.SportsEvent;
+import ch.unartig.studioserver.businesslogic.SessionHelper;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
 
 /**
  * Bean for handling sports events
- * <br>implements the page-paramter part of the populate template from the abstract album bean
+ * <br>implements the page-parameter part of the populate template from the abstract album bean
  * @author Alexander Josef, 2006
  */
 public class SportsAlbumBean extends AbstractAlbumBean
@@ -89,7 +89,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
     private String levelId;
     private EventCategory eventCategory;
     private SportsEvent sportsEvent;
-    private List eventCategories;
+    private List eventCategories; //why a list of eventCategory ? --> search form for start numbers on album overview
 
 
     public SportsAlbumBean()
@@ -151,6 +151,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
         _logger.debug("setting new page number for eventCategory");
         PhotoDAO phDao = new PhotoDAO();
         page = phDao.getAlbumPageNrFor(displayPhotoId,eventCategory,getStartNumber());
+        _logger.debug(" ... got page :" + page);
     }
 
     public String getActionString()
@@ -248,6 +249,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
     /**
      * Return all categories registered for the event of this sportsalbum.
      * Make sure you really want to show all categories, also categories without photos or with offline albums only
+     * fixme: still needed? probably used by jsp getter? check!
      * @return
      */
     public List getEventCategories()
@@ -256,7 +258,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
     }
 
     /**
-     * only return categories with photos.
+     * only return categories with photos. Used by jsp getter
      * @return
      */
     public List getEventCategoriesWithPhotos()

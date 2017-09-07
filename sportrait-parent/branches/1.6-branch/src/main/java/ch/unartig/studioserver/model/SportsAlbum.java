@@ -48,13 +48,13 @@ package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.util.FileUtils;
+import ch.unartig.studioserver.beans.AbstractAlbumBean;
+import ch.unartig.studioserver.beans.SportsAlbumBean;
 
-import java.io.File;
 import java.io.InputStream;
 
 /**
- * this persistably album object is searchable by "Startnumber" and 'etappe'
+ * this album object that can be made persistent in the db is searchable by "Startnumber" and 'etappe'
  * @author Alexander Josef, 2006
  */
 public class SportsAlbum extends GeneratedSportsAlbum
@@ -90,6 +90,25 @@ public class SportsAlbum extends GeneratedSportsAlbum
     public String getActionStringPart()
     {
         return actionStringPart;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public AbstractAlbumBean getAlbumBean() {
+
+        SportsAlbumBean sportsAlbumBean = new SportsAlbumBean();
+        _logger.debug("creating new SportsAlbumBean");
+        // todo: check in EventCategoryAction how to instantiate a SportsAlbumBean --> should be part of SportsAlbumBean constructor
+        sportsAlbumBean.setEventCategory(getEventCategory());
+        sportsAlbumBean.setSportsEvent((SportsEvent)getEvent());
+        sportsAlbumBean.setEventCategories(((SportsEvent) getEvent()).getEventCategories());
+
+        //return new SportsAlbumBean(eventCategory,event);
+        return sportsAlbumBean;
+
     }
 
     public boolean isSportsAlbumLevel()

@@ -58,6 +58,7 @@ public class SessionHelper
 {
     /**
      * helper method to get an instance of an album bean from the session
+     * Todo: AlbumBean still the right name? in case of a sports event ?
      * @param request
      * @return overviewBean
      */

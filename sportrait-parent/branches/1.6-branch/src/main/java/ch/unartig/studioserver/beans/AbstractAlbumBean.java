@@ -157,6 +157,7 @@ public abstract class AbstractAlbumBean
         setTotalNumberOfPhotosForSession();
         setNumberOfPages();
         handleOrderedPhotos();
+        _logger.debug("AlbumBean has been populated");
     }
 
     private void setNumberOfPages()
@@ -490,7 +491,7 @@ public abstract class AbstractAlbumBean
     /**
      * called from display bean if it can't find the photos to display<br>
      *
-     * @param displayPhotoId
+     * @param displayPhotoId The ID of the photo to be displayed
      * @throws ch.unartig.exceptions.UnartigException
      */
     public void reloadPhotosTemplate(Long displayPhotoId) throws UnartigException
@@ -537,12 +538,6 @@ public abstract class AbstractAlbumBean
     {
         _logger.debug("getting first photo of album and selection for :" + this);
         return album.getFirstPhotoInAlbum();
-    }
-
-    public static AbstractAlbumBean getInstance(Album album)
-    {
-        _logger.debug("creating new AlbumBean");
-        return new AlbumBean(album);
     }
 
     /**
