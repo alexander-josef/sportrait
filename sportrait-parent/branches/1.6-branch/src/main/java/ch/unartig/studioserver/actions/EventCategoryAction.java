@@ -72,7 +72,7 @@ public class EventCategoryAction extends MappingDispatchAction
         DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
         EventCategoryDAO eventCategoryDao = new EventCategoryDAO();
         _logger.debug("populating category, showCategory");
-        String eventCategoryIdFromForm = eventCategoryOverviewForm.getString("eventCategoryId");
+        Long eventCategoryIdFromForm = (Long)eventCategoryOverviewForm.get("eventCategoryId");
         String pageFromForm = eventCategoryOverviewForm.getString("page");
         _logger.debug("params: page ["+ pageFromForm +"],eventCategoryId ["+ eventCategoryIdFromForm +"]");
         // todo: Form could live already in session or/and if coming from a deep link, form params are not set. Find better solution or populate form here if needed
@@ -85,9 +85,11 @@ public class EventCategoryAction extends MappingDispatchAction
 
         SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
 
-        if (albumBeanInSession == null
-                || !albumBeanInSession.getEventCategory().getEventCategoryId().toString().equals(eventCategoryIdFromForm)
-                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm))
+        if (
+                albumBeanInSession == null
+                || !albumBeanInSession.getEventCategory().getEventCategoryId().equals(eventCategoryIdFromForm)
+                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm)
+                )
         {
             _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
             SportsAlbumBean sportsAlbumBean;

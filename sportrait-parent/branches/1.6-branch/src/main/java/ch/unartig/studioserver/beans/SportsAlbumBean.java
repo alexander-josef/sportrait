@@ -82,7 +82,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
     private String startNumber;
     /*etappe is equal to a sportsAlbum*/
     private Long etappe;
-    private Long eventCategoryId;
+    private Long eventCategoryId; // this is needed additionally to eventCategory because of the BeanUtils.copyProperties call in EventCategoryAction!
 
     private boolean albumLevel;
     private boolean eventAlbum;
@@ -223,6 +223,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
     public void setEventCategory(EventCategory eventCategory)
     {
         this.eventCategory = eventCategory;
+        this.eventCategoryId = eventCategory.getEventCategoryId(); // set eventCategoryId if eventCategory is set (eventCategoryId needed for form parameter operations)
     }
 
 
