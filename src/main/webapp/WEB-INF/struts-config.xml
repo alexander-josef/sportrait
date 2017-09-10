@@ -27,7 +27,7 @@
 
         <form-bean name="eventCategoryForm" type="org.apache.struts.action.DynaActionForm">
             <form-property name="page" type="java.lang.String"/>
-            <form-property name="eventCategoryId" type="java.lang.String"/>
+            <form-property name="eventCategoryId" type="java.lang.Long"/>
             <form-property name="startNumber" type="java.lang.String"/>
             <form-property name="photoId" type="java.lang.Long"/>
             <form-property name="nextPhotoId" type="java.lang.Long"/>

@@ -440,7 +440,7 @@ public abstract class AbstractAlbumBean
      */
     public final List getPhotosOnPage()
     {
-
+        // todo: causes error: index out of bound - (if coming from page higher than current album has?)
         // page = first AND! last page special case (THIS NEEDS TO BE CHECKED FIRST)
         if (numberOfPages == 1)
         {

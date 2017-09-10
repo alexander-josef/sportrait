@@ -94,11 +94,14 @@ public class DisplayAction extends Action
     Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
+     * Action to prepare the display of a photo
      * <ul>
      * <li>shows the display photo,
      * <li>provides back link,
      * <li> provides button to place in shopping cart
      * </ul>
+     *
+     * This action could be called from a deep link, we cannot assume session data to be present.
      *
      * @param actionMapping
      * @param actionForm
@@ -110,7 +113,7 @@ public class DisplayAction extends Action
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)
 
     {
-        DynaActionForm sportsAlbumForm = (DynaActionForm) actionForm;
+        DynaActionForm eventCategoryOverviewForm = (DynaActionForm) actionForm;
 
         DisplayBean displayBean;
         String photoPath = actionMapping.getParameter();
@@ -122,9 +125,9 @@ public class DisplayAction extends Action
         // or just the photo list??
         AbstractAlbumBean albumBean = SessionHelper.getAlbumBeanFromSession(request);
         if (albumBean == null // we're called without an album in the session - we need to load an album from the given URL parameter (display photo ID?)
-                || !albumFromPhotoID.getEventCategory().getEventCategoryId().equals(((SportsAlbumBean)albumBean).getEventCategory().getEventCategoryId())) // we're called from a deeplink - eventcategory in session differs from photoId in URL - reload! todo: ugly: casting
+                || !albumFromPhotoID.getEventCategory().getEventCategoryId().equals(((SportsAlbumBean) albumBean).getEventCategory().getEventCategoryId())) // we're called from a deeplink - eventcategory in session differs from photoId in URL - reload!
         {
-            _logger.info("album not found in session ... reloading ...");
+            _logger.info("album not found in session or eventcategory differs from session (deep links)... reloading ...");
             albumBean = albumFromPhotoID.getAlbumBean();
             try {
                 albumBean.reloadPhotosTemplate(displayPhotoId);
@@ -147,7 +150,8 @@ public class DisplayAction extends Action
             // todo handle exception
         }
 
-        sportsAlbumForm.set("page",String.valueOf(albumBean.getPage())); // make sure page is set in dynaactionform in case the page number has been newly calculated
+        eventCategoryOverviewForm.set("page", String.valueOf(albumBean.getPage())); // make sure page is set in dynaactionform in case the page number has been newly calculated
+        eventCategoryOverviewForm.set("eventCategoryId", ((SportsAlbumBean) albumBean).getEventCategoryId()); // make sure eventCategoryId is set in dynaactionform in case the page number has been newly calculated
         request.setAttribute("display", displayBean);
         return actionMapping.findForward("display");
     }
