@@ -355,7 +355,7 @@ public class HibernateUtil
         Object retVal;
         try
         {
-            Query q = sess.createQuery(query);
+            Query q = sess.createQuery(query).setCacheable(true);
             setParameters(parameters, q);
             retVal = q.uniqueResult();
 

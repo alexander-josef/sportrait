@@ -402,7 +402,8 @@ Note: if you list each property explicitly, you must include all properties of t
         Criteria c = HibernateUtil.currentSession().createCriteria(Photo.class);
         c.add(Expression.eq("album", album))
                 .addOrder(Order.asc("pictureTakenDate"))
-                .setMaxResults(1);
+                .setMaxResults(1)
+                .setCacheable(true);
         Photo firstPhoto = (Photo) c.uniqueResult();
         if (firstPhoto == null)
         {
@@ -495,6 +496,7 @@ Note: if you list each property explicitly, you must include all properties of t
         Object queryResult = c
                 .add(Expression.le("pictureTakenDate", photo.getPictureTakenDate()))
                 .add(Expression.eq("album", photo.getAlbum()))
+                .setCacheable(true)
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
 
@@ -602,6 +604,7 @@ Note: if you list each property explicitly, you must include all properties of t
             queryResult = createSportsPhotoCriteria(eventCategory, startNumber)
                     .add(Expression.le("pictureTakenDate", photo.getPictureTakenDate()))
                     .setProjection(Projections.rowCount())
+                    .setCacheable(true)
                     .uniqueResult();
 
         } catch (HibernateException e)
@@ -613,6 +616,7 @@ Note: if you list each property explicitly, you must include all properties of t
             queryResult = createSportsPhotoCriteria(eventCategory, startNumber)
                     .add(Expression.le("photoId", photo.getPhotoId()))
                     .setProjection(Projections.rowCount())
+                    .setCacheable(true)
                     .uniqueResult();
         }
         position = (Integer) queryResult;
@@ -692,7 +696,9 @@ Note: if you list each property explicitly, you must include all properties of t
         criteria.setMaxResults(maxResults)
                 .setFirstResult(firstResult)
                 .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"));
+                .addOrder(Order.asc("photoId"))
+                .setCacheable(true) // also enable query caching
+        ;
         try
         {
             photos = criteria.list();
@@ -786,7 +792,8 @@ Note: if you list each property explicitly, you must include all properties of t
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
                 .createAlias("album","a")
                 .add(Restrictions.eq("a.eventCategory", eventCategory))
-                .add(Restrictions.eq("a.publish", Boolean.TRUE));
+                .add(Restrictions.eq("a.publish", Boolean.TRUE))
+                .setCacheable(true);
 
         addStartNumberCriteria(startnumber, criteria);
         return criteria;

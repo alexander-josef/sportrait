@@ -33,6 +33,7 @@
         <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <!--<property name="cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>-->
         <property name="cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
 
         <!-- Mapping files -->
         <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->
