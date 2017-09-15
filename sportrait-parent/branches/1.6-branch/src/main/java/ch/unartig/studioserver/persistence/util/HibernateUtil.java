@@ -344,7 +344,7 @@ public class HibernateUtil
     /**
      * query (with given params map) returns exactly one result
      *
-     * @param query      Qury
+     * @param query      Query
      * @param parameters Query parameters
      * @return result Object
      * @throws UAPersistenceException Hibernate exception
