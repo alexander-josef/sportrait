@@ -379,11 +379,29 @@ Note: if you list each property explicitly, you must include all properties of t
      */
     public int countPhotos(Album album)
     {
-        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
-        Map map = new HashMap();
-        map.put("album", album);
-        Object queryObject = HibernateUtil.getUnique(query, map);
-        return ((Long) queryObject).intValue();
+        // todo check performance of both calculations!
+
+//        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
+//        Map map = new HashMap();
+//        map.put("album", album);
+//        Object queryObject = HibernateUtil.getUnique(query, map);
+//        int resultValue1 = ((Long) queryObject).intValue();
+
+
+        // if query should be cachable, use returnValue 2 - but check performance.
+        // method used for sportrait?
+        Number resultValue2 = (Number)HibernateUtil.currentSession()
+                .createCriteria(Photo.class)
+                .createAlias("album", "album")
+                // .add(Expression.eq("album.publish", Boolean.TRUE))
+                .add(Expression.eq("album", album))
+                .setProjection(Projections.rowCount())
+                .setCacheable(true)
+                .uniqueResult();
+
+
+//        return resultValue1;
+        return resultValue2.intValue();
 
     }
 
@@ -821,6 +839,7 @@ Note: if you list each property explicitly, you must include all properties of t
     {
         Integer count = (Integer) createSportsPhotoCriteria(eventCategory, startNumber)
                 .setProjection(Projections.rowCount())
+                .setCacheable(true)
                 .uniqueResult();
         _logger.debug("Photo count = " + count);
         return count;
