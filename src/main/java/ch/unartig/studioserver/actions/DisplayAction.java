@@ -128,7 +128,7 @@ public class DisplayAction extends Action
                 || !albumFromPhotoID.getEventCategory().getEventCategoryId().equals(((SportsAlbumBean) albumBean).getEventCategory().getEventCategoryId())) // we're called from a deeplink - eventcategory in session differs from photoId in URL - reload!
         {
             _logger.info("album not found in session or eventcategory differs from session (deep links)... reloading ...");
-            albumBean = albumFromPhotoID.getAlbumBean();
+            albumBean = albumFromPhotoID.getAlbumBean(); // get a new albumBean to be populated later
             try {
                 albumBean.reloadPhotosTemplate(displayPhotoId);
             } catch (UnartigException e) {
