@@ -13,7 +13,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.43</version>
+    <version>1.6.44-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -658,9 +658,9 @@
 
 
     <scm>
-        <connection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/tags/sportrait_web-1.6.43
+        <connection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
         </connection>
-        <developerConnection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/tags/sportrait_web-1.6.43
+        <developerConnection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
         </developerConnection>
     </scm>
 
