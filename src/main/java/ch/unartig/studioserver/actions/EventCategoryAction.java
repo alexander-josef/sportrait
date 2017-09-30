@@ -86,9 +86,10 @@ public class EventCategoryAction extends MappingDispatchAction
         SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
 
         if (
-                albumBeanInSession == null
-                || !albumBeanInSession.getEventCategory().getEventCategoryId().equals(eventCategoryIdFromForm)
-                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm)
+                albumBeanInSession == null // (re)load if there's no album bean in session
+                || !albumBeanInSession.getEventCategory().getEventCategoryId().equals(eventCategoryIdFromForm) // reload if the event category changed
+                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm) // reload if the page changed
+                || !albumBeanInSession.getStartNumber().equals(eventCategoryOverviewForm.getString("startNumber")) // reload if the startnumber changed
                 )
         {
             _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
