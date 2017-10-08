@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
+    <tiles:insert attribute="twitterCard" ignore="true"/>
 
     <%-- Google Sign-In js functions
          Function called by Google Sign-In button on success
@@ -58,6 +59,38 @@
     </script>
 </head>
 <body id="body">
+<%-- Facebook SDK--%>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.10";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<%-- END Facebook SDK --%>
+
+<%-- Twitter JS --%>
+<script>window.twttr = (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function(f) {
+        t._e.push(f);
+    };
+
+    return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<%-- END Twitter JS--%>
+
+
 <%-- todo bessere loesung:
     * z.b. verschachtelte tiles; nur das open tag fuer body zu extrahieren macht wenig sinn und ist fehleranfaellig
  --%>

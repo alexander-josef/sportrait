@@ -164,6 +164,16 @@ public class Photo extends GeneratedPhoto
         return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
     }
 
+    public String getHighResUrl()
+    {
+        String highResUrl = "todo";
+//        todo : concatenate high res url (not via fileStorageProvider)
+        // check if free or paid image
+        // used for social sharing
+        return highResUrl;
+    }
+
+
     public boolean equals(Object obj)
     {
         return this.getPhotoId().equals(((Photo) obj).getPhotoId());

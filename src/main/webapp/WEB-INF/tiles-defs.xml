@@ -122,7 +122,7 @@
         <put name="content1" value="/WEB-INF/protected/tiles/infoForPhotographers.jsp"/>
     </definition>
 
-    <definition name=".eventCategory" path="/WEB-INF/protected/layout/template.jsp">
+    <definition name=".eventCategory" template="/WEB-INF/protected/layout/template.jsp">
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCategory.jsp"/>
         <put name="head" value=".headFoto"/>
@@ -141,6 +141,7 @@
 
     <definition name=".sportraitDisplay" extends=".eventCategory">
         <put name="content1" value="/WEB-INF/protected/tiles/display.jsp"/>
+        <put name="twitterCard" value="/WEB-INF/protected/tiles/twitterCard.jsp"/>
     </definition>
 
     <!--Unartig Links-->
