@@ -163,6 +163,17 @@ todo refactor name albumBean as fast as possible
 
                             <img src="${display.displayPhoto.displayUrl}"
                                  alt="${display.displayPhoto.filename}"/>
+                            <%-- Social Sharing : --%>
+                            <div>1
+                                <%-- Facebook --%>
+                                <%-- todo: replace data-href with higher res photo, i.e. http://localhost:8080/downloadPhoto?photoId=${display.displayPhotoId} --%>
+                                    <div class="fb-share-button" data-href="${display.displayPhoto.displayUrl}" data-layout="button_count" data-size="small" data-mobile-iframe="false">
+                                        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=${display.displayPhoto.displayUrl}&amp;src=sdkpreparse">Teilen</a>
+                                    </div>
+
+                                    <%-- Twitter --%>
+                                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="tweet text from link" data-hashtags="sola2017" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                            </div>
                             <c:if test="${clientInSession!=null}">
                                 <div>
                                     <html:link action="/admin/deletePhoto?photoId=${display.displayPhotoId}"  >
