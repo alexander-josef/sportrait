@@ -172,7 +172,7 @@ todo refactor name albumBean as fast as possible
                                     </div>
 
                                     <%-- Twitter --%>
-                                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="tweet text from link" data-hashtags="sola2017" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="Mein ASVZ Sola Foto auf sportrait.com" data-hashtags="sola2017" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                             </div>
                             <c:if test="${clientInSession!=null}">
                                 <div>
