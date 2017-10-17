@@ -1,7 +1,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <%-- todo what's that? --%>
 <meta name="twitter:site" content="@site_username">
-<meta name="twitter:title" content="ASVZ SOLA / Mein Läuferfoto auf sportrait.com">
+<meta name="twitter:title" content="ASVZ SOLA / Mein LÃ¤uferfoto auf sportrait.com">
 <%-- todo: insert description --%>
 <meta name="twitter:description" content="Up than 200 characters.">
 <%-- todo: replace by sportrait twitter account --%>
