@@ -161,7 +161,7 @@ public class Photo extends GeneratedPhoto
     public String getThumbnailUrl()
     {
         // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-        String imgixString = "http://dev-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=100&h=100&fit=clip&auto=format,enhance&q=60&usm=25";
+        String imgixString = "http://"+Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=100&h=100&fit=clip&auto=format,enhance&q=60&usm=25";
         return imgixString;
 //        URL to thumbnail file ()
 //        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
@@ -174,7 +174,7 @@ public class Photo extends GeneratedPhoto
     public String getDisplayUrl()
     {
         // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-        String imgixString = "http://dev-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
+        String imgixString = "http://"+Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
         return imgixString;
 //        URL to thumbnail file ()
 //        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
