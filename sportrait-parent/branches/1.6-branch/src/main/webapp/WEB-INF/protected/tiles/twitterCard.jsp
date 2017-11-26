@@ -2,7 +2,7 @@
 
 <meta name="twitter:card" content="summary_large_image">
 <%-- todo what's that? --%>
-<meta name="twitter:title" content="ASVZ SOLA LÃ¤uferfoto">
+<meta name="twitter:title" content="ASVZ SOLA Läuferfoto">
 <%-- todo: insert description --%>
 <meta name="twitter:description" content="Alle Fotos der ASVZ Sola-Staffette auf sportrait.com">
 <%-- todo: replace by sportrait twitter account --%>
@@ -15,8 +15,8 @@
 <meta name="twitter:domain" content="sportrait.com">
 
 
-<meta property="og:url"                content="" />
+<meta property="og:url"                content="${requestScope['javax.servlet.forward.request_uri']}" />
 <meta property="og:type"               content="article" />
 <meta property="og:title"              content="${display.albumFromPhoto.event.longTitle}" />
-<meta property="og:description"        content="Mein LÃ¤uferfoto der ASVZ SOLA" />
+<meta property="og:description"        content="Mein Läuferfoto der ASVZ SOLA !!" />
 <meta property="og:image"              content="http://int-sportrait.imgix.net/fine-images/${display.albumFromPhoto.genericLevelId}/fine/${display.displayPhoto.filename}?w=1000&h=500&fit=crop&crop=top%2Cleft" />

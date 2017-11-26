@@ -165,10 +165,9 @@ todo refactor name albumBean as fast as possible
                                  alt="${display.displayPhoto.filename}"/>
                             <%-- Social Sharing : --%>
                             <div>
-                                <%-- Facebook --%>
+                                <%-- Facebook (data href element left out - should default to current web site) --%>
                                 <%-- todo: introduce parameter for imgix url (depending on environment) --%>
-                                    <div class="fb-share-button" data-href="${display.displayPhoto.displayUrl}" data-layout="button_count" data-size="small" data-mobile-iframe="false">
-                                        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://int-sportrait.imgix.net/fine-images/${display.albumFromPhoto.genericLevelId}/fine/${display.displayPhoto.filename}?w=1000&amp;src=sdkpreparse">Teilen</a>
+                                    <div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="false">
                                     </div>
 
                                     <%-- Twitter --%>
