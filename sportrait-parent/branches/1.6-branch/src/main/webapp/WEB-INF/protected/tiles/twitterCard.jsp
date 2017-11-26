@@ -18,5 +18,7 @@
 <meta property="og:url"                content="${requestScope['javax.servlet.forward.request_uri']}" />
 <meta property="og:type"               content="website" />
 <meta property="og:title"              content="${display.albumFromPhoto.event.longTitle}" />
-<meta property="og:description"        content="Mein Läuferfoto der ASVZ SOLA !!" />
+<meta property="og:description"        content="Mein Läuferfoto der ASVZ SOLA !!!" />
 <meta property="og:image"              content="http://int-sportrait.imgix.net/fine-images/${display.albumFromPhoto.genericLevelId}/fine/${display.displayPhoto.filename}?w=1000&h=500&fit=crop&crop=top%2Cleft" />
+<meta property="og:image:width" content="253"/>
+<meta property="og:image:height" content="380"/>
