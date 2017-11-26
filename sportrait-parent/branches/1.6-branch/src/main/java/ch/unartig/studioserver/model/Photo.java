@@ -154,14 +154,30 @@ public class Photo extends GeneratedPhoto
         return hoursMinutesSecondsDateFormatter.format(getPictureTakenDate());
     }
 
+    /**
+     *
+     * @return (absolute o relative ) URL string for thumbnail image
+     */
     public String getThumbnailUrl()
     {
-        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        // todo : insert parameters (environment - imgix domain, image manipulation parameters)
+        String imgixString = "http://dev-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=100&h=100&fit=clip&auto=format,enhance&q=60&usm=25";
+        return imgixString;
+//        URL to thumbnail file ()
+//        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
     }
 
+    /**
+     *
+     * @return URL string for display image
+     */
     public String getDisplayUrl()
     {
-        return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        // todo : insert parameters (environment - imgix domain, image manipulation parameters)
+        String imgixString = "http://dev-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
+        return imgixString;
+//        URL to thumbnail file ()
+//        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
     }
 
     public String getHighResUrl()
