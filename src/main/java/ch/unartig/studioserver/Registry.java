@@ -352,6 +352,7 @@ public final class Registry
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
     private static JsonFactory googleJasonFactory;
     private static NetHttpTransport googleHttpTransport;
+    private static String applicationEnvironment; // dev, int or prod
 
 
     /**
@@ -371,6 +372,9 @@ public final class Registry
 
 //        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
 //        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
+
+        setApplicationEnvironment(appSettings.getMessage("application.environment"));
+        _logger.info("***** application environment = " + appSettings.getMessage("application.environment"));
 
         setFineImagesDirectory(appSettings.getMessage("fineImagesDirectory"));
         _logger.info("***** fine images directory = " + appSettings.getMessage("fineImagesDirectory"));
@@ -727,5 +731,13 @@ public final class Registry
 
     public static NetHttpTransport getGoogleHttpTransport() {
         return googleHttpTransport;
+    }
+
+    public static void setApplicationEnvironment(String applicationEnvironment) {
+        Registry.applicationEnvironment = applicationEnvironment;
+    }
+
+    public static String getApplicationEnvironment() {
+        return applicationEnvironment;
     }
 }
