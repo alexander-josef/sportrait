@@ -34,6 +34,11 @@
                 </td>
                 <td>&nbsp;(bestehende Kategorie w�hlen oder neue erstellen)</td>
             </tr>
+            <tr>
+                <td><span class="bold">Create Thumbnail/Display?</span></td>
+                <td><html:checkbox property="createThumbDisplay" title="Create Thumb/Display?"/></td>
+                <td>Bilder lokal herunterrechnen (wird nicht mehr benötigt mit der Einführung des Image Services imgix)</td>
+            </tr>
 
             <tr>
                 <td colspan=3/>
@@ -98,8 +103,6 @@
                 <td>Pfad auf Server:</td>
                 <td>
                     <html:text property="imagePath"/>
-                    Create Thumbnail/Display?
-                    <html:checkbox property="createThumbDisplay" title="Create Thumb/Display?"/>
                     <html:submit value="Import starten"/>
                 </td>
                 <td>...absoluten '/fine' Pfad auf Server mit Bildern angeben</td>

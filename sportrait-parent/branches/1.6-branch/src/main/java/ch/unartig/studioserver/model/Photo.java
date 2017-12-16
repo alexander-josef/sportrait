@@ -160,11 +160,16 @@ public class Photo extends GeneratedPhoto
      */
     public String getThumbnailUrl()
     {
-        // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-        String imgixString = "http://"+Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=100&h=100&fit=clip&auto=format,enhance&q=60&usm=25";
-        return imgixString;
-//        URL to thumbnail file ()
-//        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        String thumbnailUrl;
+
+        if (this.isAfterImageServiceMigration()){
+            // todo : insert parameters (environment - imgix domain, image manipulation parameters)
+            thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance&q=60&usm=25";
+        } else {
+            // URL to thumbnail file - legacy solution before image service (imgix)
+            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        }
+        return thumbnailUrl;
     }
 
     /**
@@ -173,21 +178,50 @@ public class Photo extends GeneratedPhoto
      */
     public String getDisplayUrl()
     {
-        // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-        String imgixString = "http://"+Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/"+getAlbum().getGenericLevelId().toString()+ "/fine/"+getFilename()+"?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
-        return imgixString;
-//        URL to thumbnail file ()
-//        return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        String displayUrl;
+        if (this.isAfterImageServiceMigration())
+        {
+            // todo : insert parameters (environment - imgix domain, image manipulation parameters)
+            displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
+        } else {
+            // URL to display file - before image service migration (imgix)
+            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+
+        }
+        return displayUrl;
+    }
+
+    /**
+     * Helper method to determine if photo belongs to an event that has been imported after the image service migration imgix
+     * @return true in case photo will be handled by image service (imgix)
+     */
+    public boolean isAfterImageServiceMigration() {
+        // todo: change to 2018 !!
+        return getAlbum().getEvent().getEventDateYear() >= 2017;
+    }
+
+    /**
+     * For imgix return the master file url for this photo
+     * @return imgix url for this photo
+     */
+    public String getMasterImageUrlFromImageService() {
+        return "https://" + Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
     }
 
     public String getHighResUrl()
     {
         String highResUrl = "todo";
 //        todo : concatenate high res url (not via fileStorageProvider)
+        // currently implemented via DownloadPhotoAction
+
         // check if free or paid image
         // used for social sharing
+
+        // example for high res image from imgix including the logo / sponsor bar :
+        // https://int-sportrait.imgix.net/fine-images/215/fine/sola15_e12_mf_2011.JPG?bm=normal&blend64=L2xvZ28vc29sYS1zcG9uc29ycy1iYXItYm90dG9tLW5ldS5wbmc&mark64=L2xvZ28vYXN2ei1sb2dvLTIwMTctcmVzaXplZC03MDBweC5wbmc&markalign=right%2Ctop&ba=bottom%2C%20center&bs=inherit
         return highResUrl;
     }
+
 
 
     public boolean equals(Object obj)
@@ -198,7 +232,7 @@ public class Photo extends GeneratedPhoto
 
 
     /**
-     * Return photo file by given fileStorageProvider (changed since S3 Migration)
+     * Return InputStream from photo file by given fileStorageProvider (changed since S3 Migration)
      *
      * @return The fine file content as InputStream from the storage provider
      */

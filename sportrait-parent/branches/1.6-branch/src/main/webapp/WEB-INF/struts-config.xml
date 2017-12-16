@@ -186,7 +186,6 @@
         <action path="/event" type="ch.unartig.studioserver.actions.SportEventsAction"
                 parameter="event">
             <forward name="success" path=".sportraitEvent" redirect="false"/>
-            <!-- todo create an error page -->
             <forward name="noEvent" path=".sportraitEvent" redirect="false"/>
         </action>
 

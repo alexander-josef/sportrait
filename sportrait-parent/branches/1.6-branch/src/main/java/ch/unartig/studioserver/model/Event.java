@@ -239,6 +239,18 @@ public class Event extends GeneratedEvent
         return simpleFormate.format(getEventDate());
     }
 
+    /**
+     * Helper to return the year of the event
+     * @return year from eventDate
+     */
+    public int getEventDateYear()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getEventDate());
+
+        return cal.get(Calendar.YEAR);
+    }
+
 
     /**
      * overriden from generic level. only event has date at the time being.

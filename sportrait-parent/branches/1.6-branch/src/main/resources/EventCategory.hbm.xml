@@ -53,9 +53,9 @@
             <column name="eventId" index="EventCategory_Event_INDEX"/>
         </many-to-one>
 
-
+<!-- Update 2017-12-16 : Need to set lazy = false in order to make deep linking working (when coming from a display page) -->
         <set name="albums"
-             lazy="true"
+             lazy="false"
              cascade="all-delete-orphan"
              inverse="true"
                 >

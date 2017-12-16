@@ -125,12 +125,14 @@ public class Uploader extends Thread
      */
     public void run()
     {
+        Album album;
         try
         {
             // create a transaction around the import:
             HibernateUtil.currentSession().beginTransaction();
-            doImport();
+            album = doImport();
             HibernateUtil.commitTransaction();
+            HibernateUtil.currentSession().refresh(album.getEventCategory());
         } catch (IOException e)
         {
             _logger.error("IO-error in uploader thread. stopping thread", e);
@@ -146,7 +148,7 @@ public class Uploader extends Thread
      * @throws IOException
      * @throws UnartigException
      */
-    private void doImport() throws IOException, UnartigException
+    private Album doImport() throws IOException, UnartigException
     {
         // why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID. To prevent session timeout issues? Not important, this process is not done frequently.
         GenericLevelDAO glDao = new GenericLevelDAO();
@@ -176,6 +178,7 @@ public class Uploader extends Thread
             _logger.error("Uploader in unexpected state. Stopping import of photos");
             throw new RuntimeException("Uploader in unexpected state. Stopping import of photos");
         }
+        return album;
 
     }
 }

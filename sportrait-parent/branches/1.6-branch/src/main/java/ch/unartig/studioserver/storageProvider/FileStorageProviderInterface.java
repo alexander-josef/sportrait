@@ -74,7 +74,7 @@ public interface FileStorageProviderInterface {
      *
      * @param album The album where the file is from
      * @param filename Name of the file (within the album)
-     * @return File that matches the key in the given storage (bucket?) // Todo: return a InputStream instead ?
+     * @return Input Stream from File that matches the key in the given storage
      */
     public InputStream getFineImageFileContent(Album album, String filename) throws UAPersistenceException;
 

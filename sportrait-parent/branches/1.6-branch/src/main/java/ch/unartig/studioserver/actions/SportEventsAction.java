@@ -101,7 +101,7 @@ public class SportEventsAction extends MappingDispatchAction
             String eventCategoryId = dynaForm.getString("eventCategoryId");
             String tempFineImageServerPath = dynaForm.getString("imagePath"); // the temporary fine images path (local to the web server) as given by the upload form)
             String storageProviderUploadPath = dynaForm.getString("storageProviderUploadPath"); // chosen path (or actually the bucket key) as chosen in the web form
-            String s3Upload = dynaForm.getString("s3Upload"); // chosen path (or actually the bucket key) as chosen in the web form
+            String s3Upload = dynaForm.getString("s3Upload"); // flag if upload from s3 bucket
             String photographerId = dynaForm.getString("photographerId");
             FormFile file = (FormFile) dynaForm.get("content");
             Boolean createThumbDisplay = (Boolean) dynaForm.get("createThumbDisplay");
@@ -119,7 +119,8 @@ public class SportEventsAction extends MappingDispatchAction
                 _logger.info("Going to import an album from uploaded Files in S3 'upload' Folder : " + storageProviderUploadPath);
                 // todo : call in event?
                 // todo: same as next option?
-                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, true,applyLogoOnFineImages);
+
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, createThumbDisplay,applyLogoOnFineImages);
 
             } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
@@ -250,7 +251,7 @@ public class SportEventsAction extends MappingDispatchAction
             forward = "noEvent";
         }
         // only for debugging:
-        Client client = (Client)request.getSession().getAttribute(Registry._SESSION_CLIENT_NAME);
+        // Client client = (Client)request.getSession().getAttribute(Registry._SESSION_CLIENT_NAME);
         return mapping.findForward(forward);
     }
 
