@@ -192,7 +192,7 @@ public class HibernateUtil
         {
 //            System.out.println("**************************** Getting session from factory : " + sessionFactory + "*************************************");
             Session session = sessionFactory.getCurrentSession();
-            // start a transaction. We will always need a transation. If beginTransaction will be called again for the same unit of work, it should do nothing (??)
+            // start a transaction. We will always need a transaction. If beginTransaction will be called again for the same unit of work, it should do nothing (??)
             session.beginTransaction();
 //            System.out.println("&&&&&&&&&&&&&& Session hashcode: " + session.hashCode());
             return session;
