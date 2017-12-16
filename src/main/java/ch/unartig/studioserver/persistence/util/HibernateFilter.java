@@ -50,6 +50,7 @@ public class HibernateFilter implements Filter
 
     /**
      * This filter wrapps a hibernate transaction around the request. This makes sure, that all db calls are within a transaction and that the session closes when the response is returned to the client.
+     * This is an implementation of the common "session-per-request" pattern, see https://docs.jboss.org/hibernate/orm/3.3/reference/en/html/transactions.html
      * Http HEAD methods are skipped!
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException
