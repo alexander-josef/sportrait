@@ -388,7 +388,7 @@ public class SportsEvent extends GeneratedSportsEvent
      */
     public List getEventCategoriesWithPhotos()
     {
-        List retVal = new ArrayList();
+        List retVal = new ArrayList(); // debug: cached results? probably not
         for (Object o : getEventCategories())
         {
             EventCategory eventCategory = (EventCategory) o;
@@ -401,8 +401,7 @@ public class SportsEvent extends GeneratedSportsEvent
                 }
             } catch (UnartigException e)
             {
-                _logger.error("Cannot count photos of eventcategory");
-                e.printStackTrace();
+                _logger.error("Cannot count photos of eventcategory",e);
             }
         }
         return retVal;

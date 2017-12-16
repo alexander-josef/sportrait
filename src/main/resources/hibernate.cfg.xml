@@ -33,6 +33,7 @@
         <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <!--<property name="cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>-->
         <property name="cache.use_second_level_cache">true</property>
+        <!-- problem with old data when using query cache? -->
         <property name="hibernate.cache.use_query_cache">true</property>
 
         <!-- Mapping files -->

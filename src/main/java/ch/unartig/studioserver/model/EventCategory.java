@@ -35,13 +35,15 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import org.apache.log4j.Logger;
 
 /**
  * Example: Etappen in Sola
  */
 public class EventCategory extends GeneratedEventCategory
 {
+    Logger _logger = Logger.getLogger(getClass().getName());
+
     /**
      * default constructor needed for hibernate
      */
@@ -66,10 +68,8 @@ public class EventCategory extends GeneratedEventCategory
      * @throws ch.unartig.exceptions.UnartigException
      */
     public boolean hasPublishedPhotos() throws UnartigException {
-        // coming from deep links, albums can not be loaded lazily ...
-        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
-        setAlbums(eventCategoryDAO.load(this.getEventCategoryId()).getAlbums()); // make sure we get a session and reload / re-attach albums from eventCategory
 
+        _logger.debug("EventCategory "+ getTitle() +" - EventCategory.getAlbums().size() = " + getAlbums().size());
         for (Object o : getAlbums()) {
             Album album = (Album) o;
             if (album.getPublish() && album.getNumberOfPhotos() > 0) {

@@ -315,7 +315,7 @@ public abstract class GenericLevel extends GeneratedGenericLevel implements Comp
 
 
     /**
-     * Count recursivly all photos that are contained in this level
+     * Count recursively all photos that are contained in this level
      *
      * @return number of photos
      * @throws ch.unartig.exceptions.UAPersistenceException

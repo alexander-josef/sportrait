@@ -132,6 +132,7 @@ import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Expression;
@@ -389,6 +390,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
         // if query should be cachable, use returnValue 2 - but check performance.
+        // After import of new photos in the album, cached value must not be used anymore
         // method used for sportrait?
         Number resultValue2 = (Number)HibernateUtil.currentSession()
                 .createCriteria(Photo.class)
