@@ -55,7 +55,6 @@ public class EventCategoryAction extends MappingDispatchAction {
 
     /**
      * This action will be called to populate photos from an eventCategory
-     * todo: problem with deletion of photos : session data is not reloaded, deleted photos show
      *
      * @param mapping
      * @param form
