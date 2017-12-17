@@ -178,7 +178,8 @@ todo refactor name albumBean as fast as possible
                                     <html:link action="/admin/deletePhoto?photoId=${display.displayPhotoId}"  >
                                         delete
                                     </html:link>
-                                </div>                            </c:if>
+                                </div>
+                            </c:if>
                         </td>
                         <td class="frameRight"></td>
                     </tr>
