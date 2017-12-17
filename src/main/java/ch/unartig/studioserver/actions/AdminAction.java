@@ -410,7 +410,7 @@ public class AdminAction extends MappingDispatchAction
         }
 
 
-
+        // used in case of display view - move to next display photo
         if (nextPhotoId!=null)
         {
             ActionRedirect redirect = new ActionRedirect(mapping.findForward("success"));
