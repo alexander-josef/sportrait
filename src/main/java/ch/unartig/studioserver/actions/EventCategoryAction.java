@@ -33,7 +33,6 @@ package ch.unartig.studioserver.actions;
 
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.EventCategory;
@@ -50,13 +49,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public class EventCategoryAction extends MappingDispatchAction
-{
+public class EventCategoryAction extends MappingDispatchAction {
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
     /**
      * This action will be called to populate photos from an eventCategory
+     * todo: problem with deletion of photos : session data is not reloaded, deleted photos show
+     *
      * @param mapping
      * @param form
      * @param request
@@ -64,17 +64,16 @@ public class EventCategoryAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    public ActionForward showCategory(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
-    {
+    public ActionForward showCategory(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException {
         ActionMessages msgs;
         msgs = new ActionMessages();
 
         DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
         EventCategoryDAO eventCategoryDao = new EventCategoryDAO();
         _logger.debug("populating category, showCategory");
-        Long eventCategoryIdFromForm = (Long)eventCategoryOverviewForm.get("eventCategoryId");
+        Long eventCategoryIdFromForm = (Long) eventCategoryOverviewForm.get("eventCategoryId");
         String pageFromForm = eventCategoryOverviewForm.getString("page");
-        _logger.debug("params: page ["+ pageFromForm +"],eventCategoryId ["+ eventCategoryIdFromForm +"]");
+        _logger.debug("params: page [" + pageFromForm + "],eventCategoryId [" + eventCategoryIdFromForm + "]");
         // todo: Form could live already in session or/and if coming from a deep link, form params are not set. Find better solution or populate form here if needed
         // todo:
         // * if category changes? --> update sportsAlbumBean
@@ -85,52 +84,54 @@ public class EventCategoryAction extends MappingDispatchAction
 
         SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
 
-        if (
-                albumBeanInSession == null // (re)load if there's no album bean in session
-                || !albumBeanInSession.getEventCategory().getEventCategoryId().equals(eventCategoryIdFromForm) // reload if the event category changed
-                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm) // reload if the page changed
-                || ((albumBeanInSession.getStartNumber()!=null) && !albumBeanInSession.getStartNumber().equals(eventCategoryOverviewForm.getString("startNumber"))) // reload if the startnumber changed , ! -> startnumber from albumbean can be null! (only if coming from deep link?)
-                )
-        {
-            _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
-            SportsAlbumBean sportsAlbumBean;
-            sportsAlbumBean = new SportsAlbumBean(); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
-            EventCategory eventCategory;
-            // used to mark photos that are in the shopping cart:
-            try {
-                BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
-                eventCategory = eventCategoryDao.load(sportsAlbumBean.getEventCategoryId());
-                SportsEvent event = eventCategory.getEvent();
-                List list = event.getEventCategories();
-                if (eventCategory == null || eventCategory.getEventCategoryId() == null) {
-                    _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
-                    msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
-                    saveMessages(request, msgs);
-                    return mapping.findForward("notFound");
-                }
-                sportsAlbumBean.setEventCategory(eventCategory);
-                sportsAlbumBean.setSportsEvent(event);
-                sportsAlbumBean.setEventCategories(list);
-                sportsAlbumBean.setShoppingCart(SessionHelper.getShoppingCartFromSession(request));
 
-            } catch (IllegalAccessException e) {
-                _logger.error("problem with params");
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                _logger.error("problem with params");
-                e.printStackTrace();
-            } catch (HibernateException he) {
+        // needs to reload every time ! Could change because of deleted photos.
+//        if (
+//                albumBeanInSession == null // (re)load if there's no album bean in session
+//                || !albumBeanInSession.getEventCategory().getEventCategoryId().equals(eventCategoryIdFromForm) // reload if the event category changed
+//                || albumBeanInSession.getPage()!=Integer.parseInt(pageFromForm) // reload if the page changed
+//                || ((albumBeanInSession.getStartNumber()!=null) && !albumBeanInSession.getStartNumber().equals(eventCategoryOverviewForm.getString("startNumber"))) // reload if the startnumber changed , ! -> startnumber from albumbean can be null! (only if coming from deep link?)
+//                )
+//        {
+        _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
+        SportsAlbumBean sportsAlbumBean;
+        sportsAlbumBean = new SportsAlbumBean(); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
+        EventCategory eventCategory;
+        // used to mark photos that are in the shopping cart:
+        try {
+            BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
+            eventCategory = eventCategoryDao.load(sportsAlbumBean.getEventCategoryId());
+            SportsEvent event = eventCategory.getEvent();
+            List list = event.getEventCategories();
+            if (eventCategory.getEventCategoryId() == null) {
                 _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
                 saveMessages(request, msgs);
                 return mapping.findForward("notFound");
             }
+            sportsAlbumBean.setEventCategory(eventCategory);
+            sportsAlbumBean.setSportsEvent(event);
+            sportsAlbumBean.setEventCategories(list);
+            sportsAlbumBean.setShoppingCart(SessionHelper.getShoppingCartFromSession(request));
 
-            sportsAlbumBean.populateAlbumBeanTemplate();
-
-            request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR, sportsAlbumBean);
-//        request.getSession().setAttribute("eventCategories",((SportsEvent)eventCategory.getEvent()).getEventCategories());
+        } catch (IllegalAccessException e) {
+            _logger.error("problem with params");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            _logger.error("problem with params");
+            e.printStackTrace();
+        } catch (HibernateException he) {
+            _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
+            msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
+            saveMessages(request, msgs);
+            return mapping.findForward("notFound");
         }
+
+        sportsAlbumBean.populateAlbumBeanTemplate();
+
+        request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR, sportsAlbumBean);
+//        request.getSession().setAttribute("eventCategories",((SportsEvent)eventCategory.getEvent()).getEventCategories());
+//        }
 
         return mapping.findForward("success");
     }
