@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!-- the URL for the mappings file above is a small trick to get around a problem with hibernate
+    (relative URLs in this XML file are not resolved as relative to the containing file...
+    See discussions at:
+    - http://forum.hibernate.org/viewtopic.php?t=927396
+    - http://forum.hibernate.org/viewtopic.php?t=928282
+    - http://forum.hibernate.org/viewtopic.php?t=928504
+    - and the fix see: http://opensource.atlassian.com/projects/hibernate/secure/ViewIssue.jspa?key=HB-677
+    It looks like Hibernate 2.2 will support configurable entity resolvers which could solve this.
+-->
+
+<hibernate-configuration>
+
+    <session-factory name="sportraitSessionFactory">
+
+        <property name="connection.datasource">java:comp/env/jdbc/sportrait</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!--suppress HibernateConfigDomInspection -->
+        <property name="show_sql">${hibernate.showSQL}</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+
+
+        <property name="hibernate.current_session_context_class">org.hibernate.context.ThreadLocalSessionContext</property>
+        <property name="hibernate.connection.release_mode">auto</property>
+
+        <!-- Enable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        <!--<property name="cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>-->
+        <property name="cache.use_second_level_cache">true</property>
+        <!-- problem with old data when using query cache? -->
+        <property name="hibernate.cache.use_query_cache">true</property>
+
+        <!-- Mapping files -->
+        <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->
+        <!--For a more generic solution check the hibernate.cfg.xml file for localhost and the comments in cluded in this file. However, using the !ENTITY Tag seems not to work for boston-->
+        <!--<mapping resource="ch/unartig/studioserver/model/Photo.hbm.xml"/>-->
+
+
+        <mapping resource="GenericLevel.hbm.xml"/>
+        <mapping resource="Photo.hbm.xml"/>
+        <mapping resource="Customer.hbm.xml"/>
+        <mapping resource="Order.hbm.xml"/>
+        <mapping resource="Product.hbm.xml"/>
+        <mapping resource="OrderItem.hbm.xml"/>
+        <mapping resource="PhotoSubject.hbm.xml"/>
+        <mapping resource="EventRunner.hbm.xml"/>
+        <mapping resource="OrderHash.hbm.xml"/>
+        <mapping resource="Price.hbm.xml"/>
+        <mapping resource="ProductType.hbm.xml"/>
+        <mapping resource="UserRole.hbm.xml"/>
+        <mapping resource="UserProfile.hbm.xml"/>
+        <mapping resource="EventCategory.hbm.xml"/>
+        <mapping resource="Photographer.hbm.xml"/>
+
+    </session-factory>
+
+</hibernate-configuration>
