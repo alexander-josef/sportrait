@@ -3,12 +3,12 @@
   <component name="ArtifactManager">
     <artifact type="war" name="sportrait_web:war">
       <output-path>$PROJECT_DIR$/target</output-path>
-      <root id="archive" name="sportrait_web-1.6.42-SNAPSHOT.war">
+      <root id="archive" name="sportrait_web-1.6.44-SNAPSHOT.war">
         <element id="artifact" artifact-name="sportrait_web:war exploded" />
       </root>
     </artifact>
     <artifact type="exploded-war" name="sportrait_web:war exploded">
-      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.42-SNAPSHOT</output-path>
+      <output-path>$PROJECT_DIR$/target/sportrait_web-1.6.44-SNAPSHOT</output-path>
       <root id="root">
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
@@ -88,15 +88,13 @@
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/target/sportrait_web-1.6.44-SNAPSHOT/META-INF/MANIFEST.MF" />
         </element>
         <element id="javaee-facet-resources" facet="sportrait_web/web/Web" />
       </root>
     </artifact>
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
-    <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
       <entry name="!?*.form" />
@@ -108,32 +106,27 @@
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+      <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="sportrait_web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="sportrait_web" target="1.5" />
+      <module name="sportrait_web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="" />
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
-  <component name="DataSourceManagerImpl" format="xml" hash="2478056212">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/sportrait</jdbc-url>
-      <libraries />
     </data-source>
   </component>
   <component name="DependencyValidationManager">
@@ -143,13 +136,16 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/twitterCard.jsp" charset="ISO-8859-1" />
   </component>
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
-  </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="IdProvider" IDEtalkID="6500DF6484F42D12AACBABB61D73517E" />
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -318,87 +314,8 @@
       <module fileurl="file://$PROJECT_DIR$/sportrait_web.iml" filepath="$PROJECT_DIR$/sportrait_web.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="9.0" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
-  </component>
-  <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Tomcat6" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 6.0.48" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
-      <option name="UPDATING_POLICY" value="restart-server" />
-      <deployment>
-        <artifact name="sportrait_web:war exploded">
-          <settings>
-            <option name="CONTEXT_PATH" value="/" />
-          </settings>
-        </artifact>
-      </deployment>
-      <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="Unnamed_sportrait_web_2" />
-        <option name="HTTPS_PORT" value="8443" />
-      </server-settings>
-      <predefined_log_file id="Tomcat" enabled="true" />
-      <predefined_log_file id="Tomcat Catalina" enabled="true" />
-      <predefined_log_file id="Tomcat Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Host Manager" enabled="false" />
-      <predefined_log_file id="Tomcat Localhost Access" enabled="false" />
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <RunnerSettings RunnerId="Cover" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="55874" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <method>
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="sportrait_web:war exploded" />
-        </option>
-      </method>
-    </configuration>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToClass.includeLibraries" value="false" />
@@ -556,10 +473,11 @@
   </component>
   <component name="dataSourceStorageLocal">
     <data-source name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <user-name>sportrait</user-name>
-      <user-password>dfdfdfc4dfcbdfd8dfdedfc3dfcd</user-password>
-      <schema-pattern>sportrait.pg_catalog sportrait.public</schema-pattern>
-      <default-schemas>sportrait.pg_catalog sportrait.public</default-schemas>
+      <introspection-schemas>sportrait:pg_catalog,public</introspection-schemas>
+      <resolve-scope>sportrait:pg_catalog,public</resolve-scope>
+      <unqualified-resolve-schemas>sportrait:pg_catalog,public</unqualified-resolve-schemas>
     </data-source>
   </component>
   <component name="libraryTable">
