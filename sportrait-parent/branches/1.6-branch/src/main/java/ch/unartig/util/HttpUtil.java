@@ -178,17 +178,7 @@ public class HttpUtil {
         return connection.getContentLength();
     }
 
-    /**
-     * @return content type
-     */
-    public String getContentType() {
-        if (connection instanceof sun.net.www.protocol.file.FileURLConnection) {
-            if ("application/xml".equals(connection.getContentType())) {
-                return "text/xml";
-            }
-        }
-        return connection.getContentType();
-    }
+
 
     /**
      * @return

@@ -447,7 +447,7 @@ public class Album extends GeneratedAlbum {
      * @param applyLogoOnFineImages
      */
     public void registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
-
+    // todo : introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
 
 
         Integer pictureWidth;
