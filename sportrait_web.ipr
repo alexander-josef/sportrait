@@ -38,7 +38,6 @@
             <element id="library" level="project" name="Maven: javax.mail:mail:1.4" />
             <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
             <element id="library" level="project" name="Maven: sslext:sslext:1.2-0" />
-            <element id="library" level="project" name="Maven: javax.media:jai_core:1.1.2_01" />
             <element id="library" level="project" name="Maven: javax.servlet:jstl:1.1.2" />
             <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
             <element id="library" level="project" name="Maven: jdom:jdom:1.0" />
@@ -712,17 +711,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/paypal/paypal_base/1.0.0/paypal_base-1.0.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.sun.media:jai_codec:1.1.2_01">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/sun/media/jai_codec/1.1.2_01/jai_codec-1.1.2_01.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/sun/media/jai_codec/1.1.2_01/jai_codec-1.1.2_01-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/sun/media/jai_codec/1.1.2_01/jai_codec-1.1.2_01-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: commons-beanutils:commons-beanutils:1.7.0">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar!/" />
@@ -864,17 +852,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.media:jai_core:1.1.2_01">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/media/jai_core/1.1.2_01/jai_core-1.1.2_01-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: javax.servlet:jstl:1.1.2">
