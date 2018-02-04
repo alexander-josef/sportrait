@@ -222,8 +222,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album, filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
                             moveObject(key, getFineImageKey(album, filename));
+                            _logger.debug("moved master image to correct S3 directory");
                         } else if (!key.equals(getFineImageKey(album, filename))) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
                             delete(key);
+                            _logger.debug("master image deleted from temp location");
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);
