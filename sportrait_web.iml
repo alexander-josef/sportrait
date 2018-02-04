@@ -42,6 +42,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="com.drewnoakes:metadata-extractor:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: ch.unartig.server:sportrait_client:0.7" level="project" />
     <orderEntry type="library" name="Maven: xmlrpc:xmlrpc-client:3.0" level="project" />
     <orderEntry type="library" name="Maven: sun-plugin:sun-plugin:1.0" level="project" />
@@ -114,5 +115,7 @@
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
     <orderEntry type="library" name="Maven: com.google.http-client:google-http-client-jackson2:1.22.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava-jdk5:17.0" level="project" />
+    <orderEntry type="library" name="Maven: com.drewnoakes:metadata-extractor:2.11.0" level="project" />
+    <orderEntry type="library" name="Maven: com.adobe.xmp:xmpcore:5.1.3" level="project" />
   </component>
 </module>

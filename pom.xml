@@ -122,7 +122,7 @@
         </dependency>
 
 
-        <!-- removing JAI dependencies ... not necessary anymore with image service (imgix) -->
+        <!-- removed all JAI dependencies ... not necessary anymore with image service (imgix) and metadata extractor-->
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -243,6 +243,12 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.drewnoakes</groupId>
+            <artifactId>metadata-extractor</artifactId>
+            <version>2.11.0</version>
         </dependency>
 
 

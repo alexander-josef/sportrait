@@ -179,17 +179,18 @@ public class DownloadImageBean
 //            if (orderItem.getProduct().getProductId().intValue() == 17 || orderItem.getProduct().getProductId().intValue() == 18)
             if (productType.getProductTypeId() == _ID_DIGI_FOTO_400_600)
             {
-                stream400x600Photo(photo, os);
+                throw new UnartigImagingException("not implemented");
 
             } else if (productType.getProductTypeId() == _ID_DIGITAL_NEGATIVE)
             {
-                // digital negativ copy the file to the output stream
+                // digital negative,  copy the file to the output stream
+                // todo: what about logo ?
                 _logger.info("streaming the digital negativ");
                 FileUtils.copyFile(photo.getFileContent(), os);
             } else // everything else
             {
                 _logger.info("Not a digital product; streaming standard preview size");
-                stream400x600Photo(photo, os);
+                throw new UnartigImagingException("not implemented");
 
             }
         } catch (UnartigImagingException e)
@@ -203,22 +204,6 @@ public class DownloadImageBean
         }
     }
 
-    /**
-     * Todo: check if still used
-     * @param photo
-     * @param os
-     * @throws UnartigImagingException
-     */
-    private void stream400x600Photo(Photo photo, OutputStream os) throws UnartigImagingException
-    {
-        _logger.info("processing digi foto 600 * 400");
-        double resampleFactor;
-        double longerSidePixels = 600d;
-        Integer originalWidthPixels = photo.isOrientationLandscape() ? photo.getWidthPixels() : photo.getHeightPixels();
-        resampleFactor = longerSidePixels / (double) originalWidthPixels.intValue();
-        _logger.debug("sample factor :" + resampleFactor);
-        ImagingHelper.reSample(photo.getFileContent(), resampleFactor, os, 0.75f);
-    }
 
     /**
      * Return a set of downloadable Photos for the download screen

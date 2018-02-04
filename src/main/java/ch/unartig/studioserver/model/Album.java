@@ -208,8 +208,13 @@ import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.FileUtils;
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifDirectoryBase;
+import com.drew.metadata.exif.ExifSubIFDDirectory;
+import com.drew.metadata.jpeg.JpegDirectory;
 
-import javax.media.jai.RenderedOp;
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -275,7 +280,6 @@ public class Album extends GeneratedAlbum {
     }
 
 
-
     public List listChildrenForNavTree() {
         return Collections.EMPTY_LIST;
     }
@@ -334,7 +338,7 @@ public class Album extends GeneratedAlbum {
      * <p/>
      * example:
      * CIMG1114.JPG;3264;2448;2/18/07
-     *
+     * <p>
      * ZIP archive contains import.txt as well as display / thumbnail folders
      * optionally only import.txt is uploaded in archive
      *
@@ -405,8 +409,9 @@ public class Album extends GeneratedAlbum {
 
     /**
      * Register photos that are already at the file system providers location (no temp folder available)
+     *
      * @param createThumbnailDisplay
-     * @param applyLogoOnFineImages true if logo shall be copied on fine photos
+     * @param applyLogoOnFineImages  true if logo shall be copied on fine photos
      */
     public void registerPhotos(Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
 
@@ -416,7 +421,7 @@ public class Album extends GeneratedAlbum {
         // Registry.getFileStorageProvider().registerStoredFinePhotos(this,album.createThumbnailDisplay::registersinglephoto(), createThumbnailDisplay);
 
         // in File storage provider: go through Folder of Album and register all valid photo stored in album-folder; store problem files
-        problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay,applyLogoOnFineImages);
+        problemFiles = Registry.getFileStorageProvider().registerStoredFinePhotos(this, createThumbnailDisplay, applyLogoOnFineImages);
     }
 
     /**
@@ -424,8 +429,9 @@ public class Album extends GeneratedAlbum {
      * <p/> Needed: temporary fine photos
      * <p/> copies the temp file to it's final location according to the given fileStorageProvider
      * <p/> This method shall fail gracefully with a exception message in case a photo can not be registered (corrupt file, not a foto-file etc.)
-     * @param tempSourceDir Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
-     * @param createThumbDisp set to true to create the display and thumbnail images
+     *
+     * @param tempSourceDir         Temporary location (pointed to in the UI) where the files to be imported have been temporarily uploaded; can be 'null' if the photos have already been put to the correct file storage location
+     * @param createThumbDisp       set to true to create the display and thumbnail images
      * @param applyLogoOnFineImages set to true if logo needs to be copied on all fine images
      */
     public void registerPhotosFromTempLocation(String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
@@ -440,132 +446,67 @@ public class Album extends GeneratedAlbum {
 
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
-     * @param problemFiles    A set of accumulated files that caused problems during import
-     * @param photoFileContentStream       The image file input stream to be registered
-     * @param filename The filename used for registering the photo in the db photos table
-     * @param createThumbDisp set to true to create the display and thumbnail images
+     *
+     * @param problemFiles           A set of accumulated files that caused problems during import
+     * @param photoFileContentStream The image file input stream to be registered
+     * @param filename               The filename used for registering the photo in the db photos table
+     * @param createThumbDisp        set to true to create the display and thumbnail images
      * @param applyLogoOnFineImages
      */
     public void registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
-    // todo : introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
 
 
         Integer pictureWidth;
         Integer pictureHeight;
         Date pictureTakenDate;
+
         try {
-            // this causes eof problems ....
-//            FileUtils.copyFile(photoFile,new File(getFinePath(),photoFile.getName()));
+            // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            // FileUtils.copyFile(photoFileContentStream, baos);
+            // byte[] bytes = baos.toByteArray();
 
-            // either use JAI or ImgScalr:
-
-// *** JAI:
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            FileUtils.copyFile(photoFileContentStream, baos);
-            byte[] bytes = baos.toByteArray();
-
-            RenderedOp fineImage = ImagingHelper.readImage(new ByteArrayInputStream(bytes));
-            pictureWidth = fineImage.getWidth();
-            pictureHeight = fineImage.getHeight();
+            // todo : introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
 
 
-
-
-
-// **** ImgSclr :
-
-/*
-            BufferedImage finePhotoBufferedImage = ImageIO.read(photoFile);
-            pictureWidth = finePhotoBufferedImage.getWidth();
-            pictureHeight = finePhotoBufferedImage.getHeight();
-            RenderedOp fineImage = null; // just not to cause not a compilation problem
-*/
-
-
-            ExifData exif = new ExifData(bytes);
-            // todo: switch to metadata-extractor, see task on kanban board
+            Metadata metadata = ImageMetadataReader.readMetadata(photoFileContentStream);
+            Directory jpegDirectory = metadata.getFirstDirectoryOfType(JpegDirectory.class);
+            ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
 
             _logger.debug("read width and height");
-            Date exifDate;
-            exifDate = exif.getPictureTakenDate();
+            pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
+            pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+            pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+
+            // pictureWidth = fineImage.getWidth();
+            // pictureHeight = fineImage.getHeight();
+
+
+            // ExifData exif = new ExifData(bytes);
+            // todo: switch to metadata-extractor, see task on kanban board
+
+
+            // exifDate = exif.getPictureTakenDate();
             _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
 
-            if (exifDate != null) {
-                pictureTakenDate = new Date(exifDate.getTime());
-            } else {
+            if (pictureTakenDate == null) {
                 pictureTakenDate = new Date(0);
                 _logger.error("Unable to determine date of file");
-
-                //problemFiles.add(photoFile);
             }
-
-            String displayTitle = filename;
+            //problemFiles.add(photoFile);
 
             _logger.debug("filename : " + filename);
             _logger.debug("***********  " + pictureTakenDate + "  **************");
 
-            Photo photo = new Photo(filename, this, pictureWidth, pictureHeight, pictureTakenDate, displayTitle);
+            Photo photo = new Photo(filename, this, pictureWidth, pictureHeight, pictureTakenDate, filename);
             // add to db:
             add(photo);
-            // check if photo already exists?
-            // copy file?
-            // process: choose a (local?) directory with photos to import and a project
-            // import routine checks if photo already exists
-            // once imported thumbnailer will run ... (and the ones already 'thumbnailed' ?
 
-            if (createThumbDisp ) {
+            // removed logic to add thumbnails or logo montage on master images
+            // see 1.6-branch
 
-/*
-
-// ******  use imgscalr to produce thumb/disp images :
-
-
-                BufferedImage display = Scalr.resize(finePhotoBufferedImage,Scalr.Method.SPEED, Registry.getDisplayPixelsLongerSide());
-                BufferedImage thumbnail = Scalr.resize(finePhotoBufferedImage,Scalr.Method.SPEED, Registry.getThumbnailPixelsLongerSide());
-
-                ImageIO.write(display,"jpg",new File(getDisplayPath(), filename));
-                ImageIO.write(thumbnail,"jpg",new File(getThumbnailPath(), filename));
-
-                // first results: really bad: 121 s instead of 70s with JAI only
-                _logger.info("wrote thumb/disp images via ImgScalr for image : "+ filename);
-
-// ******
-
-*/
-
-                // create thumbnail/display and fine image with logo overlay (with JAI operations)
-
-                // now trying new method and commenting following line out ...
-                OutputStream scaledDisplayImage = ImagingHelper.createScaledImage(fineImage, Registry.getDisplayPixelsLongerSide().doubleValue(), false);
-                Registry.fileStorageProvider.putDisplayImage(this, scaledDisplayImage, filename);
-                // create thumbnail
-                OutputStream scaledThumbnailImage = ImagingHelper.createScaledImage(fineImage, Registry.getThumbnailPixelsLongerSide().doubleValue(), false);
-                Registry.fileStorageProvider.putThumbnailImage(this, scaledThumbnailImage, filename);
-            }
-
-            // create new Fine with logo montage ?
-            if (applyLogoOnFineImages) {
-                OutputStream fineImageWithLogo = ImagingHelper.createJpgImage(fineImage, Registry._IMAGE_QUALITY_FINE, true);
-                // in case of logo / watermark montage, the new fine will be put to the right location
-                Registry.fileStorageProvider.putFineImage(this, fineImageWithLogo, filename);
-            }
-
-        } catch (IOException e) {
-            _logger.info("Problems while copying the file or accessing the EXIF data of file " + filename, e);
-            //noinspection unchecked
-            problemFiles.add(filename);
-/*
-        } catch (UnartigImagingException e1) {
-            _logger.info("Problem processing the image; continue with next image", e1);
-            //noinspection unchecked
-            problemFiles.add(photoFile);
-*/
-        } catch (UAPersistenceException e2) {
-            _logger.info("Problem saving image; continue with next image", e2);
-            //noinspection unchecked
-            problemFiles.add(filename);
         } catch (Exception e3) {
+            // todo: catch specific (Metadata extractor)
             _logger.info("unknown error; continue with next image", e3);
             //noinspection unchecked
             problemFiles.add(filename);
@@ -608,7 +549,7 @@ public class Album extends GeneratedAlbum {
             getPhotos().add(photo);
             phDao.saveOrUpdate(photo);
             HibernateUtil.commitTransaction();
-            _logger.info("wrote photo (filename/id) : " + photo.getFilename()+"/"+photo.getPhotoId().toString());
+            _logger.info("wrote photo (filename/id) : " + photo.getFilename() + "/" + photo.getPhotoId().toString());
         } catch (UAPersistenceException e) {
             HibernateUtil.rollbackTransaction();
             _logger.error("error while saving photo", e);
@@ -620,9 +561,7 @@ public class Album extends GeneratedAlbum {
     }
 
 
-
     /**
-     *
      * @return
      * @deprecated
      */
@@ -634,7 +573,6 @@ public class Album extends GeneratedAlbum {
 
 
     /**
-     *
      * @return
      * @deprecated
      */
@@ -645,10 +583,9 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     *
+     * @param album
      * @return
      * @deprecated
-     * @param album
      */
     private static File getAlbumWebImagesPath(Album album) {
         // todo-files : what to return in case of storage-provider implementation?
@@ -661,7 +598,7 @@ public class Album extends GeneratedAlbum {
     }
 
     public Set getProblemFiles() {
-        if (problemFiles==null) {
+        if (problemFiles == null) {
             problemFiles = new HashSet();
         }
         return problemFiles;
@@ -735,7 +672,6 @@ public class Album extends GeneratedAlbum {
      *
      * @return last photo in album
      * @throws ch.unartig.exceptions.UnartigException
-     *
      */
     public Photo getLastPhotoInAlbumAndSelection() throws UnartigException {
         _logger.debug("Album.getLastPhotoInCategoryAndSelection xxxx");
@@ -752,7 +688,6 @@ public class Album extends GeneratedAlbum {
      *
      * @return first photo in album
      * @throws ch.unartig.exceptions.UnartigException
-     *
      */
     public Photo getFirstPhotoInAlbum() throws UnartigException {
         PhotoDAO photoDao = new PhotoDAO();
@@ -779,7 +714,6 @@ public class Album extends GeneratedAlbum {
      *
      * @param productPrices
      * @throws ch.unartig.exceptions.UAPersistenceException
-     *
      */
     public void setProductPricesMap(Map productPrices) throws UAPersistenceException {
 
@@ -787,7 +721,7 @@ public class Album extends GeneratedAlbum {
         // product entries per album: only one per productType
         Set productTypeIds = productPrices.keySet();
         PriceDAO priceDao = new PriceDAO();
-        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext(); ) {
             String productTypeIdString = (String) iterator.next();
             String priceIdString = (String) productPrices.get(productTypeIdString);
             //producttypes with priceid <=0 are not set for this album
@@ -827,7 +761,7 @@ public class Album extends GeneratedAlbum {
      *
      * @param productTypeId The ID of the ProductType
      * @return <p>The product that has the productType identified by the productTypeId.</p>
-     *         <p>NULL, if no product exists with the given productType.</p>
+     * <p>NULL, if no product exists with the given productType.</p>
      */
     public Product getProductFor(Long productTypeId) {
         // make a query or use the collection???
@@ -844,15 +778,15 @@ public class Album extends GeneratedAlbum {
     /**
      * Return a map containing the productTypeId as key and the productType as Value
      *
-     * @return
      * @param onlyActiveProducts set to true to filter for active products, in the shopping cart, for example.
-     * For product configuration, more likely all products are needed
+     *                           For product configuration, more likely all products are needed
+     * @return
      */
     public Map getAvailableProductTypes(boolean onlyActiveProducts) {
 
         Map productTypeMap = new HashMap();
-        Set products  = onlyActiveProducts ? getActiveProducts():getProducts();
-        for (Iterator iterator = products.iterator(); iterator.hasNext();) {
+        Set products = onlyActiveProducts ? getActiveProducts() : getProducts();
+        for (Iterator iterator = products.iterator(); iterator.hasNext(); ) {
             Product product = (Product) iterator.next();
             ProductType productType = product.getProductType();
             productTypeMap.put(productType.getProductTypeId(), productType);
@@ -903,19 +837,17 @@ public class Album extends GeneratedAlbum {
     }
 
     /**
-     *  
      * @return true In case a free download is offered on the display page offers this method
      */
     public boolean isHasFreeHighResDownload() {
         for (Object o : getActiveProducts()) {
             Product product = (Product) o;
-            if (product.isDigitalProduct() && (product.getPrice().getPriceCHF().floatValue()==0.0f)) {
+            if (product.isDigitalProduct() && (product.getPrice().getPriceCHF().floatValue() == 0.0f)) {
                 return true;
             }
         }
         return false;
     }
-
 
 
     /**
@@ -938,10 +870,10 @@ public class Album extends GeneratedAlbum {
 
     /**
      * Return the matching AlbumBean. Polymorphism makes sure it's from the right type
+     *
      * @return
      */
-    public AbstractAlbumBean getAlbumBean()
-    {
+    public AbstractAlbumBean getAlbumBean() {
         return new AlbumBean(this);
     }
 
