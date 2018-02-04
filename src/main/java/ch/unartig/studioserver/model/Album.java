@@ -200,8 +200,6 @@ import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
-import ch.unartig.studioserver.imaging.ExifData;
-import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
@@ -211,7 +209,6 @@ import ch.unartig.util.FileUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
-import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
 
@@ -445,7 +442,8 @@ public class Album extends GeneratedAlbum {
 
 
     /**
-     * Registers a single photo in the db and creates the thumb and disp images if the first argument is true
+     * Registers a single photo in the db and creates the thumb and disp images if the applyLogoOnFineImages argument is true
+     * AJ 20180204 : applyLogoOnFineImages not used anymore with image service (imgix)
      *
      * @param problemFiles           A set of accumulated files that caused problems during import
      * @param photoFileContentStream The image file input stream to be registered
@@ -461,11 +459,7 @@ public class Album extends GeneratedAlbum {
         Date pictureTakenDate;
 
         try {
-            // ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            // FileUtils.copyFile(photoFileContentStream, baos);
-            // byte[] bytes = baos.toByteArray();
-
-            // todo : introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
+            // introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
 
 
             Metadata metadata = ImageMetadataReader.readMetadata(photoFileContentStream);
@@ -477,23 +471,12 @@ public class Album extends GeneratedAlbum {
             pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
             pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
             pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-
-            // pictureWidth = fineImage.getWidth();
-            // pictureHeight = fineImage.getHeight();
-
-
-            // ExifData exif = new ExifData(bytes);
-            // todo: switch to metadata-extractor, see task on kanban board
-
-
-            // exifDate = exif.getPictureTakenDate();
             _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
-
             if (pictureTakenDate == null) {
                 pictureTakenDate = new Date(0);
                 _logger.error("Unable to determine date of file");
+                //problemFiles.add(photoFile);
             }
-            //problemFiles.add(photoFile);
 
             _logger.debug("filename : " + filename);
             _logger.debug("***********  " + pictureTakenDate + "  **************");
