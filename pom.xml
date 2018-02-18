@@ -536,6 +536,9 @@
 
     </profiles>
 
+    <properties>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+    </properties>
 
     <repositories>
 
