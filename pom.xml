@@ -13,7 +13,7 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.6.44-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <name>sportrait Server</name>
     <url>http://sportrait.com</url>
 
@@ -531,13 +531,7 @@
 
 
         </profile>
-        <profile>
-            <id>tomcat6x</id>
-            <properties>
-                <containerId>tomcat6x</containerId>
-                <url>http://www.apache.org/dist/jakarta/tomcat-5/v5.0.30/bin/jakarta-tomcat-5.0.30.zip</url>
-            </properties>
-        </profile>
+
 
 
     </profiles>
@@ -651,17 +645,29 @@
     </pluginRepositories>
 
 
+<!-- old settings with assembla
     <scm>
         <connection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
         </connection>
         <developerConnection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
         </developerConnection>
     </scm>
+-->
+
+    <scm>
+        <url>https://github.com/alexander-josef/sportrait</url>
+        <connection>scm:git:https://github.com/alexander-josef/sportrait.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+
+
 
     <distributionManagement>
         <!-- use the following if you're not using a snapshot version. -->
         <!-- the authentication settings can be put to settings.xml (in [your homedir]/.m2/settings.xml) -->
         <!-- updated 2015-07 to accommodate the new location of the maven2 repo on aws2.sportrait.com -->
+        <!-- an example is documented in evernote-->
+
         <repository>
             <id>ssh-mvn-repo</id>
             <name>sportrait m2 repo</name>
