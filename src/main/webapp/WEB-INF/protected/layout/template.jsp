@@ -27,10 +27,12 @@
 
         function onSignIn(googleUser) {
 
+            gapi.auth2.init({                 client_id: googleUser.getId,                'scope': 'https://www.googleapis.com/auth/plus.login'         })
+
             // window.alert("log in attempt! Google User Id : " + googleUser.getId());
             console.log("log in attempt! Google User Id : " + googleUser.getId());
             var id_token = googleUser.getAuthResponse().id_token;
-
+            console.log("using token : " + id_token);
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '<html:rewrite action="/tokensignin" />');
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
