@@ -57,6 +57,7 @@ public class AuthenticationAction extends MappingDispatchAction {
         _logger.debug("Callling tokensignin() method for google auth");
         _logger.debug("Using client-id : " + CLIENT_ID);
         String idTokenString = request.getParameter("idtoken");
+        _logger.debug("Using idtoken : " + idTokenString);
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                 .Builder(Registry.getGoogleHttpTransport(), Registry.getGoogleJasonFactory())
                 .setAudience(Collections.singletonList(CLIENT_ID))
