@@ -66,7 +66,7 @@ public class AuthenticationAction extends MappingDispatchAction {
 
 // (Receive idTokenString by HTTPS POST)
 
-        _logger.debug("Calling Google verifier .... ");
+        _logger.debug("Calling Google verifier - verifier = " + verifier);
 
         GoogleIdToken idToken = null;
         try {
