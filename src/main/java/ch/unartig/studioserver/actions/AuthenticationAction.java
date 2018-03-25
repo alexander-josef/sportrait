@@ -39,7 +39,7 @@ public class AuthenticationAction extends MappingDispatchAction {
      */
     public ActionForward signOut(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)
     {
-
+        _logger.debug("signing Out");
         request.getSession(true).setAttribute(Registry._SESSION_CLIENT_NAME, null);
         return actionMapping.findForward("success");
     }
@@ -54,6 +54,8 @@ public class AuthenticationAction extends MappingDispatchAction {
      */
     public ActionForward tokensignin(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException, GeneralSecurityException {
 
+        _logger.debug("Callling tokensignin() method for google auth");
+        _logger.debug("Using client-id : " + CLIENT_ID);
         String idTokenString = request.getParameter("idtoken");
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                 .Builder(Registry.getGoogleHttpTransport(), Registry.getGoogleJasonFactory())
@@ -65,6 +67,7 @@ public class AuthenticationAction extends MappingDispatchAction {
 // (Receive idTokenString by HTTPS POST)
 
         GoogleIdToken idToken = verifier.verify(idTokenString);
+        _logger.debug("receiving google id token : " + idToken);
         if (idToken != null) {
             // verified
             // now setting token to session // adding authenticated client object to session
@@ -74,8 +77,9 @@ public class AuthenticationAction extends MappingDispatchAction {
 //            request.getSession().setAttribute("googleIdToken", idToken);
             // set username to client object and store in session:
             String username = idToken.getPayload().getSubject();
+            _logger.debug("google subject : " + username);
             // todo: using the "username" currently on the userprofile table.
-            // column should be something like "exeternalSubjectID" ...
+            // todo: column should be something like "externalSubjectID" ...
             if (client.init(username)) {
                 request.getSession(true).setAttribute(Registry._SESSION_CLIENT_NAME,client);
 
@@ -84,6 +88,7 @@ public class AuthenticationAction extends MappingDispatchAction {
                 // Print user identifier
                 String userId = payload.getSubject();
                 System.out.println("User ID: " + userId);
+                _logger.info("User Id from payload: " + userId);
 
                 // Get profile information from payload
                 String email = payload.getEmail();
@@ -94,25 +99,28 @@ public class AuthenticationAction extends MappingDispatchAction {
                 String familyName = (String) payload.get("family_name");
                 String givenName = (String) payload.get("given_name");
 
+                _logger.debug("sending response ...");
                 httpServletResponse.getWriter().print("Authorized User Id ; " + userId);
+
 
             } else {
                 // authenticated google user not found in db
+                _logger.debug("client.init() results to false -- no user found in DB with given google id. Returning unauthorized");
                 httpServletResponse.getWriter().print("unauthorized");
 
             }
 
 
         } else {
-            System.out.println("Invalid ID token.");
             // todo: what to do in this case?
             // logout?
+            _logger.info("IdToken == null ");
             httpServletResponse.getWriter().print("Invalid ID token");
 
         }
 
 
-
+        _logger.debug("returning null");
         return null;
     }
 
