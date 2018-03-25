@@ -76,6 +76,8 @@ public class AuthenticationAction extends MappingDispatchAction {
         } catch (IOException ioException) {
             _logger.error("IO Exception while calling google verifier",ioException);
 
+        } catch (Throwable throwable) {
+            _logger.error("Exception has been thrown : ",throwable);
         }
         _logger.debug("receiving google id token : " + idToken);
         if (idToken != null) {
