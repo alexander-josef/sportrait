@@ -42,6 +42,7 @@
                     window.alert("your user is not registered");
                     signOut();
                 } else {
+
                     console.log('Signed in');
                 }
             };

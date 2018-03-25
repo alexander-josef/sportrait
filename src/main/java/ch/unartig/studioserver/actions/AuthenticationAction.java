@@ -52,7 +52,7 @@ public class AuthenticationAction extends MappingDispatchAction {
      * @param httpServletResponse
      * @return
      */
-    public ActionForward tokensignin(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException, GeneralSecurityException {
+    public ActionForward tokensignin(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)  {
 
         _logger.debug("Callling tokensignin() method for google auth");
         _logger.debug("Using client-id : " + CLIENT_ID);
@@ -66,7 +66,17 @@ public class AuthenticationAction extends MappingDispatchAction {
 
 // (Receive idTokenString by HTTPS POST)
 
-        GoogleIdToken idToken = verifier.verify(idTokenString);
+        _logger.debug("Calling Google verifier .... ");
+
+        GoogleIdToken idToken = null;
+        try {
+            idToken = verifier.verify(idTokenString);
+        } catch (GeneralSecurityException securityException) {
+            _logger.error("Security Exception thrown while calling google verifier",securityException);
+        } catch (IOException ioException) {
+            _logger.error("IO Exception while calling google verifier",ioException);
+
+        }
         _logger.debug("receiving google id token : " + idToken);
         if (idToken != null) {
             // verified
@@ -100,13 +110,22 @@ public class AuthenticationAction extends MappingDispatchAction {
                 String givenName = (String) payload.get("given_name");
 
                 _logger.debug("sending response ...");
-                httpServletResponse.getWriter().print("Authorized User Id ; " + userId);
+                // todo : this response will not be validated in the JS part (template.js) - send back result that will be checked by JS
+                try {
+                    httpServletResponse.getWriter().print("Authorized User Id ; " + userId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
             } else {
                 // authenticated google user not found in db
                 _logger.debug("client.init() results to false -- no user found in DB with given google id. Returning unauthorized");
-                httpServletResponse.getWriter().print("unauthorized");
+                try {
+                    httpServletResponse.getWriter().print("unauthorized");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -115,7 +134,11 @@ public class AuthenticationAction extends MappingDispatchAction {
             // todo: what to do in this case?
             // logout?
             _logger.info("IdToken == null ");
-            httpServletResponse.getWriter().print("Invalid ID token");
+            try {
+                httpServletResponse.getWriter().print("Invalid ID token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
