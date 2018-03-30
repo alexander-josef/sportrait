@@ -98,7 +98,6 @@ import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.model.OrderItem;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.Product;
-import ch.unartig.studioserver.ordermodules.PaypalPaymentOrder;
 import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
 import ch.unartig.studioserver.persistence.DAOs.OrderHashDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
@@ -249,7 +248,8 @@ public class ShoppingCartLogic
         int returnCode;// send order now! use credit card payment
         _logger.debug("payment method: credit card");
         // the Order object is needed later to send the customer notification email. put reference to shopping cart?
-        photoOrder = new PaypalPaymentOrder(shoppingCart, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly(), ipAddress, order);
+        // todo: check paypal sdk integration if needed again. currently not in use
+        // photoOrder = new PaypalPaymentOrder(shoppingCart, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly(), ipAddress, order);
 //      photoOrder = new CoplaPhotoOrder(order, Registry.isDemoOrderMode(), Registry.isSimulateOrderOnly());
         String cardHolderName = getCardHolderName();
         // CreditCardDetails ccDetail = new CreditCardDetails(checkOutForm.getCreditCardTypeCode(), checkOutForm.getCreditCardNumber(), null, cardHolderName, new Integer(checkOutForm.getCreditCardExpiryYear()), new Integer(checkOutForm.getCreditCardExpiryMonth()));

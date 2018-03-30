@@ -158,7 +158,6 @@ import ch.unartig.studioserver.businesslogic.PhotoOrderIF;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.businesslogic.ShoppingCartLogic;
 import ch.unartig.studioserver.model.Customer;
-import ch.unartig.studioserver.ordermodules.PaypalPaymentOrder;
 import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
@@ -325,7 +324,7 @@ public class CheckOutAction extends MappingDispatchAction
     }
 
     /**
-     * Prepare Express Checkout Session with Paybal<br>
+     * Prepare Express Checkout Session with Paypal<br>
      * clean out the
      *
      * @param mapping
@@ -345,7 +344,9 @@ public class CheckOutAction extends MappingDispatchAction
         // todo: store a reference to the shopping cart in the sc item?
         ShoppingCart shoppingCart = SessionHelper.getShoppingCartFromSession(request);
         shoppingCart.setCustomerCountry(coForm.getCountry());
-        String token = PaypalPaymentOrder.callSetupPaypalExpressCheckout(request, coForm, shoppingCart);
+        // todo: check paypal sdk integration - currently not in use
+        String token = null;
+        //String token = PaypalPaymentOrder.callSetupPaypalExpressCheckout(request, coForm, shoppingCart);
 
 
         shoppingCart.setPaypalToken(token);

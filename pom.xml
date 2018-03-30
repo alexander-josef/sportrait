@@ -210,11 +210,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.paypal.sdk/paypal-core -->
         <dependency>
-            <groupId>com.paypal</groupId>
-            <artifactId>paypal_base</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.paypal.sdk</groupId>
+            <artifactId>paypal-core</artifactId>
+            <version>1.7.2</version>
         </dependency>
+
 
         <!-- use imgscalr to create thumb and display images -->
         <dependency>
