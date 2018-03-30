@@ -32,7 +32,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
     Logger _logger = Logger.getLogger(getClass().getName());
 
-    AmazonS3 s3;
+    private AmazonS3 s3;
     final private String bucketName = Registry.getS3BucketName();
     final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
 //    private final static String awsS3Url = "s3.amazonaws.com";
@@ -133,7 +133,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = getFineImageKey(album, filename);
         GetObjectRequest objectRequest = new GetObjectRequest(bucketName, key);
-        S3Object object = null;
+        S3Object object; // todo : check if the s3 object is closed again --> prevent connection pool leaks
         try {
             object = s3.getObject(objectRequest);
         } catch (AmazonClientException e) {
@@ -143,7 +143,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         _logger.debug("S3 File Content-Type: " + object.getObjectMetadata().getContentType());
         _logger.debug("S3 File Content-Length: " + object.getObjectMetadata().getContentLength());
 
-        return object.getObjectContent();
+        S3ObjectInputStream objectContent = object.getObjectContent();
+        return objectContent;
     }
 
     /**
@@ -179,6 +180,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
                 final S3ObjectInputStream objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
                 album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbnailDisplay, applyLogoOnFineImages);
+                objectContent.abort(); // abort (close) stream after reading the metadata - there's a warning that not all bytes were read. It's probably OK.
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
@@ -208,6 +210,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
                 String filename = "null";
 
+                S3ObjectInputStream objectContent = null;
                 try {
                     S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
                     String key = s3ObjectSummary.getKey();
@@ -217,9 +220,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
                         // todo : check if photo is already registered for album in DB?
 
-                        final S3ObjectInputStream objectContent;
                         objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
                         album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
+                        objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
                         if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album, filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
                             moveObject(key, getFineImageKey(album, filename));
                             _logger.debug("moved master image to correct S3 directory");
@@ -232,6 +235,15 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
+
+                } finally { // make sure s3 object closes and release http connection
+                    if (objectContent != null) {
+                        try {
+                            objectContent.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
@@ -249,6 +261,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     /**
      * Helper method to move an object from a temporary location to its final location.
      * First copy to destination, then delete source
+     * Assumption: s3objects are closed after operations
      * @param sourceKey
      * @param destinationKey
      * @return True if copy was successful, false otherwise

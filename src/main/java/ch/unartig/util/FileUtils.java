@@ -101,7 +101,7 @@ public class FileUtils
                     bin.close();
                 } catch (IOException e)
                 {
-                    // _logger.error("Unable to close the buffered input stream", e);
+                    _logger.error("Unable to close the buffered input stream", e);
                 }
             }
             if (bout != null && closeOutStream)
@@ -111,7 +111,7 @@ public class FileUtils
                     bout.close();
                 } catch (IOException e)
                 {
-                    // _logger.error("Unable to close the buffered output stream", e);
+                    _logger.error("Unable to close the buffered output stream", e);
                 }
             }
         }

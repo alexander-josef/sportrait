@@ -470,6 +470,7 @@ public class Album extends GeneratedAlbum {
             _logger.debug("read width and height");
             pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
             pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+            // todo later: introduce orientation as property of photo
             pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
             _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
             if (pictureTakenDate == null) {

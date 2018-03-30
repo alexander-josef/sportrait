@@ -227,10 +227,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- updated 2018-03-30 to 304-->
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.97</version>
+            <version>1.11.304</version>
 
         </dependency>
 
