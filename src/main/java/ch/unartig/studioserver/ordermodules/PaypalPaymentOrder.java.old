@@ -50,6 +50,8 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
      */
     public static void getPaypalLiveProfile(APIProfile profile) throws PayPalException {
         // todo: not so good to store that here in plain text ...
+        // todo : create new API access
+        // API access not active anymore ... don't store in public git repo!!
         profile.setAPIUsername("aj_api1.unartig.ch");
         profile.setAPIPassword("7U686HK6MN27GRX5");
         profile.setSignature("ATNLM76uyV2QXdOt2q18SNHXBqlGADXW4bOBVVLzgepvg0dQU2vV6igB");
