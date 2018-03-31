@@ -163,17 +163,22 @@ public class SportEventsAction extends MappingDispatchAction
      * @return
      * @throws UnartigException
      */
-    public ActionForward accountPhUpload(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
+    public ActionForward accountPhUpload(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
     {
+        _logger.debug("preparing upload page");
         UploadBean uploadBean = new UploadBean();
+        _logger.debug("received eventId : " + request.getParameter("eventId"));
         String eventId = request.getParameter("eventId");
         if (eventId != null && !"".equals(eventId))
         {
+            _logger.debug("eventId present, populating sportsEvent ... ");
             uploadBean.setSportsEventById(eventId);
             // set temporary upload paths on S3: (only after event has been chosen -> performance)
+            _logger.debug("eventId present, populating upload paths ...");
             uploadBean.setUploadPaths(Registry.getFileStorageProvider().getUploadPaths());
         }
 
+        _logger.debug("setting uploadBean to scope and returning success message");
         request.setAttribute("uploadBean", uploadBean);
         return mapping.findForward("success");
     }

@@ -354,7 +354,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         // list all common prefixes:
         for (String prefix : objectListing) {
-            _logger.debug(prefix);
+            _logger.debug("adding to uploadPaths : "+prefix);
             retVal.add(prefix);
         }
 

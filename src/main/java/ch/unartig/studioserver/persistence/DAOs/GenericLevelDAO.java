@@ -199,6 +199,7 @@ public class GenericLevelDAO
             return (GenericLevel) HibernateUtil.currentSession().load(levelClass, genericLevelId);
         } catch (HibernateException e)
         {
+            _logger.error("Could not load Generic Level, see stack trace", e);
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
         }
     }
