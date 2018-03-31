@@ -406,7 +406,7 @@ public final class Registry
 
         setProjectName(appSettings.getMessage("application.name"));
         setProjectVersion(appSettings.getMessage("application.version"));
-        // todo set to enabled again after svn problem on test server is solved
+        // todo: set to enabled again after svn problem on test server is solved
 //        setBuildNumber(appSettings.getMessage("application.buildNumber"));
 
         setMailHost(appSettings.getMessage("mailHost"));

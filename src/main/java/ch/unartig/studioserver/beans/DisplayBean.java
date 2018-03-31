@@ -69,6 +69,7 @@ package ch.unartig.studioserver.beans;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.NavigableObject;
 import ch.unartig.studioserver.businesslogic.NavigationHelper;
 import ch.unartig.studioserver.model.Album;
@@ -322,5 +323,11 @@ public class DisplayBean implements NavigableObject
     }
 
 
-
+    /**
+     * Getter to be used with EL in JSPs if neede
+     * @return
+     */
+    public String getApplicationEnvironment() {
+        return Registry.getApplicationEnvironment();
+    }
 }

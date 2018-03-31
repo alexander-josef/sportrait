@@ -196,8 +196,7 @@ public class Photo extends GeneratedPhoto
      * @return true in case photo will be handled by image service (imgix)
      */
     public boolean isAfterImageServiceMigration() {
-        // todo: change to 2018 !!
-        return getAlbum().getEvent().getEventDateYear() >= 2017;
+        return getAlbum().getEvent().getEventDateYear() >= 2018;
     }
 
     /**
