@@ -8,6 +8,7 @@ import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
@@ -286,6 +287,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     /**
      * Use for showing number of photos when importing from temp location.
      * (implementation checks for truncated object lists and works also for object size > 1'000)
+     * todo : works only with one level of folder hierarchy ? make it more robust
      * @param key the aws s3 prefix-key (or "folder")
      * @return
      */
@@ -298,12 +300,15 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withBucketName(bucketName).
                 withPrefix(key).
                 withDelimiter("/");
+        _logger.debug("going to coung from upload folder : " + key);
         do {
+            _logger.debug("iterating over objectListings ....");
             objectListing = s3.listObjects(listObjectRequest);
             listObjectRequest.setMarker(objectListing.getNextMarker());
             fileCount += objectListing.getObjectSummaries().size();
         } while (objectListing.isTruncated());
 
+        _logger.debug("returning file count : " + fileCount);
         return fileCount;
     }
 
@@ -345,19 +350,27 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     public List<String> getUploadPaths() {
 
+        _logger.debug("preparing ArrayList with upload paths");
         ArrayList<String> retVal = new ArrayList();
-        ListObjectsRequest listObjectRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
-                withPrefix("upload/").
-                withDelimiter("/");
-        List<String> objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
 
+        List<String> objectListing = null;
+        try {
+            ListObjectsRequest listObjectRequest = new ListObjectsRequest().
+                    withBucketName(bucketName).
+                    withPrefix("upload/").
+                    withDelimiter("/");
+            objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
+        } catch (SdkClientException e) {
+            _logger.error("AWS SDK exception when retrieving upload paths : ",e);
+        }
+
+        _logger.debug("listing all prefixes ... ");
         // list all common prefixes:
         for (String prefix : objectListing) {
             _logger.debug("adding to uploadPaths : "+prefix);
             retVal.add(prefix);
         }
-
+        _logger.debug("returning list of upload folders");
         return retVal;
     }
 

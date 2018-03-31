@@ -15,6 +15,7 @@ public class UploadPath {
 
     /**
      * Create new instance and set its value to the "key" passed in the constructor
+     * label contains number of images in the upload folder
      * @param key
      */
     public UploadPath(String key) {
