@@ -119,11 +119,11 @@ public class TimedOrderProcess extends TimerTask
                 _logger.info("number of order items to process : " + order.getOrderItems().size());
                 _logger.info("Customer ID and last name : " + order.getCustomer().getCustomerId().toString() + " / " + order.getCustomer().getLastName());
                 _logger.info("-----#########---------##########----------");
-                photoOrder = new CoplaPhotoOrder(order, _DEMO_ORDER, _SIMULATE_ORDER_ONLY);
-                photoOrder.processOrder();
+                // photoOrder = new CoplaPhotoOrder(order, _DEMO_ORDER, _SIMULATE_ORDER_ONLY);
+                // photoOrder.processOrder();
                 HibernateUtil.commitTransaction();
                 _logger.info("commited ");
-            } catch (UnartigException e)
+            } catch (Throwable e)
             {
                 _logger.error("Order failed!! rolling back this order process for order ["+order+"] Continuing. Check Stacktrace",e);
                 HibernateUtil.rollbackTransaction();
