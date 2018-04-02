@@ -15,6 +15,7 @@
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
     <tiles:insert attribute="htmlTitle"/>
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>

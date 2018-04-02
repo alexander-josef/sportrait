@@ -9,6 +9,7 @@
     <script src="<html:rewrite page="/js/GhostBoxes.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <title><tiles:insert attribute="htmlTitle"/></title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="googleAnalytics"/>
 </head>

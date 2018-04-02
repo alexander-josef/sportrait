@@ -14,6 +14,7 @@
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
     <tiles:insert attribute="htmlTitle"/>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
