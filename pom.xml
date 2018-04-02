@@ -2,11 +2,9 @@
 
 
 <!-- why do we need the parent?
-    <parent>
-        <groupId>ch.unartig</groupId>
-        <artifactId>sportrait-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
+    going to update maven
+
 -->
 
     <modelVersion>4.0.0</modelVersion>
