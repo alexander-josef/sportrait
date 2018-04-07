@@ -11,7 +11,18 @@
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.8.0-SNAPSHOT</version>
+
+    <version>${revision}</version>
+
+    <properties>
+        <!-- Sane default when no revision property is passed in from the commandline -->
+        <revision>0-SNAPSHOT</revision>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+
+    </properties>
+
+    <!--<version>1.8.0-SNAPSHOT</version>-->
+
     <name>sportrait Server</name>
     <url>https://sportrait.com</url>
 
@@ -250,9 +261,10 @@
 
 
             <!--#########################################################################################-->
-            <!-- Removed Plugin configuatio: Unpack the client artifact to a location where it can be accessed as an applet-->
+            <!-- Removed Plugin configuation: Unpack the client artifact to a location where it can be accessed as an applet-->
             <!--#########################################################################################-->
 
+            <!--todo: test this plugin. codehouse repo removed-->
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -324,6 +336,14 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9.4</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
                 </configuration>
             </plugin>
         </plugins>
@@ -431,9 +451,6 @@
 
     </profiles>
 
-    <properties>
-        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-    </properties>
 
     <repositories>
 
