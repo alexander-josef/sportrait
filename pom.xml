@@ -2,32 +2,34 @@
 
 
 <!-- why do we need the parent?
-    <parent>
-        <groupId>ch.unartig</groupId>
-        <artifactId>sportrait-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+
+    going to update maven
+
 -->
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>ch.unartig.server</groupId>
     <artifactId>sportrait_web</artifactId>
     <packaging>war</packaging>
-    <version>1.7.5-SNAPSHOT</version>
+
+    <version>${revision}</version>
+
+    <properties>
+        <!-- Sane default when no revision property is passed in from the commandline -->
+        <revision>0-SNAPSHOT</revision>
+        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
+
+    </properties>
+
+    <!--<version>1.8.0-SNAPSHOT</version>-->
+
     <name>sportrait Server</name>
-    <url>http://sportrait.com</url>
+    <url>https://sportrait.com</url>
 
 
     <dependencies>
 
-        <!--SPORTrait client dependency-->
-
-        <dependency>
-            <groupId>ch.unartig.server</groupId>
-            <artifactId>sportrait_client</artifactId>
-            <!-- <version>1.0-SNAPSHOT</version> -->
-            <version>0.7</version>
-        </dependency>
+        <!-- Removing SPORTrait client dependency-->
 
         <!--ZK-->
 
@@ -78,36 +80,9 @@
             <version>2.0b4</version>
         </dependency>
 
-        <!--
-                <dependency>
-                    <groupId>ork.zkoss.zkforge</groupId>
-                    <artifactId>dojoz</artifactId>
-                    <version>0.4.1-1</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>ork.zkoss.zkforge</groupId>
-                    <artifactId>timelinez</artifactId>
-                    <version>1.1-1</version>
-                </dependency>
-
-                <dependency>
-                    <groupId>ork.zkoss.zkforge</groupId>
-                    <artifactId>fckez</artifactId>
-                    <version>2.3-3</version>
-                </dependency>
-
-        -->
-
         <!--ZK END  -->
 
-        <!--apache xmlrpc-->
-        <dependency>
-            <groupId>xmlrpc</groupId>
-            <artifactId>xmlrpc-server</artifactId>
-            <version>3.0</version>
-        </dependency>
-
+        <!--removing apache xmlrpc-->
 
         <dependency>
             <groupId>javax.mail</groupId>
@@ -124,10 +99,12 @@
 
         <!-- removed all JAI dependencies ... not necessary anymore with image service (imgix) and metadata extractor-->
 
+
+        <!-- upgrading from 1.1.2 -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-            <version>1.1.2</version>
+            <version>1.2</version>
         </dependency>
 
         <dependency>
@@ -136,11 +113,6 @@
             <version>1.1.2</version>
         </dependency>
 
-        <dependency>
-            <groupId>jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>1.0</version>
-        </dependency>
 
         <dependency>
             <groupId>commons-httpclient</groupId>
@@ -168,9 +140,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-j2ee_1.4_spec</artifactId>
-            <version>1.0</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -286,64 +258,13 @@
         <plugins>
 
 
-            <!--testng selenium integratin tests-->
-            <!--commented out since it still fails. try the mock implementation for the browser-->
-
-
-
-
-
-
-            <!--build system with teamCity has no svn ... until then : -->
-            <!--
-
-                        <plugin>
-                          <groupId>org.codehaus.mojo</groupId>
-                          <artifactId>buildnumber-maven-plugin</artifactId>
-                          <executions>
-                            <execution>
-                              <phase>validate</phase>
-                              <goals>
-                                <goal>create</goal>
-                              </goals>
-                            </execution>
-                          </executions>
-                          <configuration>
-                            <doCheck>false</doCheck>
-                            <doUpdate>true</doUpdate>
-                          </configuration>
-                        </plugin>
-
-            -->
 
 
             <!--#########################################################################################-->
-            <!-- Unpack the client artifact to a location where it can be accessed as an applet-->
+            <!-- Removed Plugin configuation: Unpack the client artifact to a location where it can be accessed as an applet-->
             <!--#########################################################################################-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/${project.build.finalName}/client-applet
-                            </outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <includeArtifactIds>jupload,sportrait_client,xmlrpc-client,xmlrpc-common,ws-commons-util
-                            </includeArtifactIds>
-                            <stripVersion>true</stripVersion>
-                        </configuration>
 
-
-
-                    </execution>
-                </executions>
-            </plugin>
+            <!--todo: test this plugin. codehouse repo removed-->
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -417,14 +338,26 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.9.4</version>
+                <configuration>
+                    <tag>${project.artifactId}-${project.version}</tag>
+                </configuration>
+            </plugin>
         </plugins>
 
         <extensions>
+            <!-- why do we need this? -->
+<!--
+
             <extension>
                 <groupId>postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>8.1-407.jdbc3</version>
             </extension>
+-->
             <!--inserted after scpexe command didn't work anymore-->
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -499,27 +432,6 @@
         </profile>
 
 
-        <profile>
-            <id>vm2-test</id>
-            <build>
-
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warName>ROOT</warName>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-            <properties>
-                <appConfigFilterFile>vm2-test.properties</appConfigFilterFile>
-            </properties>
-
-
-        </profile>
 
         <profile>
             <id>dev-local</id>
@@ -539,33 +451,9 @@
 
     </profiles>
 
-    <properties>
-        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-    </properties>
 
     <repositories>
 
-        <repository>
-            <id>Maven repo</id>
-            <url>http://repo.maven.apache.org/maven2/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-
-        <repository>
-            <id>Codehaus Snapshots</id>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
 
         <!-- TODO change this to an https repository; see google bookmarks 'maven'-->
         <repository>
@@ -578,87 +466,12 @@
         </repository>
 
 
-        <repository>
-            <id>codehaus-snapshots</id>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <name>Codehaus-Repository [Snapshots]</name>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-
-        <repository>
-            <id>maven2-snapshots</id>
-            <url>
-                http://people.apache.org/repo/m2-snapshot-repository
-            </url>
-            <name>Maven2-Repository [Snapshots]</name>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-
-
-
     </repositories>
 
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>Codehaus Snapshots</id>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>Codehaus</id>
-            <url>http://repository.codehaus.org/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-
-        <pluginRepository>
-            <id>maven2-snapshots</id>
-            <url>
-                http://people.apache.org/repo/m2-snapshot-repository
-            </url>
-            <name>Maven2-Repository [Snapshots]</name>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
+<!-- removing plugin repositories -->
 
 
-    </pluginRepositories>
-
-
-<!-- old settings with assembla
-    <scm>
-        <connection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
-        </connection>
-        <developerConnection>scm:svn:https://subversion.assembla.com/svn/sportrait-repo/sportrait-parent/branches/1.6-branch
-        </developerConnection>
-    </scm>
--->
 
     <scm>
         <url>https://github.com/alexander-josef/sportrait</url>

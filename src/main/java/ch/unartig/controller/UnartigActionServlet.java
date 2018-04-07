@@ -151,7 +151,7 @@ public class UnartigActionServlet extends ActionServlet
         }
 
         // todo: clean up. Remove order service if not needed anymore
-        PhotoOrderService orderService = PhotoOrderService.getInstance();
+        // PhotoOrderService orderService = PhotoOrderService.getInstance();
         // no service needed to batch-process orders currently:
 //        orderService.startService();
 //        System.out.println("UnartigActionServlet.init : STARTED ORDER SERVICE !");
