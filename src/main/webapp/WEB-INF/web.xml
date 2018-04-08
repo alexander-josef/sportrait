@@ -121,6 +121,7 @@
         <load-on-startup>2</load-on-startup>
     </servlet>
 
+<!--
     <servlet>
         <servlet-name>XmlRpcServlet</servlet-name>
         <servlet-class>org.apache.xmlrpc.webserver.XmlRpcServlet</servlet-class>
@@ -132,6 +133,7 @@
             <param-value>true</param-value>
         </init-param>
     </servlet>
+-->
 
     <!-- TODO the action servlet is probably not appropriate for REST style services-->
     <servlet-mapping>
