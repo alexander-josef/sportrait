@@ -209,6 +209,7 @@ import ch.unartig.util.FileUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
+import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
 
@@ -445,6 +446,20 @@ public class Album extends GeneratedAlbum {
      * Registers a single photo in the db and creates the thumb and disp images if the applyLogoOnFineImages argument is true
      * AJ 20180204 : applyLogoOnFineImages not used anymore with image service (imgix)
      *
+     *
+     * EXIF orientation deatils according to: http://sylvana.net/jpegcrop/exif_orientation.html
+     *
+     *
+     * For convenience, here is what the letter F would look like if it were tagged correctly and displayed by a program that ignores the orientation tag (thus showing the stored image):
+     *
+     *   1        2       3      4         5            6           7          8
+     *
+     * 888888  888888      88  88      8888888888  88                  88  8888888888
+     * 88          88      88  88      88  88      88  88          88  88      88  88
+     * 8888      8888    8888  8888    88          8888888888  8888888888          88
+     * 88          88      88  88
+     * 88          88  888888  888888
+     *
      * @param problemFiles           A set of accumulated files that caused problems during import
      * @param photoFileContentStream The image file input stream to be registered
      * @param filename               The filename used for registering the photo in the db photos table
@@ -457,6 +472,7 @@ public class Album extends GeneratedAlbum {
         Integer pictureWidth;
         Integer pictureHeight;
         Date pictureTakenDate;
+        int pictureOrientation;
 
         try {
             // introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
@@ -464,12 +480,23 @@ public class Album extends GeneratedAlbum {
 
             Metadata metadata = ImageMetadataReader.readMetadata(photoFileContentStream);
             Directory jpegDirectory = metadata.getFirstDirectoryOfType(JpegDirectory.class);
+            ExifDirectoryBase exifDirectoryBase = metadata.getFirstDirectoryOfType(ExifDirectoryBase.class);
             ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
+            pictureOrientation = exifDirectoryBase.getInt(ExifDirectoryBase.TAG_ORIENTATION);
 
-            _logger.debug("read width and height");
-            pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
-            pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+            _logger.debug("read width and height - consider orientation");
+            if ((pictureOrientation !=6) &&  (pictureOrientation!=8)) {
+                // "regular" landscape orientation
+                pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
+                pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+
+            } else {
+                // "portrait" orientation
+                pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
+                pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+
+            }
             // todo later: introduce orientation as property of photo
             pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
             _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
