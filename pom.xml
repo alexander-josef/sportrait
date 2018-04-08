@@ -369,6 +369,16 @@
 
 
     <profiles>
+        <profile>
+            <id>dev-local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
+            </properties>
+        </profile>
+
 
         <!-- disable docling when compiling with java jdk1.8 -->
         <profile>
@@ -433,19 +443,6 @@
 
 
 
-        <profile>
-            <id>dev-local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <tomcatUsername>admin</tomcatUsername>
-                <tomcatPassword />
-                <appConfigFilterFile>customSettings.properties</appConfigFilterFile>
-            </properties>
-
-
-        </profile>
 
 
 
