@@ -380,7 +380,9 @@
         </profile>
 
 
-        <!-- disable docling when compiling with java jdk1.8 -->
+        <!-- disable doclint when compiling with java jdk1.8  // not needed anymore ???-->
+<!--
+
         <profile>
             <id>doclint-java8-disable</id>
             <activation>
@@ -400,6 +402,7 @@
             </build>
         </profile>
 
+-->
         <profile>
             <id>prod</id>
             <build>
