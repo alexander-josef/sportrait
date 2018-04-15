@@ -65,7 +65,7 @@ public class DownloadPhotoAction extends Action {
                     // todo get logo / sponsor bar from Registry
                     String sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu.png";
 
-                    String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop";
+                    String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70";
                     String base64SponsorParams = "blend64="+Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()) + "&bm=normal&ba=bottom%2C%20center&bs=inherit";
 
                     URL imgixUrl = new URL(photo.getMasterImageUrlFromImageService()+"?"+base64LogoParams+"&"+base64SponsorParams);
