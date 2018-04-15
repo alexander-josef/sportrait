@@ -71,7 +71,7 @@ public class DownloadPhotoAction extends Action {
 
                     if (photo.isOrientationPortrait())
                     {
-                        blendWidthFactor = "1.0";
+                        blendWidthFactor = "1.0"; // use "0.75" if bar shall not completely cover width
                         markScalePercentage = "26";
                     }else
                         // landscape format, logos and sponsor bar need to have smaller factor compared to image
