@@ -58,7 +58,7 @@ public class DownloadPhotoAction extends Action {
                 // sponsor / logo location scheme by year. i.e. for example"/logos/2017/asvz-logo.png"
                 int yearForLogoWatermark = photo.getAlbum().getEvent().getEventDateYear();
 
-                // support non-Imgix solution before 2018:
+                // support Imgix solution only after 2018: (old images with integrated watermark will work as before)
                 if (photo.isAfterImageServiceMigration())
                 {
                     String asvzLogoRelativeUrl = "/logo/" + yearForLogoWatermark + "/asvz-logo-" + yearForLogoWatermark + ".png";
@@ -66,8 +66,22 @@ public class DownloadPhotoAction extends Action {
                     String sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-8000px.png";
 
                     // todo extract image params as configurations params, remove from code
-                    String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70&markscale=26";
-                    String base64SponsorParams = "blend64="+Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()) + "&bm=normal&ba=bottom%2C%20center&bs=none&bw=1.0"; // change bw=0.9 in case there should be some padding left and right of the sponsor bar
+                    String blendWidthFactor;
+                    String markScalePercentage;
+
+                    if (photo.isOrientationPortrait())
+                    {
+                        blendWidthFactor = "1.0";
+                        markScalePercentage = "26";
+                    }else
+                        // landscape format, logos and sponsor bar need to have smaller factor compared to image
+                    {
+                        blendWidthFactor = "0.5";
+                        markScalePercentage = "15";
+                    }
+
+                    String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70&markscale=" + markScalePercentage;
+                    String base64SponsorParams = "blend64="+Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()) + "&bm=normal&ba=bottom%2C%20center&bs=none&bw=" + blendWidthFactor; // change bw=0.9 in case there should be some padding left and right of the sponsor bar
 
                     URL imgixUrl = new URL(photo.getMasterImageUrlFromImageService()+"?"+base64LogoParams+"&"+base64SponsorParams);
                     _logger.debug("imgix URL = " + imgixUrl.toString());
