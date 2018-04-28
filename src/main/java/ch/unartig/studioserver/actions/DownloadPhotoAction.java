@@ -63,7 +63,7 @@ public class DownloadPhotoAction extends Action {
                 {
                     String asvzLogoRelativeUrl = "/logo/" + yearForLogoWatermark + "/asvz-logo-" + yearForLogoWatermark + ".png";
                     // todo get logo / sponsor bar from Registry
-                    String sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-8000px.png";
+                    String sponsorBarRelativeUrl;
 
                     // todo extract image params as configurations params, remove from code
                     String blendWidthFactor;
@@ -73,11 +73,18 @@ public class DownloadPhotoAction extends Action {
                     { // portrait format
                         blendWidthFactor = "1.0"; // use "0.75" if bar shall not completely cover width
                         markScalePercentage = "26";
+                        // todo get logo / sponsor bar from Registry
+                        sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-8000px.png";
+
                     }else
                         // landscape format, logos and sponsor bar need to have smaller factor compared to image
                     {
-                        blendWidthFactor = "0.5";
+                        // blendWidthFactor = "0.5"; // bar doesn't cover whole width
+                        blendWidthFactor = "1"; // bar covers whole with (in combination with wide bar png)
                         markScalePercentage = "15";
+                        // todo get logo / sponsor bar from Registry
+                        sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-gross-landscape.png";
+                        // sola-sponsors-bar-bottom-neu-gross-landscape.png
                     }
 
                     String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70&markscale=" + markScalePercentage;
