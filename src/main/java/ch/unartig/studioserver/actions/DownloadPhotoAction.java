@@ -70,7 +70,7 @@ public class DownloadPhotoAction extends Action {
                     String markScalePercentage;
 
                     if (photo.isOrientationPortrait())
-                    {
+                    { // portrait format
                         blendWidthFactor = "1.0"; // use "0.75" if bar shall not completely cover width
                         markScalePercentage = "26";
                     }else
