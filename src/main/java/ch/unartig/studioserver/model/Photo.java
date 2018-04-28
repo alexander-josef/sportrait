@@ -182,7 +182,7 @@ public class Photo extends GeneratedPhoto
         if (this.isAfterImageServiceMigration())
         {
             // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-            displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=80&usm=25";
+            displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
         } else {
             // URL to display file - before image service migration (imgix)
             return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
