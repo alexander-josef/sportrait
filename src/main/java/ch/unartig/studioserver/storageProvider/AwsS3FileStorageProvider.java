@@ -224,11 +224,14 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
                         album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
-                        if (!applyLogoOnFineImages && !key.equals(getFineImageKey(album, filename))) { // if no logo has been copied on the fine image and stored in the right location, move the file now:
-                            // todo : check if we get here (sola 2018)
-                            moveObject(key, getFineImageKey(album, filename));
+                        String fineImageKey = getFineImageKey(album, filename);
+                        _logger.debug("applyLogoOnFineImages " + applyLogoOnFineImages);
+                        _logger.debug("key temp file : "+ key);
+                        _logger.debug("key fine file : "+ fineImageKey);
+                        if (!applyLogoOnFineImages && !key.equals(fineImageKey)) { // if no logo has been copied on the fine image and the file is not yet stored in the right location, move the file now:
+                            moveObject(key, fineImageKey);
                             _logger.debug("moved master image to correct S3 directory");
-                        } else if (!key.equals(getFineImageKey(album, filename))) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
+                        } else if (!key.equals(fineImageKey)) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
                             delete(key);
                             _logger.debug("master image deleted from temp location");
                         }
