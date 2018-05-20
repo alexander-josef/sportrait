@@ -483,27 +483,43 @@ public class Album extends GeneratedAlbum {
             ExifDirectoryBase exifDirectoryBase = metadata.getFirstDirectoryOfType(ExifDirectoryBase.class);
             ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
-            pictureOrientation = exifDirectoryBase.getInt(ExifDirectoryBase.TAG_ORIENTATION);
+            // this can cause an error in case the Tag does not exist. check using containsTag() first
+            if (exifDirectoryBase.containsTag(ExifDirectoryBase.TAG_ORIENTATION)) {
 
-            _logger.debug("read width and height - consider orientation");
-            if ((pictureOrientation !=6) &&  (pictureOrientation!=8)) {
+                pictureOrientation = exifDirectoryBase.getInt(ExifDirectoryBase.TAG_ORIENTATION);
+
+                _logger.debug("read width and height - consider orientation");
+                if ((pictureOrientation != 6) && (pictureOrientation != 8)) {
+                    // "regular" landscape orientation
+                    pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
+                    pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+
+                } else {
+                    // "portrait" orientation
+                    pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
+                    pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
+
+                }
+
+            } else {
+                // no exif orientation tag available, assume landscape orientation
                 // "regular" landscape orientation
                 pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
                 pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
-
-            } else {
-                // "portrait" orientation
-                pictureWidth = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_HEIGHT);
-                pictureHeight = jpegDirectory.getInt(JpegDirectory.TAG_IMAGE_WIDTH);
-
             }
             // todo later: introduce orientation as property of photo
-            pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
-            _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
-            if (pictureTakenDate == null) {
+
+            if (directory.containsTag(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL)) { // check first for existince of tag information
+                pictureTakenDate = directory.getDate(ExifSubIFDDirectory.TAG_DATETIME_ORIGINAL);
+                _logger.debug("registerPhoto 3, " + System.currentTimeMillis());
+                if (pictureTakenDate == null) {
+                    pictureTakenDate = new Date(0);
+                    _logger.error("Unable to determine date of file");
+                    //problemFiles.add(photoFile);
+                }
+            } else {
+                // no exif date information
                 pictureTakenDate = new Date(0);
-                _logger.error("Unable to determine date of file");
-                //problemFiles.add(photoFile);
             }
 
             _logger.debug("filename : " + filename);
