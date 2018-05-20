@@ -77,57 +77,6 @@ COPY public.producttypes (producttypeid, name, description, digitalproduct) FROM
 \.
 
 
---
--- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: sportrait
---
-
-COPY public.products (productid, productname, priceid, producttypeid, albumid, inactive) FROM stdin;
-15	\N	30	3	163	\N
-16	\N	30	3	171	\N
-17	\N	30	3	173	\N
-18	\N	30	3	174	\N
-19	\N	30	3	175	\N
-20	\N	30	3	177	\N
-21	\N	30	3	178	\N
-22	\N	30	3	179	\N
-23	\N	30	3	183	\N
-24	\N	30	3	184	\N
-25	\N	30	3	185	\N
-26	\N	30	3	186	\N
-27	\N	30	3	187	\N
-28	\N	30	3	188	\N
-29	\N	30	3	189	\N
-30	\N	30	3	190	\N
-31	\N	30	3	191	\N
-33	\N	30	3	194	\N
-34	\N	30	3	195	\N
-35	\N	30	3	196	\N
-36	\N	30	3	197	\N
-37	\N	30	3	198	\N
-38	\N	30	3	199	\N
-39	\N	30	3	200	\N
-40	\N	30	3	201	\N
-41	\N	30	3	202	\N
-42	\N	30	3	205	\N
-43	\N	30	3	204	\N
-44	\N	30	3	206	\N
-45	\N	30	3	207	\N
-46	\N	30	3	212	\N
-47	\N	30	3	211	\N
-49	\N	30	3	215	\N
-50	\N	30	3	216	\N
-51	\N	30	3	217	\N
-52	\N	30	3	219	\N
-53	\N	30	3	220	\N
-54	\N	30	3	221	\N
-55	\N	30	3	222	\N
-56	\N	30	3	225	\N
-57	\N	30	3	226	\N
-58	\N	30	3	227	\N
-\.
-
-
-
 
 --
 -- Data for Name: userprofiles; Type: TABLE DATA; Schema: public; Owner: sportrait
@@ -143,9 +92,9 @@ COPY public.userprofiles (userprofileid, username, password, firstname, lastname
 -- Data for Name: photographers; Type: TABLE DATA; Schema: public; Owner: sportrait
 --
 
-COPY public.photographers (photographerid, userprofileid, cameramodel, website, contactinformation) FROM stdin;
-1	1	Nikon D2xs	www.sportrait.com	unartig AG, 8006 Zuerich / Switzerland
-2	\N	4444	4444	\N
+COPY public.photographers (photographerid, cameramodel, website, contactinformation) FROM stdin;
+1	Nikon D2xs	www.sportrait.com	unartig AG, 8006 Zuerich / Switzerland
+2	Nikon D5	www.sportrait.com	unartig AG, 8006 Zuerich / Switzerland
 \.
 
 
