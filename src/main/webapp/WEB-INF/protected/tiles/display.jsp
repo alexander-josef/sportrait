@@ -166,12 +166,9 @@ todo refactor name albumBean as fast as possible
                             <%-- Social Sharing : --%>
                             <div>
                                 <%-- Facebook (data href element left out - should default to current web site) --%>
-                                <%-- todo: introduce parameter for imgix url (depending on environment) --%>
 
-<%--
                                     <div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="false">
                                     </div>
---%>
 
                                     <%-- Twitter --%>
 <%--

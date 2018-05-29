@@ -67,7 +67,6 @@
 <%-- Facebook SDK--%>
 
 
-<%--
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -76,7 +75,6 @@
     js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.10";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
---%>
 
 <%-- END Facebook SDK --%>
 
