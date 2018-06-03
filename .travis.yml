@@ -12,11 +12,8 @@ env:
   global:
   - 'SFTP_USER=travis-sftp-user'
   - 'SFTP_PASSWORD=3aoAbEtQQxfhxyjuCpsEpjHp'
-# - 'SFTP_KEY=[base64-encoded-rsa-key]'
 after_success:
-# - echo "${SFTP_KEY}" | base64 --decode >/tmp/sftp_rsa
 - curl --ftp-create-dirs
        -k
        -T /home/travis/build/alexander-josef/sportrait/target/ROOT_Test.war
-#      --key /tmp/sftp_rsa
        sftp://${SFTP_USER}:${SFTP_PASSWORD}@aws3.sportrait.com/uploads/ROOT_Test.war
