@@ -14,8 +14,6 @@ server.httpPort=8080
 server.httpsPort=443
 server.enableSsl=true
 
-# frontenddir only used by tree generator ... remove
-#appSettings.frontendDir=/Users/alexanderjosef/Pictures/sportrait/ROOT
 
 # not used anymore with s3 storage
 appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images

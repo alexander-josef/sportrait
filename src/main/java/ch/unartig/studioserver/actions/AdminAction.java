@@ -208,7 +208,6 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.businesslogic.*;
-import ch.unartig.studioserver.frontend.TreeGenerator;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
