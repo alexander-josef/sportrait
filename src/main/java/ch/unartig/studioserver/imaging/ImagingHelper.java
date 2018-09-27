@@ -53,7 +53,6 @@
  ****************************************************************/
 package ch.unartig.studioserver.imaging;
 
-import ch.unartig.exceptions.UnartigImagingException;
 import ch.unartig.studioserver.Registry;
 import org.apache.log4j.Logger;
 
@@ -62,14 +61,14 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.renderable.ParameterBlock;
 import java.io.*;
+import java.util.Map;
+import com.imgix.URLBuilder;
 
-public class ImagingHelper
+public class    ImagingHelper
 {
     static Logger _logger = Logger.getLogger(ImagingHelper.class.getName());
 
@@ -203,6 +202,20 @@ public class ImagingHelper
 //        return Math.max(renderedOp.getHeight(), renderedOp.getWidth());
 //    }
 
+    /**
+     * Construct signed imgix URL
+     */
+    public static String getSignedImgixUrl(Map<String, String> params, String path)
+    {
+        String domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
+        String imgixSignKey;
+        URLBuilder builder = new URLBuilder(domain);
+        builder.setUseHttps(true); // use https
+        builder.setSignKey(imgixSignKey); // set sign key
+        params.put("w", "100");
+        params.put("h", "100");
+        return builder.createURL(path, params);
+    }
 
 
 }

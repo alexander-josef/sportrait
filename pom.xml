@@ -226,6 +226,12 @@
             <version>2.11.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.imgix</groupId>
+            <artifactId>imgix-java</artifactId>
+            <version>1.1.12</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -463,6 +469,12 @@
             <releases>
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
+        </repository>
+
+<!-- adding jcenter repository for imgix dependencies -->
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
 
 
