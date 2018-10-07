@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
@@ -7,14 +7,15 @@
 <html:xhtml/>
 <html>
 <head>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id"
-          content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://apis.google.com/js/platform.js" async defer ></script>
+    <meta name="google-signin-client_id" content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
     <tiles:insert attribute="htmlTitle"/>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
@@ -107,13 +108,17 @@
  --%>
 
 <center id="window">
-    <tiles:insert attribute="head"/>
+    <header role="banner">
+        <tiles:insert attribute="head"/>
+    </header>
     <div id="container">
         <!-- contents -->
         <tiles:insert attribute="content1"/>
         <tiles:insert attribute="content2"/>
         <tiles:insert attribute="content3"/>
-        <tiles:insert attribute="footer"/>
+        <footer role="contentinfo">
+            <tiles:insert attribute="footer"/>
+        </footer>
     </div>
 </center>
 

@@ -1,4 +1,4 @@
-/*CSS version 13:36*/
+/*CSS version 16:12*/
 *, *:before, *:after {
     -moz-box-sizing: border-box;
     /* -webkit-box-sizing: border-box; */
@@ -20,6 +20,7 @@ body#bodyHome {
 }
 
 body {
+    width: 100%;
     margin: 0;
     background: #FFF url(../images/bg_head.gif) 0 0 repeat-x;
     z-index: 2;
@@ -52,7 +53,7 @@ ul {
 
 ul.tabnavigation {
     position: relative;
-    display: flex;
+    display: block;
     /* width: unset; */
     margin-top: 23px;
 }
@@ -203,12 +204,7 @@ div#header {
     z-index: 400;
 }
 
-div#bannerBox {
-    position: absolute;
-    width: 280px;
-    margin: 173px 0 0 600px;
-    text-align: right;
-}
+
 
 /*===============================  Tabs  ==================================*/
 div#tabnavigationHome {
@@ -222,10 +218,10 @@ div#tabnavigationHome {
 
 div#tabnavigation {
     position: absolute;
-    margin-top: 98px;
-    width: 884px;
-    height: 22px;
-    text-align: right;
+    margin-top: 75px;
+    /* width: 884px; */
+    /* height: 22px; */
+    /* text-align: right; */
 }
 
 ul.tabnavigation li {
@@ -247,26 +243,31 @@ div#containerHome {
 }*/
 
 div#container {
-    width: 881px;
-    margin: 0 53px;
-    text-align: left;
+    width: 100%;
+    margin: 0 5%;
+    /* text-align: left; */
     z-index: 100;
 }
 
 div.content, div#footerLinks, div.pageNav, div#header {
     /* width: 881px; */
-    /* text-align: left; */
+    text-align: left;
+    /* margin: 0 5%; */
+}
+
+div#header {
+    margin: 0 5%;
 }
 
 div.pageNav, div.content {
-    padding-top: 10px;
-    float: left;
+    /* padding-top: 10px; */
+    /* float: left; */
 }
 
 h1#pageName {
     margin: 0;
-    width: 500px;
-    padding: 40px 0 0 0;
+    width: 100%;
+    padding: 7px 0 0 0;
 }
 
 h2#eventCategory {
@@ -281,13 +282,13 @@ div#contentAlbum {
 }
 
 div.content600 {
-    width: 600px;
+    width: 100%;
     float: left;
     text-align: left;
 }
 
 div.content300Left {
-    width: 280px;
+    /* width: 280px; */
     float: left;
     text-align: left;
 }
@@ -301,14 +302,14 @@ div.content300Right {
 /*=============================  navigation  ================================*/
 
 li.navList-top, li.navList-bottom, li.navList-content {
-    width: 881px;
+    width: 100%;
     float: left;
 }
 
 ul li.navList-content {
     background-color: #f1efec;
     padding: 0 10px;
-    width: 861px;
+    width: 100%;
 }
 
 ul li.navList-top {
@@ -343,8 +344,8 @@ div.pageNav input, div.pageNav a {
 
 ul#fotoNav {
     float: right;
-    padding: 43px 0 0 0;
-    width: 350px;
+    padding: 29px 0 0 0;
+    /* width: 350px; */
 }
 
 ul#fotoNav li {
@@ -902,9 +903,9 @@ div#footerLinks ul li a {
 
 .modalContainer {
     position: absolute;
-    width: 250px;
+    width: 54%;
     left: 50%;
-    top: 300px;
+    top: 30%;
     z-index: 750;
 }
 

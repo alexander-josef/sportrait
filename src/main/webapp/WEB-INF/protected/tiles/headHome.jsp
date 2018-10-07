@@ -41,9 +41,7 @@
             <c:if test="${clientInSession==null}">
                 <li><html:img page="/images/tabs/ON/tab_fotos_de.gif" alt="fotos"/></li>
             </c:if>
-            <c:if test="${clientInSession!=null}">
-                <li><html:link action="/photographer/events"><html:img page="/images/tabs/tab_events_de.gif" alt="fotos"/></html:link></li>
-            </c:if>
+
         </ul>
         <!-- Tile-End -->
 

@@ -50,7 +50,7 @@
                         <td>
                             <html:image styleClass="left"   page="/images/buttons/bt_searchFoto_de.gif"
                                    title="Fotos suchen"/>
-                        </td>
+                         </td>
                     </tr>
                 </table>
             </html:form>

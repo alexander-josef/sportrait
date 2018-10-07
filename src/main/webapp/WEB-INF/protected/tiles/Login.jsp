@@ -5,24 +5,7 @@
 
 
     <table class="form">
-        <tr>
-            <td class="formLead">Username</td>
-            <td>
-                <input type="text" name="j_username" value="" size="18"/>
-            </td>
-        </tr>
-        <tr>
-            <td class="formLead">Passwort</td>
-            <td>
-                <input type="password" name="j_password" size="18"/>
-            </td>
-        </tr>
-        <tr>
-            <td class="formLead"></td>
-            <td class="checkbox">
-                <input type="checkbox" name="j_rememberme" value="true" /> Remember me
-            </td>
-        </tr>
+
         <tr>
             <td></td>
             <td>

@@ -7,10 +7,6 @@
 
 <div id="header">
 
-    <div id="bannerBox">
-    <html:img page="/images/transparent.gif" alt=""/>
-    </div>
-    
     <tiles:insert attribute="hallo"/>
     <div id="tabnavigation">
         <tiles:insert attribute="tabs"/>
