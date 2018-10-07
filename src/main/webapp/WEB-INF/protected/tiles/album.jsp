@@ -48,8 +48,11 @@
                         </td>
                         <!-- Kategorie end -->
                         <td>
+<%--
                             <html:image styleClass="left"   page="/images/buttons/bt_searchFoto_de.gif"
                                    title="Fotos suchen"/>
+--%>
+                            <html:submit styleClass="left" title="Suchen" value="Suchen"/>
                          </td>
                     </tr>
                 </table>
