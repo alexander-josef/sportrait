@@ -1,6 +1,13 @@
+/*CSS version 13:36*/
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    /* -webkit-box-sizing: border-box; */
+    box-sizing: border-box;
+}
+
 html {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     color: #82765f;
     font-family: Verdana, Arial, sans-serif;
     font-size: 12px;
@@ -41,6 +48,13 @@ ul li span:hover {
 ul {
     margin: 0;
     padding: 0;
+}
+
+ul.tabnavigation {
+    position: relative;
+    display: flex;
+    /* width: unset; */
+    margin-top: 23px;
 }
 
 a {
@@ -158,9 +172,8 @@ span.linkSepartor {
 /*===============================  header  ==================================*/
 img#fotostack {
     position: absolute;
-    margin: 0 0 0 654px;
     margin: 0 0 0 210px;
-    width: 23%;
+    height: 130px;
 }
 
 img#banner {
@@ -200,10 +213,11 @@ div#bannerBox {
 /*===============================  Tabs  ==================================*/
 div#tabnavigationHome {
     position: absolute;
-    margin-top: 140px;
-    width: 625px;
-    height: 22px;
-    text-align: right;
+    margin-top: 146px;
+    /* width: 90%; */
+    /* height: 22px; */
+    /* text-align: right; */
+    /* background-color: blueviolet; */
 }
 
 div#tabnavigation {
@@ -221,8 +235,8 @@ ul.tabnavigation li {
 
 /*===============================  content  ==================================*/
 div#containerHome, div#headerHome {
-    width: 990px;
-    margin: 0 53px;
+    /* width: 90%; */
+    margin: 0 5% 0 5%;
     text-align: left;
     z-index: 100;
 }
@@ -240,8 +254,8 @@ div#container {
 }
 
 div.content, div#footerLinks, div.pageNav, div#header {
-    width: 881px;
-    text-align: left;
+    /* width: 881px; */
+    /* text-align: left; */
 }
 
 div.pageNav, div.content {
@@ -370,14 +384,15 @@ div.contentHome {
 
 div.leftContentHome {
     float: left;
-    width: 335px;
-    margin: 32px 45px 0 0;
-    padding: 0 0 20px 0;
+    width: 100%;
+    margin: 32px 0 0 0;
+    /* padding: 0 0 20px 0; */
 }
 
 div.rightContentHome {
+    display: flex;
     float: left;
-    width: 240px;
+    width: 100%;
     padding: 0 0 20px 0;
     margin-top: 32px;
 }
@@ -415,7 +430,9 @@ ul.linkList li a.uploadLink:hover {
 }
 
 ul#loginBoxHome {
-    margin-top: 18px;
+    width: 100%;
+    /* display: flex; */
+    /* margin-top: 18px; */
 }
 
 div#pageNameCheckout {
@@ -755,7 +772,8 @@ ul.box li p {
 }
 
 ul.box_A, ul.box_A li {
-    width: 243px;
+    /* display: flex; */
+    /* width: 243px; */
 }
 
 ul.box li.middle {
@@ -765,7 +783,7 @@ ul.box li.middle {
 ul.box_A li.middle {
     padding: 0 12px;
     margin: 0;
-    width: 219px;
+    width: 243px;
 }
 
 ul.box_A li.bottom {
