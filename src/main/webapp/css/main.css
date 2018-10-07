@@ -308,7 +308,7 @@ li.navList-top, li.navList-bottom, li.navList-content {
 
 ul li.navList-content {
     background-color: #f1efec;
-    padding: 0 10px;
+    padding: 0 2%;
     width: 100%;
 }
 
@@ -346,7 +346,7 @@ div.pageNav input, div.pageNav a {
 
 ul#fotoNav {
     float: right;
-    padding: 29px 27px 0 0;
+    padding: 29px 13% 0 0;
     /* width: 350px; */
 }
 
@@ -514,7 +514,7 @@ img.sc {
 
 /*===============================  display  ==================================*/
 table#displaySelectionBar {
-    width: 861px;
+    width: 100%;
 }
 
 table#displaySelectionBar select {
@@ -529,6 +529,7 @@ table#displaySelectionBar td#fotoInfoDisplay {
 }
 
 table#formatSelectDisplay {
+    display: none;
     float: right;
 }
 
@@ -577,6 +578,7 @@ table#displaycontainer {
 }
 
 td.displayPreview {
+    display: none;
     vertical-align: top;
     text-align: left;
     width: 125px;
@@ -613,6 +615,7 @@ td#displaySpacer {
 }
 
 td#displayShop {
+    display:  none;
     vertical-align: top;
     padding: 0;
     width: 191px;
@@ -627,6 +630,7 @@ td#displayShop li.middle {
 }
 
 iframe#shoppingcartPreview {
+    /* display: none; */
     width: 170px;
     height: 200px;
     margin-bottom: 10px;
@@ -859,7 +863,7 @@ td.checkbox {
 
 /*===============================  footer  =================================*/
 div#footerLinks {
-    margin-top: 50px;
+    margin-top: 21px;
     width: 100%;
     float: left;
 }
