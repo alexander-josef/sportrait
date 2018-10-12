@@ -268,13 +268,13 @@ div.pageNav, div.content {
 h1#pageName {
     margin: 0;
     width: 100%;
-    padding: 7px 0 0 0;
+    padding: 6px 0 0 12px;
 }
 
 h2#eventCategory {
     font-size: 12px;
     margin-bottom: 0;
-    margin-left: 3px;
+    margin-left: 12px;
     margin-top: 5px;
 }
 
