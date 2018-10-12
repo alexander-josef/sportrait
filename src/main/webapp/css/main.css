@@ -262,6 +262,7 @@ div#header {
 div.pageNav, div.content {
     /* padding-top: 10px; */
     /* float: left; */
+    font-size: 0.8em;
 }
 
 h1#pageName {
@@ -866,6 +867,7 @@ div#footerLinks {
     margin-top: 21px;
     width: 100%;
     float: left;
+    font-size: 0.8em;
 }
 
 div#footerLinks ul li {
