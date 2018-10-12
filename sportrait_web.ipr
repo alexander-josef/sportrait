@@ -543,7 +543,7 @@
   </component>
   <component name="dataSourceStorageLocal">
     <data-source name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
-      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2">
+      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" family="POSTGRES" exact-version="10.4">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
@@ -553,7 +553,7 @@
       <unqualified-resolve-schemas>sportrait:pg_catalog,public</unqualified-resolve-schemas>
     </data-source>
     <data-source name="postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
-      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2">
+      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" family="POSTGRES" exact-version="10.4">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />

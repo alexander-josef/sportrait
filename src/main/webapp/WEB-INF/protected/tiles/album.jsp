@@ -39,8 +39,8 @@
                             </html:link>
                         </td>
                         <!-- Kategorie start -->
-                        <td>&nbsp;Kategorie:</td>
-                        <td>
+                        <td id="cat_label">&nbsp;Kategorie:</td>
+                        <td id="cat_value">
                             <html:select property="eventCategoryId">
                                 <html:optionsCollection name="albumBean" property="eventCategoriesWithPhotos" label="title"
                                                         value="eventCategoryId"/>

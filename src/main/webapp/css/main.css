@@ -10,7 +10,7 @@ html {
     /* height: 100%; */
     color: #82765f;
     font-family: Verdana, Arial, sans-serif;
-    font-size: 12px;
+    font-size: 1em;
 }
 
 body#bodyHome {
@@ -244,7 +244,7 @@ div#containerHome {
 
 div#container {
     width: 100%;
-    margin: 0 5%;
+    /* margin: 0 5%; */
     /* text-align: left; */
     z-index: 100;
 }
@@ -256,7 +256,7 @@ div.content, div#footerLinks, div.pageNav, div#header {
 }
 
 div#header {
-    margin: 0 5%;
+    margin: 0 1%;
 }
 
 div.pageNav, div.content {
@@ -346,7 +346,7 @@ div.pageNav input, div.pageNav a {
 
 ul#fotoNav {
     float: right;
-    padding: 29px 13% 0 0;
+    padding: 29px 1em 0 0;
     /* width: 350px; */
 }
 
@@ -878,7 +878,7 @@ div#footerLinks ul li {
 div#footerLinks ul li a {
     display: block;
     float: left;
-    padding: 0 20px 12px 6px;
+    padding: 0 17px 12px 6px;
     color: #82765f;
     margin-top: -3px;
 }
@@ -943,4 +943,28 @@ div#footerLinks ul li a {
 .modalBody {
     padding: 10px;
     text-align: center;
+}
+
+
+td#cat_value {
+    display: none;
+}
+
+td#cat_label {
+    display: none;
+}
+
+input.left {
+    background-color: #fea23c; /* Green */
+    border: none;
+    border-color: white;
+    color: white;
+    padding: 0.5em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 0.5em;
 }
