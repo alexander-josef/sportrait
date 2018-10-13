@@ -210,18 +210,11 @@ div#header {
 div#tabnavigationHome {
     position: absolute;
     margin-top: 146px;
-    /* width: 90%; */
-    /* height: 22px; */
-    /* text-align: right; */
-    /* background-color: blueviolet; */
 }
 
 div#tabnavigation {
     position: absolute;
     margin-top: 75px;
-    /* width: 884px; */
-    /* height: 22px; */
-    /* text-align: right; */
 }
 
 ul.tabnavigation li {
@@ -231,28 +224,19 @@ ul.tabnavigation li {
 
 /*===============================  content  ==================================*/
 div#containerHome, div#headerHome {
-    /* width: 90%; */
     margin: 0 5% 0 5%;
     text-align: left;
     z-index: 100;
 }
 
-/*
-div#containerHome {
-    margin-top: 32px;
-}*/
 
 div#container {
     width: 100%;
-    /* margin: 0 5%; */
-    /* text-align: left; */
     z-index: 100;
 }
 
 div.content, div#footerLinks, div.pageNav, div#header {
-    /* width: 881px; */
     text-align: left;
-    /* margin: 0 5%; */
 }
 
 div#header {
@@ -260,8 +244,6 @@ div#header {
 }
 
 div.pageNav, div.content {
-    /* padding-top: 10px; */
-    /* float: left; */
     font-size: 0.8em;
 }
 
@@ -348,7 +330,6 @@ div.pageNav input, div.pageNav a {
 ul#fotoNav {
     float: right;
     padding: 29px 1em 0 0;
-    /* width: 350px; */
 }
 
 ul#fotoNav li {
@@ -390,7 +371,6 @@ div.leftContentHome {
     float: left;
     width: 100%;
     margin: 32px 0 0 0;
-    /* padding: 0 0 20px 0; */
 }
 
 div.rightContentHome {
@@ -435,8 +415,6 @@ ul.linkList li a.uploadLink:hover {
 
 ul#loginBoxHome {
     width: 100%;
-    /* display: flex; */
-    /* margin-top: 18px; */
 }
 
 div#pageNameCheckout {
@@ -465,7 +443,6 @@ ul.slide {
     vertical-align: top;
     width: 124px;
     margin-bottom: 1px;
-    /* height: 144px;*/
 }
 
 ul.slide li.slideImage img.landscape {
