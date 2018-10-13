@@ -134,7 +134,7 @@
 
     </definition>
 
-    <definition name=".headFoto" path="/WEB-INF/protected/tiles/headMain.jsp">
+    <definition name=".headFoto" template="/WEB-INF/protected/tiles/headMain.jsp">
         <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
         <put name="tabs" value="/WEB-INF/protected/tiles/tabs_foto.jsp"/>
     </definition>

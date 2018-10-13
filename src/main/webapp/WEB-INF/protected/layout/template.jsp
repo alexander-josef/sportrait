@@ -17,6 +17,8 @@
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
+    <%-- Media query to support "old" stylesheet with definitions for desktop screens --%>
+    <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>" media="screen and (min-width: 40em)" />
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
     <tiles:insert attribute="twitterCard" ignore="true"/>
@@ -107,7 +109,7 @@
     * z.b. verschachtelte tiles; nur das open tag fuer body zu extrahieren macht wenig sinn und ist fehleranfaellig
  --%>
 
-<center id="window">
+<div id="window">
     <header role="banner">
         <tiles:insert attribute="head"/>
     </header>
@@ -120,7 +122,7 @@
             <tiles:insert attribute="footer"/>
         </footer>
     </div>
-</center>
+</div>
 
 </body>
 </html>

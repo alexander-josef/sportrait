@@ -17,6 +17,8 @@
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
+    <%-- Media query to support "old" stylesheet with definitions for desktop screens --%>
+    <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>" media="screen and (min-width: 40em)" />
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
 
@@ -54,19 +56,20 @@
 
 </head>
 <body id="bodyHome">
-<header role="banner">
-    <tiles:insert attribute="head"/>
-</header>
-<div id="containerHome">
-    <!-- contents -->
-    <tiles:insert attribute="content1"/>
-    <tiles:insert attribute="content2"/>
-    <tiles:insert attribute="content3"/>
-    <footer role="contentinfo">
-        <tiles:insert attribute="footer"/>
-    </footer>
+<div id="window">
+    <header role="banner">
+        <tiles:insert attribute="head"/>
+    </header>
+    <div id="containerHome">
+        <!-- contents -->
+        <tiles:insert attribute="content1"/>
+        <tiles:insert attribute="content2"/>
+        <tiles:insert attribute="content3"/>
+        <footer role="contentinfo">
+            <tiles:insert attribute="footer"/>
+        </footer>
+    </div>
 </div>
-
 
 </body>
 </html>

@@ -183,7 +183,7 @@ img#banner {
     z-index: 3;
 }
 
-center#window {
+div#window {
     height: 100%;
     width: 100%;
     z-index: 200;
@@ -640,8 +640,7 @@ iframe#shoppingcartPreview {
 }
 
 body#iframeBody {
-    background-image: none;
-    background-color: #f2efea;
+    background: #f2efea none;
     font-size: 10px;
     text-align: center;
 }
@@ -957,9 +956,8 @@ td#cat_label {
 }
 
 input.left {
-    background-color: #fea23c; /* Green */
-    border: none;
-    border-color: white;
+    background-color: #fea23c; /* Orange */
+    border: none white;
     color: white;
     padding: 0.5em;
     text-align: center;
