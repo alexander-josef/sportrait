@@ -1,4 +1,4 @@
-/*CSS version 15:09*/
+/*CSS version 13:45*/
 *, *:before, *:after {
     -moz-box-sizing: border-box;
     /* -webkit-box-sizing: border-box; */
@@ -944,4 +944,10 @@ input.left {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 0.5em;
+}
+
+/* this style will need to be overridden depending on whether the photo is landscape or portrait*/
+.swiper-container {
+    width: 380px;
+    height: 380px;
 }

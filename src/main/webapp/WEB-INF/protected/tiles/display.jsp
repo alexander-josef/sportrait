@@ -161,12 +161,80 @@ todo refactor name albumBean as fast as possible
                                 </div>
                             </c:if>
 
-                            <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                       title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                       onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                <img src="${display.displayPhoto.displayUrl}"
-                                         alt="${display.displayPhoto.filename}" />
-                            </html:link>
+                            <div class="swiper-container">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Slides -->
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" />
+                                        </html:link>
+                                    </div>
+
+                                    <%-- ********************************************* --%>
+                                    <%-- ********************************************* --%>
+                                    <%-- Additional static slides to test swiper lib --%>
+
+
+                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+
+                                    <%--
+
+
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" />
+                                        </html:link>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" />
+                                        </html:link>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" />
+                                        </html:link>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" />
+                                        </html:link>
+                                    </div>
+
+                                    --%>
+
+                                    <%-- ************** Debug END ******************** --%>
+
+
+
+                                </div>
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
                             <%-- Social Sharing : --%>
                             <div>
                                 <%-- Facebook (data href element left out - should default to current web site) --%>
