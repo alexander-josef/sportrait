@@ -135,7 +135,8 @@ div.leftContentHome {
 }
 
 div.rightContentHome {
-     width: 240px;
+    width: 240px;
+    display: block;
 }
 
 
