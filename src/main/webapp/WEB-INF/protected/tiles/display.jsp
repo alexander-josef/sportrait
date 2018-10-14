@@ -179,11 +179,51 @@ todo refactor name albumBean as fast as possible
                                     <%-- Additional static slides to test swiper lib --%>
 
 
+                                    <!-- Lazy image -->
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+
+                                    <%--nextPhoto probably static ... make dynamic?--%>
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <!-- Lazy image with srscet-->
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.displayPhoto.displayUrl}" data-srcset="${display.displayPhoto.displayUrl} 2x" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <!-- Element with lazy background image -->
+                                    <div class="swiper-slide">
+                                        <div data-background="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                            <div class="swiper-lazy-preloader"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lazy background image on slide itself -->
+                                    <div data-background="${display.displayPhoto.displayUrl}" class="swiper-slide swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+
+
+<%--
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
+--%>
 
                                     <%--
 

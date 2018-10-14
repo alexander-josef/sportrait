@@ -2,6 +2,11 @@
 <script src="<html:rewrite page="/js/swiper.min.js"/>"></script>
 <script>
     var mySwiper = new Swiper('.swiper-container', {
+        // Disable preloading of all images
+        preloadImages: false,
+        // Enable lazy loading
+        lazy: true,
+
         /*
 
                 // Optional parameters
