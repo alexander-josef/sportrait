@@ -140,7 +140,7 @@
     </definition>
 
     <definition name=".sportraitDisplay" extends=".eventCategory">
-        <put name="jsScripts" value="/WEB-INF/protected/tiles/additionalCssDisplay.jsp"/>
+        <put name="jsScripts" value="/WEB-INF/protected/tiles/jsScriptsDisplay.jsp"/>
         <put name="cssLinks" value="/WEB-INF/protected/tiles/additionalCssDisplay.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/display.jsp"/>
         <put name="twitterCard" value="/WEB-INF/protected/tiles/twitterCard.jsp"/>

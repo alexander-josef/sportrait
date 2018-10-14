@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
@@ -7,10 +7,11 @@
 <html:xhtml/>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://apis.google.com/js/platform.js" async defer ></script>
-    <meta name="google-signin-client_id" content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+          content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
     <tiles:insert attribute="cssLinks" ignore="true"/>
@@ -19,7 +20,8 @@
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
     <%-- Media query to support "old" stylesheet with definitions for desktop screens --%>
-    <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>" media="screen and (min-width: 40em)" />
+    <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>"
+          media="screen and (min-width: 40em)"/>
     <tiles:insert attribute="cssOverrule"/>
     <tiles:insert attribute="googleAnalytics"/>
     <tiles:insert attribute="twitterCard" ignore="true"/>
@@ -44,7 +46,7 @@
             xhr.onload = function () {
                 signinResponse = xhr.responseText;
                 console.log("response: " + signinResponse);
-                if (signinResponse=="unauthorized") {
+                if (signinResponse == "unauthorized") {
                     console.log('not authorized, logging out');
                     window.alert("your user is not registered");
                     signOut();
@@ -72,10 +74,11 @@
 
 
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
+<script>(function (d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
+    js = d.createElement(s);
+    js.id = id;
     js.src = "//connect.facebook.net/de_DE/sdk.js#xfbml=1&version=v2.10";
     fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -110,7 +113,6 @@
     * z.b. verschachtelte tiles; nur das open tag fuer body zu extrahieren macht wenig sinn und ist fehleranfaellig
  --%>
 
-<tiles:insert attribute="jsScripts" ignore="true"/>
 
 <div id="window">
     <header role="banner">
@@ -126,6 +128,7 @@
         </footer>
     </div>
 </div>
-
+<%-- Placing scripts at the bottom of the <body> element improves the display speed, because script compilation slows down the display. --%>
+<tiles:insert attribute="jsScripts" ignore="true"/>
 </body>
 </html>
