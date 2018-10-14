@@ -13,6 +13,7 @@
     <meta name="google-signin-client_id" content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">
     <script src="<html:rewrite page="/js/formPoster.js"/>" type="text/javascript"></script>
     <script src="<html:rewrite page="/js/loginModal.js"/>" type="text/javascript"></script>
+    <tiles:insert attribute="cssLinks" ignore="true"/>
     <tiles:insert attribute="htmlTitle"/>
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
@@ -108,6 +109,8 @@
 <%-- todo bessere loesung:
     * z.b. verschachtelte tiles; nur das open tag fuer body zu extrahieren macht wenig sinn und ist fehleranfaellig
  --%>
+
+<tiles:insert attribute="jsScripts" ignore="true"/>
 
 <div id="window">
     <header role="banner">
