@@ -39,7 +39,7 @@ div#header {
     margin-top: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
-    margin-left: 0px;
+    margin-left: 51px;
 }
 
 div#bannerBox {
@@ -82,9 +82,6 @@ div.content, div#footerLinks, div.pageNav, div#header {
      width: 881px;
 }
 
-div#header {
-    margin: auto;
-}
 
 
 div.pageNav, div.content {
@@ -122,14 +119,6 @@ ul li.navList-content {
     width: 881px;
 }
 
-ul li.navList-top {
-    width: unset;
-}
-
-ul li.navList-bottom {
-    width: unset;
-}
-
 
 ul#fotoNav {
     padding: 43px 0 0 0;
@@ -154,7 +143,7 @@ div.rightContentHome {
 
 ul#loginBoxHome {
     margin-top: 18px;
-    display: flex;
+    display: block;
 }
 
 
@@ -188,10 +177,12 @@ td.displayPreview {
 
 
 td#displayShop {
-    display:  contents;
+    display:  table-cell;
 }
 
-
+td#displayShop li.middle {
+    width: 199px;
+}
 
 
 body#iframeBody {
