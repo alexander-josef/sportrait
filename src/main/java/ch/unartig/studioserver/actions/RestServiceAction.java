@@ -23,6 +23,11 @@ public class RestServiceAction extends Action {
         // todo check action mapping possibilities from Struts in manual
 
         // todo check put / delete / get / post requests
+        
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print("We are send text plain");
         // No ActionForward for this service
         return null;
     }
