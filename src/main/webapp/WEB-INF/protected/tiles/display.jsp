@@ -169,15 +169,22 @@ todo refactor name albumBean as fast as possible
                                         <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
                                                    title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
                                                    onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                            <img src="${display.displayPhoto.displayUrl}"
-                                                 alt="${display.displayPhoto.filename}" />
+                                            <img data-src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" class="swiper-lazy" />
                                         </html:link>
+                                        <div class="swiper-lazy-preloader"></div>
                                     </div>
 
                                     <%-- ********************************************* --%>
                                     <%-- ********************************************* --%>
                                     <%-- Additional static slides to test swiper lib --%>
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
 
+
+<%--
 
                                     <!-- Lazy image -->
                                     <div class="swiper-slide">
@@ -191,7 +198,7 @@ todo refactor name albumBean as fast as possible
                                     </div>
 
 
-                                    <%--nextPhoto probably static ... make dynamic?--%>
+                                    &lt;%&ndash;nextPhoto probably static ... make dynamic?&ndash;%&gt;
                                     <div class="swiper-slide">
                                         <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
                                         <div class="swiper-lazy-preloader"></div>
@@ -216,6 +223,7 @@ todo refactor name albumBean as fast as possible
                                     </div>
 
 
+--%>
 
 <%--
                                     <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
