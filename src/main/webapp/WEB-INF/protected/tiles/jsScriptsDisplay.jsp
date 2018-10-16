@@ -24,8 +24,8 @@
         // Navigation arrows
         navigation: {
             nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
+            prevEl: '.swiper-button-prev'
+        }
 
         /*
                 // And if we need scrollbar
@@ -33,7 +33,7 @@
                     el: '.swiper-scrollbar',
                 },
         */
-    })
+    });
 
 
     mySwiper.on('slideChange', function () {
