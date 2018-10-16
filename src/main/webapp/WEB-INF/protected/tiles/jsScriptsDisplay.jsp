@@ -44,7 +44,21 @@
         console.log('slide changed - forward');
         // get next photo URL / REST Service ? deliver URLs with request scope?
         mySwiper.appendSlide('<div class="swiper-slide"><img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+        // todo: check if array of photos available
+        // todo : if not, make call for JSON service to retrieve array with photos (ID, display and master URL?)
         console.log('slide added');
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log('done loading photo data')
+                // todo  : store array of URLs for current display (eventcategory / startnumber)
+                // todo : append correct slide / navigate to
+            }
+        };
+        // todo  : replace URL with dynamic value for environment
+        xhttp.open("GET", "http://localhost:8080/api/sportsalbum/photos.html", true);
+        xhttp.send();
 
     });
 

@@ -593,7 +593,7 @@
         <!--########### this action is called by the upload applet #######-->
         <!--##############################################################-->
         <!-- todo: protect? -->
-        <action path="/api/events" type="ch.unartig.studioserver.actions.RestServiceAction"/>
+        <action path="/api/sportsalbum/photos" type="ch.unartig.studioserver.actions.RestServiceAction"/>
 
     </action-mappings>
 

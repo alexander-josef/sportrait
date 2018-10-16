@@ -55,6 +55,7 @@ public class EventCategoryAction extends MappingDispatchAction {
 
     /**
      * This action will be called to populate photos from an eventCategory
+     * todo: what happens to session
      *
      * @param mapping
      * @param form
@@ -126,7 +127,7 @@ public class EventCategoryAction extends MappingDispatchAction {
             return mapping.findForward("notFound");
         }
 
-        sportsAlbumBean.populateAlbumBeanTemplate();
+        sportsAlbumBean.populateAlbumBeanTemplate(); // this is where the heavy lifting is happening ...
 
         request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR, sportsAlbumBean);
 //        request.getSession().setAttribute("eventCategories",((SportsEvent)eventCategory.getEvent()).getEventCategories());
