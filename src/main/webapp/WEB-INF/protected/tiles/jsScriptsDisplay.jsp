@@ -2,6 +2,8 @@
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
 <script src="<html:rewrite page="/js/swiper.min.js"/>"></script>
 <script>
+    var nextPhotoIndex;
+
     var mySwiper = new Swiper('.swiper-container', {
         // Disable preloading of all images
         preloadImages: false,
@@ -35,40 +37,78 @@
         */
     });
 
-
     mySwiper.on('slideChange', function () {
         console.log('slide changed - which direction?');
     });
 
+
     mySwiper.on('slideNextTransitionEnd', function () {
         console.log('slide changed - forward');
+        console.log('adding : ' + displayPhotos.photos[nextPhotoIndex]);
         // get next photo URL / REST Service ? deliver URLs with request scope?
-        mySwiper.appendSlide('<div class="swiper-slide"><img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
-        // todo: check if array of photos available
-        // todo : if not, make call for JSON service to retrieve array with photos (ID, display and master URL?)
+        append();
         console.log('slide added');
+        // todo: check if array of photos available
+        //if not, make call for JSON service to retrieve array with photos (ID, display and master URL?)
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            var jsonResponse;
-            if (this.readyState == 4 && this.status == 200) {
-                console.log('done loading photo data')
-                // todo  : store array of URLs for current display (eventcategory / startnumber)
-                // todo : append correct slide / navigate to
-
-                jsonResponse = this.responseText
-                console.log(jsonResponse);
-            }
-        };
-        // todo  : replace URL with dynamic value for environment
-        xhttp.open("GET", "http://localhost:8080/api/sportsalbum/photos.html", true);
-        xhttp.send();
+        /*
+                if (displayPhotos.eventCategoryId === ????) {
+            callPhotosService();
+        }
+*/
 
     });
 
     mySwiper.on('slidePrevTransitionEnd', function () {
         console.log('slide changed - backwards');
     });
+
+
+    function append() {
+        console.log("nextPhotoIndex for appending : " + nextPhotoIndex);
+        mySwiper.appendSlide('<div class="swiper-slide"><img data-src='+ displayPhotos.photos[nextPhotoIndex].displayURL +' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+        // todo add a-tag with masterURL
+        nextPhotoIndex = Number(nextPhotoIndex)+1; // increase next photo index
+    }
+
+    // todo in case of startnummer search
+    // initial call
+    var eventCategoryId = "${display.albumBean.album.eventCategory.eventCategoryId}";
+    var initialPhotoId = "${display.displayPhotoId}";
+    var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
+    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
+    callPhotosService();
+
+
+    function getNextPhotoIndex() {
+
+        console.log("getNextPhotoIndex is called");
+
+        for (var i = 0; i < displayPhotos.photos.length; i++) {
+            console.log("photoID = " + displayPhotos.photos[i].photoID);
+            console.log("displayURL = " + displayPhotos.photos[i].displayURL);
+            console.log("masterURL = " + displayPhotos.photos[i].masterURL);
+            var photoID = displayPhotos.photos[i].photoID;
+            if (photoID===initialPhotoId) {
+                console.log("found photoID : " + photoID);
+                console.log("type of photoID : " + typeof photoID);
+                console.log("Number photoID : "+ Number(photoID));
+                return Number(photoID) + 1.0;
+            }
+        }
+
+        return undefined;
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -86,6 +126,32 @@
 
 */
 
+    function callPhotosService() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            var jsonResponse;
+            if (this.readyState == 4 && this.status == 200) {
+                console.log('done loading photo data')
+                // todo : append correct slide / navigate to
+
+                jsonResponse = this.responseText;
+                console.log(jsonResponse);
+                displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
+                console.log("number of photos  : " + displayPhotos.photos.length);
+                // append(photos[0].displayURL);
+
+                // we have to wait to call getNextPhotoIndex until call has returned:
+                nextPhotoIndex = getNextPhotoIndex();
+                console.log("setting nextPhotoIndex to :" + nextPhotoIndex);
+                console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
+
+
+            }
+        };
+        // todo  : replace URL with dynamic value for environment
+        xhttp.open("GET", "http://localhost:8080/api/sportsalbum/photos.html", true);
+        xhttp.send();
+    }
 
 
 

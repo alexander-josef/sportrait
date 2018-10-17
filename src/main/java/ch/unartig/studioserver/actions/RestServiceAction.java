@@ -59,20 +59,27 @@ public class RestServiceAction extends Action {
 
 
         StringBuilder jsonResponse= new StringBuilder();
+        jsonResponse.append("[ ");
         // query db query for all photos of category (with startnumber if given)
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
         PhotoDAO photoDAO = new PhotoDAO();
         List photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(),0,albumBeanInSession.getStartNumber());
-        int i=0;
-        for (Object aPhotosForEventCategoryAndStartnumber : photosForEventCategoryAndStartnumber) {
+        for (Iterator iterator = photosForEventCategoryAndStartnumber.iterator(); iterator.hasNext(); ) {
+            Object aPhotosForEventCategoryAndStartnumber = iterator.next();
             Photo photo = (Photo) aPhotosForEventCategoryAndStartnumber;
-            String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
+
+            // String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
+            String photoElement = "{ \"photoID\":\"" + photo.getPhotoId() + "\", \"displayURL\":\"" + photo.getDisplayUrl() + "\", \"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\" }"; // additional comma at the end ?
             System.out.println(photoElement);
-            i++;
             jsonResponse.append(photoElement);
+            if (iterator.hasNext()) {
+                jsonResponse.append(",");
+            }
+
         }
 
+        jsonResponse.append("]");
         return jsonResponse.toString();
     }
 
