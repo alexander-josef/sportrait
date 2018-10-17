@@ -4,6 +4,7 @@ import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -21,6 +22,8 @@ import java.util.List;
  * Struts action for handling rest service requests
  */
 public class RestServiceAction extends Action {
+    Logger _logger = Logger.getLogger(getClass().getName());
+
 
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)
     {
@@ -55,7 +58,7 @@ public class RestServiceAction extends Action {
     private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
 
 
-        String jsonResponse=null;
+        StringBuilder jsonResponse= new StringBuilder();
         // query db query for all photos of category (with startnumber if given)
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
@@ -64,11 +67,13 @@ public class RestServiceAction extends Action {
         int i=0;
         for (Object aPhotosForEventCategoryAndStartnumber : photosForEventCategoryAndStartnumber) {
             Photo photo = (Photo) aPhotosForEventCategoryAndStartnumber;
-            System.out.println(i + " - "+ photo.getPhotoId() + " - "+ photo.getDisplayUrl());
+            String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
+            System.out.println(photoElement);
             i++;
+            jsonResponse.append(photoElement);
         }
 
-        return jsonResponse;
+        return jsonResponse.toString();
     }
 
 }

@@ -50,10 +50,14 @@
 
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
+            var jsonResponse;
             if (this.readyState == 4 && this.status == 200) {
                 console.log('done loading photo data')
                 // todo  : store array of URLs for current display (eventcategory / startnumber)
                 // todo : append correct slide / navigate to
+
+                jsonResponse = this.responseText
+                console.log(jsonResponse);
             }
         };
         // todo  : replace URL with dynamic value for environment
