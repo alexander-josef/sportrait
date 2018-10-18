@@ -93,6 +93,7 @@ public class DisplayBean implements NavigableObject
     private AbstractAlbumBean albumBean;
     private Map backToAlbumParams;
     private Long displayPhotoId;
+    private String serverUrl;
 
 
     public DisplayBean()
@@ -100,9 +101,10 @@ public class DisplayBean implements NavigableObject
 
     }
 
-    public DisplayBean(Long displayPhotoId)
+    public DisplayBean(Long displayPhotoId, String webApplicationUrl)
     {
         this.displayPhotoId = displayPhotoId;
+        this.serverUrl = webApplicationUrl;
     }
 
     /**
@@ -110,7 +112,7 @@ public class DisplayBean implements NavigableObject
      * <br> will populate all the necessary information to display the display-view of the album
      * <br> Album can be null
      * <br> set the back to album link using the navigationhelper object
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws UnartigException
      */
     public void processDisplayBean() throws UnartigException {
         _logger.debug("album bean : " + albumBean);
@@ -134,7 +136,7 @@ public class DisplayBean implements NavigableObject
 
     /**
      * reload is needed, if the relevant photos are not found in the albumbean
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws UnartigException
      */
     private void reloadAlbumBean() throws UnartigException
     {
@@ -151,7 +153,7 @@ public class DisplayBean implements NavigableObject
      *Photo:              prev     disp     next
      * </pre>
      * @return true if all photos have been found and set or false, if at least one photo has not been found
-     * @throws ch.unartig.exceptions.UnartigException
+     * @throws UnartigException
      */
     private boolean loadPhotosFromAlbumBean() throws UnartigException
     {
@@ -324,10 +326,18 @@ public class DisplayBean implements NavigableObject
 
 
     /**
-     * Getter to be used with EL in JSPs if neede
+     * Getter to be used with EL in JSPs if needed
      * @return
      */
     public String getApplicationEnvironment() {
         return Registry.getApplicationEnvironment();
+    }
+
+    /**
+     *
+     * @return the web application url (including schema, address, port)
+     */
+    public String getWebApplicationURL() {
+        return serverUrl;
     }
 }

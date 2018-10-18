@@ -1,5 +1,8 @@
 <jsp:useBean id="display" scope="request" type="ch.unartig.studioserver.beans.DisplayBean"/>
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
+<%@ taglib prefix="logic" uri="http://jakarta.apache.org/struts/tags-logic" %>
+
+
 <script src="<html:rewrite page="/js/swiper.min.js"/>"></script>
 <script>
     var nextPhotoIndex;
@@ -93,6 +96,10 @@
                 console.log("found photoID : " + photoID);
                 console.log("type of photoID : " + typeof photoID);
                 console.log("Number photoID : "+ Number(photoID));
+                console.log("Number photoID +1 : "+ photoID + 1);
+                console.log("Number photoID +1 : "+ (1+ photoID));
+                test = +photoID+1;
+                console.log("test = +photoID +1: " + test);
                 return Number(photoID) + 1.0;
             }
         }
@@ -148,8 +155,8 @@
 
             }
         };
-        // todo  : replace URL with dynamic value for environment
-        xhttp.open("GET", "http://localhost:8080/api/sportsalbum/photos.html", true);
+        xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true);
+
         xhttp.send();
     }
 
