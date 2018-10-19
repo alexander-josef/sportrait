@@ -69,7 +69,7 @@
 
     function append() {
         console.log("nextPhotoIndex for appending : " + nextPhotoIndex);
-        mySwiper.appendSlide('<div class="swiper-slide"><img data-src='+ displayPhotos.photos[nextPhotoIndex].displayURL +' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+        mySwiper.appendSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[nextPhotoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
         // todo add a-tag with masterURL
         nextPhotoIndex = Number(nextPhotoIndex)+1; // increase next photo index
     }
@@ -95,26 +95,17 @@
             if (photoID===initialPhotoId) {
                 console.log("found photoID : " + photoID);
                 console.log("type of photoID : " + typeof photoID);
-                console.log("Number photoID : "+ Number(photoID));
-                console.log("Number photoID +1 : "+ photoID + 1);
+                console.log("Number i : "+ Number(i));
+                console.log("Number i +1 : "+ i + 1);
                 console.log("Number photoID +1 : "+ (1+ photoID));
                 test = +photoID+1;
                 console.log("test = +photoID +1: " + test);
-                return Number(photoID) + 1.0;
+                return Number(i) + 1.0; // return index of next photo
             }
         }
 
         return undefined;
     }
-
-
-
-
-
-
-
-
-
 
 
 
