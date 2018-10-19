@@ -11,7 +11,10 @@
         // Disable preloading of all images
         preloadImages: false,
         // Enable lazy loading
-        lazy: true,
+        lazy: {
+            loadPrevNext: true,
+            loadOnTransitionStart: true
+        },
 
         /*
 
