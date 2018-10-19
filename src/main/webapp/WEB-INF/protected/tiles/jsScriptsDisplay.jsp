@@ -5,7 +5,7 @@
 
 <script src="<html:rewrite page="/js/swiper.min.js"/>"></script>
 <script>
-    var nextPhotoIndex;
+    var currentPhotoIndex;
 
     var mySwiper = new Swiper('.swiper-container', {
         // Disable preloading of all images
@@ -47,32 +47,36 @@
 
     mySwiper.on('slideNextTransitionEnd', function () {
         console.log('slide changed - forward');
-        console.log('adding : ' + displayPhotos.photos[nextPhotoIndex]);
-        // get next photo URL / REST Service ? deliver URLs with request scope?
-        append();
-        console.log('slide added');
-        // todo: check if array of photos available
-        //if not, make call for JSON service to retrieve array with photos (ID, display and master URL?)
-
-        /*
-                if (displayPhotos.eventCategoryId === ????) {
-            callPhotosService();
+        if (currentPhotoIndex+2 < displayPhotos.photos.length) { // length = max index +1
+            console.log('adding : ' + displayPhotos.photos[currentPhotoIndex]);
+            console.log("PhotoIndex for appending : " + currentPhotoIndex +2);
+            // todo refactor : extract generalized method with offset
+            mySwiper.appendSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex + 2].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+            // todo add a-tag with masterURL
+            console.log('slide added');
+            currentPhotoIndex = Number(currentPhotoIndex)+1; // increase next photo index
+        } else {
+            console.log("Reached the end of the array");
         }
-*/
+
+        // todo: check if array of photos available
 
     });
 
     mySwiper.on('slidePrevTransitionEnd', function () {
         console.log('slide changed - backwards');
+
+        if (currentPhotoIndex-2 >= 0) {
+            console.log("PhotoIndex for prepending : " + currentPhotoIndex-2);
+
+            // todo refactor : extract generalized method with offset
+            mySwiper.prependSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex-2].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+
+        }
+        currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
+
     });
 
-
-    function append() {
-        console.log("nextPhotoIndex for appending : " + nextPhotoIndex);
-        mySwiper.appendSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[nextPhotoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
-        // todo add a-tag with masterURL
-        nextPhotoIndex = Number(nextPhotoIndex)+1; // increase next photo index
-    }
 
     // todo in case of startnummer search
     // initial call
@@ -82,15 +86,27 @@
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
     callPhotosService();
 
+    function setInitialLeft() {
+        if (currentPhotoIndex-1 >= 0) {
+            console.log("PhotoIndex for setting initial left : " + currentPhotoIndex-1);
+            // todo refactor : extract generalized method with offset
+            mySwiper.prependSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex-1].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
+            // todo add a-tag with masterURL
 
-    function getNextPhotoIndex() {
+        }
 
-        console.log("getNextPhotoIndex is called");
+    }
+
+
+
+    function getCurrentPhotoIndex() {
+
+        console.log("getCurrentPhotoIndex is called");
 
         for (var i = 0; i < displayPhotos.photos.length; i++) {
-            console.log("photoID = " + displayPhotos.photos[i].photoID);
-            console.log("displayURL = " + displayPhotos.photos[i].displayURL);
-            console.log("masterURL = " + displayPhotos.photos[i].masterURL);
+            // console.log("photoID = " + displayPhotos.photos[i].photoID);
+            // console.log("displayURL = " + displayPhotos.photos[i].displayURL);
+            // console.log("masterURL = " + displayPhotos.photos[i].masterURL);
             var photoID = displayPhotos.photos[i].photoID;
             if (photoID===initialPhotoId) {
                 console.log("found photoID : " + photoID);
@@ -100,7 +116,7 @@
                 console.log("Number photoID +1 : "+ (1+ photoID));
                 test = +photoID+1;
                 console.log("test = +photoID +1: " + test);
-                return Number(i) + 1.0; // return index of next photo
+                return Number(i); // return index of current photo
             }
         }
 
@@ -133,16 +149,17 @@
                 // todo : append correct slide / navigate to
 
                 jsonResponse = this.responseText;
-                console.log(jsonResponse);
+                // console.log(jsonResponse);
                 displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                 console.log("number of photos  : " + displayPhotos.photos.length);
                 // append(photos[0].displayURL);
 
-                // we have to wait to call getNextPhotoIndex until call has returned:
-                nextPhotoIndex = getNextPhotoIndex();
-                console.log("setting nextPhotoIndex to :" + nextPhotoIndex);
+                // we have to wait to call getCurrentPhotoIndex until call has returned:
+                currentPhotoIndex = getCurrentPhotoIndex();
+                console.log("setting currentPhotoIndex to :" + currentPhotoIndex);
                 console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
 
+                setInitialLeft();
 
             }
         };

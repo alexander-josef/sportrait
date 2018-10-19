@@ -177,9 +177,9 @@ todo refactor name albumBean as fast as possible
 
                                     <%-- ********************************************* --%>
                                     <%-- ********************************************* --%>
-                                    <%-- Additional static slides to test swiper lib --%>
+                                    <%-- Additional static slides of next photo  --%>
                                     <div class="swiper-slide">
-                                        <img data-src="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
                                         <div class="swiper-lazy-preloader"></div>
                                     </div>
 
