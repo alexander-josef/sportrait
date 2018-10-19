@@ -71,7 +71,7 @@ public class RestServiceAction extends Action {
 
             // String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
             String photoElement = "{ \"photoID\":\"" + photo.getPhotoId() + "\", \"displayURL\":\"" + photo.getDisplayUrl() + "\", \"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\" }"; // additional comma at the end ?
-            System.out.println(photoElement);
+            _logger.debug(photoElement);
             jsonResponse.append(photoElement);
             if (iterator.hasNext()) {
                 jsonResponse.append(",");
