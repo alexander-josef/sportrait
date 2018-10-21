@@ -64,34 +64,40 @@
         // get slide html element
     }
 
+    // when navigating right (forward) is done, update photo array index and
+    // check if we are on the last slide and whether there are more photos
+    // in the array the can be added (appended) to the right of the swiper
     mySwiper.on('slideNextTransitionEnd', function () {
-        console.log('slide changed - forward');
-        if (currentPhotoIndex+2 < displayPhotos.photos.length) { // length = max index +1
-            console.log('adding : ' + displayPhotos.photos[currentPhotoIndex]);
-            console.log("PhotoIndex for appending : " + currentPhotoIndex +2);
-            // todo refactor : extract generalized method with offset
-            mySwiper.appendSlide(getPhotoSlideHTML(+2));
-            console.log('slide added');
-            currentPhotoIndex = Number(currentPhotoIndex)+1; // increase next photo index
-        } else {
-            console.log("Reached the end of the array");
+        console.log('slide changed - forward - updating photo array index');
+        currentPhotoIndex = Number(currentPhotoIndex)+1; // increase next photo index
+
+        if (mySwiper.isEnd) { // only add if we're at the end of the slides
+            if (currentPhotoIndex+1 < displayPhotos.photos.length) { // length = max index +1
+                console.log('adding Photo with ID: ' + displayPhotos.photos[currentPhotoIndex].photoID);
+                console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) +1));
+                mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
+                console.log('slide added');
+            } else {
+                console.log("Reached the end of the array");
+            }
         }
 
 
     });
 
+    // when navigating left (backwards) is done, update photo array index and
+    // check if we are on the 1st slide and whether there are more photos
+    // in the array the can be added (prepended) to the left of the swiper
     mySwiper.on('slidePrevTransitionEnd', function () {
-        console.log('slide changed - backwards');
+        console.log('slide changed - backwards - updating photo array index');
+        currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
 
-        if (currentPhotoIndex-2 >= 0) {
-            console.log("PhotoIndex for prepending : " + currentPhotoIndex-2);
-
-            // todo refactor : extract generalized method with offset
-            mySwiper.prependSlide(getPhotoSlideHTML(-2));
-            currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
+        if (mySwiper.isBeginning) {
+            if (currentPhotoIndex-1 >= 0) {
+                console.log("PhotoIndex for prepending : " + currentPhotoIndex-1);
+                mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
+            }
         }
-
-
 
     });
 
@@ -105,7 +111,7 @@
     initDisplayView();
 
 
-    function getPhotoSlideHTML(photoArrayIndexOffset) {
+    function getPhotoSlideHTMLfromOffset(photoArrayIndexOffset) {
         // todo add a-tag with masterURL
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
@@ -115,21 +121,19 @@
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
-        mySwiper.appendSlide(getPhotoSlideHTML(0))
+        mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0))
 
-        // then set initial left photo
+        // then set initial left photo in case there are fotos to the left
         if (currentPhotoIndex-1 >= 0) {
             console.log("PhotoIndex for setting initial left : " + currentPhotoIndex-1);
-            // todo refactor : extract generalized method with offset
-            mySwiper.prependSlide(getPhotoSlideHTML(-1));
+            mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
 
         }
 
         // then set initial right photo
         if (currentPhotoIndex< displayPhotos.photos.length) {
             console.log("setting right photo - ");
-            // todo refactor : extract generalized method with offset
-            mySwiper.appendSlide(getPhotoSlideHTML(+1));
+            mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
 
         }
 
