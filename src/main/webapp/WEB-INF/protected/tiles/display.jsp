@@ -161,10 +161,13 @@ todo refactor name albumBean as fast as possible
                                 </div>
                             </c:if>
 
-                            <div class="swiper-container">
+                            <div class="swiper-container" style="width: 380px;">
                                 <!-- Additional required wrapper -->
                                 <div class="swiper-wrapper">
                                     <!-- Slides -->
+
+<%--
+
                                     <div class="swiper-slide">
                                         <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
                                                    title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
@@ -175,14 +178,20 @@ todo refactor name albumBean as fast as possible
                                         <div class="swiper-lazy-preloader"></div>
                                     </div>
 
-                                    <%-- ********************************************* --%>
-                                    <%-- ********************************************* --%>
-                                    <%-- Additional static slides of next photo  --%>
+                                    &lt;%&ndash; ********************************************* &ndash;%&gt;
+                                    &lt;%&ndash; ********************************************* &ndash;%&gt;
+                                    &lt;%&ndash; Additional static slides of next photo  &ndash;%&gt;
                                     <div class="swiper-slide">
-                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
-                                        <div class="swiper-lazy-preloader"></div>
+                                        <html:link action="/downloadPhoto?photoId=${display.nextPhoto.photoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                            <div class="swiper-lazy-preloader"></div>
+                                        </html:link>
+
                                     </div>
 
+--%>
 
 <%--
 
@@ -225,54 +234,8 @@ todo refactor name albumBean as fast as possible
 
 --%>
 
-<%--
-                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
-                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
-                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
-                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
-                                    <div class="swiper-slide"> <img src="${display.displayPhoto.displayUrl}"/> </div>
---%>
-
-                                    <%--
 
 
-                                    <div class="swiper-slide">
-                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                            <img src="${display.displayPhoto.displayUrl}"
-                                                 alt="${display.displayPhoto.filename}" />
-                                        </html:link>
-                                    </div>
-
-                                    <div class="swiper-slide">
-                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                            <img src="${display.displayPhoto.displayUrl}"
-                                                 alt="${display.displayPhoto.filename}" />
-                                        </html:link>
-                                    </div>
-
-                                    <div class="swiper-slide">
-                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                            <img src="${display.displayPhoto.displayUrl}"
-                                                 alt="${display.displayPhoto.filename}" />
-                                        </html:link>
-                                    </div>
-
-                                    <div class="swiper-slide">
-                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
-                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
-                                            <img src="${display.displayPhoto.displayUrl}"
-                                                 alt="${display.displayPhoto.filename}" />
-                                        </html:link>
-                                    </div>
-
-                                    --%>
 
                                     <%-- ************** Debug END ******************** --%>
 

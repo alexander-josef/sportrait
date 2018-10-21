@@ -15,6 +15,7 @@
             loadPrevNext: true,
             loadOnTransitionStart: true
         },
+        autoHeight : true,
 
         /*
 
@@ -48,21 +49,34 @@
     });
 
 
+
+    // todo : is this used?
+    function setCurrentPhotoDimension() {
+        // transition ended, make sure width and height are set correctly
+        if (displayPhotos.photos[currentPhotoIndex].orientationPortrait) {
+            mySwiper.width = 250;
+            mySwiper.height = 380;
+        } else { // landscape
+            mySwiper.width = 380;
+            mySwiper.height = 250;
+        }
+
+        // get slide html element
+    }
+
     mySwiper.on('slideNextTransitionEnd', function () {
         console.log('slide changed - forward');
         if (currentPhotoIndex+2 < displayPhotos.photos.length) { // length = max index +1
             console.log('adding : ' + displayPhotos.photos[currentPhotoIndex]);
             console.log("PhotoIndex for appending : " + currentPhotoIndex +2);
             // todo refactor : extract generalized method with offset
-            mySwiper.appendSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex + 2].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
-            // todo add a-tag with masterURL
+            mySwiper.appendSlide(getPhotoSlideHTML(+2));
             console.log('slide added');
             currentPhotoIndex = Number(currentPhotoIndex)+1; // increase next photo index
         } else {
             console.log("Reached the end of the array");
         }
 
-        // todo: check if array of photos available
 
     });
 
@@ -73,10 +87,11 @@
             console.log("PhotoIndex for prepending : " + currentPhotoIndex-2);
 
             // todo refactor : extract generalized method with offset
-            mySwiper.prependSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex-2].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
-
+            mySwiper.prependSlide(getPhotoSlideHTML(-2));
+            currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
         }
-        currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
+
+
 
     });
 
@@ -87,16 +102,39 @@
     var initialPhotoId = "${display.displayPhotoId}";
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
-    callPhotosService();
+    initDisplayView();
 
-    function setInitialLeft() {
+
+    function getPhotoSlideHTML(photoArrayIndexOffset) {
+        // todo add a-tag with masterURL
+        var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
+        console.log("Reading from photo index : " + photoIndex);
+        return '<div class="swiper-slide"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
+    }
+
+    function setInitialPhotos() {
+        // first set initial active photo
+        console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
+        mySwiper.appendSlide(getPhotoSlideHTML(0))
+
+        // then set initial left photo
         if (currentPhotoIndex-1 >= 0) {
             console.log("PhotoIndex for setting initial left : " + currentPhotoIndex-1);
             // todo refactor : extract generalized method with offset
-            mySwiper.prependSlide('<div class="swiper-slide"><img data-src=' + displayPhotos.photos[currentPhotoIndex-1].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>');
-            // todo add a-tag with masterURL
+            mySwiper.prependSlide(getPhotoSlideHTML(-1));
 
         }
+
+        // then set initial right photo
+        if (currentPhotoIndex< displayPhotos.photos.length) {
+            console.log("setting right photo - ");
+            // todo refactor : extract generalized method with offset
+            mySwiper.appendSlide(getPhotoSlideHTML(+1));
+
+        }
+
+        // update at the end of setup phase
+        mySwiper.update();
 
     }
 
@@ -112,13 +150,7 @@
             // console.log("masterURL = " + displayPhotos.photos[i].masterURL);
             var photoID = displayPhotos.photos[i].photoID;
             if (photoID===initialPhotoId) {
-                console.log("found photoID : " + photoID);
-                console.log("type of photoID : " + typeof photoID);
-                console.log("Number i : "+ Number(i));
-                console.log("Number i +1 : "+ i + 1);
-                console.log("Number photoID +1 : "+ (1+ photoID));
-                test = +photoID+1;
-                console.log("test = +photoID +1: " + test);
+                console.log("found index for current photo - index = " + Number(i));
                 return Number(i); // return index of current photo
             }
         }
@@ -128,28 +160,13 @@
 
 
 
-/*
-
-    Append / prepend slides after slide transitions (listen to events):
-
-    mySwiper.appendSlide('<div class="swiper-slide">Slide 10"</div>')
-
-    mySwiper.prependSlide('<div class="swiper-slide">Slide 0"</div>')
-
-
-    mySwiper.update(); --> necessary? see api
-
-
-
-*/
-
-    function callPhotosService() {
+    function initDisplayView() {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             var jsonResponse;
             if (this.readyState == 4 && this.status == 200) {
                 console.log('done loading photo data')
-                // todo : append correct slide / navigate to
+                // response now ready
 
                 jsonResponse = this.responseText;
                 // console.log(jsonResponse);
@@ -162,7 +179,7 @@
                 console.log("setting currentPhotoIndex to :" + currentPhotoIndex);
                 console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
 
-                setInitialLeft();
+                setInitialPhotos();
 
             }
         };

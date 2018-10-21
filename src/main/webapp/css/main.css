@@ -569,14 +569,16 @@ td#displayCenter {
     font-weight: normal; /**/
 }
 
+/*might not be needed - creates problems with dynamic swiper*/
 td#displayImageholder_portrait img { /**/
-    height: 380px;
-    width: 250px;
+    /*height: 380px;*/
+    /*width: 250px;*/
 }
 
+/*might not be needed - creates problems with dynamic swiper*/
 td#displayImageholder_landscape img { /**/
-    height: 250px;
-    width: 380px;
+    /*height: 250px;*/
+    /*width: 380px;*/
 }
 
 td#displayCenter table {
@@ -947,7 +949,9 @@ input.left {
 }
 
 /* this style will need to be overridden depending on whether the photo is landscape or portrait*/
+/*
 .swiper-container {
     width: 380px;
     height: 380px;
 }
+*/
