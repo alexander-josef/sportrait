@@ -122,7 +122,13 @@
         // using lazy loading:
         // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
 
-        var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img src=' + displayPhotos.photos[photoIndex].displayURL + '></div>';
+
+        // "template literal" as 2nd part of the string ... might not be campatible everywhere?
+        var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
+            `<html:link action="/downloadPhoto?photoId=${displayPhotos.photos[i].photoID}" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);">` +
+            '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
+            ' </html:link>' +
+            '</div>';
         return htmlString;
     }
 

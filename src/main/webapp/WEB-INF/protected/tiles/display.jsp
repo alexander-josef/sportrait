@@ -166,6 +166,9 @@ todo refactor name albumBean as fast as possible
                                 <div class="swiper-wrapper">
                                     <!-- Slides -->
 
+
+
+
 <%--
 
                                     <div class="swiper-slide">
