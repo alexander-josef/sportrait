@@ -8,14 +8,15 @@
     var currentPhotoIndex;
 
     var mySwiper = new Swiper('.swiper-container', {
-        // Disable preloading of all images
-        preloadImages: false,
+        // Enable preloading of all images
+        preloadImages: true,
+
         // Enable lazy loading
         lazy: {
             loadPrevNext: true,
             loadOnTransitionStart: true
         },
-        autoHeight : true,
+
 
         /*
 
@@ -118,14 +119,17 @@
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
         // todo : fix style - dynamic width and height
-        return '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
+        // using lazy loading:
+        // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
+
+        var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img src=' + displayPhotos.photos[photoIndex].displayURL + '></div>';
+        return htmlString;
     }
 
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
         mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0))
-        mySwiper.updateAutoHeight(1000);
 
 
         // then set initial left photo in case there are fotos to the left
