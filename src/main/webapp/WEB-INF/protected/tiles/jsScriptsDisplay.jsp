@@ -77,6 +77,8 @@
                 console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) +1));
                 mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
                 console.log('slide added');
+                // this.mySwiper.update();
+                // mySwiper.updateAutoHeight(1000);
             } else {
                 console.log("Reached the end of the array");
             }
@@ -115,13 +117,16 @@
         // todo add a-tag with masterURL
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
-        return '<div class="swiper-slide"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
+        // todo : fix style - dynamic width and height
+        return '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
     }
 
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
         mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0))
+        mySwiper.updateAutoHeight(1000);
+
 
         // then set initial left photo in case there are fotos to the left
         if (currentPhotoIndex-1 >= 0) {
@@ -137,8 +142,7 @@
 
         }
 
-        // update at the end of setup phase
-        mySwiper.update();
+
 
     }
 
