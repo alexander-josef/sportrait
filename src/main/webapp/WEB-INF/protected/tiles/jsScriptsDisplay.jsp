@@ -138,7 +138,7 @@
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
-        mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0))
+        mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0));
 
 
         // then set initial left photo in case there are fotos to the left
