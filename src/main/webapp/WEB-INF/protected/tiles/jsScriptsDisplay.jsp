@@ -123,15 +123,19 @@
         // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
 
 
-        // "template literal" as 2nd part of the string ... might not be campatible everywhere?
+        // "template literal" as 2nd part of the string ... might not be compatible everywhere?
+        // todo : use separate function for the onclick
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="_gaq.push([&apo;_trackEvent&apo;, &apo;${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}&apo;, &apo;download_free_highres&apo;, &apo;album_ID&apo;, &apo;${display.albumFromPhoto.genericLevelId}&apo;]);"> '+
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="callGoogleAnalytics()"> '+
             '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
             ' </html:link>' +
             '</div>';
         return htmlString;
     }
 
+    function callGoogleAnalytics() {
+        _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
+    }
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
