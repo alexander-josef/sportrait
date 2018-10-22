@@ -124,7 +124,6 @@
 
 
         // "template literal" as 2nd part of the string ... might not be compatible everywhere?
-        // todo : use separate function for the onclick
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
             '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="callGoogleAnalytics()"> '+
             '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
