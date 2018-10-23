@@ -35,7 +35,7 @@ todo refactor name albumBean as fast as possible
                 <table id="displaySelectionBar">
                     <tr>
                         <td class="leftalign" id="fotoInfoDisplay">
-                            Zeit:&nbsp;<b>${display.displayPhoto.shortTimeString}</b>&nbsp;&nbsp;&nbsp;Foto:&nbsp;<b>${display.displayPhoto.filename}</b>
+                            Zeit:&nbsp;<b id="displayPhotoTime">${display.displayPhoto.shortTimeString}</b>&nbsp;&nbsp;&nbsp;Foto:&nbsp;<b id="displayPhotoTitle">${display.displayPhoto.filename}</b>
                         </td>
 
                         <td>

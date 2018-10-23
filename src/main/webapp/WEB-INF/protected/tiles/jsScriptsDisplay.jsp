@@ -45,8 +45,14 @@
         */
     });
 
-    mySwiper.on('slideChange', function () {
-        console.log('slide changed - which direction?');
+    function changeLabelsAfterSlideTransition() {
+        document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
+        document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
+    }
+
+    mySwiper.on('transitionEnd', function () {
+        console.log('slide transition ended - forward or backwards');
+        changeLabelsAfterSlideTransition();
     });
 
 
@@ -84,6 +90,7 @@
                 console.log("Reached the end of the array");
             }
         }
+        changeLabelsAfterSlideTransition();
 
 
     });
@@ -101,6 +108,7 @@
                 mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
             }
         }
+        changeLabelsAfterSlideTransition();
 
     });
 
