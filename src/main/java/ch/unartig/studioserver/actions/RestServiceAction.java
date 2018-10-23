@@ -73,9 +73,9 @@ public class RestServiceAction extends Action {
             String photoElement = "{ " +
                     "\"photoID\":\"" + photo.getPhotoId() + "\", " +
                     "\"displayURL\":\"" + photo.getDisplayUrl() + "\", " +
-                    "\"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\"" +
-                    "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"" + // = filename ?
-                    "\"time\":\"" + photo.getShortTimeString() + "\"" +
+                    "\"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\"," +
+                    "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
+                    "\"time\":\"" + photo.getShortTimeString() + "\"," +
                     "\"orientation\":\"" + (photo.isOrientationPortrait()?"portrait":"landscape") + "\"" +
                     " }"; // additional comma at the end ?
             _logger.debug(photoElement);
