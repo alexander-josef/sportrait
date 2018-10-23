@@ -70,7 +70,14 @@ public class RestServiceAction extends Action {
             Photo photo = (Photo) aPhotosForEventCategoryAndStartnumber;
 
             // String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
-            String photoElement = "{ \"photoID\":\"" + photo.getPhotoId() + "\", \"displayURL\":\"" + photo.getDisplayUrl() + "\", \"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\" }"; // additional comma at the end ?
+            String photoElement = "{ " +
+                    "\"photoID\":\"" + photo.getPhotoId() + "\", " +
+                    "\"displayURL\":\"" + photo.getDisplayUrl() + "\", " +
+                    "\"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\"" +
+                    "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"" + // = filename ?
+                    "\"time\":\"" + photo.getShortTimeString() + "\"" +
+                    "\"orientation\":\"" + (photo.isOrientationPortrait()?"portrait":"landscape") + "\"" +
+                    " }"; // additional comma at the end ?
             _logger.debug(photoElement);
             jsonResponse.append(photoElement);
             if (iterator.hasNext()) {
