@@ -35,7 +35,7 @@ todo refactor name albumBean as fast as possible
                 <table id="displaySelectionBar">
                     <tr>
                         <td class="leftalign" id="fotoInfoDisplay">
-                            Zeit:&nbsp;<b>${display.displayPhoto.shortTimeString}</b>&nbsp;&nbsp;&nbsp;Foto:&nbsp;<b>${display.displayPhoto.filename}</b>
+                            Zeit:&nbsp;<b id="displayPhotoTime">${display.displayPhoto.shortTimeString}</b>&nbsp;&nbsp;&nbsp;Foto:&nbsp;<b id="displayPhotoTitle">${display.displayPhoto.filename}</b>
                         </td>
 
                         <td>
@@ -120,13 +120,13 @@ todo refactor name albumBean as fast as possible
         <tr>
             <td class="displayPreview">
 
-                <c:if test="${ ! empty display.previousPhoto}">
-                    <ul class="slide">
+
+                    <ul class="slide" id="previousSlideLeft" <c:if test="${empty display.previousPhoto}"> style="display: none" </c:if>>
                         <li class="slideTop"></li>
                         <li class="slideImage">
-                            <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
+                            <html:link styleId="previousPhotoLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
                                        property="previousPhotoLinkParams" title="vorheriges Foto">
-                                <img class="${display.previousPhoto.orientationSuffix}"
+                                <img id="previousPhotoThumbnail" class="${display.previousPhoto.orientationSuffix}"
                                      src="${display.previousPhoto.thumbnailUrl}"
                                      alt="vorheriges Foto"/>
                             </html:link>
@@ -137,7 +137,7 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                     </ul>
-                </c:if>
+
 
             </td>
             <td id="displayCenter">
@@ -161,8 +161,94 @@ todo refactor name albumBean as fast as possible
                                 </div>
                             </c:if>
 
-                            <img src="${display.displayPhoto.displayUrl}"
-                                 alt="${display.displayPhoto.filename}"/>
+                            <div class="swiper-container" style="width: 380px;">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Slides -->
+
+
+
+
+<%--
+
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img data-src="${display.displayPhoto.displayUrl}"
+                                                 alt="${display.displayPhoto.filename}" class="swiper-lazy" />
+                                        </html:link>
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    &lt;%&ndash; ********************************************* &ndash;%&gt;
+                                    &lt;%&ndash; ********************************************* &ndash;%&gt;
+                                    &lt;%&ndash; Additional static slides of next photo  &ndash;%&gt;
+                                    <div class="swiper-slide">
+                                        <html:link action="/downloadPhoto?photoId=${display.nextPhoto.photoId}"
+                                                   title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
+                                                   onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                            <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                            <div class="swiper-lazy-preloader"></div>
+                                        </html:link>
+
+                                    </div>
+
+--%>
+
+<%--
+
+                                    <!-- Lazy image -->
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+
+                                    &lt;%&ndash;nextPhoto probably static ... make dynamic?&ndash;%&gt;
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.nextPhoto.displayUrl}" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <!-- Lazy image with srscet-->
+                                    <div class="swiper-slide">
+                                        <img data-src="${display.displayPhoto.displayUrl}" data-srcset="${display.displayPhoto.displayUrl} 2x" class="swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+                                    <!-- Element with lazy background image -->
+                                    <div class="swiper-slide">
+                                        <div data-background="${display.displayPhoto.displayUrl}" class="swiper-lazy">
+                                            <div class="swiper-lazy-preloader"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lazy background image on slide itself -->
+                                    <div data-background="${display.displayPhoto.displayUrl}" class="swiper-slide swiper-lazy">
+                                        <div class="swiper-lazy-preloader"></div>
+                                    </div>
+
+
+--%>
+
+
+
+
+                                    <%-- ************** Debug END ******************** --%>
+
+
+
+                                </div>
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
                             <%-- Social Sharing : --%>
                             <div>
                                 <%-- Facebook (data href element left out - should default to current web site) --%>
@@ -205,14 +291,16 @@ todo refactor name albumBean as fast as possible
             <td class="displayPreview">
 
                 <c:if test="${ ! empty display.nextPhoto}">
-                    <ul class="slide right">
+                    <ul class="slide right" id="nextSlideRight">
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                                       property="nextPhotoLinkParams" title="nächstes Foto"><img
-                                    class="${display.nextPhoto.orientationSuffix}"
-                                    src="${display.nextPhoto.thumbnailUrl}"
-                                    alt="nächstes Foto"/></html:link>
+                                       property="nextPhotoLinkParams" title="nächstes Foto">
+                                <img id="nextPhotoThumbnail"
+                                        class="${display.nextPhoto.orientationSuffix}"
+                                        src="${display.nextPhoto.thumbnailUrl}"
+                                        alt="nächstes Foto"/>
+                            </html:link>
                         </li>
                         <li class="slideBottom">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"

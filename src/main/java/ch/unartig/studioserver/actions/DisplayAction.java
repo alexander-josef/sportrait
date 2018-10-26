@@ -82,6 +82,7 @@ import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
+import ch.unartig.util.HttpUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
 
@@ -120,7 +121,7 @@ public class DisplayAction extends Action
         _logger.debug("actionMapping.getParameter() = " + photoPath);
         String photoIdString = photoPath.split("/")[0];
         Long displayPhotoId = new Long(photoIdString);
-        displayBean = new DisplayBean(displayPhotoId);
+        displayBean = new DisplayBean(displayPhotoId, HttpUtil.getWebApplicationUrl(request));
         Album albumFromPhotoID = displayBean.getAlbumFromPhoto(); // needed in case of deep linking. Could we avoid it? Don't think so. Check for performance penalties (SQL)
         // or just the photo list??
         AbstractAlbumBean albumBean = SessionHelper.getAlbumBeanFromSession(request);

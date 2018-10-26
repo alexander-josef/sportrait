@@ -39,8 +39,8 @@
                             </html:link>
                         </td>
                         <!-- Kategorie start -->
-                        <td>&nbsp;Kategorie:</td>
-                        <td>
+                        <td id="cat_label">&nbsp;Kategorie:</td>
+                        <td id="cat_value">
                             <html:select property="eventCategoryId">
                                 <html:optionsCollection name="albumBean" property="eventCategoriesWithPhotos" label="title"
                                                         value="eventCategoryId"/>
@@ -48,9 +48,12 @@
                         </td>
                         <!-- Kategorie end -->
                         <td>
+<%--
                             <html:image styleClass="left"   page="/images/buttons/bt_searchFoto_de.gif"
                                    title="Fotos suchen"/>
-                        </td>
+--%>
+                            <html:submit styleClass="left" title="Suchen" value="Suchen"/>
+                         </td>
                     </tr>
                 </table>
             </html:form>

@@ -6,7 +6,7 @@
 
 
 <tiles-definitions>
-    <definition name=".sportraitHome" path="/WEB-INF/protected/layout/templateHome.jsp">
+    <definition name=".sportraitHome" template="/WEB-INF/protected/layout/templateHome.jsp">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHome.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headHome"/>
@@ -22,16 +22,16 @@
     <definition name=".hello-tiles" path="/hello.jsp"/>
 -->
 
-    <definition name=".headHome" path="/WEB-INF/protected/tiles/headHome.jsp">
+    <definition name=".headHome" template="/WEB-INF/protected/tiles/headHome.jsp">
         <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
     </definition>
 
-    <definition name=".home" path="/WEB-INF/protected/tiles/home.jsp">
+    <definition name=".home" template="/WEB-INF/protected/tiles/home.jsp">
         <put name="login" value="/WEB-INF/protected/tiles/Login.jsp"/>
     </definition>
 
 
-    <definition name=".sportraitEvent" path="/WEB-INF/protected/layout/template.jsp">
+    <definition name=".sportraitEvent" template="/WEB-INF/protected/layout/template.jsp">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleEvent.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headEvent"/>
@@ -47,7 +47,7 @@
         <put name="login" value="/WEB-INF/protected/tiles/Login.jsp"/>
     </definition>
 
-    <definition name=".headEvent" path="/WEB-INF/protected/tiles/headBanner.jsp">
+    <definition name=".headEvent" template="/WEB-INF/protected/tiles/headBanner.jsp">
         <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
         <put name="tabs" value="/WEB-INF/protected/tiles/tabs_foto.jsp"/>
     </definition>
@@ -134,12 +134,14 @@
 
     </definition>
 
-    <definition name=".headFoto" path="/WEB-INF/protected/tiles/headMain.jsp">
+    <definition name=".headFoto" template="/WEB-INF/protected/tiles/headMain.jsp">
         <put name="hallo" value="/WEB-INF/protected/tiles/welcomeUser_and_logout.jsp"/>
         <put name="tabs" value="/WEB-INF/protected/tiles/tabs_foto.jsp"/>
     </definition>
 
     <definition name=".sportraitDisplay" extends=".eventCategory">
+        <put name="jsScripts" value="/WEB-INF/protected/tiles/jsScriptsDisplay.jsp"/>
+        <put name="cssLinks" value="/WEB-INF/protected/tiles/additionalCssDisplay.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/display.jsp"/>
         <put name="twitterCard" value="/WEB-INF/protected/tiles/twitterCard.jsp"/>
     </definition>

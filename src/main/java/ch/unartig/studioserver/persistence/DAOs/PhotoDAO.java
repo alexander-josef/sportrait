@@ -658,6 +658,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param startnumber
      * @return a list of photos
      * @throws ch.unartig.exceptions.UAPersistenceException
+     * @deprecated probably shouldn't be used - album not a valid criterion
      *
      */
     public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException
@@ -696,7 +697,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * set order if no time is available to photoid
      * @param page
      * @param eventCategory
-     * @param itemsOnPage the number of photos on page
+     * @param itemsOnPage the number of photos on page // 0 for all photos for given eventCategory and startNumber
      * @param startNumber if null, ignore
      * @return a list of Photo s
      * @throws ch.unartig.exceptions.UAPersistenceException
@@ -709,16 +710,25 @@ Note: if you list each property explicitly, you must include all properties of t
         {
             page = 1;
         }
-        //if page=1 do not extend selection at the beginning:
-        int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
-        int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
-        criteria.setMaxResults(maxResults)
-                .setFirstResult(firstResult)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setCacheable(true) // also enable query caching
+
+        if (itemsOnPage==0){ // don't limit result for pagination
+            criteria.addOrder(Order.asc("pictureTakenDate"))
+                    .addOrder(Order.asc("photoId"))
+                    .setCacheable(true) // also enable query caching
         ;
+
+        }
+        else {//if page=1 do not extend selection at the beginning:
+            int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
+            int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
+            criteria.setMaxResults(maxResults)
+                    .setFirstResult(firstResult)
+                    .addOrder(Order.asc("pictureTakenDate"))
+                    .addOrder(Order.asc("photoId"))
+                    .setCacheable(true) // also enable query caching
+            ;
+        }
         try
         {
             photos = criteria.list();
@@ -744,6 +754,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param startnumber
      * @return
      * @throws UAPersistenceException
+     * @deprecated still used ? see other signatures of same method that uses eventcategory - eventalbum probably not used this way
      */
     public List listSportsPhotosOnPagePlusPreview(int page, EventAlbum album, int itemsOnPage, String startnumber) throws UAPersistenceException
     {
