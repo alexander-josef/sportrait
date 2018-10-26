@@ -61,13 +61,12 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.studioserver.Registry;
+import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Photo extends GeneratedPhoto
 {
@@ -164,7 +163,17 @@ public class Photo extends GeneratedPhoto
 
         if (this.isAfterImageServiceMigration()){
             // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-            thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
+            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
+            // get a signed thumbnail URL
+            Map<String,String> params = new HashMap<String,String>;
+            params.put("w","100");
+            params.put("h","100");
+            params.put("fit","clip");
+            params.put("auto","format,enhance,compress");
+            params.put("q","40");
+            params.put("usm","20");
+
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
         } else {
             // URL to thumbnail file - legacy solution before image service (imgix)
             return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
@@ -205,6 +214,10 @@ public class Photo extends GeneratedPhoto
      */
     public String getMasterImageUrlFromImageService() {
         return "https://" + Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
+    }
+
+    public String getPathForImageService() {
+        return "fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
     }
 
     public String getHighResUrl()
