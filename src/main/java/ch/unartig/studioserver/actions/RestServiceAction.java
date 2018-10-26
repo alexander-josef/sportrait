@@ -72,8 +72,8 @@ public class RestServiceAction extends Action {
             // String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
             String photoElement = "{ " +
                     "\"photoID\":\"" + photo.getPhotoId() + "\", " +
+                    "\"thumbnailURL\":\"" + photo.getThumbnailUrl() + "\", " +
                     "\"displayURL\":\"" + photo.getDisplayUrl() + "\", " +
-                    "\"masterURL\":\"" + photo.getMasterImageUrlFromImageService() + "\"," +
                     "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
                     "\"time\":\"" + photo.getShortTimeString() + "\"," +
                     "\"orientation\":\"" + (photo.isOrientationPortrait()?"portrait":"landscape") + "\"" +

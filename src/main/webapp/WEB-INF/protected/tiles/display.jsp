@@ -120,13 +120,13 @@ todo refactor name albumBean as fast as possible
         <tr>
             <td class="displayPreview">
 
-                <c:if test="${ ! empty display.previousPhoto}">
-                    <ul class="slide">
+
+                    <ul class="slide" id="previousSlideLeft" <c:if test="${empty display.previousPhoto}"> style="display: none" </c:if>>
                         <li class="slideTop"></li>
                         <li class="slideImage">
-                            <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
+                            <html:link styleId="previousPhotoLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
                                        property="previousPhotoLinkParams" title="vorheriges Foto">
-                                <img class="${display.previousPhoto.orientationSuffix}"
+                                <img id="previousPhotoThumbnail" class="${display.previousPhoto.orientationSuffix}"
                                      src="${display.previousPhoto.thumbnailUrl}"
                                      alt="vorheriges Foto"/>
                             </html:link>
@@ -137,7 +137,7 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                     </ul>
-                </c:if>
+
 
             </td>
             <td id="displayCenter">
@@ -291,14 +291,16 @@ todo refactor name albumBean as fast as possible
             <td class="displayPreview">
 
                 <c:if test="${ ! empty display.nextPhoto}">
-                    <ul class="slide right">
+                    <ul class="slide right" id="nextSlideRight">
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                                       property="nextPhotoLinkParams" title="nächstes Foto"><img
-                                    class="${display.nextPhoto.orientationSuffix}"
-                                    src="${display.nextPhoto.thumbnailUrl}"
-                                    alt="nächstes Foto"/></html:link>
+                                       property="nextPhotoLinkParams" title="nächstes Foto">
+                                <img id="nextPhotoThumbnail"
+                                        class="${display.nextPhoto.orientationSuffix}"
+                                        src="${display.nextPhoto.thumbnailUrl}"
+                                        alt="nächstes Foto"/>
+                            </html:link>
                         </li>
                         <li class="slideBottom">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"

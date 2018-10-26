@@ -45,16 +45,35 @@
         */
     });
 
-    function changeLabelsAfterSlideTransition() {
+    function changeHTMLafterSlideTransition() {
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
+
+        // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
+        if (!mySwiper.isBeginning) {
+
+            var elementById = document.getElementById("previousPhotoThumbnail");
+            elementById.src = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL;
+            elementById.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
+            document.getElementById("previousSlideLeft").style.display = "unset";
+        } else {
+            // hide previous preview slide
+            console.log("beginning of swiper - hide preview");
+            document.getElementById("previousSlideLeft").style.display = "none";
+        }
+
+
+        if (!mySwiper.isEnd) {
+            var elementById1 = document.getElementById("nextPhotoThumbnail");
+            elementById1.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL;
+            elementById1.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
+            document.getElementById("nextSlideRight").style.display = "unset";
+        } else {
+            // hide next preview slide
+            console.log("end of swiper - hide next");
+            document.getElementById("nextSlideRight").style.display = "none";
+        }
     }
-
-    mySwiper.on('transitionEnd', function () {
-        console.log('slide transition ended - forward or backwards');
-        changeLabelsAfterSlideTransition();
-    });
-
 
 
     // todo : is this used?
@@ -90,7 +109,7 @@
                 console.log("Reached the end of the array");
             }
         }
-        changeLabelsAfterSlideTransition();
+        changeHTMLafterSlideTransition();
 
 
     });
@@ -108,7 +127,7 @@
                 mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
             }
         }
-        changeLabelsAfterSlideTransition();
+        changeHTMLafterSlideTransition();
 
     });
 
@@ -123,7 +142,6 @@
 
 
     function getPhotoSlideHTMLfromOffset(photoArrayIndexOffset) {
-        // todo add a-tag with masterURL
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
         // todo : fix style - dynamic width and height
