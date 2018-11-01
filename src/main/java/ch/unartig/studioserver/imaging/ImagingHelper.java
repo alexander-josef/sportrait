@@ -204,16 +204,18 @@ public class    ImagingHelper
 
     /**
      * Construct signed imgix URL
+     * todo  : imgix Sign Key
      */
     public static String getSignedImgixUrl(Map<String, String> params, String path)
     {
         String domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
-        String imgixSignKey;
+        String imgixSignKey = "6rTyMFEnEmuCmGg6"; // dev env sign key
+        // todo find solution to securely store sign keys for all environments
         URLBuilder builder = new URLBuilder(domain);
         builder.setUseHttps(true); // use https
         builder.setSignKey(imgixSignKey); // set sign key
-        params.put("w", "100");
-        params.put("h", "100");
+        // params.put("w", "100");
+        // params.put("h", "100");
         return builder.createURL(path, params);
     }
 

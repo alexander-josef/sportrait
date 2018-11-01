@@ -162,10 +162,10 @@ public class Photo extends GeneratedPhoto
         String thumbnailUrl;
 
         if (this.isAfterImageServiceMigration()){
-            // todo : insert parameters (environment - imgix domain, image manipulation parameters)
+            // old solution before using parameters:
             // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
             // get a signed thumbnail URL
-            Map<String,String> params = new HashMap<String,String>;
+            Map<String,String> params = new HashMap<String,String>();
             params.put("w","100");
             params.put("h","100");
             params.put("fit","clip");
@@ -190,8 +190,20 @@ public class Photo extends GeneratedPhoto
         String displayUrl;
         if (this.isAfterImageServiceMigration())
         {
-            // todo : insert parameters (environment - imgix domain, image manipulation parameters)
-            displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
+            // old solution before using params and imgix client
+            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
+
+
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","380");
+            params.put("h","380");
+            params.put("fit","clip");
+            params.put("auto","format,enhance,compress");
+            params.put("q","50");
+            params.put("usm","20");
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+
         } else {
             // URL to display file - before image service migration (imgix)
             return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
