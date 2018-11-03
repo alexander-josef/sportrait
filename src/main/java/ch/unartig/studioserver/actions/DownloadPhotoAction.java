@@ -102,12 +102,12 @@ public class DownloadPhotoAction extends Action {
 
                     Map<String,String> imgixParams = new HashMap<String,String>();
 //                    imgixParams.put("mark64",Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()));
-                    imgixParams.put("mark",asvzLogoRelativeUrl);
+                    imgixParams.put("mark64",asvzLogoRelativeUrl);
                     imgixParams.put("markalign","right,top");
                     imgixParams.put("markpad","70");
                     imgixParams.put("markscale",markScalePercentage);
 //                    imgixParams.put("blend64",Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()));
-                    imgixParams.put("blend",sponsorBarRelativeUrl);
+                    imgixParams.put("blend64",sponsorBarRelativeUrl);
                     imgixParams.put("bm","normal");
                     imgixParams.put("ba","bottom,center");
                     imgixParams.put("bs","none");
