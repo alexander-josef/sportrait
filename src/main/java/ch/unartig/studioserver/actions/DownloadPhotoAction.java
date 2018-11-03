@@ -1,6 +1,7 @@
 package ch.unartig.studioserver.actions;
 
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.util.FileUtils;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used by display view to download a (free) highres photo
@@ -25,6 +28,8 @@ public class DownloadPhotoAction extends Action {
 
     /**
      * Send back high res photo via http servlet response. Check if album of photo has free digital option
+     * expects the sportrait logo and sponsor bar at the following locations / in the following format:
+     * /logo/[year of event]/asvz-logo-[year of event].png
      * @param actionMapping
      * @param actionForm
      * @param request
@@ -80,7 +85,7 @@ public class DownloadPhotoAction extends Action {
                         // landscape format, logos and sponsor bar need to have smaller factor compared to image
                     {
                         // blendWidthFactor = "0.5"; // bar doesn't cover whole width
-                        blendWidthFactor = "1"; // bar covers whole with (in combination with wide bar png)
+                        blendWidthFactor = "1"; // bar covers whole with (in combination with wide bar png) - change bw=0.9 in case there should be some padding left and right of the sponsor bar
                         markScalePercentage = "15";
                         // todo get logo / sponsor bar from Registry
                         sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-gross-landscape.png";
@@ -90,8 +95,30 @@ public class DownloadPhotoAction extends Action {
                     String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70&markscale=" + markScalePercentage;
                     String base64SponsorParams = "blend64="+Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()) + "&bm=normal&ba=bottom%2C%20center&bs=none&bw=" + blendWidthFactor; // change bw=0.9 in case there should be some padding left and right of the sponsor bar
 
-                    URL imgixUrl = new URL(photo.getMasterImageUrlFromImageService()+"?"+base64LogoParams+"&"+base64SponsorParams);
+                    URL imgixUrl_old = new URL(photo.getMasterImageUrlFromImageService()+"?"+base64LogoParams+"&"+base64SponsorParams);
+                    _logger.debug("imgix URL OLD = " + imgixUrl_old.toString());
+
+                    // create imgix URL using the library and the sign key
+
+                    Map<String,String> imgixParams = new HashMap<String,String>();
+//                    imgixParams.put("mark64",Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()));
+                    imgixParams.put("mark",asvzLogoRelativeUrl);
+                    imgixParams.put("markalign","right,top");
+                    imgixParams.put("markpad","70");
+                    imgixParams.put("markscale",markScalePercentage);
+//                    imgixParams.put("blend64",Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()));
+                    imgixParams.put("blend",sponsorBarRelativeUrl);
+                    imgixParams.put("bm","normal");
+                    imgixParams.put("ba","bottom,center");
+                    imgixParams.put("bs","none");
+                    imgixParams.put("bw",blendWidthFactor); // change bw=0.9 in case there should be some padding left and right of the sponsor bar
+
+                    URL imgixUrl = new URL(ImagingHelper.getSignedImgixUrl(imgixParams,photo.getPathForImageService())); // todo : think about directly returning the URL
+
+
+
                     _logger.debug("imgix URL = " + imgixUrl.toString());
+
                     FileUtils.copyFile(imgixUrl.openStream(), httpServletResponse.getOutputStream());
 
 
