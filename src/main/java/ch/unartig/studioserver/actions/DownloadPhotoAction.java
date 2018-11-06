@@ -92,21 +92,13 @@ public class DownloadPhotoAction extends Action {
                         // sola-sponsors-bar-bottom-neu-gross-landscape.png
                     }
 
-                    String base64LogoParams = "mark64="+Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()) + "&markalign=right%2Ctop&markpad=70&markscale=" + markScalePercentage;
-                    String base64SponsorParams = "blend64="+Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()) + "&bm=normal&ba=bottom%2C%20center&bs=none&bw=" + blendWidthFactor; // change bw=0.9 in case there should be some padding left and right of the sponsor bar
-
-                    URL imgixUrl_old = new URL(photo.getMasterImageUrlFromImageService()+"?"+base64LogoParams+"&"+base64SponsorParams);
-                    _logger.debug("imgix URL OLD = " + imgixUrl_old.toString());
-
                     // create imgix URL using the library and the sign key
 
                     Map<String,String> imgixParams = new HashMap<String,String>();
-//                    imgixParams.put("mark64",Base64.getEncoder().encodeToString(asvzLogoRelativeUrl.getBytes()));
                     imgixParams.put("mark64",asvzLogoRelativeUrl);
                     imgixParams.put("markalign","right,top");
                     imgixParams.put("markpad","70");
                     imgixParams.put("markscale",markScalePercentage);
-//                    imgixParams.put("blend64",Base64.getEncoder().encodeToString(sponsorBarRelativeUrl.getBytes()));
                     imgixParams.put("blend64",sponsorBarRelativeUrl);
                     imgixParams.put("bm","normal");
                     imgixParams.put("ba","bottom,center");

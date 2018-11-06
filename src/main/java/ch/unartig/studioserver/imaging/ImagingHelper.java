@@ -210,7 +210,8 @@ public class    ImagingHelper
     public static String getSignedImgixUrl(Map<String, String> params, String path)
     {
         String domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
-        String imgixSignKey = "6rTyMFEnEmuCmGg6"; // dev env sign key gotten from imgix admin web page
+        String imgixSignKey = Registry.getImgixSignKey();
+        //String imgixSignKey = "6rTyMFEnEmuCmGg6"; // dev env sign key gotten from imgix admin web page
         // todo find solution to securely store sign keys for all environments
         URLBuilder builder = new URLBuilder(domain);
         builder.setUseHttps(true); // use https

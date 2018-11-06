@@ -353,6 +353,7 @@ public final class Registry
     private static JsonFactory googleJasonFactory;
     private static NetHttpTransport googleHttpTransport;
     private static String applicationEnvironment; // dev, int or prod
+    private static String imgixSignKey; // environment dependant sign key as generated on the imgix admin website
 
 
     /**
@@ -449,6 +450,8 @@ public final class Registry
         setGoogleJasonFactory(Utils.getDefaultJsonFactory());
         setGoogleHttpTransport(GoogleNetHttpTransport.newTrustedTransport());
 
+        _logger.info("***** imgixSignKey = " + appSettings.getMessage("imgixSignKey"));
+        imgixSignKey=appSettings.getMessage("imgixSignKey");
 
     }
 
@@ -503,16 +506,6 @@ public final class Registry
         Registry.modelPackageName = modelPackageName;
     }
 
-    public static String getTreeItemsFilePrefix()
-    {
-        return treeItemsFilePrefix;
-    }
-
-    public static void setTreeItemsFilePrefix(String treeItemsFilePrefix)
-    {
-        Registry.treeItemsFilePrefix = treeItemsFilePrefix;
-    }
-
     public static void setLogosScriptPath(String logosScriptPath) {
         Registry.logosScriptPath = logosScriptPath;
     }
@@ -536,11 +529,6 @@ public final class Registry
         return mailFromAddress;
     }
 
-    public static void setMailFromAddress(String mailFromAddress)
-    {
-        Registry.mailFromAddress = mailFromAddress;
-    }
-
     public static String getCustomerServiceAddress()
     {
         return customerServiceAddress;
@@ -551,20 +539,12 @@ public final class Registry
         return itemsOnPage;
     }
 
-    public static void setItemsOnPage(int itemsOnPage)
-    {
-        Registry.itemsOnPage = itemsOnPage;
-    }
 
     public static String getFrontendDirectory()
     {
         return frontendDirectory;
     }
 
-    public static void setFrontendDirectory(String frontendDirectory)
-    {
-        Registry.frontendDirectory = frontendDirectory;
-    }
 
 
     /**
@@ -739,5 +719,9 @@ public final class Registry
 
     public static String getApplicationEnvironment() {
         return applicationEnvironment;
+    }
+
+    public static String getImgixSignKey() {
+        return imgixSignKey;
     }
 }
