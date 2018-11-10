@@ -177,10 +177,12 @@
             <forward name="success" path=".sportraitHome" redirect="false"/>
         </action>
 
+<!-- // commented out 20181110 - doesn't seem to be used
         <action path="/recentEventsFrame" type="ch.unartig.studioserver.actions.SportraitHomeAction"
                 parameter="home">
             <forward name="success" path=".recentEventsFrame" redirect="false"/>
         </action>
+-->
 
         <!--todo: remove the <p> to make selenium work-->
         <action path="/event" type="ch.unartig.studioserver.actions.SportEventsAction"

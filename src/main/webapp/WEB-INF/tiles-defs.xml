@@ -6,7 +6,16 @@
 
 
 <tiles-definitions>
+
+
     <definition name=".sportraitHome" template="/WEB-INF/protected/layout/templateHome.jsp">
+        <put name="googleTagManagerHeadSnippetDev" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetDev.jsp"/>
+        <put name="googleTagManagerHeadSnippetInt" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetInt.jsp"/>
+        <put name="googleTagManagerHeadSnippetProd" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetProd.jsp"/>
+        <put name="googleTagManagerBodySnippetDev" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetDev.jsp"/>
+        <put name="googleTagManagerBodySnippetInt" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetInt.jsp"/>
+        <put name="googleTagManagerBodySnippetProd" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetProd.jsp"/>
+
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHome.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headHome"/>
@@ -30,8 +39,19 @@
         <put name="login" value="/WEB-INF/protected/tiles/Login.jsp"/>
     </definition>
 
+    <definition name=".baseTemplateDefinition" template="/WEB-INF/protected/layout/template.jsp">
+        <put name="googleTagManagerHeadSnippetDev" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetDev.jsp"/>
+        <put name="googleTagManagerHeadSnippetInt" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetInt.jsp"/>
+        <put name="googleTagManagerHeadSnippetProd" value="/WEB-INF/protected/tiles/googleTagManagerHeadSnippetProd.jsp"/>
+        <put name="googleTagManagerBodySnippetDev" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetDev.jsp"/>
+        <put name="googleTagManagerBodySnippetInt" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetInt.jsp"/>
+        <put name="googleTagManagerBodySnippetProd" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetProd.jsp"/>
 
-    <definition name=".sportraitEvent" template="/WEB-INF/protected/layout/template.jsp">
+
+    </definition>
+
+
+    <definition name=".sportraitEvent" extends=".baseTemplateDefinition">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleEvent.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headEvent"/>
@@ -69,12 +89,14 @@
         <put name="tabs" value="/WEB-INF/protected/tiles/tabs_faq.jsp"/>
     </definition>
 
+<!-- commented out 20181110 - doesn't seem to be used
     <definition name=".recentEventsFrame" template="/WEB-INF/protected/layout/simpleTemplate.jsp">
-        <put name="htmlTitle" type="string"><![CDATA[sportrait -- aktuelle anlässe]]></put>
+        <put name="htmlTitle" type="string"><![CDATA[sportrait &#45;&#45; aktuelle anlässe]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/_recentEventsFrame.jsp"/>
         <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
+-->
 
     <definition name=".sportraitcontact" extends=".eventCategory">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleContact.jsp"/>
@@ -122,7 +144,9 @@
         <put name="content1" value="/WEB-INF/protected/tiles/infoForPhotographers.jsp"/>
     </definition>
 
-    <definition name=".eventCategory" template="/WEB-INF/protected/layout/template.jsp">
+
+
+    <definition name=".eventCategory" extends=".baseTemplateDefinition">
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCategory.jsp"/>
         <put name="head" value=".headFoto"/>
@@ -162,7 +186,7 @@
 
 
     <!-- shows a page with a shoppingCart Preview that can be inlined as an IFrame -->
-    <definition name=".shoppingCartPreviewFrame" path="/WEB-INF/protected/layout/simpleTemplate.jsp">
+    <definition name=".shoppingCartPreviewFrame" extends=".baseTemplateDefinition">
         <put name="htmlTitle" type="string"><![CDATA[sportrait -- shopping cart preview]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/shoppingCartPreviewFrame.jsp"/>
         <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>

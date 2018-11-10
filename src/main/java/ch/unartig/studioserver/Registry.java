@@ -217,8 +217,11 @@ public final class Registry
     public static final String _SESSION_CLIENT_NAME = "clientInSession";
     public static final String _ALBUM_ID_NAME = "albumId";
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
+    public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env
+    public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env
+    public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env
 
-// todo: move to appSettings
+    // todo: move to appSettings
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";
@@ -376,6 +379,18 @@ public final class Registry
 
         setApplicationEnvironment(appSettings.getMessage("application.environment"));
         _logger.info("***** application environment = " + appSettings.getMessage("application.environment"));
+        // constants needed for jsp EL if conditions
+        switch (applicationEnvironment) {
+            case "dev":
+                _DevEnv = true;
+                break;
+            case "int":
+                _IntEnv = true;
+                break;
+            case "prod":
+                _ProdEnv = true;
+                break;
+        }
 
         setFineImagesDirectory(appSettings.getMessage("fineImagesDirectory"));
         _logger.info("***** fine images directory = " + appSettings.getMessage("fineImagesDirectory"));
@@ -452,6 +467,9 @@ public final class Registry
 
         _logger.info("***** imgixSignKey = " + appSettings.getMessage("imgixSignKey"));
         imgixSignKey=appSettings.getMessage("imgixSignKey");
+
+
+
 
     }
 
@@ -723,5 +741,29 @@ public final class Registry
 
     public static String getImgixSignKey() {
         return imgixSignKey;
+    }
+
+    /**
+     * used for templates to set tiles according to environment
+     * @return
+     */
+    public static boolean isDevEnv() {
+        return getApplicationEnvironment().equals("Dev");
+    }
+
+    /**
+     * used for templates to set tiles according to environment
+     * @return
+     */
+    public static boolean isIntEnv() {
+        return getApplicationEnvironment().equals("Int");
+    }
+
+    /**
+     * used for templates to set tiles according to environment
+     * @return
+     */
+    public static boolean isProdEnv() {
+        return getApplicationEnvironment().equals("Prod");
     }
 }
