@@ -14,10 +14,10 @@
         <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
     </c:if>
     <c:if test="${Registry._IntEnv}">
-        <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
+        <tiles:insert attribute="googleTagManagerHeadSnippetInt" ignore="true"/>
     </c:if>
     <c:if test="${Registry._ProdEnv}">
-        <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
+        <tiles:insert attribute="googleTagManagerHeadSnippetProd" ignore="true"/>
     </c:if>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
