@@ -153,7 +153,7 @@
 
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
             '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="callGoogleAnalytics()"> '+
-            '<img ix-src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
+            '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
             ' </html:link>' +
             '</div>';
         return htmlString;
