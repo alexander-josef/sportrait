@@ -1,4 +1,4 @@
-<%--@elvariable id="displayBean" type="ch.unartig.studioserver.beans.DisplayBean"--%>
+<%--@elvariable id="display" type="ch.unartig.studioserver.beans.DisplayBean"--%>
 <%--@elvariable id="albumBean" type="ch.unartig.studioserver.beans.SportsAlbumBean"--%>
 <%--@elvariable id="sportsEvent" type="ch.unartig.studioserver.model.SportsEvent"--%>
 <!DOCTYPE html>
@@ -27,12 +27,12 @@
             'thumbnailPage' : '${albumBean.page}',
             'startNumber' : '${albumBean.startNumber}',
 
-            'photoId':'${displayBean.displayPhotoId}',
-            'photoTitle': '${displayBean.displayPhoto.displayTitle}',
-            'photoOrientation': '${displayBean.displayPhoto.orientationSuffix}',
-            'photoPhotographer': '${displayBean.displayPhoto.photographer.fullName}',
-            'photoURL' : '${displayBean.displayPhoto.highResUrl}',
-            'photoPictureTakenDate' : '${displayBean.displayPhoto.pictureTakenDate}',
+            'photoId':'${display.displayPhotoId}',
+            'photoTitle': '${display.displayPhoto.displayTitle}',
+            'photoOrientation': '${display.displayPhoto.orientationSuffix}',
+            'photoPhotographer': '${display.displayPhoto.photographer.fullName}',
+            'photoURL' : '${display.displayPhoto.highResUrl}',
+            'photoPictureTakenDate' : '${display.displayPhoto.pictureTakenDate}',
 
 
         }];
