@@ -321,7 +321,7 @@ todo refactor name albumBean as fast as possible
 
                         <iframe src="<html:rewrite action="/shoppingCartPreviewFrame"/>" id="shoppingcartPreview"
                                 name="shoppingcart_frame">
-                            <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen: Sie können aber direkt zum
+                            <p>Ihr Browser kann keine eingebetteten Frames anzeigen: Sie können aber direkt zum
                                 Einkaufswagen gehen:
                                 <html:link action="/toShoppingCart">zum Einkaufswagen</html:link>
                             </p>

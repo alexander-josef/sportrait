@@ -16,6 +16,8 @@
         <put name="googleTagManagerBodySnippetInt" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetInt.jsp"/>
         <put name="googleTagManagerBodySnippetProd" value="/WEB-INF/protected/tiles/googleTagManagerBodySnippetProd.jsp"/>
 
+        <put name="pageTitle" value="Sportrait Home"/>
+
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleHome.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headHome"/>
@@ -23,7 +25,6 @@
         <put name="content2" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
-        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
 
@@ -52,6 +53,8 @@
 
 
     <definition name=".sportraitEvent" extends=".baseTemplateDefinition">
+        <put name="pageTitle" value="Sportrait Event"/>
+
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleEvent.jsp"/>
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="head" value=".headEvent"/>
@@ -59,7 +62,6 @@
         <put name="content2" value=".loginModal"/>
         <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
-        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
 
@@ -89,14 +91,11 @@
         <put name="tabs" value="/WEB-INF/protected/tiles/tabs_faq.jsp"/>
     </definition>
 
-<!-- commented out 20181110 - doesn't seem to be used
     <definition name=".recentEventsFrame" template="/WEB-INF/protected/layout/simpleTemplate.jsp">
         <put name="htmlTitle" type="string"><![CDATA[sportrait &#45;&#45; aktuelle anlässe]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/_recentEventsFrame.jsp"/>
-        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
--->
 
     <definition name=".sportraitcontact" extends=".eventCategory">
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleContact.jsp"/>
@@ -147,6 +146,9 @@
 
 
     <definition name=".eventCategory" extends=".baseTemplateDefinition">
+
+        <put name="pageTitle" value="Sportrait Event Category Overview"/>
+
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCategory.jsp"/>
         <put name="head" value=".headFoto"/>
@@ -154,7 +156,6 @@
         <put name="content2" value=".loginModal"/>
         <put name="content3" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="footer" value="/WEB-INF/protected/tiles/footer.jsp"/>
-        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
 
@@ -164,6 +165,8 @@
     </definition>
 
     <definition name=".sportraitDisplay" extends=".eventCategory">
+        <put name="pageTitle" value="Sportrait Display"/>
+
         <put name="jsScripts" value="/WEB-INF/protected/tiles/jsScriptsDisplay.jsp"/>
         <put name="cssLinks" value="/WEB-INF/protected/tiles/additionalCssDisplay.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/display.jsp"/>
@@ -189,7 +192,6 @@
     <definition name=".shoppingCartPreviewFrame" extends=".baseTemplateDefinition">
         <put name="htmlTitle" type="string"><![CDATA[sportrait -- shopping cart preview]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/shoppingCartPreviewFrame.jsp"/>
-        <put name="googleAnalytics" value="/WEB-INF/protected/tiles/googleAnalytics.jsp"/>
 
     </definition>
 

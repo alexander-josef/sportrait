@@ -246,7 +246,7 @@ public class SportEventsAction extends MappingDispatchAction
                 sportsEvent = (SportsEvent) glDao.load(new Long(sportsEventId), SportsEvent.class);
             } catch (Exception e)
             {
-                // could be number format exception or database probelm
+                // could be number format exception or database problem
                 _logger.info("cannot instantiate a sports event");
                 forward = "noEvent";
             }

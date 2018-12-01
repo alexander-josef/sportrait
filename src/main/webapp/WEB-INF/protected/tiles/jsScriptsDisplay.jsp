@@ -160,6 +160,7 @@
     }
 
     function callGoogleAnalytics() {
+        /* todo : replace with event tracking in google tag manager -- add album or eventcategory ID to data layer*/
         _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
     function setInitialPhotos() {

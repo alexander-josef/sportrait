@@ -1,3 +1,6 @@
+<%--@elvariable id="displayBean" type="ch.unartig.studioserver.beans.DisplayBean"--%>
+<%--@elvariable id="albumBean" type="ch.unartig.studioserver.beans.SportsAlbumBean"--%>
+<%--@elvariable id="sportsEvent" type="ch.unartig.studioserver.model.SportsEvent"--%>
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
@@ -9,16 +12,48 @@
 <html:xhtml/>
 <html>
 <head>
-    <%--This is the tag manager snippet --%>
-        <c:if test="${Registry._DevEnv}">
-            <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
-        </c:if>
-        <c:if test="${Registry._IntEnv}">
-            <tiles:insert attribute="googleTagManagerHeadSnippetInt" ignore="true"/>
-        </c:if>
-        <c:if test="${Registry._ProdEnv}">
-            <tiles:insert attribute="googleTagManagerHeadSnippetProd" ignore="true"/>
-        </c:if>
+<script>
+        dataLayer = [{
+            'pageTitle' : '<tiles:getAsString name="pageTitle" ignore="true"/>',
+            'pageURL':'',
+
+            'pageCategory': '',
+            'visitorType': '',
+
+            'eventTitle':'${sportsEvent.longTitle}',
+            'eventYear':'${sportsEvent.eventDateYear}',
+            'eventCategoryId' : '${sportsEvent.genericLevelId}',
+
+            'thumbnailPage' : '${albumBean.page}',
+            'startNumber' : '${albumBean.startNumber}',
+
+            'photoId':'${displayBean.displayPhotoId}',
+            'photoTitle': '${displayBean.displayPhoto.displayTitle}',
+            'photoOrientation': '${displayBean.displayPhoto.orientationSuffix}',
+            'photoPhotographer': '${displayBean.displayPhoto.photographer.fullName}',
+            'photoURL' : '${displayBean.displayPhoto.highResUrl}',
+            'photoPictureTakenDate' : '${displayBean.displayPhoto.pictureTakenDate}',
+
+
+        }];
+    </script>
+
+    <%--
+        START Google Tag Manager Snippt
+    --%>
+    <c:if test="${Registry._DevEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
+    </c:if>
+    <c:if test="${Registry._IntEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetInt" ignore="true"/>
+    </c:if>
+    <c:if test="${Registry._ProdEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetProd" ignore="true"/>
+    </c:if>
+    <%--
+        Google Tag Manager END
+    --%>
+
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="<html:rewrite page="/js/imgix.min.js"/>"></script>
@@ -38,7 +73,7 @@
     <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>"
           media="screen and (min-width: 40em)"/>
     <tiles:insert attribute="cssOverrule"/>
-    <tiles:insert attribute="googleAnalytics"/>
+    <%-- Google Analytics snippet not inserted in template anymore - comes with Google Tag Manager --%>
     <tiles:insert attribute="twitterCard" ignore="true"/>
 
     <%-- Google Sign-In js functions
