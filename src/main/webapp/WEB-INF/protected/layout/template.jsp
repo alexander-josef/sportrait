@@ -25,6 +25,7 @@
             'eventId' : '${sportsEvent.genericLevelId}',
 
             'eventCategoryId' : '${albumBean.eventCategoryId}',
+            'eventCategoryTitle' : '${albumBean.eventCategory.title}',
             'thumbnailPage' : '${albumBean.page}',
             'startNumber' : '${albumBean.startNumber}',
 
