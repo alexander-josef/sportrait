@@ -22,8 +22,9 @@
 
             'eventTitle':'${sportsEvent.longTitle}',
             'eventYear':'${sportsEvent.eventDateYear}',
-            'eventCategoryId' : '${sportsEvent.genericLevelId}',
+            'eventId' : '${sportsEvent.genericLevelId}',
 
+            'eventCategoryId' : '${albumBean.eventCategoryId}',
             'thumbnailPage' : '${albumBean.page}',
             'startNumber' : '${albumBean.startNumber}',
 
