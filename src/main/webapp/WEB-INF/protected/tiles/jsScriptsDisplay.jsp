@@ -152,16 +152,18 @@
 
 
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="callGoogleAnalytics()"> '+
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
             '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
             ' </html:link>' +
             '</div>';
         return htmlString;
     }
 
-    function callGoogleAnalytics() {
+    function highresDownloadEvent() {
         /* todo : replace with event tracking in google tag manager -- add album or eventcategory ID to data layer*/
-        _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
+        dataLayer.push({'event': 'highresDownload'});
+
+        // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
     function setInitialPhotos() {
         // first set initial active photo
