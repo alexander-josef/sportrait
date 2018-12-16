@@ -136,10 +136,11 @@
     // initial call
     var eventCategoryId = "${display.albumBean.album.eventCategory.eventCategoryId}";
     var initialPhotoId = "${display.displayPhotoId}";
+    // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
 
-    // todo : think about if this can be called after initial photo is displayed (loading of JSON resonse can take a while)
+    // todo : think about if this can be called after initial photo is displayed (loading of JSON response can take a while)
     initDisplayView();
 
 
