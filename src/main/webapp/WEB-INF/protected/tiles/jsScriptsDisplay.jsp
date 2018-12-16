@@ -160,7 +160,7 @@
     }
 
     function highresDownloadEvent() {
-        /* todo : replace with event tracking in google tag manager -- add album or eventcategory ID to data layer*/
+        /* event tracking in google tag manager -- album or eventcategory ID as variable in data layer*/
         dataLayer.push({'event': 'highresDownload'});
 
         // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
