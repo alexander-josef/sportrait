@@ -138,6 +138,8 @@
     var initialPhotoId = "${display.displayPhotoId}";
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
+
+    // todo : think about if this can be called after initial photo is displayed (loading of JSON resonse can take a while)
     initDisplayView();
 
 
@@ -149,17 +151,19 @@
         // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
 
 
-        // "template literal" as 2nd part of the string ... might not be compatible everywhere?
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="callGoogleAnalytics()"> '+
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
             '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
             ' </html:link>' +
             '</div>';
         return htmlString;
     }
 
-    function callGoogleAnalytics() {
-        _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
+    function highresDownloadEvent() {
+        /* event tracking in google tag manager -- album or eventcategory ID as variable in data layer*/
+        dataLayer.push({'event': 'highresDownload'});
+
+        // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
     function setInitialPhotos() {
         // first set initial active photo
@@ -167,7 +171,7 @@
         mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0));
 
 
-        // then set initial left photo in case there are fotos to the left
+        // then set initial left photo in case there are photos to the left
         if (currentPhotoIndex-1 >= 0) {
             console.log("PhotoIndex for setting initial left : " + currentPhotoIndex-1);
             mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));

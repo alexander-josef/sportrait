@@ -1,3 +1,5 @@
+<%--chech here : https://support.google.com/tagmanager/answer/6107169?hl=en for changing to a dataLayer approach with Google Tag Manager--%>
+
 <%@ page import="java.util.Enumeration" %>
 <%@ page import="ch.unartig.studioserver.businesslogic.PhotoOrderIF" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

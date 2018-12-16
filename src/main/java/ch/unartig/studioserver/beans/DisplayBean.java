@@ -232,6 +232,7 @@ public class DisplayBean implements NavigableObject
     {
         // todo check and improve: why is this method  called several times when a display photo is shown?????
         // todo improve by storing the album in the bean?
+        // todo check calling methods: do they need to know the eventcategory instead?
 
         PhotoDAO photoDao= new PhotoDAO();
         Album retVal = photoDao.load(displayPhotoId).getAlbum();

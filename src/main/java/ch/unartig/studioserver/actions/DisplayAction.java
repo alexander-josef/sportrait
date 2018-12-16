@@ -154,6 +154,7 @@ public class DisplayAction extends Action
         eventCategoryOverviewForm.set("page", String.valueOf(albumBean.getPage())); // make sure page is set in dynaactionform in case the page number has been newly calculated
         eventCategoryOverviewForm.set("eventCategoryId", ((SportsAlbumBean) albumBean).getEventCategoryId()); // make sure eventCategoryId is set in dynaactionform in case the page number has been newly calculated
         request.setAttribute("display", displayBean);
+        request.setAttribute("sportsEvent", displayBean.getAlbumFromPhoto().getEvent());
         return actionMapping.findForward("display");
     }
 

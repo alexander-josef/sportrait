@@ -11,7 +11,6 @@
     <title><tiles:insert attribute="htmlTitle"/></title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
-    <tiles:insert attribute="googleAnalytics"/>
 </head>
 <body id="iframeBody">
 

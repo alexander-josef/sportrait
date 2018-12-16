@@ -48,7 +48,7 @@ todo refactor name albumBean as fast as possible
 
                                             <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
                                                        title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                       onclick="_gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', ${display.albumFromPhoto.genericLevelId}]);">
+                                                       onclick="dataLayer.push({'event': 'highresDownload'});">
                                                 <html:img page="/images/buttons/bt_download_picture_de.gif" />
                                             </html:link>
 
@@ -321,7 +321,7 @@ todo refactor name albumBean as fast as possible
 
                         <iframe src="<html:rewrite action="/shoppingCartPreviewFrame"/>" id="shoppingcartPreview"
                                 name="shoppingcart_frame">
-                            <p>Ihr Browser kann leider keine eingebetteten Frames anzeigen: Sie können aber direkt zum
+                            <p>Ihr Browser kann keine eingebetteten Frames anzeigen: Sie können aber direkt zum
                                 Einkaufswagen gehen:
                                 <html:link action="/toShoppingCart">zum Einkaufswagen</html:link>
                             </p>

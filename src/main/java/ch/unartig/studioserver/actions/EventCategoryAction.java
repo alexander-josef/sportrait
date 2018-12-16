@@ -96,12 +96,13 @@ public class EventCategoryAction extends MappingDispatchAction {
         _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
         SportsAlbumBean sportsAlbumBean;
         sportsAlbumBean = new SportsAlbumBean(); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
+        SportsEvent event = null;
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:
         try {
             BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
             eventCategory = eventCategoryDao.load(sportsAlbumBean.getEventCategoryId());
-            SportsEvent event = eventCategory.getEvent();
+            event = eventCategory.getEvent();
             List list = event.getEventCategories();
             if (eventCategory.getEventCategoryId() == null) {
                 _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
@@ -130,6 +131,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         sportsAlbumBean.populateAlbumBeanTemplate(); // this is where the heavy lifting is happening ...
 
         request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR, sportsAlbumBean);
+        request.setAttribute("sportsEvent", event);
 //        request.getSession().setAttribute("eventCategories",((SportsEvent)eventCategory.getEvent()).getEventCategories());
 //        }
 

@@ -1,25 +1,60 @@
+<%--@elvariable id="display" type="ch.unartig.studioserver.beans.DisplayBean"--%>
+<%--@elvariable id="albumBean" type="ch.unartig.studioserver.beans.SportsAlbumBean"--%>
+<%--@elvariable id="sportsEvent" type="ch.unartig.studioserver.model.SportsEvent"--%>
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="ch.unartig.studioserver.Registry" %>
 <html:xhtml/>
 <html>
 <head>
+<script>
+        dataLayer = [{
+            'pageTitle' : '<tiles:getAsString name="pageTitle" ignore="true"/>',
+            'pageURL':'',
 
-    <%--This is the tag manager snippet for the dev env container:--%>
+            'pageCategory': '',
+            'visitorType': '',
 
-    <%--todo: make this work for all environments - different tiles? replacement?--%>
+            'eventTitle':'${sportsEvent.longTitle}',
+            'eventYear':'${sportsEvent.eventDateYear}',
+            'eventId' : '${sportsEvent.genericLevelId}',
 
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=Dww6qlVBiT66zpqqrzrJNg&gtm_preview=env-5&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MM75LH6');</script>
-    <!-- End Google Tag Manager -->
+            'eventCategoryId' : '${albumBean.eventCategoryId}',
+            'eventCategoryTitle' : '${albumBean.eventCategory.title}',
+            'thumbnailPage' : '${albumBean.page}',
+            'startNumber' : '${albumBean.startNumber}',
 
+            'photoId':'${display.displayPhotoId}',
+            'photoTitle': '${display.displayPhoto.displayTitle}',
+            'photoOrientation': '${display.displayPhoto.orientationSuffix}',
+            'photoPhotographer': '${display.displayPhoto.photographer.fullName}',
+            'photoURL' : '${display.displayPhoto.highResUrl}',
+            'photoPictureTakenDate' : '${display.displayPhoto.pictureTakenDate}',
+
+
+        }];
+    </script>
+
+    <%--
+        START Google Tag Manager Snippt
+    --%>
+    <c:if test="${Registry._DevEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
+    </c:if>
+    <c:if test="${Registry._IntEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetInt" ignore="true"/>
+    </c:if>
+    <c:if test="${Registry._ProdEnv}">
+        <tiles:insert attribute="googleTagManagerHeadSnippetProd" ignore="true"/>
+    </c:if>
+    <%--
+        Google Tag Manager END
+    --%>
 
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +75,7 @@
     <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>"
           media="screen and (min-width: 40em)"/>
     <tiles:insert attribute="cssOverrule"/>
-    <tiles:insert attribute="googleAnalytics"/>
+    <%-- Google Analytics snippet not inserted in template anymore - comes with Google Tag Manager --%>
     <tiles:insert attribute="twitterCard" ignore="true"/>
 
     <%-- Google Sign-In js functions
@@ -87,14 +122,16 @@
 </head>
 <body id="body">
 
-<%--This is the tag manager snippet for the dev env container:--%>
-
-<%--todo: make this work for all environments - different tiles? replacement?--%>
-
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MM75LH6&gtm_auth=Dww6qlVBiT66zpqqrzrJNg&gtm_preview=env-5&gtm_cookies_win=x"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+<%--This is the tag manager snippet --%>
+<c:if test="${Registry._DevEnv}">
+    <tiles:insert attribute="googleTagManagerBodySnippetDev" ignore="true"/>
+</c:if>
+<c:if test="${Registry._IntEnv}">
+    <tiles:insert attribute="googleTagManagerBodySnippetInt" ignore="true"/>
+</c:if>
+<c:if test="${Registry._ProdEnv}">
+    <tiles:insert attribute="googleTagManagerBodySnippetProd" ignore="true"/>
+</c:if>
 
 <%-- Facebook SDK--%>
 
