@@ -212,6 +212,60 @@ public class Photo extends GeneratedPhoto
         return displayUrl;
     }
 
+    public String getDisplayUrl2x() {
+
+        String displayUrl;
+        if (this.isAfterImageServiceMigration())
+        {
+            // old solution before using params and imgix client
+            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
+
+
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","380");
+            params.put("h","380");
+            params.put("fit","max");
+            params.put("auto","format,enhance,compress");
+            params.put("q","40");
+            params.put("usm","20");
+            params.put("dpr","2");
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+
+        } else {
+            // URL to display file - before image service migration (imgix)
+            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+
+        }
+        return displayUrl;    }
+
+    public String getDisplayUrl3x() {
+
+        String displayUrl;
+        if (this.isAfterImageServiceMigration())
+        {
+            // old solution before using params and imgix client
+            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
+
+
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","380");
+            params.put("h","380");
+            params.put("fit","max");
+            params.put("auto","format,enhance,compress");
+            params.put("q","20");
+            params.put("usm","20");
+            params.put("dpr","3");
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+
+        } else {
+            // URL to display file - before image service migration (imgix)
+            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+
+        }
+        return displayUrl;    }
+
     /**
      * Helper method to determine if photo belongs to an event that has been imported after the image service migration imgix
      * @return true in case photo will be handled by image service (imgix)
@@ -288,4 +342,6 @@ public class Photo extends GeneratedPhoto
     {
         return getAlbum().getPhotographer();
     }
+
+
 }

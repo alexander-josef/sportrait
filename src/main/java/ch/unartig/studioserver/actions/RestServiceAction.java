@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Struts action for handling rest service requests
+ * Used by the javascript part for swiping through the display images
  */
 public class RestServiceAction extends Action {
     Logger _logger = Logger.getLogger(getClass().getName());
@@ -73,7 +74,9 @@ public class RestServiceAction extends Action {
             String photoElement = "{ " +
                     "\"photoID\":\"" + photo.getPhotoId() + "\", " +
                     "\"thumbnailURL\":\"" + photo.getThumbnailUrl() + "\", " +
-                    "\"displayURL\":\"" + photo.getDisplayUrl() + "\", " +
+                    "\"displayURL1x\":\"" + photo.getDisplayUrl() + "\", " + // todo deliver srcset here with 1x 2x and 3x URLs
+                    "\"displayURL2x\":\"" + photo.getDisplayUrl2x() + "\", " +
+                    "\"displayURL3x\":\"" + photo.getDisplayUrl3x() + "\", " +
                     "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
                     "\"time\":\"" + photo.getShortTimeString() + "\"," +
                     "\"orientation\":\"" + (photo.isOrientationPortrait()?"portrait":"landscape") + "\"" +

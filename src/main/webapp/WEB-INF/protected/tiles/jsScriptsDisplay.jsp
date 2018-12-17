@@ -152,9 +152,14 @@
         // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
 
 
+
+
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
             '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
-            '<img src=' + displayPhotos.photos[photoIndex].displayURL + '>' +
+            '<img srcset="' + displayPhotos.photos[photoIndex].displayURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
+            displayPhotos.photos[photoIndex].displayURL2x + ' 2x,' +
+            displayPhotos.photos[photoIndex].displayURL3x + ' 3x"' +
+            'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
             ' </html:link>' +
             '</div>';
         return htmlString;
