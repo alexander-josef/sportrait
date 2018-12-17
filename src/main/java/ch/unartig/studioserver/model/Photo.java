@@ -183,6 +183,64 @@ public class Photo extends GeneratedPhoto
 
     /**
      *
+     * @return (absolute o relative ) URL string for thumbnail image
+     */
+    public String getThumbnailUrl2x()
+    {
+        String thumbnailUrl;
+
+        if (this.isAfterImageServiceMigration()){
+            // old solution before using parameters:
+            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
+            // get a signed thumbnail URL
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","100");
+            params.put("h","100");
+            params.put("fit","clip");
+            params.put("auto","format,enhance,compress");
+            params.put("q","30");
+            params.put("usm","20");
+            params.put("dpr","2");
+
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+        } else {
+            // URL to thumbnail file - legacy solution before image service (imgix)
+            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        }
+        return thumbnailUrl;
+    }
+
+    /**
+     *
+     * @return (absolute o relative ) URL string for thumbnail image
+     */
+    public String getThumbnailUrl3x()
+    {
+        String thumbnailUrl;
+
+        if (this.isAfterImageServiceMigration()){
+            // old solution before using parameters:
+            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
+            // get a signed thumbnail URL
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","100");
+            params.put("h","100");
+            params.put("fit","clip");
+            params.put("auto","format,enhance,compress");
+            params.put("q","20");
+            params.put("usm","20");
+            params.put("dpr","3");
+
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+        } else {
+            // URL to thumbnail file - legacy solution before image service (imgix)
+            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+        }
+        return thumbnailUrl;
+    }
+
+    /**
+     *
      * @return URL string for display image
      */
     public String getDisplayUrl()

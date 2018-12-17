@@ -52,9 +52,12 @@
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
 
-            var elementById = document.getElementById("previousPhotoThumbnail");
-            elementById.src = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL;
-            elementById.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
+            var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
+            previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
+            previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
+                displayPhotos.photos[currentPhotoIndex-1].thumbnailURL2x + ' 2x,' +
+                displayPhotos.photos[currentPhotoIndex-1].thumbnailURL3x + ' 3x';
+            previousPhotoThumbnail.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
             document.getElementById("previousSlideLeft").style.display = "unset";
         } else {
             // hide previous preview slide
@@ -64,9 +67,13 @@
 
 
         if (!mySwiper.isEnd) {
-            var elementById1 = document.getElementById("nextPhotoThumbnail");
-            elementById1.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL;
-            elementById1.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
+            var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
+            nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
+            nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
+                displayPhotos.photos[currentPhotoIndex+1].thumbnailURL2x + ' 2x,' +
+                displayPhotos.photos[currentPhotoIndex+1].thumbnailURL3x + ' 3x';
+
+            nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
             document.getElementById("nextSlideRight").style.display = "unset";
         } else {
             // hide next preview slide
@@ -75,20 +82,6 @@
         }
     }
 
-
-    // todo : is this used?
-    function setCurrentPhotoDimension() {
-        // transition ended, make sure width and height are set correctly
-        if (displayPhotos.photos[currentPhotoIndex].orientationPortrait) {
-            mySwiper.width = 250;
-            mySwiper.height = 380;
-        } else { // landscape
-            mySwiper.width = 380;
-            mySwiper.height = 250;
-        }
-
-        // get slide html element
-    }
 
     // when navigating right (forward) is done, update photo array index and
     // check if we are on the last slide and whether there are more photos
@@ -203,7 +196,7 @@
 
         for (var i = 0; i < displayPhotos.photos.length; i++) {
             // console.log("photoID = " + displayPhotos.photos[i].photoID);
-            // console.log("displayURL = " + displayPhotos.photos[i].displayURL);
+            // console.log("displayURL1x = " + displayPhotos.photos[i].displayURL1x);
             // console.log("masterURL = " + displayPhotos.photos[i].masterURL);
             var photoID = displayPhotos.photos[i].photoID;
             if (photoID===initialPhotoId) {

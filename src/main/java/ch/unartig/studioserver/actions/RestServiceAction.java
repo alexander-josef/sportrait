@@ -73,8 +73,10 @@ public class RestServiceAction extends Action {
             // String photoElement = i + " - " + photo.getPhotoId() + " - " + photo.getDisplayUrl();
             String photoElement = "{ " +
                     "\"photoID\":\"" + photo.getPhotoId() + "\", " +
-                    "\"thumbnailURL\":\"" + photo.getThumbnailUrl() + "\", " +
-                    "\"displayURL1x\":\"" + photo.getDisplayUrl() + "\", " + // todo deliver srcset here with 1x 2x and 3x URLs
+                    "\"thumbnailURL1x\":\"" + photo.getThumbnailUrl() + "\", " +
+                    "\"thumbnailURL2x\":\"" + photo.getThumbnailUrl2x() + "\", " +
+                    "\"thumbnailURL3x\":\"" + photo.getThumbnailUrl3x() + "\", " +
+                    "\"displayURL1x\":\"" + photo.getDisplayUrl() + "\", " + // deliver srcset here with 1x 2x and 3x URLs
                     "\"displayURL2x\":\"" + photo.getDisplayUrl2x() + "\", " +
                     "\"displayURL3x\":\"" + photo.getDisplayUrl3x() + "\", " +
                     "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
