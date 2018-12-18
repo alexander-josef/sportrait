@@ -60,7 +60,7 @@
     <%-- Media query to support "old" stylesheet with definitions for desktop screens --%>
     <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>"
     media="screen and (min-width: 40em)"/>
-    <tiles:insert attribute="cssOverrule"/>
+    <tiles:insert attribute="cssOverrule" ignore="true"/>
 
     <script>
 
