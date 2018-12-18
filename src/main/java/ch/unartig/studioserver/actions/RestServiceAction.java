@@ -66,6 +66,8 @@ public class RestServiceAction extends Action {
 
         PhotoDAO photoDAO = new PhotoDAO();
         List photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(),0,albumBeanInSession.getStartNumber());
+        long timeMillisStart = System.currentTimeMillis();
+        _logger.debug("before display REST call :" + timeMillisStart);
         for (Iterator iterator = photosForEventCategoryAndStartnumber.iterator(); iterator.hasNext(); ) {
             Object aPhotosForEventCategoryAndStartnumber = iterator.next();
             Photo photo = (Photo) aPhotosForEventCategoryAndStartnumber;
@@ -83,7 +85,7 @@ public class RestServiceAction extends Action {
                     "\"time\":\"" + photo.getShortTimeString() + "\"," +
                     "\"orientation\":\"" + (photo.isOrientationPortrait()?"portrait":"landscape") + "\"" +
                     " }"; // additional comma at the end ?
-            _logger.debug(photoElement);
+            //_logger.debug(photoElement);
             jsonResponse.append(photoElement);
             if (iterator.hasNext()) {
                 jsonResponse.append(",");
@@ -92,6 +94,12 @@ public class RestServiceAction extends Action {
         }
 
         jsonResponse.append("]");
+
+        long timeMillisEnd = System.currentTimeMillis();
+        long timeMillistaken = timeMillisEnd-timeMillisStart;
+        _logger.debug("after display REST call : " + timeMillisEnd + " -- milli seconds : " + timeMillistaken);
+        _logger.debug("lenght (characters) of JSON response : " + jsonResponse.length());
+
         return jsonResponse.toString();
     }
 

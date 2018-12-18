@@ -92,8 +92,11 @@
 
                     <li class="slideImage">
                         <html:link action="/display/${thumbnail.photoId}/${thumbnail.album.navTitle}/display.html">
-                            <html:img styleClass="${thumbnail.orientationSuffix}" src="${thumbnail.thumbnailUrl}"
-                                 alt="${thumbnail.displayTitle}" title="${thumbnail.displayTitle}"/>
+                            <img class="${thumbnail.orientationSuffix}" title="${thumbnail.displayTitle}"
+                                 srcset="${thumbnail.thumbnailUrl} 1x, ${thumbnail.thumbnailUrl2x} 2x, ${thumbnail.thumbnailUrl3x} 3x"
+                                 src="${thumbnail.thumbnailUrl}"
+                                 alt="${thumbnail.displayTitle}">
+
                         </html:link>
                     </li>
                     <li class="slideBottom">
