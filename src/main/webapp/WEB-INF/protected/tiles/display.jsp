@@ -119,8 +119,6 @@ todo refactor name albumBean as fast as possible
     <table id="displayContainer">
         <tr>
             <td class="displayPreview">
-
-
                     <ul class="slide" id="previousSlideLeft" <c:if test="${empty display.previousPhoto}"> style="display: none" </c:if>>
                         <li class="slideTop"></li>
                         <li class="slideImage">
@@ -137,8 +135,6 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                     </ul>
-
-
             </td>
             <td id="displayCenter">
 
@@ -286,10 +282,8 @@ todo refactor name albumBean as fast as possible
                 </table>
 
             </td>
-
             <!-- Preview of the Shopping Cart -->
             <td class="displayPreview">
-
                 <c:if test="${ ! empty display.nextPhoto}">
                     <ul class="slide right" id="nextSlideRight">
                         <li class="slideTop"></li>
@@ -304,7 +298,7 @@ todo refactor name albumBean as fast as possible
                         </li>
                         <li class="slideBottom">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                                       property="nextPhotoLinkParams" title="n?chstes Foto">weiter
+                                       property="nextPhotoLinkParams" title="nächstes Foto">weiter
                             </html:link>
                         </li>
                     </ul>
