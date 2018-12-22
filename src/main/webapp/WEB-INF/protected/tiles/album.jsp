@@ -215,7 +215,7 @@
         xhttp.onreadystatechange = function () {
             var jsonResponse;
             if (this.readyState == 4 && this.status == 200) {
-                console.log('done loading photo data ... ', Date.now())
+                console.log('done loading photo data ... time in ms: ', Date.now()-startDownloadMillis)
                 // response now ready
 
                 jsonResponse = this.responseText;
@@ -224,7 +224,8 @@
                 sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse);
              }
         };
-        console.log('loading ...  ', Date.now());
+        startDownloadMillis = Date.now();
+        console.log('loading ...  ', startDownloadMillis);
         xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true);
 
         xhttp.send();

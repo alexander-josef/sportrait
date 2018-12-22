@@ -189,7 +189,7 @@
 
 
     <!-- shows a page with a shoppingCart Preview that can be inlined as an IFrame -->
-    <definition name=".shoppingCartPreviewFrame" extends=".baseTemplateDefinition">
+    <definition name=".shoppingCartPreviewFrame" template="/WEB-INF/protected/layout/simpleTemplate.jsp">
         <put name="htmlTitle" type="string"><![CDATA[sportrait -- shopping cart preview]]></put>
         <put name="content1" value="/WEB-INF/protected/tiles/shoppingCartPreviewFrame.jsp"/>
 
