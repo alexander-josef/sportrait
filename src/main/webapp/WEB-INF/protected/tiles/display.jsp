@@ -124,7 +124,8 @@ todo refactor name albumBean as fast as possible
                         <li class="slideImage">
                             <html:link styleId="previousPhotoLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
                                        property="previousPhotoLinkParams" title="vorheriges Foto">
-                                <img id="previousPhotoThumbnail" class="${display.previousPhoto.orientationSuffix}"
+                                <img id="previousPhotoThumbnail"
+                                     class="${display.previousPhoto.orientationSuffix}"
                                      src="${display.previousPhoto.thumbnailUrl}"
                                      alt="vorheriges Foto"/>
                             </html:link>
@@ -282,10 +283,9 @@ todo refactor name albumBean as fast as possible
                 </table>
 
             </td>
-            <!-- Preview of the Shopping Cart -->
             <td class="displayPreview">
                 <c:if test="${ ! empty display.nextPhoto}">
-                    <ul class="slide right" id="nextSlideRight">
+                    <ul class="slide" id="nextSlideRight">
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
@@ -306,6 +306,7 @@ todo refactor name albumBean as fast as possible
 
             </td>
             <td id="displaySpacer"></td>
+            <!-- Preview of the Shopping Cart -->
             <td id="displayShop">
 
 
