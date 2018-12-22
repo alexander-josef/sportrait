@@ -61,11 +61,9 @@ package ch.unartig.studioserver.beans;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
-import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
 
@@ -77,6 +75,7 @@ import java.util.List;
 public class SportsAlbumBean extends AbstractAlbumBean
 {
 
+    private  String webApplicationUrl;
     Logger _logger = Logger.getLogger(getClass().getName());
     /*the bib-number*/
     private String startNumber;
@@ -94,6 +93,10 @@ public class SportsAlbumBean extends AbstractAlbumBean
 
     public SportsAlbumBean()
     {
+    }
+
+    public SportsAlbumBean(String webApplicationUrl) {
+        this.webApplicationUrl = webApplicationUrl;
     }
 
 
@@ -265,5 +268,9 @@ public class SportsAlbumBean extends AbstractAlbumBean
     public List getEventCategoriesWithPhotos()
     {
         return eventCategory.getEvent().getEventCategoriesWithPhotos();
+    }
+
+    public String getWebApplicationURL() {
+        return webApplicationUrl;
     }
 }

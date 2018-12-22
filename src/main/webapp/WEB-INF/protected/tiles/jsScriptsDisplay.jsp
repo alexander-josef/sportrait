@@ -1,3 +1,4 @@
+<%--@elvariable id="albumBean" type="ch.unartig.studioserver.beans.SportsAlbumBean"--%>
 <jsp:useBean id="display" scope="request" type="ch.unartig.studioserver.beans.DisplayBean"/>
 <%@ taglib prefix="html" uri="http://jakarta.apache.org/struts/tags-html" %>
 <%@ taglib prefix="logic" uri="http://jakarta.apache.org/struts/tags-logic" %>
@@ -127,7 +128,9 @@
 
     // todo in case of startnummer search
     // initial call
-    var eventCategoryId = "${display.albumBean.album.eventCategory.eventCategoryId}";
+    var eventCategoryId = "${albumBean.eventCategoryId}"; // todo : was geschieht hier?
+    console.log("writing eventCategoryId .");
+    console.log(eventCategoryId);
     var initialPhotoId = "${display.displayPhotoId}";
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
@@ -211,6 +214,15 @@
 
 
     function initDisplayView() {
+        console.log('stored data for eventcategory : ');
+        console.log(eventCategoryId);
+        if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
+            console.log('Reading from session storage ...');
+            displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
+            currentPhotoIndex = getCurrentPhotoIndex();
+            setInitialPhotos();
+            console.log('done, initial photos set');
+        } else { // JSON not stored, (is this possible???) - call REST service
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             var jsonResponse;
@@ -235,7 +247,9 @@
         };
         xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true);
 
+        console.log('reading JSON data from REST service ....')
         xhttp.send();
+        }
     }
 
 

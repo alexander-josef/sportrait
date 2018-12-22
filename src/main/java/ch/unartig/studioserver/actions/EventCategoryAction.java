@@ -38,6 +38,7 @@ import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import ch.unartig.util.HttpUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
@@ -95,7 +96,7 @@ public class EventCategoryAction extends MappingDispatchAction {
 //        {
         _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
         SportsAlbumBean sportsAlbumBean;
-        sportsAlbumBean = new SportsAlbumBean(); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
+        sportsAlbumBean = new SportsAlbumBean(HttpUtil.getWebApplicationUrl(request)); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
         SportsEvent event = null;
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:

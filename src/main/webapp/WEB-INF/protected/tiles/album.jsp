@@ -207,3 +207,33 @@
     </ul>
 
 </div>
+
+<script>
+    <%-- loading the JSON data for the display photo already here - using the user wait time to preload this data that can be up to 2 MB per category / etappe --%>
+    function getCategoryPhotosDataForSessionStorage() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            var jsonResponse;
+            if (this.readyState == 4 && this.status == 200) {
+                console.log('done loading photo data ... ', Date.now())
+                // response now ready
+
+                jsonResponse = this.responseText;
+                console.log(jsonResponse);
+
+                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse);
+             }
+        };
+        console.log('loading ...  ', Date.now());
+        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true);
+
+        xhttp.send();
+    }
+
+    if (!sessionStorage.getItem(${albumBean.eventCategoryId})) {
+        getCategoryPhotosDataForSessionStorage();
+    } else {
+        console.log('photo data for event ', ${albumBean.eventCategoryId}, 'already stored in sessionStorage')
+    }
+
+</script>
