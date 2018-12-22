@@ -284,8 +284,7 @@ todo refactor name albumBean as fast as possible
 
             </td>
             <td class="displayPreview">
-                <c:if test="${ ! empty display.nextPhoto}">
-                    <ul class="slide" id="nextSlideRight">
+                    <ul class="slide" id="nextSlideRight" <c:if test="${empty display.nextPhoto}"> style="display: none" </c:if>>
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
@@ -302,7 +301,6 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                     </ul>
-                </c:if>
 
             </td>
             <td id="displaySpacer"></td>
