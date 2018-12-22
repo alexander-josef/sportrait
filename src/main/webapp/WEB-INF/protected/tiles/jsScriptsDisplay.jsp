@@ -49,6 +49,7 @@
     function changeHTMLafterSlideTransition() {
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
+        document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
