@@ -171,7 +171,7 @@ todo refactor name albumBean as fast as possible
                             <div>
                                 <%-- Facebook (data href element left out - should default to current web site) --%>
 
-                                    <div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="false">
+                                    <div id="fbShareButton" class="fb-share-button" data-href="http://int.sportrait.com/display/32047/display.html" data-layout="button_count" data-size="small" data-mobile-iframe="false">
                                     </div>
 
                                     <%-- Twitter --%>
