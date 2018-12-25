@@ -53,6 +53,7 @@
         document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
         dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
         document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
+        document.getElementById("metaTagUrl").setAttribute('content','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
