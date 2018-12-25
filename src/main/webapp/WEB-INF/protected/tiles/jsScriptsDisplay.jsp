@@ -56,7 +56,7 @@
 
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
             previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
-            if (dataLayer.eventYear >= 2018) {
+            if (dataLayer[0].eventYear >= 2018) {
                 previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL3x + ' 3x';
@@ -73,7 +73,7 @@
         if (!mySwiper.isEnd) {
             var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
             nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
-            if (dataLayer.eventYear >= 2018) {
+            if (dataLayer[0].eventYear >= 2018) {
                 nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL3x + ' 3x';
@@ -148,19 +148,21 @@
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
         var imgSrcset;
-        if (dataLayer.eventYear >= 2018) {
+        if (dataLayer[0].eventYear >= 2018) {
             imgSrcset = 'srcset="' + displayPhotos.photos[photoIndex].displayURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images taken after introdcution of image service (2018)
                 displayPhotos.photos[photoIndex].displayURL2x + ' 2x,' +
                 displayPhotos.photos[photoIndex].displayURL3x + ' 3x"';
         } else {
             imgSrcset='';
         }
+        console.log("srcSet = ",imgSrcset);
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
-            '<img ' +
-            'srcset="' + imgSrcset +
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
+            '<img ' + imgSrcset +
+            'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
             ' </html:link>' +
             '</div>';
+        console.log("returning htmlString : ",htmlString);
         return htmlString;
     }
 
