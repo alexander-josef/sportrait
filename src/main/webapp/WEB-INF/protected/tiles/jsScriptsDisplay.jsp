@@ -52,7 +52,7 @@
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
         dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
-
+        document.getElementById("metaTagUrl").setAttribute("content", "http://int.sportrait.com/display/32047/display.html");
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {

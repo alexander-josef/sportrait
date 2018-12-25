@@ -11,7 +11,7 @@
 <meta name="twitter:domain" content="sportrait.com">
 
 
-<meta property="og:url"                content="${requestScope['javax.servlet.forward.request_uri']}" />
+<meta property="og:url"                content="${requestScope['javax.servlet.forward.request_uri']}" id="metaTagUrl"/>
 <meta property="og:type"               content="website" />
 <meta property="og:title"              content="${display.albumFromPhoto.event.longTitle}" />
 <meta property="og:description"        content="Mein Läuferfoto der ASVZ SOLA" />
