@@ -158,14 +158,14 @@
         } else {
             imgSrcset='';
         }
-        console.log("srcSet = ",imgSrcset);
+        // console.log("srcSet = ",imgSrcset);
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
             '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
             '<img ' + imgSrcset +
             'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
             ' </html:link>' +
             '</div>';
-        console.log("returning htmlString : ",htmlString);
+        // console.log("returning htmlString : ",htmlString);
         return htmlString;
     }
 

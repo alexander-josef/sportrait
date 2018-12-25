@@ -221,7 +221,7 @@
                 // response now ready
 
                 jsonResponse = this.responseText;
-                console.log(jsonResponse);
+                // console.log(jsonResponse); // caution! a lot of data ...
 
                 sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse);
              }
