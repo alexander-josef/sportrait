@@ -50,6 +50,9 @@
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
+        document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
+        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
+
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
@@ -97,7 +100,7 @@
 
         if (mySwiper.isEnd) { // only add if we're at the end of the slides
             if (currentPhotoIndex+1 < displayPhotos.photos.length) { // length = max index +1
-                console.log('adding Photo with ID: ' + displayPhotos.photos[currentPhotoIndex].photoID);
+                console.log('adding Photo with ID: ' + displayPhotos.photos[currentPhotoIndex].photoId);
                 console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) +1));
                 mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
                 console.log('slide added');
@@ -157,7 +160,7 @@
         }
         console.log("srcSet = ",imgSrcset);
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
             '<img ' + imgSrcset +
             'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
             ' </html:link>' +
@@ -203,11 +206,8 @@
         console.log("getCurrentPhotoIndex is called");
 
         for (var i = 0; i < displayPhotos.photos.length; i++) {
-            // console.log("photoID = " + displayPhotos.photos[i].photoID);
-            // console.log("displayURL1x = " + displayPhotos.photos[i].displayURL1x);
-            // console.log("masterURL = " + displayPhotos.photos[i].masterURL);
-            var photoID = displayPhotos.photos[i].photoID;
-            if (photoID===initialPhotoId) {
+            var photoId = displayPhotos.photos[i].photoId;
+            if (photoId===initialPhotoId) {
                 console.log("found index for current photo - index = " + Number(i));
                 return Number(i); // return index of current photo
             }

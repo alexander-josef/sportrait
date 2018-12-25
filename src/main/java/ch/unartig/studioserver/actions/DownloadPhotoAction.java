@@ -41,7 +41,7 @@ public class DownloadPhotoAction extends Action {
 
 
         String photoId = request.getParameter("photoId");
-        _logger.debug("preparing download of photo with photoID " + photoId);
+        _logger.debug("preparing download of photo with photoId " + photoId);
         PhotoDAO photoDAO = new PhotoDAO();
         Photo photo = photoDAO.load(Long.valueOf(photoId));
 

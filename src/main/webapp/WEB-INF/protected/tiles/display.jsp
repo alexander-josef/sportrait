@@ -46,7 +46,7 @@ todo refactor name albumBean as fast as possible
                                     <c:if test="${display.albumFromPhoto.hasFreeHighResDownload}">
                                         <td class="rightalign">
 
-                                            <html:link action="/downloadPhoto?photoId=${display.displayPhotoId}"
+                                            <html:link styleId="displayDownloadButtonLink" action="/downloadPhoto?photoId=${display.displayPhotoId}"
                                                        title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
                                                        onclick="dataLayer.push({'event': 'highresDownload'});">
                                                 <html:img page="/images/buttons/bt_download_picture_de.gif" />
