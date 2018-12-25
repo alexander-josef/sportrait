@@ -41,7 +41,7 @@
     </script>
 
     <%--
-        START Google Tag Manager Snippt
+        START Google Tag Manager Head Snippet
     --%>
     <c:if test="${Registry._DevEnv}">
         <tiles:insert attribute="googleTagManagerHeadSnippetDev" ignore="true"/>
