@@ -93,11 +93,13 @@
                     <li class="slideImage">
                         <html:link action="/display/${thumbnail.photoId}/${thumbnail.album.navTitle}/display.html">
                             <img class="${thumbnail.orientationSuffix}" title="${thumbnail.displayTitle}"
-                                 srcset="${thumbnail.thumbnailUrl} 1x, ${thumbnail.thumbnailUrl2x} 2x, ${thumbnail.thumbnailUrl3x} 3x"
-                                 src="${thumbnail.thumbnailUrl}"
-                                 alt="${thumbnail.displayTitle}">
+                            <c:if test="${thumbnail.afterImageServiceMigration}">
+                                    srcset="${thumbnail.thumbnailUrl} 1x, ${thumbnail.thumbnailUrl2x} 2x, ${thumbnail.thumbnailUrl3x} 3x"
+                            </c:if>
+                                    src="${thumbnail.thumbnailUrl}"
+                                    alt="${thumbnail.displayTitle}">
 
-                        </html:link>
+                            </html:link>
                     </li>
                     <li class="slideBottom">
                             ${thumbnail.shortTimeString}

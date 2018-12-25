@@ -56,9 +56,11 @@
 
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
             previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
-            previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
-                displayPhotos.photos[currentPhotoIndex-1].thumbnailURL2x + ' 2x,' +
-                displayPhotos.photos[currentPhotoIndex-1].thumbnailURL3x + ' 3x';
+            if (dataLayer.eventYear >= 2018) {
+                previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
+                    displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL2x + ' 2x,' +
+                    displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL3x + ' 3x';
+            }
             previousPhotoThumbnail.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
             document.getElementById("previousSlideLeft").style.display = "unset";
         } else {
@@ -71,10 +73,11 @@
         if (!mySwiper.isEnd) {
             var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
             nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
-            nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
-                displayPhotos.photos[currentPhotoIndex+1].thumbnailURL2x + ' 2x,' +
-                displayPhotos.photos[currentPhotoIndex+1].thumbnailURL3x + ' 3x';
-
+            if (dataLayer.eventYear >= 2018) {
+                nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
+                    displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL2x + ' 2x,' +
+                    displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL3x + ' 3x';
+            }
             nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
             document.getElementById("nextSlideRight").style.display = "unset";
         } else {
@@ -144,19 +147,18 @@
     function getPhotoSlideHTMLfromOffset(photoArrayIndexOffset) {
         var photoIndex = currentPhotoIndex + photoArrayIndexOffset;
         console.log("Reading from photo index : " + photoIndex);
-        // todo : fix style - dynamic width and height
-        // using lazy loading:
-        // var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px"><img data-src=' + displayPhotos.photos[photoIndex].displayURL + ' class="swiper-lazy"><div class="swiper-lazy-preloader"></div></div>';
-
-
-
-
+        var imgSrcset;
+        if (dataLayer.eventYear >= 2018) {
+            imgSrcset = 'srcset="' + displayPhotos.photos[photoIndex].displayURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images taken after introdcution of image service (2018)
+                displayPhotos.photos[photoIndex].displayURL2x + ' 2x,' +
+                displayPhotos.photos[photoIndex].displayURL3x + ' 3x"';
+        } else {
+            imgSrcset='';
+        }
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
             '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoID + '" title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
-            '<img srcset="' + displayPhotos.photos[photoIndex].displayURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays
-            displayPhotos.photos[photoIndex].displayURL2x + ' 2x,' +
-            displayPhotos.photos[photoIndex].displayURL3x + ' 3x"' +
-            'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
+            '<img ' +
+            'srcset="' + imgSrcset +
             ' </html:link>' +
             '</div>';
         return htmlString;
