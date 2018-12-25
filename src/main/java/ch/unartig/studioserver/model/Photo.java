@@ -324,6 +324,31 @@ public class Photo extends GeneratedPhoto
         }
         return displayUrl;    }
 
+    public String getDisplayUrlFacebookSharingImage() {
+
+        String displayUrl;
+        if (this.isAfterImageServiceMigration())
+        {
+            //w=1000&h=500&fit=crop&crop=top%2Cleft
+
+            Map<String,String> params = new HashMap<String,String>();
+            params.put("w","1000");
+            params.put("h","500");
+            params.put("fit","crop");
+            params.put("crop","top,left");
+            params.put("auto","format,enhance,compress");
+            params.put("q","20");
+            params.put("usm","20");
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+
+        } else {
+            // URL to display file - before image service migration (imgix)
+            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+
+        }
+        return displayUrl;    }
+
     /**
      * Helper method to determine if photo belongs to an event that has been imported after the image service migration imgix
      * @return true in case photo will be handled by image service (imgix)
