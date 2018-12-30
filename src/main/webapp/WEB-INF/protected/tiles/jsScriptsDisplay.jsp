@@ -237,7 +237,7 @@
                 // response now ready
 
                 jsonResponse = this.responseText;
-                console.log(jsonResponse);
+                // console.log(jsonResponse); // caution - can cause huge log output
                 displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                 console.log("number of photos  : " + displayPhotos.photos.length);
                 // append(photos[0].displayURL);
