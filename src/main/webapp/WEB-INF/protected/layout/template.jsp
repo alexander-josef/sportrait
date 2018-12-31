@@ -70,7 +70,7 @@
     <tiles:insert attribute="htmlTitle"/>
     <!--<link rel="stylesheet" type="text/css" href="/css/main.css"/>-->
     <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<html:rewrite page="/css/main.css"/>?version=148"/>
     <%-- Media query to support "old" stylesheet with definitions for desktop screens --%>
     <link rel="stylesheet" href="<html:rewrite page="/css/main-wide-screen-override.css"/>"
           media="screen and (min-width: 40em)"/>
