@@ -51,9 +51,10 @@
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
-        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
         document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
         document.getElementById("metaTagUrl").setAttribute('content','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
+        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
+        dataLayer.push({'event': 'displayView'});
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
@@ -142,9 +143,8 @@
     var initialPhotoId = "${display.displayPhotoId}";
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
-    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
+    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page)");
 
-    // todo : think about if this can be called after initial photo is displayed (loading of JSON response can take a while)
     initDisplayView();
 
 
@@ -180,7 +180,7 @@
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
         mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0));
-
+        dataLayer.push({'event': 'displayView'});
 
         // then set initial left photo in case there are photos to the left
         if (currentPhotoIndex-1 >= 0) {
@@ -220,8 +220,7 @@
 
 
     function initDisplayView() {
-        console.log('stored data for eventcategory : ');
-        console.log(eventCategoryId);
+        console.log('stored data for eventcategory : ', eventCategoryId);
         if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
             console.log('Reading from session storage ...');
             displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
