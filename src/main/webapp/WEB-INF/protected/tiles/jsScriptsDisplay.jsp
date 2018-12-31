@@ -46,6 +46,7 @@
         */
     });
 
+    // after swiper has changed the display slide, change needed elements on page
     function changeHTMLafterSlideTransition() {
         // todo: catch exceptions
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
@@ -61,13 +62,17 @@
         if (!mySwiper.isBeginning) {
 
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
+            var previousPhotoLink = document.getElementById("previousPhotoLink");
+            var previousPhotoTextLink = document.getElementById("previousPhotoTextLink");
             previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
-            if (dataLayer[0].eventYear >= 2018) {
+            if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
                 previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL3x + ' 3x';
             }
             previousPhotoThumbnail.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
+            previousPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
+            previousPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
             document.getElementById("previousSlideLeft").style.display = "unset";
         } else {
             // hide previous preview slide
@@ -79,12 +84,16 @@
         if (!mySwiper.isEnd) {
             var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
             nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
-            if (dataLayer[0].eventYear >= 2018) {
+            var nextPhotoLink = document.getElementById("nextPhotoLink");
+            var nextPhotoTextLink = document.getElementById("nextPhotoTextLink");
+            if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
                 nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL3x + ' 3x';
             }
             nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
+            nextPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
+            nextPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
             document.getElementById("nextSlideRight").style.display = "unset";
         } else {
             // hide next preview slide
@@ -221,7 +230,7 @@
 
 
     function initDisplayView() {
-        console.log('stored data for eventcategory : ', eventCategoryId);
+        console.log('stored data available for eventcategory? ID : ', eventCategoryId);
         if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
             console.log('Reading from session storage ...');
             displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
