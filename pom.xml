@@ -329,6 +329,7 @@
                             <filtering>true</filtering>
                             <includes>
                                 <include>WEB-INF/struts-config.xml</include>
+                                <include>META-INF/context.xml</include>
                             </includes>
                         </resource>
                     </webResources>

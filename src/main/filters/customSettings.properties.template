@@ -13,7 +13,7 @@ environment=dev
 server.httpPort=8080
 server.httpsPort=443
 server.enableSsl=true
-
+server.dbConnectionString=jdbc:postgresql://localhost:5432/sportrait
 
 # not used anymore with s3 storage
 appSettings.fineImagesDirectory=/opt/DATA/sportrait/fine-images
