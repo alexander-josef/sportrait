@@ -19,6 +19,7 @@
             <!--use id to check equality. CAUTION: comparing entities that have not yet been saved (and don't have and id) ????-->
             <meta attribute="use-in-equals">true</meta>
 
+            <!--the primary key if taken from 1:1 related table "userProfile"  -  hence no sequence for photographerID -->
             <generator class="foreign">
                 <param name="property">userProfile</param>
             </generator>

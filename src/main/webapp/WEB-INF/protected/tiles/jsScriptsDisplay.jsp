@@ -46,26 +46,33 @@
         */
     });
 
+    // after swiper has changed the display slide, change needed elements on page
     function changeHTMLafterSlideTransition() {
+        // todo: catch exceptions
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
-        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
-        document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
+        // document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
         document.getElementById("metaTagUrl").setAttribute('content','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
+        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
+        dataLayer.push({'event': 'displayView'});
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
         if (!mySwiper.isBeginning) {
 
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
+            var previousPhotoLink = document.getElementById("previousPhotoLink");
+            var previousPhotoTextLink = document.getElementById("previousPhotoTextLink");
             previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
-            if (dataLayer[0].eventYear >= 2018) {
+            if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
                 previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL3x + ' 3x';
             }
             previousPhotoThumbnail.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
+            previousPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
+            previousPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
             document.getElementById("previousSlideLeft").style.display = "unset";
         } else {
             // hide previous preview slide
@@ -77,12 +84,16 @@
         if (!mySwiper.isEnd) {
             var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
             nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
-            if (dataLayer[0].eventYear >= 2018) {
+            var nextPhotoLink = document.getElementById("nextPhotoLink");
+            var nextPhotoTextLink = document.getElementById("nextPhotoTextLink");
+            if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
                 nextPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL3x + ' 3x';
             }
             nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
+            nextPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
+            nextPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
             document.getElementById("nextSlideRight").style.display = "unset";
         } else {
             // hide next preview slide
@@ -142,9 +153,8 @@
     var initialPhotoId = "${display.displayPhotoId}";
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
-    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page");
+    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page)");
 
-    // todo : think about if this can be called after initial photo is displayed (loading of JSON response can take a while)
     initDisplayView();
 
 
@@ -180,7 +190,7 @@
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
         mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(0));
-
+        dataLayer.push({'event': 'displayView'});
 
         // then set initial left photo in case there are photos to the left
         if (currentPhotoIndex-1 >= 0) {
@@ -220,8 +230,7 @@
 
 
     function initDisplayView() {
-        console.log('stored data for eventcategory : ');
-        console.log(eventCategoryId);
+        console.log('stored data available for eventcategory? ID : ', eventCategoryId);
         if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
             console.log('Reading from session storage ...');
             displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
@@ -237,7 +246,7 @@
                 // response now ready
 
                 jsonResponse = this.responseText;
-                console.log(jsonResponse);
+                // console.log(jsonResponse); // caution - can cause huge log output
                 displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                 console.log("number of photos  : " + displayPhotos.photos.length);
                 // append(photos[0].displayURL);

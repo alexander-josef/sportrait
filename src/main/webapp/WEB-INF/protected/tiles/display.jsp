@@ -131,7 +131,7 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                         <li class="slideBottom">
-                            <html:link action="/display/${display.previousPhoto.photoId}/display.html" name="display"
+                            <html:link styleId="previousPhotoTextLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
                                        property="previousPhotoLinkParams" title="vorheriges Foto">zurück
                             </html:link>
                         </li>
@@ -211,7 +211,7 @@ todo refactor name albumBean as fast as possible
                     <ul class="slide" id="nextSlideRight" <c:if test="${empty display.nextPhoto}"> style="display: none" </c:if>>
                         <li class="slideTop"></li>
                         <li class="slideImage">
-                            <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
+                            <html:link styleId="nextPhotoLink" action="/display/${display.nextPhoto.photoId}/display.html" name="display"
                                        property="nextPhotoLinkParams" title="nächstes Foto">
                                 <img id="nextPhotoThumbnail"
                                         class="${display.nextPhoto.orientationSuffix}"
@@ -220,7 +220,7 @@ todo refactor name albumBean as fast as possible
                             </html:link>
                         </li>
                         <li class="slideBottom">
-                            <html:link action="/display/${display.nextPhoto.photoId}/display.html" name="display"
+                            <html:link styleId="nextPhotoTextLink" action="/display/${display.nextPhoto.photoId}/display.html" name="display"
                                        property="nextPhotoLinkParams" title="nächstes Foto">weiter
                             </html:link>
                         </li>
