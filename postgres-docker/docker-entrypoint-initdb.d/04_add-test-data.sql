@@ -21,6 +21,17 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 
+
+--
+-- Data for Name: genericlevels; Type: TABLE DATA; Schema: public; Owner: sportrait
+-- Keep order of the following three insert in order to avoid foreign key constraint errors!
+--
+
+COPY public.genericlevels (genericlevelid, hierarchy_level, navtitle, longtitle, description, quickaccess, isprivate, publish, privateaccesscode, categoryid, zipcode, city, eventdate, weblink, eventgroupid, albumtypestring, photographerid, eventid, eventcategoryid) FROM stdin;
+2	EVENTGROUP	\N	\N	\N	\N	\N	f	\N	\N	9500	Wil	\N	\N	\N	\N	\N	\N	\N
+1	SPORTSEVENT	anlass-1-mb-pro-2018	Anlass 1	\N	\N	\N	f	\N	\N	\N	\N	2018-05-20	www.sportrait.com	2	\N	\N	\N	\N
+\.
+
 --
 -- Data for Name: eventcategories; Type: TABLE DATA; Schema: public; Owner: sportrait
 --
@@ -40,8 +51,6 @@ COPY public.eventcategories (eventcategoryid, title, description, eventid, categ
 --
 
 COPY public.genericlevels (genericlevelid, hierarchy_level, navtitle, longtitle, description, quickaccess, isprivate, publish, privateaccesscode, categoryid, zipcode, city, eventdate, weblink, eventgroupid, albumtypestring, photographerid, eventid, eventcategoryid) FROM stdin;
-2	EVENTGROUP	\N	\N	\N	\N	\N	f	\N	\N	9500	Wil	\N	\N	\N	\N	\N	\N	\N
-1	SPORTSEVENT	anlass-1-mb-pro-2018	Anlass 1	\N	\N	\N	f	\N	\N	\N	\N	2018-05-20	www.sportrait.com	2	\N	\N	\N	\N
 3	SPORTSALBUM	uno	uno	anlass-1-mb-pro-2018; uno	\N	\N	t	\N	\N	\N	\N	\N	\N	\N	\N	1	1	1
 \.
 
