@@ -181,11 +181,6 @@ COPY public.userroles (userroleid, rolename, roledescription) FROM stdin;
 SELECT pg_catalog.setval('public.sequence_priceid', 100, false);
 
 
---
--- Name: sequence_productid; Type: SEQUENCE SET; Schema: public; Owner: sportrait
---
-
-SELECT pg_catalog.setval('public.sequence_productid', 100, true);
 
 
 --
