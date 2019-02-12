@@ -1,0 +1,10 @@
+version: '3'
+services:
+  sportrait-tomcat:
+    image: "sportrait-tomcat"
+    ports:
+     - "8888:8080"
+    depends_on:
+      - "sportrait-db"
+  sportrait-db:
+    image: "sportrait-postgres-testdb"
