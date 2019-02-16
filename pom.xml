@@ -27,8 +27,51 @@
     <url>https://sportrait.com</url>
 
 
+
+    <!-- new section to manage AWS dependencies (ensure right version of aws dependencies for each module) -->
+
+    <!-- later ... needs a pom with modules. dependency management is declared in parent pom
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>2.4.8</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+-->
     <dependencies>
 
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.11.500</version>
+        </dependency>
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>rekognition</artifactId>
+            <version>2.4.8</version>
+        </dependency>
+
+        <!--or rather this dependency ? -->
+
+<!--
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-rekognition</artifactId>
+            <version>1.11.500</version>
+        </dependency>
+
+-->
         <!-- Removing SPORTrait client dependency-->
 
         <!--ZK-->
@@ -199,13 +242,9 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- updated 2018-03-30 to 304-->
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.11.304</version>
+        <!-- removed version - now managed with BOM dependency management, see top of file 2019-02-16 -->
 
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
         <dependency>
