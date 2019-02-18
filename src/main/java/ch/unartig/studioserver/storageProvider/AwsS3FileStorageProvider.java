@@ -352,6 +352,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
 
+    /**
+     * Return a list with all paths available under the "upload/" path (the albums that have been uploaded)
+     * @return
+     */
     public List<String> getUploadPaths() {
 
         _logger.debug("preparing ArrayList with upload paths");
