@@ -36,6 +36,8 @@ public class Test {
     private static final String defaultFilter = "\\.(jpg|jpeg|png)$";
     private AtomicInteger numSeen = new AtomicInteger();
     private int maxImagesToProcess = -1;
+    private final List<String[]> startnummern = new ArrayList<>();
+
 
 
     private Test() {
@@ -53,7 +55,7 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberProcessor());
+        processors.add(new StartnumberProcessor(startnummern));
 
         // Executor Service
         int maxWorkers = 1; // no max workers defined ? 1 ?
@@ -62,7 +64,6 @@ public class Test {
                 new ArrayBlockingQueue<>(maxWorkers * 2, false),
                 new ThreadPoolExecutor.CallerRunsPolicy() // prevents backing up too many jobs
         );
-
 
 
     }
@@ -288,6 +289,15 @@ public class Test {
 
             // error handling is simple here - an exception will terminate just the impacted job, and the job is left
             // on the queue, so you can fix and re-drive. Alternatively you could catch and write to a dead letter queue
+
+
+            for (int i = 0; i < startnummern.size(); i++) {
+                String[] strings = startnummern.get(i);
+                System.out.println("startnummer = " + Arrays.toString(strings));
+            }
+
+
+
         }
     }
 
@@ -320,7 +330,6 @@ public class Test {
 
 
         // create list of number/filename and print it out a the end
-        List<String[]> startnummern = new ArrayList<>();
 
         DetectTextResult result = rekognitionClient.detectText(request);
         List<TextDetection> textDetections = result.getTextDetections();
@@ -328,7 +337,7 @@ public class Test {
 
         // Process downstream actions:
         for (SportraitImageProcessorIF processor : processors) {
-            // todo
+            // only one processor so far
             processor.process(textDetections, path);
         }
     }

@@ -11,9 +11,9 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
     private List<String[]> startNumbers;
 
 
-    public StartnumberProcessor() {
+    public StartnumberProcessor(List<String[]> sn) {
 
-        startNumbers = new ArrayList<>();
+        startNumbers = sn;
     }
 
     @Override
@@ -25,15 +25,22 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
         System.out.println("Detected lines and words for " + path);
         for (TextDetection text : textDetections) {
 
-            // check for startnumber: (is a line, confidence > 95, parentID = null, previous LINE ID starts with SOLA)
-            if (text.getType().equals("LINE")
-                    && text.getConfidence() > 95
-                    && text.getParentId() == null
-                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))) {
-                startNumbers.add(new String[]{text.getDetectedText(), path});
-                lastLine = text;
+            // check for startnumber: (is a line, confidence > 80, parentID = null, previous LINE ID starts with SOLA AND/OR todo: next line ID similar ASVZ)
+            // check for LINE with 1 to 3 digits (very simple - is that enough?)
+            if (
+                    text.getType().equals("LINE")
+                            && text.getConfidence() > 80
+                            && text.getParentId() == null
+//                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))
+                            && text.getDetectedText().matches("\\d{1,3}") // regex : matches if there's 1 2, or 3 digits
+            )
 
-            } else if (text.getType().equals("LINE")) {
+            {
+
+                startNumbers.add(new String[]{text.getDetectedText(), path});
+                lastLine = text; // not needed with regex for 1 to 3 digits
+
+            } else if (text.getType().equals("LINE")) { // not needed with regex
                 lastLine = text;
             }
 
@@ -47,10 +54,6 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
         }
 
 
-        for (int i = 0; i < startNumbers.size(); i++) {
-            String[] strings = startNumbers.get(i);
-            System.out.println("startnummer = " + Arrays.toString(strings));
-        }
     }
 
 
