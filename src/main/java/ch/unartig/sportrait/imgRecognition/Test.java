@@ -15,13 +15,14 @@ import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Test {
 
@@ -34,10 +35,13 @@ public class Test {
     private AmazonSQSClient sqs;
     private Pattern filter;
     private static final String defaultFilter = "\\.(jpg|jpeg|png)$";
-    private AtomicInteger numSeen = new AtomicInteger();
-    private int maxImagesToProcess = -1;
-    private final List<String[]> startnummern = new ArrayList<>();
-    private final String faceCollectionId;
+    private AtomicInteger numSeenScanner = new AtomicInteger(0);
+    private AtomicInteger numSeenProcessor = new AtomicInteger();
+    private int maxImagesToProcess = 0; // set to -1 for infinite scanning queue when processing the batch
+    private final List<Startnumber> startnumbers = new ArrayList<>();
+    private final List<FaceRecord> facesWithoutNumbers = new ArrayList<>();
+    private final String faceCollectionId; // maybe limit collection to etappe when used for sportrait
+    private long maxQueueEntries;
 
 
     private Test() {
@@ -55,7 +59,11 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberProcessor(startnummern));
+        processors.add(new StartnumberProcessor(startnumbers,facesWithoutNumbers));
+
+
+        // no limit for queue entries
+        maxQueueEntries = -1L;
 
         // Executor Service
         int maxWorkers = 1; // no max workers defined ? 1 ?
@@ -67,6 +75,10 @@ public class Test {
 
         // ID for initializing the face collection
         faceCollectionId = "MyCollection";
+
+        // for testing purposes, make sure faces cellection is freshly initialized
+        deleteFacesCollection();
+
         // create a faces collection
         createFacesCollection();
 
@@ -91,6 +103,7 @@ public class Test {
 
         // 1st scan the given image bucket for images and create a queue containing the URLs in SQS
         test.scanBucket(bucket, prefix);
+
 
         // 2nd process according to the given processors
         test.startProcessing();
@@ -157,7 +170,7 @@ public class Test {
                 .withPrefix(prefix)
                 .withBucketName(bucket);
 
-        System.out.println("Scanning S3 bucket "+ bucket +prefix);
+        System.out.println("Scanning S3 bucket "+ bucket + "/" +prefix);
         ObjectListing listing = s3.listObjects(listReq);
         boolean ok = processObjects(listing.getObjectSummaries());
 
@@ -166,16 +179,21 @@ public class Test {
             ok = processObjects(listing.getObjectSummaries());
         }
 
-        System.out.println("Completed scan, added ... images to the processing queue.");
+        System.out.println("Completed scan, added "+numSeenScanner+" images to the processing queue.");
     }
 
+    /**
+     * process objects = send path of all files in bucket to msg queue
+     * @param objects
+     * @return
+     */
     private boolean processObjects(List<S3ObjectSummary> objects) {
         System.out.println("Scanning next batch of "+ objects.size());
         objects
                 .parallelStream()
                 .filter(this::shouldEnqueue)
                 .forEach(object -> {
-                    numSeen.incrementAndGet();
+                    numSeenScanner.incrementAndGet();
                     String path = object.getBucketName() + "/" + object.getKey();
                     System.out.println("Posting: " + path);
 
@@ -184,11 +202,12 @@ public class Test {
                             .withMessageBody(path);
                     sqs.sendMessage(msg);
                 });
-//        if (max > -1L && numSeen.incrementAndGet() > max) {
-//            Logger.Info("Added max jobs, quitting");
-//            return false;
-//        }
+        if (maxQueueEntries > -1L && numSeenScanner.incrementAndGet() > maxQueueEntries) {
+            System.out.println("Added max jobs, quitting");
+            return false;
+        }
 
+        maxImagesToProcess = maxImagesToProcess + objects.size();
         return true;
     }
 
@@ -206,26 +225,19 @@ public class Test {
             return;
         }
 
-
-        // for testing purposes, make sure faces cellection is freshly initialized
-        deleteFacesCollection();
-
-
         System.out.println("Processor started up, looking for messages on " + queueUrl);
 
-        int pollRound=0;
-        while (!executor.isShutdown() && (pollRound < 3)) { // run 3 times for testing purposes
-            pollRound++;
+        while (!executor.isShutdown()) {
             // poll for messages on the queue.
             ReceiveMessageRequest poll = new ReceiveMessageRequest(queueUrl)
                     .withMaxNumberOfMessages(10)
                     .withWaitTimeSeconds(20);
             List<Message> messages = sqs.receiveMessage(poll).getMessages();
-            System.out.println("Got "+messages.size() + " messages from queue. Processed "+numSeen +" so far.");
+            System.out.println("Got "+messages.size() + " messages from queue. Processed "+numSeenProcessor +" so far.");
 
             // process the messages in parallel.
             for (Message message : messages) {
-                numSeen.incrementAndGet();
+                numSeenProcessor.incrementAndGet();
                 executor.execute(() -> {
                     try {
                         processTask(message);
@@ -239,27 +251,84 @@ public class Test {
                 // remove the job from the queue when completed successfully (or skipped)
                 sqs.deleteMessage(queueUrl, message.getReceiptHandle());
             }
-            if (maxImagesToProcess > -1 && numSeen.get() > maxImagesToProcess) {
-                System.out.println("Seen enough ("+numSeen.get()+"), quitting.");
+            if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {
+                System.out.println("Seen enough ("+numSeenProcessor.get()+"), quitting. maxImagesToProcess = " + maxImagesToProcess);
                 executor.shutdownNow();
             }
 
             // error handling is simple here - an exception will terminate just the impacted job, and the job is left
             // on the queue, so you can fix and re-drive. Alternatively you could catch and write to a dead letter queue
-
-
-
         }
 
-        // doesn't work : will be executed while other thread is still working.
-        // deletes collection while faces are being indexed
+
+        System.out.println("####### Executor has shutdown ##########");
 
         // need to wait for some time ?
-        for (int i = 0; i < startnummern.size(); i++) {
-            String[] strings = startnummern.get(i);
-            System.out.println("startnummer = " + Arrays.toString(strings));
+
+        for (int i = 0; i < startnumbers.size(); i++) {
+            Startnumber startnumber = startnumbers.get(i);
+            System.out.println("startnumber = " + startnumber);
         }
 
+        // process faces w/o number - try to find face matches and extract startnumber from the matches
+        processFacesWithoutNumber();
+
+
+    }
+
+    private void processFacesWithoutNumber() {
+        // for every face that has not been matched to a number: // todo : check for too many faces, bystanders etc.
+        for (int i = 0; i < facesWithoutNumbers.size(); i++) {
+            FaceRecord faceRecord = facesWithoutNumbers.get(i);
+
+            // search face record in collection
+            String unknownFaceId = faceRecord.getFace().getFaceId();
+            SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
+                    .withCollectionId(faceCollectionId)
+                    .withFaceId(unknownFaceId)
+                    .withFaceMatchThreshold(70F)
+                    .withMaxFaces(2);
+
+            SearchFacesResult searchFacesByIdResult =
+                    rekognitionClient.searchFaces(searchFacesRequest);
+
+            System.out.println("Face(s) in collection matching faceId " + unknownFaceId);
+            List<FaceMatch> faceImageMatches = searchFacesByIdResult.getFaceMatches();
+
+            String startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches);
+
+
+            System.out.println("**************************************************************************************************");
+            System.out.println("*********** Found startnumber for unmapped FaceID "+unknownFaceId + " --> Startnumber : "+startnumber);
+            System.out.println("**************************************************************************************************");
+
+        }
+
+
+        // todo  : map startnumber and face / file
+
+        // todo:         delete entry from list ? delete list at the end?
+
+
+    }
+
+    private String getFirstStartnumberFromMatchingFaces(List<FaceMatch> faceImageMatches) {
+        for (FaceMatch matchingFace: faceImageMatches) {
+            // put in different method, extract number and return with 1st match
+            System.out.println("matching face = " + matchingFace.getFace().getFaceId() + " -- in image : "+matchingFace.getFace().getExternalImageId());
+
+            // this should work, but we need only the 1st result
+            // List <Startnumber> matchingNumbers = startnumbers.stream()
+            //        .filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId())).collect(Collectors.toList());
+
+            // try a bit more fancy:
+            Stream<Startnumber> stream = startnumbers.stream().filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId()));
+            Optional<Startnumber> firstNumber = stream.findFirst();
+
+            return firstNumber.map(Startnumber::getStartnumberText).orElse("no startnumber found"); // todo : not a good solution - go to the next match instead
+        }
+        // no match
+        return null;
     }
 
     /**
@@ -267,11 +336,11 @@ public class Test {
      * @param message
      */
     private void processTask(Message message) {
-        String path = message.getBody();
-        PathSplit pathComp = new PathSplit(path);
+        String photoPath = message.getBody();
+        PathSplit pathComp = new PathSplit(photoPath);
         String bucket = pathComp.bucket;
         String key = pathComp.key;
-        System.out.println("Processing" +  bucket +" "+ key);
+        System.out.println("Processing " +  bucket +" "+ key);
 
 
         // text detection:
@@ -299,7 +368,7 @@ public class Test {
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
             // todo : add facedetections to processor and do all in once processor?
-            processor.process(photoTextDetections, path);
+            processor.process(photoTextDetections, photoFaceRecords, photoPath);
         }
     }
 
@@ -331,7 +400,7 @@ public class Test {
 
         try {
             deleteCollectionResult = rekognitionClient.deleteCollection(request);
-            System.out.println(faceCollectionId + ": " + deleteCollectionResult.getStatusCode().toString());
+            System.out.println(faceCollectionId + ": status code " + deleteCollectionResult.getStatusCode().toString());
         } catch (ResourceNotFoundException e) {
             System.out.println("Collection didn't exist ... ignoring");
             e.printStackTrace();
@@ -351,7 +420,7 @@ public class Test {
 
         PathSplit pathComp = new PathSplit(key);
         filename= pathComp.key; // part after first occurance of '/'
-        System.out.println("Processing" +  bucket +" "+ key);
+        System.out.println("Adding faces to collection for :  " +  bucket +" "+ key);
 
 
         Image image = new Image()
