@@ -37,7 +37,7 @@ public class Test {
     private static final String defaultFilter = "\\.(jpg|jpeg|png)$";
     private AtomicInteger numSeenScanner = new AtomicInteger(0);
     private AtomicInteger numSeenProcessor = new AtomicInteger();
-    private int maxImagesToProcess = 0; // set to -1 for infinite scanning queue when processing the batch
+    private int maxImagesToProcess = -2; // set to -1 for infinite scanning queue when processing the batch
     private final List<Startnumber> startnumbers = new ArrayList<>();
     private final List<FaceRecord> facesWithoutNumbers = new ArrayList<>();
     private final String faceCollectionId; // maybe limit collection to etappe when used for sportrait
@@ -234,7 +234,7 @@ public class Test {
                     .withMaxNumberOfMessages(10)
                     .withWaitTimeSeconds(20);
             List<Message> messages = sqs.receiveMessage(poll).getMessages();
-            System.out.println("Got "+messages.size() + " messages from queue. Processed "+numSeenProcessor +" so far.");
+            System.out.println("Got "+messages.size() + " messages from queue. Processed "+numSeenProcessor +" so far. maxImagesToProcess = " + maxImagesToProcess);
 
             // process the messages in parallel.
             for (Message message : messages) {
@@ -253,6 +253,9 @@ public class Test {
                 sqs.deleteMessage(queueUrl, message.getReceiptHandle());
             }
             if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {
+
+                // this doesn't work!!!
+                // wait time needed?
                 System.out.println("Seen enough ("+numSeenProcessor.get()+"), quitting. maxImagesToProcess = " + maxImagesToProcess);
                 executor.shutdownNow();
             }
@@ -278,12 +281,18 @@ public class Test {
     }
 
     private void processFacesWithoutNumber() {
+        // todo  : refactor to RunnerFace Class
         // for every face that has not been matched to a number: // todo : check for too many faces, bystanders etc.
+
+        System.out.println("######################");
+        System.out.println("Starting processing faces w/o numbers");
+        System.out.println("######################");
+
         for (int i = 0; i < facesWithoutNumbers.size(); i++) {
-            FaceRecord faceRecord = facesWithoutNumbers.get(i);
+            FaceRecord unknownFaceRecord = facesWithoutNumbers.get(i);
 
             // search face record in collection
-            String unknownFaceId = faceRecord.getFace().getFaceId();
+            String unknownFaceId = unknownFaceRecord.getFace().getFaceId();
             SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
                     .withCollectionId(faceCollectionId)
                     .withFaceId(unknownFaceId)
@@ -298,15 +307,18 @@ public class Test {
 
             String startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches);
 
+            if (startnumber != null) {
+                System.out.println("**************************************************************************************************");
+                System.out.println("*********** Found startnumber for unmapped FaceID " + unknownFaceId + " --> Startnumber : " + startnumber);
+                System.out.println("**************************************************************************************************");
+                // todo:
+                add startnumber and file from unknownFace to startnumbers list
+            } else {
+                System.out.println("      No Match found for face "+unknownFaceId +" in file " + file);
+            }
 
-            System.out.println("**************************************************************************************************");
-            System.out.println("*********** Found startnumber for unmapped FaceID "+unknownFaceId + " --> Startnumber : "+startnumber);
-            System.out.println("**************************************************************************************************");
 
         }
-
-
-        // todo  : map startnumber and face / file
 
         // todo:         delete entry from list ? delete list at the end?
 
@@ -322,7 +334,7 @@ public class Test {
             // List <Startnumber> matchingNumbers = startnumbers.stream()
             //        .filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId())).collect(Collectors.toList());
 
-            // try a bit more fancy:
+            // try a bit more fancy: (also check for startnumber.getStartnumberText not empty in Filter?)
             Stream<Startnumber> stream = startnumbers.stream().filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId()));
             Optional<Startnumber> firstNumber = stream.findFirst();
 

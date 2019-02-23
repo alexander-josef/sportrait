@@ -92,6 +92,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
                     matchingNumber=true;
                     startnumber.setFace(faceRecord);
                     System.out.println("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
+                    // todo : no need to continue here - improve. return after match is true
                 }
             }
             if (!matchingNumber) {
