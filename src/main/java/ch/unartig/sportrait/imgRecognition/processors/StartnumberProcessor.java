@@ -2,20 +2,23 @@ package ch.unartig.sportrait.imgRecognition.processors;
 
 import com.amazonaws.services.rekognition.model.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StartnumberProcessor implements SportraitImageProcessorIF {
 
-    private List<String[]> startNumbers;
+    private List<String[]> startNumbersFile; // startnumber-file mapping
 
 
     public StartnumberProcessor(List<String[]> sn) {
 
-        startNumbers = sn;
+        startNumbersFile = sn;
     }
 
+    /**
+     * todo describe here strategy to get numbers
+     * @param textDetections
+     * @param path
+     */
     @Override
     public void process(List<TextDetection> textDetections, String path) {
 
@@ -35,10 +38,12 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
                             && text.getDetectedText().matches("\\d{1,3}") // regex : matches if there's 1 2, or 3 digits
             )
 
-            {
+            { // got a startnumber:
 
-                startNumbers.add(new String[]{text.getDetectedText(), path});
+                startNumbersFile.add(new String[]{text.getDetectedText(), path}); // todo : add geometry
                 lastLine = text; // not needed with regex for 1 to 3 digits
+                // todo: get matching face - maybe add geometry object to startNumbersFile entries and process later
+
 
             } else if (text.getType().equals("LINE")) { // not needed with regex
                 lastLine = text;
@@ -50,6 +55,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             System.out.println("Id : " + text.getId());
             System.out.println("Parent Id: " + text.getParentId());
             System.out.println("Type: " + text.getType());
+            System.out.println("Geometry: " + text.getGeometry().getBoundingBox());
             System.out.println();
         }
 

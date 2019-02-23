@@ -37,7 +37,7 @@ public class Test {
     private AtomicInteger numSeen = new AtomicInteger();
     private int maxImagesToProcess = -1;
     private final List<String[]> startnummern = new ArrayList<>();
-
+    private final String faceCollectionId;
 
 
     private Test() {
@@ -65,6 +65,10 @@ public class Test {
                 new ThreadPoolExecutor.CallerRunsPolicy() // prevents backing up too many jobs
         );
 
+        // ID for initializing the face collection
+        faceCollectionId = "MyCollection";
+        // create a faces collection
+        createFacesCollection();
 
     }
 
@@ -85,11 +89,12 @@ public class Test {
         // test.detectSportraitStartnumber(photo, bucket);
 
 
-        // 1st scan the given image bucket (and create a queue containing the URLs)
+        // 1st scan the given image bucket for images and create a queue containing the URLs in SQS
         test.scanBucket(bucket, prefix);
 
         // 2nd process according to the given processors
         test.startProcessing();
+
 
 
     }
@@ -139,69 +144,14 @@ public class Test {
         }
     }
 
+
+
+
     /**
-     *  @param photo
+     * Loop through given bucket and add images to an SQS queue
      * @param bucket
+     * @param prefix
      */
-    private void detectSportraitStartnumber(String photo, String bucket) {
-
-        // todo : return startnumbers here ...
-
-        // text detection:
-        DetectTextRequest request = new DetectTextRequest()
-                .withImage(new Image()
-                        .withS3Object(new S3Object()
-                                .withName(photo)
-                                .withBucket(bucket)));
-
-
-        // create list of number/filename and print it out a the end
-        List<String[]> startnummern = new ArrayList<>();
-
-        try {
-            DetectTextResult result = rekognitionClient.detectText(request);
-            List<TextDetection> textDetections = result.getTextDetections();
-
-
-            TextDetection lastLine = null;
-            System.out.println("Detected lines and words for " + photo);
-            for (TextDetection text: textDetections) {
-
-                // check for startnumber: (is a line, confidence > 95, parentID = null, previous LINE ID starts with SOLA)
-                if (text.getType().equals("LINE")
-                        && text.getConfidence()>95
-                        && text.getParentId()==null
-                        && (lastLine!=null && lastLine.getDetectedText().startsWith("SOL")))
-                {
-                    startnummern.add(new String[]{text.getDetectedText(), photo});
-                    lastLine=text;
-
-                } else if (text.getType().equals("LINE")) {
-                    lastLine=text;
-                }
-
-
-
-                System.out.println("Detected: " + text.getDetectedText());
-                System.out.println("Confidence: " + text.getConfidence().toString());
-                System.out.println("Id : " + text.getId());
-                System.out.println("Parent Id: " + text.getParentId());
-                System.out.println("Type: " + text.getType());
-                System.out.println();
-            }
-        } catch(AmazonRekognitionException e) {
-            e.printStackTrace();
-        }
-
-
-        for (int i = 0; i < startnummern.size(); i++) {
-            String[] strings = startnummern.get(i);
-            System.out.println("startnummer = " + Arrays.toString(strings));
-        }
-    }
-
-
-
     private void scanBucket(String bucket, String prefix) {
         ListObjectsRequest listReq = new ListObjectsRequest()
                 .withPrefix(prefix)
@@ -256,9 +206,16 @@ public class Test {
             return;
         }
 
+
+        // for testing purposes, make sure faces cellection is freshly initialized
+        deleteFacesCollection();
+
+
         System.out.println("Processor started up, looking for messages on " + queueUrl);
 
-        while (!executor.isShutdown()) {
+        int pollRound=0;
+        while (!executor.isShutdown() && (pollRound < 3)) { // run 3 times for testing purposes
+            pollRound++;
             // poll for messages on the queue.
             ReceiveMessageRequest poll = new ReceiveMessageRequest(queueUrl)
                     .withMaxNumberOfMessages(10)
@@ -291,16 +248,24 @@ public class Test {
             // on the queue, so you can fix and re-drive. Alternatively you could catch and write to a dead letter queue
 
 
-            for (int i = 0; i < startnummern.size(); i++) {
-                String[] strings = startnummern.get(i);
-                System.out.println("startnummer = " + Arrays.toString(strings));
-            }
-
-
 
         }
+
+        // doesn't work : will be executed while other thread is still working.
+        // deletes collection while faces are being indexed
+
+        // need to wait for some time ?
+        for (int i = 0; i < startnummern.size(); i++) {
+            String[] strings = startnummern.get(i);
+            System.out.println("startnummer = " + Arrays.toString(strings));
+        }
+
     }
 
+    /**
+     * process task for each image
+     * @param message
+     */
     private void processTask(Message message) {
         String path = message.getBody();
         PathSplit pathComp = new PathSplit(path);
@@ -308,21 +273,9 @@ public class Test {
         String key = pathComp.key;
         System.out.println("Processing" +  bucket +" "+ key);
 
-        // Rekognition: Detect Labels from S3 object
-/*
-
-        DetectLabelsRequest req = new DetectLabelsRequest()
-                .withImage(new Image().withS3Object(new S3Object().withBucket(bucket).withName(key)))
-                .withMinConfidence(minConfidence);
-        DetectLabelsResult result;
-        result = rek.detectLabels(req);
-        List<Label> labels = result.getLabels();
-        System.out.println("In %s, found: %s", key, labels);
-
-*/
 
         // text detection:
-        DetectTextRequest request = new DetectTextRequest()
+        DetectTextRequest textRequest = new DetectTextRequest()
                 .withImage(new Image()
                         .withS3Object(new S3Object()
                                 .withName(key)
@@ -331,16 +284,139 @@ public class Test {
 
         // create list of number/filename and print it out a the end
 
-        DetectTextResult result = rekognitionClient.detectText(request);
-        List<TextDetection> textDetections = result.getTextDetections();
+        DetectTextResult textResult = rekognitionClient.detectText(textRequest);
+        List<TextDetection> photoTextDetections = textResult.getTextDetections();
+
+
+        // add the faces of the file/photo to the collection and get a list of face records as return value
+        // faces needed in collection for later comparison
+        // todo : only add one face per startnumber to collection ? --> price wise not necessary
+        List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
+        // getFacesDetails(bucket, key);
 
 
         // Process downstream actions:
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
-            processor.process(textDetections, path);
+            // todo : add facedetections to processor and do all in once processor?
+            processor.process(photoTextDetections, path);
         }
     }
+
+    /**
+     * Only returns faces details w/o storing to collection
+     * @param bucket
+     * @param key
+     */
+    private void getFacesDetails(String bucket, String key) {
+        // face detection
+        DetectFacesRequest facesRequest = new DetectFacesRequest()
+                .withImage(new Image()
+                        .withS3Object(new S3Object()
+                                .withName(key)
+                                .withBucket(bucket)))
+                .withAttributes(Attribute.ALL);
+        // Replace Attribute.ALL with Attribute.DEFAULT to get default values.
+        DetectFacesResult facesResult = rekognitionClient.detectFaces(facesRequest);
+        // faces details needed?
+        List<FaceDetail> faceDetails = facesResult.getFaceDetails();
+    }
+
+    private void deleteFacesCollection() {
+        System.out.println("Deleting collection ...");
+
+        DeleteCollectionRequest request = new DeleteCollectionRequest()
+                .withCollectionId(faceCollectionId);
+        DeleteCollectionResult deleteCollectionResult = null;
+
+        try {
+            deleteCollectionResult = rekognitionClient.deleteCollection(request);
+            System.out.println(faceCollectionId + ": " + deleteCollectionResult.getStatusCode().toString());
+        } catch (ResourceNotFoundException e) {
+            System.out.println("Collection didn't exist ... ignoring");
+            e.printStackTrace();
+        }
+
+    }
+
+
+    /**
+     * use indexFaces operation to add detected faces - with defined quality - to collection - creates an indexFacesResult
+     * @param bucket
+     * @param key
+     */
+    private List<FaceRecord> addFacesToCollection(String bucket, String key) {
+
+        String filename; // = external ID for faces collection
+
+        PathSplit pathComp = new PathSplit(key);
+        filename= pathComp.key; // part after first occurance of '/'
+        System.out.println("Processing" +  bucket +" "+ key);
+
+
+        Image image = new Image()
+                .withS3Object(new S3Object()
+                        .withBucket(bucket)
+                        .withName(key));
+
+        IndexFacesRequest indexFacesRequest = new IndexFacesRequest()
+                .withImage(image)
+                .withQualityFilter(QualityFilter.AUTO) // todo define
+                .withMaxFaces(5) // detecting up to 5 faces - the biggest boxes will be returned
+                .withCollectionId(faceCollectionId)
+                .withExternalImageId(filename) // external image ID must be without '/' - only filename
+                .withDetectionAttributes("DEFAULT"); // todo define
+
+        IndexFacesResult indexFacesResult = null;
+        try {
+            indexFacesResult = rekognitionClient.indexFaces(indexFacesRequest);
+        } catch (AmazonRekognitionException e) {
+            System.out.println("Cannot index faces, see stacktrace - continuing");
+            e.printStackTrace();
+        }
+
+        System.out.println("Results for " + key);
+        System.out.println("Faces indexed:");
+        List<FaceRecord> faceRecords = indexFacesResult.getFaceRecords();
+        for (FaceRecord faceRecord : faceRecords) {
+            System.out.println("  Face ID: " + faceRecord.getFace().getFaceId());
+            System.out.println("  Location:" + faceRecord.getFaceDetail().getBoundingBox().toString());
+        }
+
+        // for debug purposes:
+        List<UnindexedFace> unindexedFaces = indexFacesResult.getUnindexedFaces();
+        System.out.println("Faces not indexed:");
+        for (UnindexedFace unindexedFace : unindexedFaces) {
+            System.out.println("  Location:" + unindexedFace.getFaceDetail().getBoundingBox().toString());
+            System.out.println("  Reasons:");
+            for (String reason : unindexedFace.getReasons()) {
+                System.out.println("   " + reason);
+            }
+        }
+        return faceRecords;
+    }
+
+
+    private void createFacesCollection() {
+        System.out.println("Creating collection: " +
+                faceCollectionId);
+
+        CreateCollectionRequest request = new CreateCollectionRequest()
+                .withCollectionId(faceCollectionId);
+
+        CreateCollectionResult createCollectionResult = null;
+        try {
+            createCollectionResult = rekognitionClient.createCollection(request);
+            System.out.println("CollectionArn : " +
+                    createCollectionResult.getCollectionArn());
+            System.out.println("Status code : " +
+                    createCollectionResult.getStatusCode().toString());
+        } catch (ResourceAlreadyExistsException e) {
+            System.out.println("Ignoring - Collection already existed");
+            e.printStackTrace();
+        }
+    }
+
 
     static public class PathSplit {
         public final String bucket;
