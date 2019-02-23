@@ -229,6 +229,7 @@ public class Test {
 
         while (!executor.isShutdown()) {
             // poll for messages on the queue.
+            // todo : how many messages will be fetched? max =10 - but actual?
             ReceiveMessageRequest poll = new ReceiveMessageRequest(queueUrl)
                     .withMaxNumberOfMessages(10)
                     .withWaitTimeSeconds(20);

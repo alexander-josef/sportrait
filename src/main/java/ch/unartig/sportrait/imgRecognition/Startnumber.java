@@ -1,10 +1,12 @@
 package ch.unartig.sportrait.imgRecognition;
 
 import com.amazonaws.services.rekognition.model.BoundingBox;
+import com.amazonaws.services.rekognition.model.Face;
 import com.amazonaws.services.rekognition.model.FaceRecord;
 import com.amazonaws.services.rekognition.model.TextDetection;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Startnumber {
     private final Float leftPosition;
@@ -57,19 +59,20 @@ public class Startnumber {
         return "Startnumber{" +
                 "startnumberText=" + startnumberText +
                 ", filePath='" + filePath + '\'' +
-                ", faceID=" + face.getFace().getFaceId() +
+                ", faceID=" + Optional.ofNullable(face).map(FaceRecord::getFace).map(Face::getFaceId).orElse("not set") +
                 '}';
     }
 
     /**
      * Helper method to avoid null pointer problems when face not set
+     * (see solution with Optional in toString() )
      * @return
      */
     public String getFaceId() {
         if (face != null) {
             return face.getFace().getFaceId();
         } else {
-            return "";
+            return "not set";
         }
     }
 }
