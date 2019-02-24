@@ -39,7 +39,7 @@ public class Test {
     private AtomicInteger numSeenProcessor = new AtomicInteger();
     private int maxImagesToProcess = -2; // set to -1 for infinite scanning queue when processing the batch
     private final List<Startnumber> startnumbers = new ArrayList<>();
-    private final List<FaceRecord> facesWithoutNumbers = new ArrayList<>();
+    private final List<RunnerFace> facesWithoutNumbers = new ArrayList<>();
     private final String faceCollectionId; // maybe limit collection to etappe when used for sportrait
     private long maxQueueEntries;
 

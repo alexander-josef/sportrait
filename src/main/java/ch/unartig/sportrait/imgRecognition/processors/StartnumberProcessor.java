@@ -1,7 +1,9 @@
 package ch.unartig.sportrait.imgRecognition.processors;
 
+import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
 import com.amazonaws.services.rekognition.model.*;
+import com.sun.tools.internal.jxc.SchemaGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,9 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
 
 
     List<Startnumber> startnumbers;
-    private List<FaceRecord> facesWithoutNumbers;
+    private List<RunnerFace> facesWithoutNumbers; // list of detected faces from runners without a matche, detected startnumber
 
-    public StartnumberProcessor(List<Startnumber> sn, List<FaceRecord> facesWithoutNumbers) {
-
+    public StartnumberProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers) {
         startnumbers = sn;
         this.facesWithoutNumbers = facesWithoutNumbers;
     }
@@ -22,9 +23,9 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
     /**
      * Process text detections per file here
      * todo describe here strategy to get numbers
-     * @param textDetections
-     * @param photoFaceRecords
-     * @param path
+     * @param textDetections list of textDetections
+     * @param photoFaceRecords list of recognized faces on this file / photo
+     * @param path complete path for this file / photo
      */
     @Override
     public void process(List<TextDetection> textDetections, List<FaceRecord> photoFaceRecords, String path) {
@@ -49,14 +50,9 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             )
 
             { // got a startnumber:
-
-                Startnumber startnumber = new Startnumber(text, path); // todo: file mapping ?
-
+                Startnumber startnumber = new Startnumber(text, path);
                 startnumbersForFile.add(startnumber);
                 lastLine = text; // not needed with regex for 1 to 3 digits
-                // todo: get matching face - maybe add geometry object to startNumbersFile entries and process later
-
-
             } else if (text.getType().equals("LINE")) { // not needed with regex
                 lastLine = text;
             }
@@ -95,11 +91,11 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
                     // todo : no need to continue here - improve. return after match is true
                 }
             }
-            if (!matchingNumber) {
+            if (!matchingNumber) { // face w/o matching number -> add to list
                 System.out.println("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
-                facesWithoutNumbers.add(faceRecord);
-                // todo : add to list of faces without matching number;
+                facesWithoutNumbers.add(new RunnerFace(faceRecord,path));
                 // this list need to be processed later to find matches from other fotos
+                // todo : remove this face from the collection?
             }
 
         }
