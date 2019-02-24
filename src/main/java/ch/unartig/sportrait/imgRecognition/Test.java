@@ -269,14 +269,19 @@ public class Test {
 
         // need to wait for some time ?
 
+
+        // process faces w/o number - try to find face matches and extract startnumber from the matches, add the startnumbers to the list of mapped startnumbers
+        processFacesWithoutNumber();
+
+        System.out.println("");
+        System.out.println("");
+        System.out.println("################################################");
+        System.out.println("############   RESULTING MATCHES ###############");
+        System.out.println("################################################");
         for (int i = 0; i < startnumbers.size(); i++) {
             Startnumber startnumber = startnumbers.get(i);
             System.out.println("startnumber = " + startnumber);
         }
-
-        // process faces w/o number - try to find face matches and extract startnumber from the matches
-        processFacesWithoutNumber();
-
 
     }
 
