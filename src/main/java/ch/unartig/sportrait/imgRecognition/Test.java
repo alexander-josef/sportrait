@@ -290,7 +290,7 @@ public class Test {
 
         for (int i = 0; i < facesWithoutNumbers.size(); i++) {
             FaceRecord unknownFaceRecord = facesWithoutNumbers.get(i);
-            String pathFromUnknownFacePhoto;
+            String pathFromUnknownFacePhoto = "TODO";
 
             // search face record in collection
             String unknownFaceId = unknownFaceRecord.getFace().getFaceId();
@@ -318,7 +318,7 @@ public class Test {
 
 
             } else {
-                System.out.println("      No Match found for face "+unknownFaceId +" in file " + file);
+                System.out.println("      No Match found for face "+unknownFaceId +" in file " + pathFromUnknownFacePhoto);
             }
 
 

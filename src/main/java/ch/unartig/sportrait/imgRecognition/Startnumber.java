@@ -1,11 +1,9 @@
 package ch.unartig.sportrait.imgRecognition;
 
-import com.amazonaws.services.rekognition.model.BoundingBox;
 import com.amazonaws.services.rekognition.model.Face;
 import com.amazonaws.services.rekognition.model.FaceRecord;
 import com.amazonaws.services.rekognition.model.TextDetection;
 
-import java.util.List;
 import java.util.Optional;
 
 public class Startnumber {
@@ -16,6 +14,11 @@ public class Startnumber {
     private final String filePath;
     private FaceRecord face; // todo : maybe just faceId ?
 
+    /**
+     * Constructor used to create a startnumber instance from a detected startnumber
+     * @param textDetection
+     * @param path
+     */
     public Startnumber(TextDetection textDetection, String path) {
         startnumberText = textDetection.getDetectedText();
         leftPosition = textDetection.getGeometry().getBoundingBox().getLeft();
@@ -24,6 +27,18 @@ public class Startnumber {
         filePath = path;
     }
 
+    /**
+     * Use this constructor if no startnumber was detected, but a match with a face identified the runner with startnumber on file
+     * @param startnumber
+     * @param filePath
+     */
+    public Startnumber(String startnumber, String filePath) {
+        this.filePath = filePath;
+        this.startnumberText = startnumber;
+        this.leftPosition = null; // not available
+        this.middlePosition = null; // not available
+        this.width = null; // not available
+    }
 
 
     public Float getLeftPosition() {
