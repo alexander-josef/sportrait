@@ -16,13 +16,11 @@ import com.amazonaws.services.sqs.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Test {
 
@@ -234,7 +232,7 @@ public class Test {
                     .withMaxNumberOfMessages(10)
                     .withWaitTimeSeconds(20);
             List<Message> messages = sqs.receiveMessage(poll).getMessages();
-            System.out.println("Got "+messages.size() + " messages from queue. Processed "+numSeenProcessor +" so far. maxImagesToProcess = " + maxImagesToProcess);
+            System.out.println("Got "+messages.size() + " messages from queue. Processed "+ numSeenProcessor +" so far. maxImagesToProcess = " + maxImagesToProcess);
 
             // process the messages in parallel.
             for (Message message : messages) {
@@ -253,11 +251,26 @@ public class Test {
                 sqs.deleteMessage(queueUrl, message.getReceiptHandle());
             }
             if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {
-
-                // this doesn't work!!!
-                // wait time needed?
                 System.out.println("Seen enough ("+numSeenProcessor.get()+"), quitting. maxImagesToProcess = " + maxImagesToProcess);
-                executor.shutdownNow();
+                executor.shutdown(); // don't use shutdown now - we want to finish execution of pending threads
+
+
+                try {
+                    // Wait a while for existing tasks to terminate
+                    if (!executor.awaitTermination(20, TimeUnit.SECONDS)) {
+                        executor.shutdownNow(); // Cancel currently executing tasks after wait time
+                        // Wait a while for tasks to respond to being cancelled
+                        if (!executor.awaitTermination(60, TimeUnit.SECONDS))
+                            System.err.println("Executor Pool did not terminate");
+                    }
+                } catch (InterruptedException ie) {
+                    // (Re-)Cancel if current thread also interrupted
+                    executor.shutdownNow();
+                    // Preserve interrupt status
+                    Thread.currentThread().interrupt();
+                }
+
+
             }
 
             // error handling is simple here - an exception will terminate just the impacted job, and the job is left
@@ -271,6 +284,8 @@ public class Test {
 
 
         // process faces w/o number - try to find face matches and extract startnumber from the matches, add the startnumbers to the list of mapped startnumbers
+
+        // todo : separate queue handling ?
         processFacesWithoutNumber();
 
         System.out.println("");
@@ -289,79 +304,23 @@ public class Test {
         // todo  : refactor to RunnerFace Class
         // for every face that has not been matched to a number: // todo : check for too many faces, bystanders etc.
 
+
         System.out.println("######################");
         System.out.println("Starting processing faces w/o numbers");
         System.out.println("######################");
 
-        for (int i = 0; i < facesWithoutNumbers.size(); i++) {
-            FaceRecord unknownFaceRecord = facesWithoutNumbers.get(i);
-            String pathFromUnknownFacePhoto = "TODO";
 
-            // search face record in collection
-            String unknownFaceId = unknownFaceRecord.getFace().getFaceId();
-            SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
-                    .withCollectionId(faceCollectionId)
-                    .withFaceId(unknownFaceId)
-                    .withFaceMatchThreshold(70F)
-                    .withMaxFaces(2);
-
-            SearchFacesResult searchFacesByIdResult =
-                    rekognitionClient.searchFaces(searchFacesRequest);
-
-            System.out.println("Face(s) in collection matching faceId " + unknownFaceId);
-            List<FaceMatch> faceImageMatches = searchFacesByIdResult.getFaceMatches();
-
-            String startnumber;
-            startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches);
-
-            if (startnumber != null) {
-                System.out.println("**************************************************************************************************");
-                System.out.println("*********** Found startnumber for unmapped FaceID " + unknownFaceId + " --> Startnumber : " + startnumber);
-                System.out.println("**************************************************************************************************");
-                // add startnumber and file from unknownFace to startnumbers list
-                startnumbers.add(new Startnumber(startnumber,pathFromUnknownFacePhoto));
-
-
-            } else {
-                System.out.println("      No Match found for face "+unknownFaceId +" in file " + pathFromUnknownFacePhoto);
-            }
-
-
+        for (RunnerFace runnerFace : facesWithoutNumbers) {
+            runnerFace.addStartnumberFromMatchingFacesInCollection(faceCollectionId, rekognitionClient, startnumbers);
         }
-
-        // todo:         delete entry from list ? delete list at the end?
-
 
     }
 
-    /**
-     * a list of matching faces matches will be compared against mapped Runners (number / faceId) and the first matching number will be returned, or null
-     * @param faceImageMatches
-     * @return 1st matching number or null
-     */
-    private String getFirstStartnumberFromMatchingFaces(List<FaceMatch> faceImageMatches) {
-        for (FaceMatch matchingFace: faceImageMatches) {
-            // put in different method, extract number and return with 1st match
-            System.out.println("     matching face = " + matchingFace.getFace().getFaceId() + " -- in image : "+matchingFace.getFace().getExternalImageId());
 
-            // this should work, but we need only the 1st result
-            // List <Startnumber> matchingNumbers = startnumbers.stream()
-            //        .filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId())).collect(Collectors.toList());
-
-            // try a bit more fancy: (also check for startnumber.getStartnumberText not empty in Filter?)
-            Stream<Startnumber> stream = startnumbers.stream().filter(startnumber -> startnumber.getFaceId().equals(matchingFace.getFace().getFaceId()));
-            Optional<Startnumber> firstNumber = stream.findFirst();
-
-            return firstNumber.map(Startnumber::getStartnumberText).orElse("no startnumber found"); // todo : not a good solution - go to the next match instead
-        }
-        // no match
-        System.out.println("No match found, returning null");
-        return null;
-    }
 
     /**
-     * process task for each image
-     * @param message
+     * process task for each image - called by executor
+     * @param message payload delivered by the queue
      */
     private void processTask(Message message) {
         String photoPath = message.getBody();
@@ -472,7 +431,7 @@ public class Test {
             e.printStackTrace();
         }
 
-        System.out.println("Results for " + key);
+        System.out.println("Done adding faces to collection for : " + key);
         System.out.println("Faces indexed:");
         List<FaceRecord> faceRecords = indexFacesResult.getFaceRecords();
         for (FaceRecord faceRecord : faceRecords) {
