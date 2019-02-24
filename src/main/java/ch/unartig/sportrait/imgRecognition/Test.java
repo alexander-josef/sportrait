@@ -290,6 +290,7 @@ public class Test {
 
         for (int i = 0; i < facesWithoutNumbers.size(); i++) {
             FaceRecord unknownFaceRecord = facesWithoutNumbers.get(i);
+            String pathFromUnknownFacePhoto;
 
             // search face record in collection
             String unknownFaceId = unknownFaceRecord.getFace().getFaceId();
@@ -305,14 +306,17 @@ public class Test {
             System.out.println("Face(s) in collection matching faceId " + unknownFaceId);
             List<FaceMatch> faceImageMatches = searchFacesByIdResult.getFaceMatches();
 
-            String startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches);
+            String startnumber;
+            startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches);
 
             if (startnumber != null) {
                 System.out.println("**************************************************************************************************");
                 System.out.println("*********** Found startnumber for unmapped FaceID " + unknownFaceId + " --> Startnumber : " + startnumber);
                 System.out.println("**************************************************************************************************");
-                // todo:
-                add startnumber and file from unknownFace to startnumbers list
+                // add startnumber and file from unknownFace to startnumbers list
+                startnumbers.add(new Startnumber(startnumber,pathFromUnknownFacePhoto));
+
+
             } else {
                 System.out.println("      No Match found for face "+unknownFaceId +" in file " + file);
             }
@@ -325,10 +329,15 @@ public class Test {
 
     }
 
+    /**
+     * a list of matching faces matches will be compared against mapped Runners (number / faceId) and the first matching number will be returned, or null
+     * @param faceImageMatches
+     * @return 1st matching number or null
+     */
     private String getFirstStartnumberFromMatchingFaces(List<FaceMatch> faceImageMatches) {
         for (FaceMatch matchingFace: faceImageMatches) {
             // put in different method, extract number and return with 1st match
-            System.out.println("matching face = " + matchingFace.getFace().getFaceId() + " -- in image : "+matchingFace.getFace().getExternalImageId());
+            System.out.println("     matching face = " + matchingFace.getFace().getFaceId() + " -- in image : "+matchingFace.getFace().getExternalImageId());
 
             // this should work, but we need only the 1st result
             // List <Startnumber> matchingNumbers = startnumbers.stream()
@@ -341,6 +350,7 @@ public class Test {
             return firstNumber.map(Startnumber::getStartnumberText).orElse("no startnumber found"); // todo : not a good solution - go to the next match instead
         }
         // no match
+        System.out.println("No match found, returning null");
         return null;
     }
 
