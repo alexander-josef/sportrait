@@ -60,9 +60,11 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import ch.unartig.sportrait.imgRecognition.Test;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -71,6 +73,7 @@ import java.util.*;
 public class Photo extends GeneratedPhoto
 {
     // todo: store thumbnail and display width and height pixels . here? globally?
+    Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
      * default empty constructor
@@ -288,6 +291,10 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","2");
 
+            // draw box around recognized number
+
+            addNumberRecognitionText(params);
+
             displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
 
         } else {
@@ -296,6 +303,25 @@ public class Photo extends GeneratedPhoto
 
         }
         return displayUrl;    }
+
+    private void addNumberRecognitionText(Map<String, String> params) {
+        try {
+
+            // Test test =  new Test();
+            // String numbers = test.getRecognizedNumbersFor(this);
+
+            // _logger.debug("startnumbers  : " + numbers);
+
+            params.put("txtsize","30");
+            params.put("txtalign","bottom,right");
+            params.put("txtclr","AADD44");
+            // params.put("txt", numbers);
+
+        } catch (Exception e) {
+            _logger.debug("error trying to recognize number on photo",e);
+            e.printStackTrace();
+        }
+    }
 
     public String getDisplayUrl3x() {
 

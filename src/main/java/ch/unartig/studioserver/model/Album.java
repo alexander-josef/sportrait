@@ -438,7 +438,7 @@ public class Album extends GeneratedAlbum {
         // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
         Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp, applyLogoOnFineImages);
         // after registering fine images, delete the temp folder on the file storage provider
-        Registry.getFileStorageProvider().delete(tempSourceDir);
+        Registry.getFileStorageProvider().deleteFile(tempSourceDir, this);
     }
 
 

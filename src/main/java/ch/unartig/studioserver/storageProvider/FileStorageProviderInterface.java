@@ -80,6 +80,7 @@ public interface FileStorageProviderInterface {
 
     /**
      * Method to register fine photos that are already in the correct place in the respective storage provider (i.e. local folder or a path on S3, identified by Album ID)
+     * Use either registerFromTempPath(...) or this method
      * @param album The album that the fine photos, that will be registered, belong to. It contains the information to retrieve the storage location
      * @param createThumbnailDisplay Flag to indicate if thumbnails and display images shall be created as will
      * @param applyLogoOnFineImages
@@ -90,6 +91,7 @@ public interface FileStorageProviderInterface {
 
     /**
      * Method to register (and import) photos that are located at at temp location withing the storage provide (i.e. local temp folder on server file system or temp path at S3)
+     * Use either registerStoredFinePhotos(...) or this method
      * @param album
      * @param tempSourceDir
      * @param createThumbDisp
@@ -98,21 +100,35 @@ public interface FileStorageProviderInterface {
     void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages);
 
     /**
-     * Return the number of stored fine images that belong to an album
+     * Return the number of stored fine images that belong to a folder - used for the temp upload path on S3
      * @return
-     * @param key
+     * @param folder folder - or key in S3 talk - to count (as a bucket, the current bucket will be used)
      */
-    int getNumberOfFineImageFiles(String key);
+    int getNumberOfFineImageFiles(String folder);
 
     /**
-     * Delete a file with the given key from the storage provider
+     * Delete a file from an album with the given key from the storage provider
      * @param key The key that identifies the file to be deleted in the bucket (??) of the storage provider
+     * @param album the album the given key is part of (needed to determine storage location in case of S3, for example)
      */
-    public void delete(String key);
+    public void deleteFile(String key, Album album);
 
+
+    /**
+     * @deprecated use image service for thumbnail images
+     * @param genericLevelId
+     * @param filename
+     * @return
+     */
     String getThumbnailUrl(String genericLevelId, String filename);
 
 
+    /**
+     * @deprecated use image service for images of type display
+     * @param genericLevelId
+     * @param filename
+     * @return
+     */
     String getDisplayUrl(String genericLevelId, String filename);
 
 

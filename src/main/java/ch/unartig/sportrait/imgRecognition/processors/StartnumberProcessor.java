@@ -30,6 +30,54 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
     @Override
     public void process(List<TextDetection> textDetections, List<FaceRecord> photoFaceRecords, String path) {
 
+        List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
+
+        mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile);
+
+        System.out.println("*************************************");
+        System.out.println("*********** Done for File ***********");
+        System.out.println("*************************************");
+
+        startnumbers.addAll(startnumbersForFile);
+
+    }
+
+    private void mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile) {
+        System.out.println("*************************************");
+        System.out.println("Adding faces");
+
+        // process face records detected for the file
+        for (FaceRecord faceRecord : photoFaceRecords) {
+            boolean matchingNumber=false;
+
+            System.out.println("** Processing FaceID " + faceRecord.getFace().getFaceId() );
+            // for each number detected in the file:
+            for (int i = 0; i < startnumbersForFile.size(); i++) {
+                Startnumber startnumber = startnumbersForFile.get(i);
+                System.out.println("startnumber = " + startnumber);
+                BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
+                float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
+                System.out.println("     startnumber middle position = " + startnumber.getMiddlePosition());
+                System.out.println("     Face left position = " + faceBoundingBox.getLeft());
+                System.out.println("     Face right position = " + faceBoundingBoxRightPosition);
+                if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
+                    matchingNumber=true;
+                    startnumber.setFace(faceRecord);
+                    System.out.println("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
+                    // todo : no need to continue here - improve. return after match is true
+                }
+            }
+            if (!matchingNumber) { // face w/o matching number -> add to list
+                System.out.println("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
+                facesWithoutNumbers.add(new RunnerFace(faceRecord,path));
+                // this list need to be processed later to find matches from other fotos
+                // todo : remove this face from the collection?
+            }
+
+        }
+    }
+
+    public List<Startnumber> getStartnumbers(List<TextDetection> textDetections, String path) {
         List<Startnumber> startnumbersForFile = new ArrayList<>(); // startnumbers-file mapping for this file
 
         TextDetection lastLine = null;
@@ -66,45 +114,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             System.out.println("Geometry: " + text.getGeometry().getBoundingBox());
             System.out.println();
         }
-
-        System.out.println("*************************************");
-        System.out.println("Adding faces");
-
-        // process face records detected for the file
-        for (FaceRecord faceRecord : photoFaceRecords) {
-            boolean matchingNumber=false;
-
-            System.out.println("** Processing FaceID " + faceRecord.getFace().getFaceId() );
-            // for each number detected in the file:
-            for (int i = 0; i < startnumbersForFile.size(); i++) {
-                Startnumber startnumber = startnumbersForFile.get(i);
-                System.out.println("startnumber = " + startnumber);
-                BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
-                float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
-                System.out.println("     startnumber middle position = " + startnumber.getMiddlePosition());
-                System.out.println("     Face left position = " + faceBoundingBox.getLeft());
-                System.out.println("     Face right position = " + faceBoundingBoxRightPosition);
-                if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
-                    matchingNumber=true;
-                    startnumber.setFace(faceRecord);
-                    System.out.println("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
-                    // todo : no need to continue here - improve. return after match is true
-                }
-            }
-            if (!matchingNumber) { // face w/o matching number -> add to list
-                System.out.println("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
-                facesWithoutNumbers.add(new RunnerFace(faceRecord,path));
-                // this list need to be processed later to find matches from other fotos
-                // todo : remove this face from the collection?
-            }
-
-        }
-        System.out.println("*************************************");
-        System.out.println("*********** Done for File ***********");
-        System.out.println("*************************************");
-
-        startnumbers.addAll(startnumbersForFile);
-
+        return startnumbersForFile;
     }
 
 

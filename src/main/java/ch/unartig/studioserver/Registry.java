@@ -192,12 +192,9 @@
  ****************************************************************/
 package ch.unartig.studioserver;
 
-import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
-import ch.unartig.studioserver.storageProvider.LocalFileSystemStorageProvider;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.util.Utils;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import org.apache.log4j.Logger;
@@ -351,6 +348,7 @@ public final class Registry
     private static String logosOverlayLandscapeFile;
     private static boolean applyLogoOrWatermarkOnFineImage;
     private static String s3BucketName;
+    private static String s3BucketNameIreland;
     private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
     private static JsonFactory googleJasonFactory;
@@ -455,7 +453,8 @@ public final class Registry
 
         /******************* Storage Provider / AWS S3 Settings ******************/
         _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
-        s3BucketName = appSettings.getMessage("awsS3BucketName"); // must be set before instantiation of fileStorageProvider class
+        s3BucketName = appSettings.getMessage("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
+        s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
         fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
@@ -697,6 +696,10 @@ public final class Registry
 
     public static String getS3BucketName() {
         return s3BucketName;
+    }
+
+    public static String getS3BucketNameIreland() {
+        return s3BucketNameIreland;
     }
 
     public static String getSponsorBarFile() {

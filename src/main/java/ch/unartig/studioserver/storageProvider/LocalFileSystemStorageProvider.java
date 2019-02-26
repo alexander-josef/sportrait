@@ -193,7 +193,7 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         return  0;
     }
 
-    public void delete(String key) {
+    public void deleteFile(String key, Album album) {
 
         throw new RuntimeException("not implemented!");
         // todo implement

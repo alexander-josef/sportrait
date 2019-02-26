@@ -3,6 +3,9 @@ package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberProcessor;
+import ch.unartig.studioserver.Registry;
+import ch.unartig.studioserver.model.Photo;
+import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
@@ -21,6 +24,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Test {
 
@@ -42,13 +46,18 @@ public class Test {
     private long maxQueueEntries;
 
 
-    private Test() {
+    public Test() {
         rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
         sqs = new AmazonSQSClient(new ProfileCredentialsProvider().getCredentials());
         s3 = new AmazonS3Client(new ProfileCredentialsProvider().getCredentials());
+        if (sqsQueue==null || sqsQueue.isEmpty()) {
+            System.out.println("SQS Queue name not set - setting defautl  : " + "myTestSqsQueue");
+            sqsQueue = "myTestSqsQueue";
+        }
 
         filter = Pattern.compile(defaultFilter, Pattern.CASE_INSENSITIVE);
 
+        // todo : not here
         CreateQueueResult queueResult = sqs.createQueue(sqsQueue); // empty queue name? does that work?
 //        CreateQueueResult queueResult = sqs.createQueue(new CreateQueueRequest());
         queueUrl = queueResult.getQueueUrl();
@@ -73,13 +82,6 @@ public class Test {
 
         // ID for initializing the face collection
         faceCollectionId = "MyCollection";
-
-        // for testing purposes, make sure faces cellection is freshly initialized
-        deleteFacesCollection();
-
-        // create a faces collection
-        createFacesCollection();
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -94,6 +96,11 @@ public class Test {
 
         // initialize Test and set environment
         Test test = new Test();
+
+        // for testing purposes, make sure faces cellection is freshly initialized
+        test.deleteFacesCollection();
+        // create a faces collection
+        test.createFacesCollection();
 
         // independent from queue, single photo detection:
         // test.detectSportraitStartnumber(photo, bucket);
@@ -297,6 +304,9 @@ public class Test {
             Startnumber startnumber = startnumbers.get(i);
             System.out.println("startnumber = " + startnumber);
         }
+        System.out.println("################################################");
+        System.out.println("############   Done Processing   ###############");
+        System.out.println("################################################");
 
     }
 
@@ -331,17 +341,7 @@ public class Test {
 
 
         // text detection:
-        DetectTextRequest textRequest = new DetectTextRequest()
-                .withImage(new Image()
-                        .withS3Object(new S3Object()
-                                .withName(key)
-                                .withBucket(bucket)));
-
-
-        // create list of number/filename and print it out a the end
-
-        DetectTextResult textResult = rekognitionClient.detectText(textRequest);
-        List<TextDetection> photoTextDetections = textResult.getTextDetections();
+        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
 
 
         // add the faces of the file/photo to the collection and get a list of face records as return value
@@ -471,6 +471,46 @@ public class Test {
             System.out.println("Ignoring - Collection already existed");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * used for testing recognition on display images on the fly
+     * @param photo
+     * @return String with all numbers recognized
+     */
+    public String getRecognizedNumbersFor(Photo photo) {
+
+        // need bucket and path
+        String bucket = Registry.getS3BucketName(); // todo: bucket migration to Ireland
+        String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
+        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
+
+
+        StartnumberProcessor processor = new StartnumberProcessor(null,null);
+        List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
+
+        return photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
+    }
+
+    /**
+     * Todo : put in helper class
+     * @param bucket
+     * @param key
+     * @return
+     */
+    private List<TextDetection> getTextDetectionsFor(String bucket, String key) {
+        // text detection:
+        DetectTextRequest textRequest = new DetectTextRequest()
+                .withImage(new Image()
+                        .withS3Object(new S3Object()
+                                .withName(key)
+                                .withBucket(bucket)));
+
+
+        // create list of number/filename and print it out a the end
+
+        DetectTextResult textResult = rekognitionClient.detectText(textRequest);
+        return textResult.getTextDetections();
     }
 
 
