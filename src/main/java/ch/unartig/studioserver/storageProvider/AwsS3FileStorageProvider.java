@@ -9,12 +9,9 @@ import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
@@ -576,12 +573,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     /**
-     * Encapsulate retrieval of bucket name and make it variable according to the album that needs a bucket name
+     * Static helper to retrieve bucket name and make it variable according to the album that needs a bucket name
      * change of buckets with amazon rekognition -> not available in frankfurt, using Ireland
      * @param album
      * @return
      */
-    private String getS3BucketNameFor(Album album) {
+    public static String getS3BucketNameFor(Album album) {
 
         // todo here: add logic if mapping per event is needed. currently only distinction is Frankfurt (before 2019) and Ireland (after 2019 to use rekognition API)
         if (album.getEvent().getEventDateYear() < 2019) {

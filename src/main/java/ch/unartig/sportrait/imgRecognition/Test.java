@@ -484,7 +484,7 @@ public class Test {
     public String getRecognizedNumbersFor(Photo photo) {
 
         // need bucket and path
-        String bucket = Registry.getS3BucketName(); // todo: bucket migration to Ireland
+        String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
         String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
         List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
 

@@ -3,11 +3,9 @@ package ch.unartig.sportrait.imgRecognition.processors;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
 import com.amazonaws.services.rekognition.model.*;
-import com.sun.tools.internal.jxc.SchemaGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class StartnumberProcessor implements SportraitImageProcessorIF {
 

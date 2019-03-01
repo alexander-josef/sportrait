@@ -60,6 +60,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import ch.unartig.sportrait.imgRecognition.Test;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
@@ -308,15 +309,15 @@ public class Photo extends GeneratedPhoto
     private void addNumberRecognitionText(Map<String, String> params) {
         try {
 
-            // Test test =  new Test();
-            // String numbers = test.getRecognizedNumbersFor(this);
+            Test test =  new Test();
+            String numbers = test.getRecognizedNumbersFor(this);
 
-            // _logger.debug("startnumbers  : " + numbers);
+            _logger.debug("startnumbers  : " + numbers);
 
             params.put("txtsize","30");
             params.put("txtalign","bottom,right");
             params.put("txtclr","AADD44");
-            // params.put("txt", numbers);
+            params.put("txt", numbers);
 
         } catch (Exception e) {
             _logger.debug("error trying to recognize number on photo",e);
