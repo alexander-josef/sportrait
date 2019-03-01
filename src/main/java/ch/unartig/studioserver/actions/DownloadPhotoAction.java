@@ -1,7 +1,6 @@
 package ch.unartig.studioserver.actions;
 
 import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.util.FileUtils;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,7 +103,7 @@ public class DownloadPhotoAction extends Action {
                     imgixParams.put("bs","none");
                     imgixParams.put("bw",blendWidthFactor); // change bw=0.9 in case there should be some padding left and right of the sponsor bar
 
-                    URL imgixUrl = new URL(ImagingHelper.getSignedImgixUrl(imgixParams,photo.getPathForImageService())); // todo : think about directly returning the URL
+                    URL imgixUrl = photo.getImgixUrl(imgixParams); // todo : think about directly returning the URL - especially after the imgix URLs have been signed now
 
 
 
@@ -134,4 +132,5 @@ public class DownloadPhotoAction extends Action {
         // todo possible option to download different version (smaller resolution) of the file?
         return null;
     }
+
 }

@@ -10,7 +10,9 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
+import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 public class Test {
 
     private static String sqsQueue; // some queue name to create the SQS queue
-    private final AmazonS3Client s3;
+    private final AmazonS3 s3;
     private final String queueUrl;
     private final ThreadPoolExecutor executor;
     private List<SportraitImageProcessorIF> processors = new ArrayList<>();
@@ -49,7 +51,8 @@ public class Test {
     public Test() {
         rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
         sqs = new AmazonSQSClient(new ProfileCredentialsProvider().getCredentials());
-        s3 = new AmazonS3Client(new ProfileCredentialsProvider().getCredentials());
+        s3 = AmazonS3ClientBuilder.defaultClient();
+        // s3 = new AmazonS3Client(new ProfileCredentialsProvider().getCredentials());
         if (sqsQueue==null || sqsQueue.isEmpty()) {
             System.out.println("SQS Queue name not set - setting defautl  : " + "myTestSqsQueue");
             sqsQueue = "myTestSqsQueue";

@@ -15,6 +15,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,7 @@ import java.util.zip.ZipInputStream;
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonS3 s3;
     // final private String bucketName = Registry.getS3BucketName();
@@ -54,7 +55,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
          * The ProfileCredentialsProvider will return your [default]
          * credential profile by reading from the credentials file located at
          * (~/.aws/credentials).
-         */
+
         AWSCredentials credentials = null;
         try {
             credentials = new ProfileCredentialsProvider().getCredentials();
@@ -66,8 +67,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                     e);
         }
 
-        s3 = new AmazonS3Client(credentials);
-        s3.setRegion(awsRegion);
+         */
+
+        s3 = AmazonS3ClientBuilder.defaultClient();
+        // s3.setRegion(awsRegion);
 
 
         _logger.debug("======================================================");

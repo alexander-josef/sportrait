@@ -355,6 +355,7 @@ public final class Registry
     private static NetHttpTransport googleHttpTransport;
     private static String applicationEnvironment; // dev, int or prod
     private static String imgixSignKey; // environment dependant sign key as generated on the imgix admin website
+    private static String imgixSignKey2; // environment dependant sign key as generated on the imgix admin website for the 2nd imgix source
 
 
     /**
@@ -466,6 +467,8 @@ public final class Registry
 
         _logger.info("***** imgixSignKey = " + appSettings.getMessage("imgixSignKey"));
         imgixSignKey=appSettings.getMessage("imgixSignKey");
+        _logger.info("***** imgixSignKey2 = " + appSettings.getMessage("imgixSignKey2"));
+        imgixSignKey2=appSettings.getMessage("imgixSignKey2");
 
 
 
@@ -744,6 +747,10 @@ public final class Registry
 
     public static String getImgixSignKey() {
         return imgixSignKey;
+    }
+
+    public static String getImgixSignKey2() {
+        return imgixSignKey2;
     }
 
     /**
