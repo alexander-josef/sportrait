@@ -24,7 +24,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class Test {
 
@@ -87,10 +86,11 @@ public class Test {
     /**
      * used for testing recognition on display images on the fly
      * @param photo
+     * @param allStartnumbers
      * @return String with all numbers recognized
      * @deprecated don't use except for testing recognitions on single images
      */
-    public String getRecognizedNumbersFor(Photo photo) {
+    public List<Startnumber> getRecognizedNumbersFor(Photo photo, List<Startnumber> allStartnumbers) {
 
 
         // for testing purposes, make sure faces cellection is freshly initialized
@@ -104,7 +104,7 @@ public class Test {
         List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
 
 
-        StartnumberProcessor processor = new StartnumberProcessor(null,facesWithoutNumbers, rekognitionClient, faceCollectionId);
+        StartnumberProcessor processor = new StartnumberProcessor(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
         List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
 
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
@@ -116,7 +116,7 @@ public class Test {
         System.out.println("*************************************");
 
 
-        return photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
+        return photoStartnumbers;
     }
 
     public static void main(String[] args) throws Exception {

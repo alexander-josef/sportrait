@@ -56,7 +56,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
      */
     public void mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile) {
         System.out.println("*************************************");
-        System.out.println("Adding faces");
+        System.out.println("Mapping added/indexed faces to startnumbers");
 
         // process face records detected for the file
         for (FaceRecord faceRecord : photoFaceRecords) {
@@ -66,7 +66,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             // for each number detected in the file:
             for (int i = 0; i < startnumbersForFile.size(); i++) {
                 Startnumber startnumber = startnumbersForFile.get(i);
-                System.out.println("startnumber = " + startnumber);
+                System.out.println("  startnumber = " + startnumber);
                 BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
                 float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
                 System.out.println("     startnumber middle position = " + startnumber.getMiddlePosition());
@@ -87,6 +87,8 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             if (!matchingNumber) { // face w/o matching number -> add to list
                 System.out.println("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
                 facesWithoutNumbers.add(new RunnerFace(faceRecord,path));
+                System.out.println("*** added to list of faces without numbers for later processing");
+
                 // this list need to be processed later to find matches from other fotos
                 // todo : remove this face from the collection?
             }
@@ -123,8 +125,10 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
                     detectedStartnumber.setStartnumberText(existing);
                 } else if (detectedStartnumber.getStartnumberText().length() > existing.length()) {
                     // detected number > than an existing one found -> detected one is better, replace existing with new detected one
-                    System.out.println("           ***** Detected better ! replacing existing startnumber ["+existing+"] with better, newly detected one :  " + detectedStartnumber.getStartnumberText());
-                    firstNumber.ifPresent(startnumber->startnumber.setStartnumberText(detectedStartnumber.getStartnumberText()));
+                    System.out.println("           ***** Detected better ! replacing existing startnumber [" + existing + "] with better, newly detected one :  " + detectedStartnumber.getStartnumberText());
+                    firstNumber.ifPresent(startnumber -> startnumber.setStartnumberText(detectedStartnumber.getStartnumberText()));
+                } else {
+                    System.out.println("           matching number not better - continuing");
                 }
                 return;
             }
@@ -133,10 +137,6 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
         }
         // no match
         System.out.println("No match");
-        return;
-
-
-
     }
 
     /**

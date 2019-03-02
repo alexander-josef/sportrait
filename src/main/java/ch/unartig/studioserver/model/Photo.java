@@ -72,6 +72,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Photo extends GeneratedPhoto
 {
@@ -298,7 +299,7 @@ public class Photo extends GeneratedPhoto
 
             // *****
             // test only / todo : delete me
-            addNumberRecognitionText(params);
+            addNumberRecognitionText(params,startnumbers);
             // ****
 
             displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
@@ -310,11 +311,21 @@ public class Photo extends GeneratedPhoto
         }
         return displayUrl;    }
 
-    private void addNumberRecognitionText(Map<String, String> params) {
+    /**
+     * todo delete again - testing only
+     * @param params
+     * @param allStartnumbers
+     */
+    private void addNumberRecognitionText(Map<String, String> params, List<Startnumber> allStartnumbers) {
         try {
 
             Test test =  new Test();
-            String numbers = test.getRecognizedNumbersFor(this);
+            List<Startnumber> photoStartnumbers = test.getRecognizedNumbersFor(this,allStartnumbers);
+            allStartnumbers.addAll(photoStartnumbers);
+            String numbers = photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));;
+
+
+
 
             _logger.debug("startnumbers  : " + numbers);
 
