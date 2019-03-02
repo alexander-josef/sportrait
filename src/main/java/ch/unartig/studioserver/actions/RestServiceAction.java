@@ -1,5 +1,6 @@
 package ch.unartig.studioserver.actions;
 
+import ch.unartig.sportrait.imgRecognition.Startnumber;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Photo;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -58,6 +60,10 @@ public class RestServiceAction extends Action {
 
     private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
 
+        // todo : delete me again
+        List<Startnumber> startnumbers = new ArrayList<>();
+        // TEST only
+
 
         StringBuilder jsonResponse= new StringBuilder();
         jsonResponse.append("[ ");
@@ -79,7 +85,7 @@ public class RestServiceAction extends Action {
                     "\"thumbnailURL2x\":\"" + photo.getThumbnailUrl2x() + "\", " +
                     "\"thumbnailURL3x\":\"" + photo.getThumbnailUrl3x() + "\", " +
                     "\"displayURL1x\":\"" + photo.getDisplayUrl() + "\", " + // deliver srcset here with 1x 2x and 3x URLs
-                    "\"displayURL2x\":\"" + photo.getDisplayUrl2x() + "\", " +
+                    "\"displayURL2x\":\"" + photo.getDisplayUrl2x(startnumbers) + "\", " +
                     "\"displayURL3x\":\"" + photo.getDisplayUrl3x() + "\", " +
                     "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
                     "\"time\":\"" + photo.getShortTimeString() + "\"," +

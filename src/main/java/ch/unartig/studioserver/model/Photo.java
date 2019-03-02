@@ -60,6 +60,7 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import ch.unartig.sportrait.imgRecognition.Startnumber;
 import ch.unartig.sportrait.imgRecognition.Test;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
@@ -275,7 +276,7 @@ public class Photo extends GeneratedPhoto
         return displayUrl;
     }
 
-    public String getDisplayUrl2x() {
+    public String getDisplayUrl2x(List<Startnumber> startnumbers) {
 
         String displayUrl;
         if (this.isAfterImageServiceMigration())
@@ -293,9 +294,12 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","2");
 
-            // draw box around recognized number
+            // add number recognition text
 
+            // *****
+            // test only / todo : delete me
             addNumberRecognitionText(params);
+            // ****
 
             displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
 
@@ -398,6 +402,10 @@ public class Photo extends GeneratedPhoto
         return "https://" + Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
     }
 
+    /**
+     * Path (without domain name / host from image service)
+     * @return
+     */
     public String getPathForImageService() {
         return "fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
     }

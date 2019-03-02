@@ -10,7 +10,10 @@ public class Startnumber {
     private final Float leftPosition;
     private final Float width;
     private final Float middlePosition;
-    private final String startnumberText; // the real startnumber !
+
+
+
+    private String startnumberText; // the real startnumber !
     private final String filePath;
     private FaceRecord face; // todo : maybe just faceId ?
 
@@ -55,6 +58,10 @@ public class Startnumber {
 
     public String getStartnumberText() {
         return startnumberText;
+    }
+
+    public void setStartnumberText(String startnumberText) {
+        this.startnumberText = startnumberText;
     }
 
     public FaceRecord getFace() {

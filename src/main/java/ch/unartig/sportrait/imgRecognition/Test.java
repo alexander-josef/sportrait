@@ -3,7 +3,6 @@ package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberProcessor;
-import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -11,7 +10,6 @@ import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
@@ -52,7 +50,8 @@ public class Test {
         rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
         sqs = new AmazonSQSClient(new ProfileCredentialsProvider().getCredentials());
         s3 = AmazonS3ClientBuilder.defaultClient();
-        // s3 = new AmazonS3Client(new ProfileCredentialsProvider().getCredentials());
+        // ID for initializing the face collection
+        faceCollectionId = "MyCollection";
         if (sqsQueue==null || sqsQueue.isEmpty()) {
             System.out.println("SQS Queue name not set - setting defautl  : " + "myTestSqsQueue");
             sqsQueue = "myTestSqsQueue";
@@ -69,7 +68,7 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberProcessor(startnumbers,facesWithoutNumbers));
+        processors.add(new StartnumberProcessor(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
 
 
         // no limit for queue entries
@@ -83,8 +82,41 @@ public class Test {
                 new ThreadPoolExecutor.CallerRunsPolicy() // prevents backing up too many jobs
         );
 
-        // ID for initializing the face collection
-        faceCollectionId = "MyCollection";
+    }
+
+    /**
+     * used for testing recognition on display images on the fly
+     * @param photo
+     * @return String with all numbers recognized
+     * @deprecated don't use except for testing recognitions on single images
+     */
+    public String getRecognizedNumbersFor(Photo photo) {
+
+
+        // for testing purposes, make sure faces cellection is freshly initialized
+        // deleteFacesCollection();
+        // create a faces collection
+        createFacesCollection();
+
+        // need bucket and path
+        String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
+        String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
+        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
+
+
+        StartnumberProcessor processor = new StartnumberProcessor(null,facesWithoutNumbers, rekognitionClient, faceCollectionId);
+        List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
+
+        List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
+
+        processor.mapFacesToStartnumbers(photoFaceRecords, photo.getPathForImageService(), photoStartnumbers);
+
+        System.out.println("*************************************");
+        System.out.println("*********** Done for File ***********");
+        System.out.println("*************************************");
+
+
+        return photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
     }
 
     public static void main(String[] args) throws Exception {
@@ -314,15 +346,10 @@ public class Test {
     }
 
     private void processFacesWithoutNumber() {
-        // todo  : refactor to RunnerFace Class
         // for every face that has not been matched to a number: // todo : check for too many faces, bystanders etc.
-
-
         System.out.println("######################");
         System.out.println("Starting processing faces w/o numbers");
         System.out.println("######################");
-
-
         for (RunnerFace runnerFace : facesWithoutNumbers) {
             runnerFace.addStartnumberFromMatchingFacesInCollection(faceCollectionId, rekognitionClient, startnumbers);
         }
@@ -409,8 +436,9 @@ public class Test {
         String filename; // = external ID for faces collection
 
         PathSplit pathComp = new PathSplit(key);
-        filename= pathComp.key; // part after first occurance of '/'
+        filename= pathComp.filename; // part after last occurance of '/'
         System.out.println("Adding faces to collection for :  " +  bucket +" "+ key);
+        System.out.println("filename used as external image id :  " +  filename);
 
 
         Image image = new Image()
@@ -472,28 +500,10 @@ public class Test {
                     createCollectionResult.getStatusCode().toString());
         } catch (ResourceAlreadyExistsException e) {
             System.out.println("Ignoring - Collection already existed");
-            e.printStackTrace();
         }
     }
 
-    /**
-     * used for testing recognition on display images on the fly
-     * @param photo
-     * @return String with all numbers recognized
-     */
-    public String getRecognizedNumbersFor(Photo photo) {
 
-        // need bucket and path
-        String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
-        String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
-        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
-
-
-        StartnumberProcessor processor = new StartnumberProcessor(null,null);
-        List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
-
-        return photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
-    }
 
     /**
      * Todo : put in helper class
@@ -520,10 +530,12 @@ public class Test {
     static public class PathSplit {
         public final String bucket;
         public final String key;
+        public final String filename;
 
         public PathSplit(String path) {
             bucket = path.substring(0, path.indexOf('/'));
             key = path.substring(bucket.length() + 1);
+            filename = path.substring(path.lastIndexOf('/')+1); // part after last occurence of '/'
         }
     }
 }

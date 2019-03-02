@@ -12,6 +12,9 @@ import java.util.stream.Stream;
 
 public class RunnerFace {
     private final FaceRecord faceRecord;
+    /**
+     *
+     */
     private final String path;
 
     public RunnerFace(FaceRecord faceRecord, String path) {
@@ -21,17 +24,12 @@ public class RunnerFace {
     }
 
     void addStartnumberFromMatchingFacesInCollection(String faceCollectionId, AmazonRekognition rekognitionClient, List<Startnumber> startnumbers) {
+        // todo :  improve accuracy by checking if there's already a startnumber match for this face -
+        //     if yes :
+        //            - replace startnumber if the old startnumber contains less digies (for example 2 instead of 3) - or if accurcy is different?
+
         // search face record in collection
-        SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
-                .withCollectionId(faceCollectionId)
-                .withFaceId(faceRecord.getFace().getFaceId())
-                .withFaceMatchThreshold(70F)
-                .withMaxFaces(2);
-
-        SearchFacesResult searchFacesByIdResult = rekognitionClient.searchFaces(searchFacesRequest);
-
-        System.out.println("Face(s) in collection matching faceId " + faceRecord.getFace().getFaceId());
-        List<FaceMatch> faceImageMatches = searchFacesByIdResult.getFaceMatches();
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId,rekognitionClient, faceRecord);
 
         String startnumber;
         startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches, startnumbers); // check why "no startnumber found" is also returned

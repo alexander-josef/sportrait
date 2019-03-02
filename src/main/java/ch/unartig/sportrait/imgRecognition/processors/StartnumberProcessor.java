@@ -1,21 +1,29 @@
 package ch.unartig.sportrait.imgRecognition.processors;
 
+import ch.unartig.sportrait.imgRecognition.ImgRecognitionHelper;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
+import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class StartnumberProcessor implements SportraitImageProcessorIF {
 
 
     List<Startnumber> startnumbers;
     private List<RunnerFace> facesWithoutNumbers; // list of detected faces from runners without a matche, detected startnumber
+    private final AmazonRekognition rekognitionClient;
+    private final String faceCollectionId;
 
-    public StartnumberProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers) {
+    public StartnumberProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
         startnumbers = sn;
         this.facesWithoutNumbers = facesWithoutNumbers;
+        this.rekognitionClient = rekognitionClient;
+        this.faceCollectionId = faceCollectionId;
     }
 
     /**
@@ -40,7 +48,13 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
 
     }
 
-    private void mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile) {
+    /**
+     * for every image, map the detected and indexed faces to a startnumber
+     * @param photoFaceRecords
+     * @param path
+     * @param startnumbersForFile
+     */
+    public void mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile) {
         System.out.println("*************************************");
         System.out.println("Adding faces");
 
@@ -63,7 +77,12 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
                     startnumber.setFace(faceRecord);
                     System.out.println("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
                     // todo : no need to continue here - improve. return after match is true
+                    // todo : check for better number with matching face from different images
+                    mapBetterNumbersForMatchingFaces(startnumber,faceRecord);
                 }
+
+
+
             }
             if (!matchingNumber) { // face w/o matching number -> add to list
                 System.out.println("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
@@ -75,6 +94,57 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
         }
     }
 
+    /**
+     * After binding a recognized face to a detected startnumber, check the collection for a face that matches and, if there's a better (more digits) number, replace the number
+     * @param detectedStartnumber startnumber object, containing the text of the detected startnumber so far
+     * @param faceRecord // todo : can we assign a unique faceId ?
+     */
+    private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, FaceRecord faceRecord) {
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId, rekognitionClient, faceRecord);
+
+
+        for (FaceMatch matchingFace: faceImageMatches) { // check for a startnumber instance that contains the matching faceID and has a valid startnumber
+            // put in different method, extract number and return with 1st match
+            System.out.println("     matching face = " + matchingFace.getFace().getFaceId() + " -- in image : "+matchingFace.getFace().getExternalImageId()); // we do have the link to the path of the image!!!
+
+            // try a bit more fancy: (also check for startnumber.getStartnumberText not empty)
+            Stream<Startnumber> stream = startnumbers.stream()
+                    .filter(existingStartnumber
+                            -> ((existingStartnumber.getFaceId().equals(matchingFace.getFace().getFaceId())) && !existingStartnumber.getStartnumberText().isEmpty()));
+
+            Optional<Startnumber> firstNumber = stream.findFirst(); // todo : not only first, but all and loop??
+
+            if (firstNumber.isPresent()) {
+                System.out.println("           Found first match in startnumber = " + firstNumber);
+                String existing = firstNumber.map(Startnumber::getStartnumberText).get();
+                if (existing.length() > detectedStartnumber.getStartnumberText().length()) {
+                    // detected number most probably cut - existing number has more digits -> replace the detected number with the old one
+                    System.out.println("           ***** Existing better ! replacing detected startnumber ["+detectedStartnumber.getStartnumberText()+"] with better, existing one :  " + existing);
+                    detectedStartnumber.setStartnumberText(existing);
+                } else if (detectedStartnumber.getStartnumberText().length() > existing.length()) {
+                    // detected number > than an existing one found -> detected one is better, replace existing with new detected one
+                    System.out.println("           ***** Detected better ! replacing existing startnumber ["+existing+"] with better, newly detected one :  " + detectedStartnumber.getStartnumberText());
+                    firstNumber.ifPresent(startnumber->startnumber.setStartnumberText(detectedStartnumber.getStartnumberText()));
+                }
+                return;
+            }
+            System.out.println("   --- no startnumber found // checking next matching face");
+            // continue with next matching face
+        }
+        // no match
+        System.out.println("No match");
+        return;
+
+
+
+    }
+
+    /**
+     * Produce a list of Startnumber objects that contain the startnumber text according a ruleset defined in this method
+     * @param textDetections
+     * @param path
+     * @return list of Startnumber objects with startnumber text set
+     */
     public List<Startnumber> getStartnumbers(List<TextDetection> textDetections, String path) {
         List<Startnumber> startnumbersForFile = new ArrayList<>(); // startnumbers-file mapping for this file
 
@@ -87,12 +157,15 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
 
             // check for startnumber: (is a line, confidence > 80, parentID = null, previous LINE ID starts with SOLA AND/OR todo: next line ID similar ASVZ)
             // check for LINE with 1 to 3 digits (very simple - is that enough?)
+            BoundingBox boundingBox = text.getGeometry().getBoundingBox();
             if (
                     text.getType().equals("LINE")
                             && text.getConfidence() > 80
                             && text.getParentId() == null
 //                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))
                             && text.getDetectedText().matches("\\d{1,3}") // regex : matches if there's 1 2, or 3 digits
+                            // improve search and exclude bounding boxes that start or end outside the photo (left < 0 || left + width > 1)
+                            && (boundingBox.getLeft() > 0 && (boundingBox.getLeft() + boundingBox.getWidth()) < 1)
             )
 
             { // got a startnumber:
@@ -109,7 +182,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
             System.out.println("Id : " + text.getId());
             System.out.println("Parent Id: " + text.getParentId());
             System.out.println("Type: " + text.getType());
-            System.out.println("Geometry: " + text.getGeometry().getBoundingBox());
+            System.out.println("Geometry: " + boundingBox);
             System.out.println();
         }
         return startnumbersForFile;
