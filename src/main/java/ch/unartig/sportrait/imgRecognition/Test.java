@@ -122,7 +122,7 @@ public class Test {
     public static void main(String[] args) throws Exception {
 
         String bucket = "test.rekognition.sportrait.com";
-        String prefix = "batchtest";
+        String prefix = "2018-etappe-1-rekognition-test";
         String photo = "dev-upload-12/sola12_e11_mm_2003.jpg";
 
         sqsQueue = "myTestSqsQueue";
