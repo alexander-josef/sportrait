@@ -448,7 +448,7 @@ public class Test {
 
         IndexFacesRequest indexFacesRequest = new IndexFacesRequest()
                 .withImage(image)
-                .withQualityFilter(QualityFilter.AUTO) // todo define
+                .withQualityFilter(QualityFilter.AUTO) // use AUTO to apply amazon defined quality filtering - seems to work good
                 .withMaxFaces(5) // detecting up to 5 faces - the biggest boxes will be returned
                 .withCollectionId(faceCollectionId)
                 .withExternalImageId(filename) // external image ID must be without '/' - only filename

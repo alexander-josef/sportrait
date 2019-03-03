@@ -14,8 +14,8 @@ public class ImgRecognitionHelper {
         SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
                 .withCollectionId(faceCollectionId)
                 .withFaceId(faceRecord.getFace().getFaceId())
-                .withFaceMatchThreshold(70F)
-                .withMaxFaces(2);
+                .withFaceMatchThreshold(95F) // defaulted to 70F
+                .withMaxFaces(3); // used to be 2
 
         List<FaceMatch> retVal = rekognitionClient.searchFaces(searchFacesRequest).getFaceMatches();
         System.out.println("Face(s) in collection matching faceId [" + faceRecord.getFace().getFaceId()+"] found - number of matches : "+ retVal.size());
