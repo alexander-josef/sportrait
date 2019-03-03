@@ -2,7 +2,7 @@ package ch.unartig.sportrait.imgRecognition;
 
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
-import ch.unartig.sportrait.imgRecognition.processors.StartnumberProcessor;
+import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionProcessor;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -67,7 +67,7 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberProcessor(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
+        processors.add(new StartnumberRecognitionProcessor(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
 
 
         // no limit for queue entries
@@ -104,7 +104,7 @@ public class Test {
         List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
 
 
-        StartnumberProcessor processor = new StartnumberProcessor(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
+        StartnumberRecognitionProcessor processor = new StartnumberRecognitionProcessor(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
         List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
 
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);

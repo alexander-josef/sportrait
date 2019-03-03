@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class StartnumberProcessor implements SportraitImageProcessorIF {
+public class StartnumberRecognitionProcessor implements SportraitImageProcessorIF {
 
 
     List<Startnumber> startnumbers;
@@ -19,7 +19,7 @@ public class StartnumberProcessor implements SportraitImageProcessorIF {
     private final AmazonRekognition rekognitionClient;
     private final String faceCollectionId;
 
-    public StartnumberProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
+    public StartnumberRecognitionProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
         startnumbers = sn;
         this.facesWithoutNumbers = facesWithoutNumbers;
         this.rekognitionClient = rekognitionClient;
