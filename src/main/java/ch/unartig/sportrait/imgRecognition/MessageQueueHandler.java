@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.CreateQueueResult;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import org.apache.log4j.Logger;
@@ -14,7 +15,8 @@ import org.apache.log4j.Logger;
  */
 public class MessageQueueHandler {
 
-    Logger _logger = Logger.getLogger(getClass().getName());
+    public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonSQS sqs;
 
@@ -23,10 +25,14 @@ public class MessageQueueHandler {
      * Single instance of class to be retrieved via the static getter
      */
     private static final MessageQueueHandler INSTANCE = new MessageQueueHandler();
+    private String sportraitQueueName;
 
+    public static MessageQueueHandler getInstance() {
+        return INSTANCE;
+    }
     private MessageQueueHandler() {
         sqs = AmazonSQSClientBuilder.defaultClient();
-
+        sportraitQueueName = "sportraitQueueName"; // todo : either name per album or move to Registry
     }
 
     /**
@@ -35,7 +41,9 @@ public class MessageQueueHandler {
      * @return
      */
     private CreateQueueResult getQueue(Album album) {
-        CreateQueueResult queueResult = sqs.createQueue(album.getGenericLevelId().toString());
+        // todo later : create a queue per album - start with queue
+        // CreateQueueResult queueResult = sqs.createQueue(album.getGenericLevelId().toString());
+        CreateQueueResult queueResult = sqs.createQueue(sportraitQueueName);
         // if necessary, add parameters to the queue, like the visibility timeout, see also here :
         // https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/sqs/model/CreateQueueRequest.html#addAttributesEntry-java.lang.String-java.lang.String-
 
@@ -58,14 +66,15 @@ public class MessageQueueHandler {
 
         SendMessageRequest msg = new SendMessageRequest()
                 .withQueueUrl(queueUrl)
-                .withMessageBody(path);
+                .withMessageBody(path)
+                .addMessageAttributesEntry(EVENT_CATEGORY_ID,new MessageAttributeValue().withStringValue(album.getEventCategory().getEventCategoryId().toString()));
         SendMessageResult result = sqs.sendMessage(msg);
 
         return result;
     }
 
 
-    public static MessageQueueHandler getInstance() {
-        return INSTANCE;
+    public String getSportraitQueueName() {
+        return sportraitQueueName;
     }
 }

@@ -2,7 +2,7 @@ package ch.unartig.sportrait.imgRecognition;
 
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
-import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionProcessor;
+import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionProcessorTest;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -67,7 +67,7 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberRecognitionProcessor(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
+        processors.add(new StartnumberRecognitionProcessorTest(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
 
 
         // no limit for queue entries
@@ -101,10 +101,10 @@ public class Test {
         // need bucket and path
         String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
         String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
-        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
 
 
-        StartnumberRecognitionProcessor processor = new StartnumberRecognitionProcessor(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
+        StartnumberRecognitionProcessorTest processor = new StartnumberRecognitionProcessorTest(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
         List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
 
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
@@ -371,7 +371,7 @@ public class Test {
 
 
         // text detection:
-        List<TextDetection> photoTextDetections = getTextDetectionsFor(bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
 
 
         // add the faces of the file/photo to the collection and get a list of face records as return value
@@ -501,29 +501,6 @@ public class Test {
         } catch (ResourceAlreadyExistsException e) {
             System.out.println("Ignoring - Collection already existed");
         }
-    }
-
-
-
-    /**
-     * Todo : put in helper class
-     * @param bucket
-     * @param key
-     * @return
-     */
-    private List<TextDetection> getTextDetectionsFor(String bucket, String key) {
-        // text detection:
-        DetectTextRequest textRequest = new DetectTextRequest()
-                .withImage(new Image()
-                        .withS3Object(new S3Object()
-                                .withName(key)
-                                .withBucket(bucket)));
-
-
-        // create list of number/filename and print it out a the end
-
-        DetectTextResult textResult = rekognitionClient.detectText(textRequest);
-        return textResult.getTextDetections();
     }
 
 

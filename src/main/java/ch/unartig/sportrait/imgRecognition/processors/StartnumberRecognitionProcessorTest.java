@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class StartnumberRecognitionProcessor implements SportraitImageProcessorIF {
+public class StartnumberRecognitionProcessorTest implements SportraitImageProcessorIF {
 
 
     List<Startnumber> startnumbers;
@@ -19,7 +19,7 @@ public class StartnumberRecognitionProcessor implements SportraitImageProcessorI
     private final AmazonRekognition rekognitionClient;
     private final String faceCollectionId;
 
-    public StartnumberRecognitionProcessor(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
+    public StartnumberRecognitionProcessorTest(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
         startnumbers = sn;
         this.facesWithoutNumbers = facesWithoutNumbers;
         this.rekognitionClient = rekognitionClient;
@@ -46,6 +46,11 @@ public class StartnumberRecognitionProcessor implements SportraitImageProcessorI
 
         startnumbers.addAll(startnumbersForFile);
 
+    }
+
+    @Override
+    public void process(List<TextDetection> photoTextDetections, List<FaceRecord> photoFaceRecords, String photoPath, String eventCategoryId) {
+        System.out.println("**********             not implemented!!!!!");
     }
 
     /**
