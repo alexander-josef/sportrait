@@ -2,6 +2,7 @@ package ch.unartig.studioserver.storageProvider;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsAlbum;
@@ -192,8 +193,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
-
-
+        MessageQueueHandler queueHandler = MessageQueueHandler.getInstance();
+        boolean applyNumberRecognition = true; // todo : add parameter if needed - default true so far
         long base = System.currentTimeMillis();
 
         // loop through jpeg files on S3
@@ -227,7 +228,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
                         String fineImageKey = getFineImageKey(album, filename);
+
                         _logger.debug("applyLogoOnFineImages " + applyLogoOnFineImages);
+                        _logger.debug("applyNumberRecognition " + applyNumberRecognition);
                         _logger.debug("key temp file : "+ key);
                         _logger.debug("key fine file : "+ fineImageKey);
                         if (!applyLogoOnFineImages && !key.equals(fineImageKey)) { // if no logo has been copied on the fine image and the file is not yet stored in the right location, move the file now:
@@ -236,6 +239,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         } else if (!key.equals(fineImageKey)) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
                             deleteFile(key, album); // delete key / album needed for bucket
                             _logger.debug("master image deleted from temp location");
+                        }
+                        if (applyNumberRecognition) { // add logic in case there should be a switch in the UI
+                            // add fine Image to queue for number recognition
+                            queueHandler.addMessage(s3ObjectSummary,album);
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);

@@ -89,6 +89,7 @@
  ****************************************************************/
 package ch.unartig.controller;
 
+import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.PhotoOrderService;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
@@ -125,6 +126,7 @@ public class UnartigActionServlet extends ActionServlet
         try
         {
         Registry.init();
+            StartnumberProcessor.init();
 
             logger.info("Init security");
             CryptoUtil.setPrng(SecureRandom.getInstance("SHA1PRNG"));
