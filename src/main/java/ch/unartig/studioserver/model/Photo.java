@@ -277,7 +277,7 @@ public class Photo extends GeneratedPhoto
         return displayUrl;
     }
 
-    public String getDisplayUrl2x(List<Startnumber> startnumbers) {
+    public String getDisplayUrl2x() {
 
         String displayUrl;
         if (this.isAfterImageServiceMigration())
@@ -298,8 +298,8 @@ public class Photo extends GeneratedPhoto
             // add number recognition text
 
             // *****
-            // test only / todo : delete me
-            addNumberRecognitionText(params,startnumbers);
+            // test only / todo : show numbers for logged in users only / only test dev?
+            // addNumberRecognitionText(params,startnumbers);
             // ****
 
             displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;

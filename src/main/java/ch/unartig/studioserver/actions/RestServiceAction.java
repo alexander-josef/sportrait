@@ -60,11 +60,7 @@ public class RestServiceAction extends Action {
 
     private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
 
-        // todo : delete me again
-        // ********
-        List<Startnumber> startnumbers = new ArrayList<>();
-        // TEST only
-        // ********
+
 
 
         StringBuilder jsonResponse= new StringBuilder();
@@ -87,7 +83,7 @@ public class RestServiceAction extends Action {
                     "\"thumbnailURL2x\":\"" + photo.getThumbnailUrl2x() + "\", " +
                     "\"thumbnailURL3x\":\"" + photo.getThumbnailUrl3x() + "\", " +
                     "\"displayURL1x\":\"" + photo.getDisplayUrl() + "\", " + // deliver srcset here with 1x 2x and 3x URLs
-                    "\"displayURL2x\":\"" + photo.getDisplayUrl2x(startnumbers) + "\", " + // todo : remove param again - testing only
+                    "\"displayURL2x\":\"" + photo.getDisplayUrl2x() + "\", " +
                     "\"displayURL3x\":\"" + photo.getDisplayUrl3x() + "\", " +
                     "\"displayTitle\":\"" + photo.getDisplayTitle() + "\"," + // = filename ?
                     "\"time\":\"" + photo.getShortTimeString() + "\"," +
@@ -102,14 +98,6 @@ public class RestServiceAction extends Action {
         }
 
         jsonResponse.append("]");
-        /********** delete me *******************/
-        for (int i = 0; i < startnumbers.size(); i++) {
-            Startnumber startnumber = startnumbers.get(i);
-            System.out.println("startnumber = " + startnumber);
-        }
-        System.out.println("****************** VOILA ********************");
-        /***************************************/
-
 
         long timeMillisEnd = System.currentTimeMillis();
         long timeMillistaken = timeMillisEnd-timeMillisStart;
