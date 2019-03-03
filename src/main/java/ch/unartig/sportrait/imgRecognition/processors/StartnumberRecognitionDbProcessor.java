@@ -81,11 +81,15 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
                 _logger.debug("     startnumber middle position = " + startnumber.getMiddlePosition());
                 _logger.debug("     Face left position = " + faceBoundingBox.getLeft());
                 _logger.debug("     Face right position = " + faceBoundingBoxRightPosition);
+
                 if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
                     matchingNumber=true;
                     startnumber.setFace(faceRecord);
                     _logger.debug("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
-                    mapBetterNumbersForMatchingFaces(startnumber,faceRecord,collectionId);
+
+
+                    // todo : then can this done most efficiently ? needs other records
+                    mapBetterNumbersForMatchingFaces(startnumber, collectionId);
                     // todo : no need to continue here - improve. return after match is true
                 }
 
@@ -105,13 +109,12 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
     }
 
     /**
-     * After binding a recognized face to a detected startnumber, check the collection for a face that matches and, if there's a better (more digits) number, replace the number
+     * For a detected startnumber, check the faces collection for a face that matches and, if there's a better (more digits) number, replace the number
      * @param detectedStartnumber startnumber object, containing the text of the detected startnumber so far
-     * @param faceRecord // todo : can we assign a unique faceId ?
      * @param collectionId
      */
-    private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, FaceRecord faceRecord, String collectionId) {
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(collectionId, rekognitionClient, faceRecord);
+    private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, String collectionId) {
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(collectionId, rekognitionClient, detectedStartnumber.getFace());
 
 
         for (FaceMatch matchingFace: faceImageMatches) { // check for a startnumber instance that contains the matching faceID and has a valid startnumber
