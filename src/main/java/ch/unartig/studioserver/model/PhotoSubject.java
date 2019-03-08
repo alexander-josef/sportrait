@@ -28,6 +28,9 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+/**
+ * m:m table to map photos to event runners / can contain name and age
+ */
 public class PhotoSubject extends GeneratedPhotoSubject
 {
 }

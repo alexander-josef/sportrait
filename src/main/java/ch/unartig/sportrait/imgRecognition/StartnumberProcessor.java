@@ -3,15 +3,15 @@ package ch.unartig.sportrait.imgRecognition;
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor;
 import com.amazonaws.services.rekognition.AmazonRekognition;
+import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import com.amazonaws.services.sqs.model.Message;
-import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
+import com.amazonaws.services.sqs.model.*;
 import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Processor class that starts up with the intialization of the servlet
  * polls sqs for queues of albums with images to process
  */
-public class StartnumberProcessor {
+public class StartnumberProcessor implements Runnable {
     private Logger _logger = Logger.getLogger(getClass().getName());
     public static final int MAX_NUMBER_OF_MESSAGES = 10;
     public static final int WAIT_TIME_SECONDS = 20;
@@ -32,31 +32,31 @@ public class StartnumberProcessor {
     private AtomicInteger numSeenProcessor = new AtomicInteger();
     private int maxImagesToProcess;
 
-    /**
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        init();
-    }
+
 
     /**
      * Called upon initialization of the servlet
+     * starts polling the sqs qeue
+     * needs to  run in its own thread
      */
     public static void init() {
-        System.out.println("**** Starting up Startnumber Processor");
         StartnumberProcessor processor = new StartnumberProcessor();
-        processor.start();
+        processor.run();
+
+
     }
 
 
     /**
      * private constructor - shall only be used via init() when servlet starts up
      */
-    private StartnumberProcessor() {
+     public StartnumberProcessor() {
         // faceCollectionId = "tempSportraitFaceCollection"; // todo : move to registry
-        maxImagesToProcess = -1;
+         _logger.info("**** Starting up Startnumber Processor");
+         rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+         maxImagesToProcess = -1;
         sqs = AmazonSQSClientBuilder.defaultClient();
+
 
         // Executor Service
         int maxWorkers = 1; // no max workers defined ? 1 ?
@@ -72,7 +72,7 @@ public class StartnumberProcessor {
         processors.add(new StartnumberRecognitionDbProcessor());
     }
 
-    public void start() {
+    public void run() {
         String queueUrl = MessageQueueHandler.getInstance().getSportraitQueueName();
         _logger.info("Start Polling the SQS queues for incoming images to recognize ....");
         if (processors.isEmpty()) {
@@ -83,6 +83,7 @@ public class StartnumberProcessor {
         // todo  : start with single queue  - add later a list of queue (one for each album)
         // for loop for all queues currently active (-> receive from queue handler)
 
+        // todo : make sure queue exists or create queue if it doesn't yet?
 
         _logger.info("Processor started up, looking for messages on " + queueUrl);
 
@@ -91,8 +92,17 @@ public class StartnumberProcessor {
             // how many messages will be fetched? max =10 - but actual?
             ReceiveMessageRequest poll = new ReceiveMessageRequest(queueUrl)
                     .withMaxNumberOfMessages(MAX_NUMBER_OF_MESSAGES)
-                    .withWaitTimeSeconds(WAIT_TIME_SECONDS);
-            List<Message> messages = sqs.receiveMessage(poll).getMessages();
+                    .withWaitTimeSeconds(WAIT_TIME_SECONDS)
+                    .withMessageAttributeNames("All");
+            List<Message> messages = null;
+            try {
+                messages = sqs.receiveMessage(poll).getMessages();
+            } catch (QueueDoesNotExistException e) {
+                _logger.error("Queue does not exist"    );
+                CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
+                _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
+                messages = sqs.receiveMessage(poll).getMessages();
+            }
             _logger.debug("Got "+messages.size() + " messages from queue. Processed "+ numSeenProcessor +" so far. maxImagesToProcess = " + maxImagesToProcess);
 
             // process the messages in parallel.
@@ -158,7 +168,10 @@ public class StartnumberProcessor {
      */
     private void processTask(Message message) {
         String photoPath = message.getBody();
-        String eventCategoryId = message.getMessageAttributes().get(MessageQueueHandler.EVENT_CATEGORY_ID).getStringValue();
+        Map<String, MessageAttributeValue> messageAttributes = message.getMessageAttributes();
+
+        String eventCategoryId = messageAttributes.get(MessageQueueHandler.EVENT_CATEGORY_ID).getDataType();
+        String photoId = messageAttributes.get(MessageQueueHandler.PHOTO_ID).getStringValue();
         PathSplit pathComp = new PathSplit(photoPath);
         String bucket = pathComp.bucket;
         String key = pathComp.key;
@@ -182,7 +195,7 @@ public class StartnumberProcessor {
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
             // todo : add facedetections to processor and do all in once processor?
-            processor.process(photoTextDetections, photoFaceRecords, photoPath, eventCategoryId);
+            processor.process(photoTextDetections, photoFaceRecords, photoPath, eventCategoryId, photoId);
         }
     }
 

@@ -56,11 +56,8 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.EventRunner;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
-import ch.unartig.studioserver.persistence.DAOs.EventRunnerDAO;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
@@ -83,7 +80,7 @@ public class SportsAlbumMapper
     private int photoPointDifference;
     private int photoPointTolerance;
     private boolean photopointBeforeFinishTime;
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     public SportsAlbumMapper(InputStream mappingInputStream, Album album)
     {
@@ -181,8 +178,9 @@ public class SportsAlbumMapper
     private void mapLine(String photoFilename, String startNumber) throws UAPersistenceException
     {
         PhotoDAO photoDao = new PhotoDAO();
+        PhotoSubjectDAO photoSubjectgDao = new PhotoSubjectDAO();
 
-        PhotoSubject subj = findOrCreateSubjectByStartNumber(startNumber);
+        PhotoSubject subj = photoSubjectgDao.findOrCreateSubjectByStartNumber(startNumber, album);
         try
         {
             HibernateUtil.beginTransaction();
@@ -215,8 +213,9 @@ public class SportsAlbumMapper
     private void mapLine(String etappe, String startNumber, String timeString, String name) throws UAPersistenceException
     {
         PhotoDAO photoDao = new PhotoDAO();
+        PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         Date finishTime = null;
-        PhotoSubject subj = findOrCreateSubjectByStartNumber(startNumber);
+        PhotoSubject subj = photoSubjectDAO.findOrCreateSubjectByStartNumber(startNumber, album);
 
         // we will ignore the year month and day information of the date and only focus on the time part
         SimpleDateFormat simpleFormater = new SimpleDateFormat("HH:mm:ss");
@@ -347,94 +346,8 @@ public class SportsAlbumMapper
     }
 
 
-    /**
-     * <ol>
-     * Look for an existing photosubject (via the eventRunners table)
-     * <li>search in eventRunners for given album and startNumber
-     * <li>asdf
-     *
-     * @param startNumber
-     * @return
-     * @throws UAPersistenceException
-     */
-    private PhotoSubject findOrCreateSubjectByStartNumber(String startNumber) throws UAPersistenceException
-    {
-        PhotoSubjectDAO photoSubjDao = new PhotoSubjectDAO();
 
-        PhotoSubject subj = photoSubjDao.findByStartNumberAndAlbum(startNumber, album);
-        if (subj == null)
-        {
-            _logger.debug("no photo subject found, going to creating a new one");
-            subj = createNewSubject(startNumber, album);
-        }
-        _logger.debug("returning photo-subject : " + subj);
-        return subj;
-    }
 
-    /**
-     * instantiates and saves a new PhotoSubject with the given startNumber:
-     * <ol>
-     * <li>create a photosubject, save it
-     * <li>create an eventrunner entry with given startnumber,event (from album) and new photo subject
-     * <li>save eventrunner
-     * </ol>
-     *
-     * @param startNumber
-     * @param album
-     * @return PhotoSubject
-     * @throws ch.unartig.exceptions.UAPersistenceException
-     */
-    private PhotoSubject createNewSubject(String startNumber, Album album) throws UAPersistenceException
-    {
-        GenericLevelDAO glDao = new GenericLevelDAO();
-        EventRunnerDAO eventRunnerDao = new EventRunnerDAO();
-        PhotoSubject photoSubject = createPhotoSubject();
-
-        // since the session was closed before we need to reload album:
-        // if we uncomment the following line, does the 'no session' problem disappear?? YES!
-//        System.out.println("buuuh!");
-//        System.out.println("album = " + album);
-        try
-        {
-            HibernateUtil.beginTransaction();
-            album = (Album) glDao.load(album.getGenericLevelId(), Album.class);
-            _logger.debug("creating and saving new eventRunner");
-            EventRunner eventRunner = new EventRunner(album.getEvent(), startNumber, photoSubject);
-            eventRunnerDao.save(eventRunner);
-            HibernateUtil.commitTransaction();
-        } catch (UAPersistenceException e)
-        {
-            _logger.error("cannot save eventRunner, rolling back", e);
-            HibernateUtil.rollbackTransaction();
-            throw new UAPersistenceException("cannot save eventRunner", e);
-        }
-        return photoSubject;
-    }
-
-    private PhotoSubject createPhotoSubject() throws UAPersistenceException
-    {
-        PhotoSubjectDAO subjDao = new PhotoSubjectDAO();
-        PhotoSubject retVal = new PhotoSubject();
-        HibernateUtil.beginTransaction();
-        Long photoSubjectId = null;
-        try
-        {
-            _logger.debug("going to save new PhotoSubject");
-            photoSubjectId = subjDao.saveOrUpdate(retVal);
-            HibernateUtil.commitTransaction();
-        } catch (UAPersistenceException e)
-        {
-            _logger.error("cannot save photoSubject, rolling back", e);
-            HibernateUtil.rollbackTransaction();
-            throw new UAPersistenceException("cannot save photoSubject", e);
-        } finally
-        {
-//            HibernateUtil.finishTransaction();
-        }
-        _logger.debug("created new photo subject with id : " + retVal.getPhotoSubjectId());
-        _logger.debug("id : " + photoSubjectId);
-        return retVal;
-    }
 
     /**
      * Reads line by line the bip-time file and maps it

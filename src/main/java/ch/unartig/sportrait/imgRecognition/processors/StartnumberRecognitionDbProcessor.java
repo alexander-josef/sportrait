@@ -1,8 +1,15 @@
 package ch.unartig.sportrait.imgRecognition.processors;
 
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.sportrait.imgRecognition.ImgRecognitionHelper;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
+import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
+import ch.unartig.studioserver.model.Photo;
+import ch.unartig.studioserver.model.PhotoSubject;
+import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
+import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
@@ -40,19 +47,45 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
      * @param textDetections list of textDetections
      * @param photoFaceRecords list of recognized faces on this file / photo
      * @param path complete path for this file / photo
+     * @param eventCategoryId - used also as a collection ID for faces
+     * @param photoId
      */
     @Override
-    public void process(List<TextDetection> textDetections, List<FaceRecord> photoFaceRecords, String path, String collectionId) {
+    public void process(List<TextDetection> textDetections, List<FaceRecord> photoFaceRecords, String path, String eventCategoryId, String photoId) {
 
         List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
 
-        mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
+        mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, eventCategoryId);
+
+        persistStartnumbers(startnumbersForFile, path, photoId);
 
         _logger.debug("*************************************");
         _logger.debug("*********** Done for File ***********");
         _logger.debug("*************************************");
 
+
         startnumbers.addAll(startnumbersForFile);
+
+    }
+
+    private void persistStartnumbers(List<Startnumber> startnumbersForFile, String path, String photoId) {
+        PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
+        PhotoDAO photoDAO = new PhotoDAO();
+
+        try {
+            HibernateUtil.beginTransaction();
+            Photo photo = photoDAO.load(new Long(photoId));
+            for (Startnumber startnumber : startnumbersForFile) {
+                PhotoSubject ps = photoSubjectDAO.findOrCreateSubjectByStartNumber(startnumber.getStartnumberText(),photo.getAlbum());
+                photo.addPhotoSubject(ps);
+            }
+            HibernateUtil.commitTransaction();
+        } catch (UAPersistenceException e) {
+            _logger.warn("Cannot persist Startnumber, see stacktrace",e);
+        } catch (NumberFormatException e) {
+            _logger.warn("Number format exception for Photo ID - cannot persist Startnumber",e);
+        }
+
 
     }
 
@@ -88,8 +121,10 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
                     _logger.debug("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
 
 
+
+
                     // todo : then can this done most efficiently ? needs other records
-                    mapBetterNumbersForMatchingFaces(startnumber, collectionId);
+                    mapBetterNumbersForMatchingFaces(startnumber, collectionId, startnumbers);
                     // todo : no need to continue here - improve. return after match is true
                 }
 
@@ -106,14 +141,17 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             }
 
         }
+
+        // todo : return facesWithoutNumbers instead of keeping it as a field?
     }
 
     /**
      * For a detected startnumber, check the faces collection for a face that matches and, if there's a better (more digits) number, replace the number
      * @param detectedStartnumber startnumber object, containing the text of the detected startnumber so far
      * @param collectionId
+     * @param startnumbers
      */
-    private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, String collectionId) {
+    private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, String collectionId, List<Startnumber> startnumbers) {
         List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(collectionId, rekognitionClient, detectedStartnumber.getFace());
 
 

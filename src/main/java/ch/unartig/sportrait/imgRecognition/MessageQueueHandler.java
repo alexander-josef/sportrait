@@ -10,12 +10,16 @@ import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Singleton class to handle amazon sqs queues related logic
  */
 public class MessageQueueHandler {
 
     public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
+    public static final String PHOTO_ID = "photoId"; // used as message attribute
     private Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonSQS sqs;
@@ -57,17 +61,32 @@ public class MessageQueueHandler {
      * add path of an s3 object to a queue
      * @param object s3 object for which the path shall be added to the queue, determinded by the albumds generic level id
      * @param album
+     * @param photoId
      */
-    public SendMessageResult addMessage(S3ObjectSummary object, Album album) {
+    public SendMessageResult addMessage(S3ObjectSummary object, Album album, Long photoId) {
 
         String path = object.getBucketName() + "/" + object.getKey();
         String queueUrl = getQueue(album).getQueueUrl();
         _logger.info("Posting message : " + path + " to queue ["+ queueUrl +"]");
+        _logger.debug("with param [eventCategoryId] : " + album.getEventCategory().getEventCategoryId().toString());
+        _logger.debug("with param [photoId] : " + photoId.toString());
+
+
+        final Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+        messageAttributes.put(EVENT_CATEGORY_ID, new MessageAttributeValue()
+                .withDataType("String")
+                .withStringValue(album.getEventCategory().getEventCategoryId().toString()));
+
+        messageAttributes.put(PHOTO_ID, new MessageAttributeValue()
+                .withDataType("String")
+                .withStringValue(photoId.toString()));
+
 
         SendMessageRequest msg = new SendMessageRequest()
                 .withQueueUrl(queueUrl)
                 .withMessageBody(path)
-                .addMessageAttributesEntry(EVENT_CATEGORY_ID,new MessageAttributeValue().withStringValue(album.getEventCategory().getEventCategoryId().toString()));
+                .withMessageAttributes(messageAttributes);
+
         SendMessageResult result = sqs.sendMessage(msg);
 
         return result;

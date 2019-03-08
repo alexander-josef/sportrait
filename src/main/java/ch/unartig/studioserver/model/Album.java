@@ -468,12 +468,13 @@ public class Album extends GeneratedAlbum {
      * @param filename               The filename used for registering the photo in the db photos table
      * @param createThumbDisp        set to true to create the display and thumbnail images
      * @param applyLogoOnFineImages
+     * @return newly created and registered photo
      */
-    public void registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
+    public Photo registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
 
 
-        Integer pictureWidth;
-        Integer pictureHeight;
+        int pictureWidth;
+        int pictureHeight;
         Date pictureTakenDate;
         int pictureOrientation;
 
@@ -530,14 +531,17 @@ public class Album extends GeneratedAlbum {
             // add to db:
             add(photo);
 
+
             // removed logic to add thumbnails or logo montage on master images
             // see 1.6-branch
+            return photo;
 
         } catch (Exception e3) {
             // todo: catch specific (Metadata extractor)
             _logger.info("unknown error; continue with next image", e3);
             //noinspection unchecked
             problemFiles.add(filename);
+            return null;
         }
     }
 

@@ -49,7 +49,7 @@ public class StartnumberRecognitionProcessorTest implements SportraitImageProces
     }
 
     @Override
-    public void process(List<TextDetection> photoTextDetections, List<FaceRecord> photoFaceRecords, String photoPath, String eventCategoryId) {
+    public void process(List<TextDetection> photoTextDetections, List<FaceRecord> photoFaceRecords, String photoPath, String eventCategoryId, String photoId) {
         System.out.println("**********             not implemented!!!!!");
     }
 

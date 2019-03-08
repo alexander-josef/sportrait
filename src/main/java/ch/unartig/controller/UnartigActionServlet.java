@@ -125,9 +125,11 @@ public class UnartigActionServlet extends ActionServlet
         logger.debug("Calling init on Registry");
         try
         {
-        Registry.init();
-            StartnumberProcessor.init();
+            Registry.init();
 
+            Thread startnumberProcessor = new Thread(new StartnumberProcessor());
+            startnumberProcessor.start();
+            logger.info("Startnumber Processor started up");
             logger.info("Init security");
             CryptoUtil.setPrng(SecureRandom.getInstance("SHA1PRNG"));
 //            logger.info("new navigation tree for tigra tree menu generated!");

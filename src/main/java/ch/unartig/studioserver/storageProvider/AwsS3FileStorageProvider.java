@@ -5,6 +5,7 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
@@ -225,7 +226,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         // todo : check if photo is already registered for album in DB?
 
                         objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
-                        album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
+                        Photo newPhoto = album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
                         String fineImageKey = getFineImageKey(album, filename);
 
@@ -242,7 +243,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         }
                         if (applyNumberRecognition) { // add logic in case there should be a switch in the UI
                             // add fine Image to queue for number recognition
-                            queueHandler.addMessage(s3ObjectSummary,album);
+                            queueHandler.addMessage(s3ObjectSummary,album,newPhoto.getPhotoId());
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);

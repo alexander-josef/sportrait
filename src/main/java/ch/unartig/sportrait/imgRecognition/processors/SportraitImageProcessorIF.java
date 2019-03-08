@@ -15,5 +15,5 @@ public interface SportraitImageProcessorIF {
      */
     void process(List<TextDetection> labels, List<FaceRecord> photoFaceRecords, String path);
 
-    void process(List<TextDetection> photoTextDetections, List<FaceRecord> photoFaceRecords, String photoPath, String eventCategoryId);
+    void process(List<TextDetection> photoTextDetections, List<FaceRecord> photoFaceRecords, String photoPath, String eventCategoryId, String photoId);
 }
