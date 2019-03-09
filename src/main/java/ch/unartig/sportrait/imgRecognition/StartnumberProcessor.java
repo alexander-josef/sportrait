@@ -9,6 +9,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.*;
 import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * polls sqs for queues of albums with images to process
  */
 public class StartnumberProcessor implements Runnable {
+    public static final String FACE_COLLECTION_ID = "sportraitFaces2019";
     private Logger _logger = Logger.getLogger(getClass().getName());
     public static final int MAX_NUMBER_OF_MESSAGES = 10;
     public static final int WAIT_TIME_SECONDS = 20;
@@ -31,7 +33,6 @@ public class StartnumberProcessor implements Runnable {
     private List<SportraitImageProcessorIF> processors = new ArrayList<>();
     private AtomicInteger numSeenProcessor = new AtomicInteger();
     private int maxImagesToProcess;
-
 
 
     /**
@@ -48,13 +49,12 @@ public class StartnumberProcessor implements Runnable {
 
 
     /**
-     * private constructor - shall only be used via init() when servlet starts up
+     * standard constructor
      */
-     public StartnumberProcessor() {
-        // faceCollectionId = "tempSportraitFaceCollection"; // todo : move to registry
-         _logger.info("**** Starting up Startnumber Processor");
-         rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
-         maxImagesToProcess = -1;
+    public StartnumberProcessor() {
+        _logger.info("**** Starting up Startnumber Processor");
+        rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+        maxImagesToProcess = -1;
         sqs = AmazonSQSClientBuilder.defaultClient();
 
 
@@ -70,8 +70,15 @@ public class StartnumberProcessor implements Runnable {
         // todo : parameters ?
         // todo : startnumbers to be stored to db?
         processors.add(new StartnumberRecognitionDbProcessor());
+        /**
+         * just one faces collection ?
+         */
+        ImgRecognitionHelper.createFacesCollection(rekognitionClient, FACE_COLLECTION_ID);
     }
 
+    /**
+     * overridden run method to start up the thread
+     */
     public void run() {
         String queueUrl = MessageQueueHandler.getInstance().getSportraitQueueName();
         _logger.info("Start Polling the SQS queues for incoming images to recognize ....");
@@ -98,12 +105,12 @@ public class StartnumberProcessor implements Runnable {
             try {
                 messages = sqs.receiveMessage(poll).getMessages();
             } catch (QueueDoesNotExistException e) {
-                _logger.error("Queue does not exist"    );
+                _logger.error("Queue does not exist");
                 CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
                 messages = sqs.receiveMessage(poll).getMessages();
             }
-            _logger.debug("Got "+messages.size() + " messages from queue. Processed "+ numSeenProcessor +" so far. maxImagesToProcess = " + maxImagesToProcess);
+            _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
 
             // process the messages in parallel.
             for (Message message : messages) {
@@ -113,7 +120,7 @@ public class StartnumberProcessor implements Runnable {
                         processTask(message);
                     } catch (InvalidParameterException e) {
                         if (e.getMessage().contains("Minimum image height")) {
-                            _logger.debug("Input image "+ message.getBody() +" too small to analyze, skipping.");
+                            _logger.debug("Input image " + message.getBody() + " too small to analyze, skipping.");
                         }
                     }
                 });
@@ -123,24 +130,8 @@ public class StartnumberProcessor implements Runnable {
             }
             // todo  : check exit clause - how many images? forever?
             if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {
-                _logger.debug("Seen enough ("+numSeenProcessor.get()+"), quitting. maxImagesToProcess = " + maxImagesToProcess);
-                executor.shutdown(); // don't use shutdownNow() - we want to finish execution of pending threads
-
-
-                try {
-                    // Wait a while for existing tasks to terminate
-                    if (!executor.awaitTermination(20, TimeUnit.SECONDS)) {
-                        executor.shutdownNow(); // Cancel currently executing tasks after wait time
-                        // Wait a while for tasks to respond to being cancelled
-                        if (!executor.awaitTermination(60, TimeUnit.SECONDS))
-                            System.err.println("Executor Pool did not terminate");
-                    }
-                } catch (InterruptedException ie) {
-                    // (Re-)Cancel if current thread also interrupted
-                    executor.shutdownNow();
-                    // Preserve interrupt status
-                    Thread.currentThread().interrupt();
-                }
+                _logger.debug("Seen enough (" + numSeenProcessor.get() + "), quitting. maxImagesToProcess = " + maxImagesToProcess);
+                shutdown();
 
 
             }
@@ -155,15 +146,30 @@ public class StartnumberProcessor implements Runnable {
         // todo: think about faces collection ??
 
 
-
-
     }
 
-
+    public void shutdown() {
+        executor.shutdown(); // don't use shutdownNow() - we want to finish execution of pending threads
+        try {
+            // Wait a while for existing tasks to terminate
+            if (!executor.awaitTermination(20, TimeUnit.SECONDS)) {
+                executor.shutdownNow(); // Cancel currently executing tasks after wait time
+                // Wait a while for tasks to respond to being cancelled
+                if (!executor.awaitTermination(60, TimeUnit.SECONDS))
+                    System.err.println("Executor Pool did not terminate");
+            }
+        } catch (InterruptedException ie) {
+            // (Re-)Cancel if current thread also interrupted
+            executor.shutdownNow();
+            // Preserve interrupt status
+            Thread.currentThread().interrupt();
+        }
+    }
 
 
     /**
      * process task for each image - called by executor
+     *
      * @param message payload delivered by the queue
      */
     private void processTask(Message message) {
@@ -176,11 +182,11 @@ public class StartnumberProcessor implements Runnable {
         String bucket = pathComp.bucket;
         String key = pathComp.key;
         String filename = pathComp.filename;
-        _logger.debug("Processing " +  bucket +" "+ key);
+        _logger.debug("Processing " + bucket + " " + key);
 
 
         // text detection:
-        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient,bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
 
 
         // add the faces of the file/photo to the collection and get a list of face records as return value
@@ -195,21 +201,22 @@ public class StartnumberProcessor implements Runnable {
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
             // todo : add facedetections to processor and do all in once processor?
-            processor.process(photoTextDetections, photoFaceRecords, photoPath, eventCategoryId, photoId);
+            processor.process(photoTextDetections, photoFaceRecords, photoPath, FACE_COLLECTION_ID, photoId);
         }
     }
 
 
     /**
      * use indexFaces operation to add detected faces - with defined quality - to collection with ID = eventCategoryId of the image that is processed - creates an indexFacesResult
+     *
      * @param bucket
      * @param key
      * @param collectionId
      * @return list of faces records - can be null
      */
     private List<FaceRecord> addFacesToCollection(String bucket, String key, String filename, String collectionId) {
-        _logger.debug("Adding faces to collection for :  " +  bucket +" "+ key);
-        _logger.debug("filename used as external image id :  " +  filename);
+        _logger.debug("Adding faces to collection for :  " + bucket + " " + key);
+        _logger.debug("filename used as external image id :  " + filename);
 
         Image image = new Image()
                 .withS3Object(new S3Object()
@@ -220,7 +227,7 @@ public class StartnumberProcessor implements Runnable {
                 .withImage(image)
                 .withQualityFilter(QualityFilter.AUTO) // use AUTO to apply amazon defined quality filtering - seems to work good
                 .withMaxFaces(5) // detecting up to 5 faces - the biggest boxes will be returned
-                .withCollectionId(collectionId) // eventCategoryId of photo is used as the collection ID - or should we add all to the same collection?
+                .withCollectionId(FACE_COLLECTION_ID) // todo : just one global cellection used for now - shall we use eventCategoryId of photo instead as the collection ID ?? How would we make sure the collection is initialized ? have a map that indicates true or false ?
                 .withExternalImageId(filename) // external image ID must be without '/' - only filename
                 .withDetectionAttributes("DEFAULT");
 
@@ -234,7 +241,7 @@ public class StartnumberProcessor implements Runnable {
 
         _logger.debug("Done adding faces to collection for : " + key);
         List<FaceRecord> faceRecords = null;
-        if (indexFacesResult!=null) {
+        if (indexFacesResult != null) {
             _logger.debug("Faces indexed:");
             faceRecords = indexFacesResult.getFaceRecords();
             for (FaceRecord faceRecord : faceRecords) {
@@ -259,7 +266,6 @@ public class StartnumberProcessor implements Runnable {
     }
 
 
-
     static public class PathSplit {
         public final String bucket;
         public final String key;
@@ -268,7 +274,7 @@ public class StartnumberProcessor implements Runnable {
         public PathSplit(String path) {
             bucket = path.substring(0, path.indexOf('/'));
             key = path.substring(bucket.length() + 1);
-            filename = path.substring(path.lastIndexOf('/')+1); // part after last occurence of '/'
+            filename = path.substring(path.lastIndexOf('/') + 1); // part after last occurence of '/'
         }
     }
 

@@ -157,6 +157,7 @@ public class PhotoSubjectDAO
         PhotoSubjectDAO photoSubjDao = new PhotoSubjectDAO();
 
         // todo : enhance search with FaceID information
+
         PhotoSubject subj = photoSubjDao.findByStartNumberAndAlbum(startNumber, album);
         if (subj == null)
         {

@@ -2,10 +2,12 @@ package ch.unartig.sportrait.imgRecognition;
 
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.*;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class ImgRecognitionHelper {
+    static Logger _logger = Logger.getLogger("ImgRecognitionHelper");
     public static List<FaceMatch>  searchMatchingFaces(String faceCollectionId, AmazonRekognition rekognitionClient, FaceRecord faceRecord) {
         // search face record in collection
         SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
@@ -36,7 +38,35 @@ public class ImgRecognitionHelper {
 
         // create list of number/filename and print it out a the end
 
-        DetectTextResult textResult = rekognitionClient.detectText(textRequest);
-        return textResult.getTextDetections();
+        DetectTextResult textResult;
+        try {
+            textResult = rekognitionClient.detectText(textRequest);
+            return textResult.getTextDetections();
+        } catch (InvalidS3ObjectException e) {
+            _logger.warn("S3 Object does not exist or ist invalid - see stack trace",e);
+            e.printStackTrace();
+            return null;
+        }
     }
+
+
+    static void createFacesCollection(AmazonRekognition rekognitionClient, String faceCollectionId) {
+        _logger.info("Creating collection: " +  faceCollectionId);
+
+        CreateCollectionRequest request = new CreateCollectionRequest()
+                .withCollectionId(faceCollectionId);
+
+        CreateCollectionResult createCollectionResult = null;
+        try {
+            createCollectionResult = rekognitionClient.createCollection(request);
+            _logger.info("CollectionArn : " +
+                    createCollectionResult.getCollectionArn());
+            _logger.info("Status code : " +
+                    createCollectionResult.getStatusCode().toString());
+        } catch (ResourceAlreadyExistsException e) {
+            _logger.info("Ignoring - Collection already existed");
+        }
+    }
+
+
 }

@@ -58,7 +58,7 @@ public class MessageQueueHandler {
 
 
     /**
-     * add path of an s3 object to a queue
+     * Add master image path of an s3 object to a queue (via s3ObjectSummary). submit eventCategeryId and photoId as message attributes
      * @param object s3 object for which the path shall be added to the queue, determinded by the albumds generic level id
      * @param album
      * @param photoId
@@ -66,6 +66,17 @@ public class MessageQueueHandler {
     public SendMessageResult addMessage(S3ObjectSummary object, Album album, Long photoId) {
 
         String path = object.getBucketName() + "/" + object.getKey();
+        return addMessage(album, photoId, path);
+    }
+
+    /**
+     * Add master image path of an s3 object to a message queue. submit eventCategeryId and photoId as message attributes
+     * @param album
+     * @param photoId
+     * @param path
+     * @return
+     */
+    public SendMessageResult addMessage(Album album, Long photoId, String path) {
         String queueUrl = getQueue(album).getQueueUrl();
         _logger.info("Posting message : " + path + " to queue ["+ queueUrl +"]");
         _logger.debug("with param [eventCategoryId] : " + album.getEventCategory().getEventCategoryId().toString());

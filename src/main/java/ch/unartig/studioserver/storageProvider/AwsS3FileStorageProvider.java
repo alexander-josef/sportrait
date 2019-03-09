@@ -243,7 +243,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         }
                         if (applyNumberRecognition) { // add logic in case there should be a switch in the UI
                             // add fine Image to queue for number recognition
-                            queueHandler.addMessage(s3ObjectSummary,album,newPhoto.getPhotoId());
+                            String path = s3ObjectSummary.getBucketName() + "/" + fineImageKey;
+                            queueHandler.addMessage(album,newPhoto.getPhotoId(),path);
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);
@@ -275,7 +276,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     /**
      * Helper method to move an object from a temporary location to its final location.
-     * First copy to destination, then delete source
+     * First copy to destination, then delete source - EXCEPT for Dev env as a convenience for testing
      * Assumption: s3objects are closed after operations
      *
      * @param bucketName
@@ -287,8 +288,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         try {
             CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName,sourceKey,bucketName,destinationKey);
             s3.copyObject(copyObjectRequest);
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
-            s3.deleteObject(deleteObjectRequest);
+            if (!Registry.isDevEnv()) {
+                DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
+                s3.deleteObject(deleteObjectRequest);
+            }
         } catch (AmazonServiceException ase) {
             _logger.error("Amazon Service Exception while moving File",ase);
             return false;
