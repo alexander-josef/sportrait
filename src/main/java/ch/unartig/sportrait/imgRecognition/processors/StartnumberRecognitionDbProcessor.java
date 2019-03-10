@@ -56,7 +56,8 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
 
         List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
 
-        mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
+        List<RunnerFace> runnerFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
+        facesWithoutNumbers.addAll(runnerFaces);
 
         persistStartnumbers(startnumbersForFile, path, photoId);
 
@@ -94,15 +95,16 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
     }
 
     /**
-     * for every image, map the detected and indexed faces to a startnumber
+     * For every image, map the detected and indexed faces to a startnumber
      * @param photoFaceRecords
      * @param path
      * @param startnumbersForFile
      * @param collectionId
      */
-    public void mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile, String collectionId) {
+    public List<RunnerFace> mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile, String collectionId) {
         _logger.debug("*************************************");
         _logger.debug("Mapping added/indexed faces to startnumbers");
+        List<RunnerFace> unknownFaces = new ArrayList<>(); // return value - local list to collect unknown faces
 
         // process face records detected for the file
         for (FaceRecord faceRecord : photoFaceRecords) {
@@ -110,8 +112,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
 
             _logger.debug("** Processing FaceID " + faceRecord.getFace().getFaceId() );
             // for each number detected in the file:
-            for (int i = 0; i < startnumbersForFile.size(); i++) {
-                Startnumber startnumber = startnumbersForFile.get(i);
+            for (Startnumber startnumber : startnumbersForFile) {
                 _logger.debug("  startnumber = " + startnumber);
                 BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
                 float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
@@ -120,36 +121,29 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
                 _logger.debug("     Face right position = " + faceBoundingBoxRightPosition);
 
                 if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
-                    matchingNumber=true;
+                    _logger.debug("******* Found a match for " + startnumber.getStartnumberText() + " - faceID : " + faceRecord.getFace().getFaceId());
+                    matchingNumber = true;
                     startnumber.setFace(faceRecord);
-                    _logger.debug("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
-
-
-
 
                     // todo : then can this done most efficiently ? needs other records
                     _logger.warn("*****************************************************");
                     _logger.warn("******** Skipping mapBetterNumbersForMatching Faces() call - todo later  ******");
                     _logger.warn("*****************************************************");
                     // mapBetterNumbersForMatchingFaces(startnumber, collectionId, startnumbers);
+
+
                     // todo : no need to continue here - improve. return after match is true
                 }
-
 
 
             }
             if (!matchingNumber) { // face w/o matching number -> add to list
                 _logger.debug("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
-                facesWithoutNumbers.add(new RunnerFace(faceRecord,path));
+                unknownFaces.add(new RunnerFace(faceRecord,path));
                 _logger.debug("*** added to list of faces without numbers for later processing");
-
-                // this list need to be processed later to find matches from other fotos
-                // todo : remove this face from the collection?
             }
-
         }
-
-        // todo : return facesWithoutNumbers instead of keeping it as a field?
+        return unknownFaces;
     }
 
     /**

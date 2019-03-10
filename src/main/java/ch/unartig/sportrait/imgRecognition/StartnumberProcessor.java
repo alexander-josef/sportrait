@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class StartnumberProcessor implements Runnable {
     public static final String FACE_COLLECTION_ID = "sportraitFaces2019";
+    public static final int MAX_FACES = 5;
     private Logger _logger = Logger.getLogger(getClass().getName());
     public static final int MAX_NUMBER_OF_MESSAGES = 10;
     public static final int WAIT_TIME_SECONDS = 20;
@@ -187,15 +188,7 @@ public class StartnumberProcessor implements Runnable {
 
         // text detection:
         List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
-
-
-        // add the faces of the file/photo to the collection and get a list of face records as return value
-        // faces needed in collection for later comparison
-        // todo : put faces to collections per album
-        // todo : only add one face per startnumber to collection ? --> price wise not necessary
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key, filename, eventCategoryId);
-        // getFacesDetails(bucket, key);
-
 
         // Process downstream actions:
         for (SportraitImageProcessorIF processor : processors) {
@@ -207,7 +200,10 @@ public class StartnumberProcessor implements Runnable {
 
 
     /**
+     * add the faces of the file/photo to the collection and get a list of face records as return value
      * use indexFaces operation to add detected faces - with defined quality - to collection with ID = eventCategoryId of the image that is processed - creates an indexFacesResult
+     * faces needed in collection for later comparison
+     * Check todo's
      *
      * @param bucket
      * @param key
@@ -215,6 +211,9 @@ public class StartnumberProcessor implements Runnable {
      * @return list of faces records - can be null
      */
     private List<FaceRecord> addFacesToCollection(String bucket, String key, String filename, String collectionId) {
+        // todo : put faces to collections per album
+        // todo : only add one face per startnumber to collection ? --> price wise not necessary
+
         _logger.debug("Adding faces to collection for :  " + bucket + " " + key);
         _logger.debug("filename used as external image id :  " + filename);
 
@@ -226,7 +225,7 @@ public class StartnumberProcessor implements Runnable {
         IndexFacesRequest indexFacesRequest = new IndexFacesRequest()
                 .withImage(image)
                 .withQualityFilter(QualityFilter.AUTO) // use AUTO to apply amazon defined quality filtering - seems to work good
-                .withMaxFaces(5) // detecting up to 5 faces - the biggest boxes will be returned
+                .withMaxFaces(MAX_FACES) // detecting up to 5 faces - the biggest boxes will be returned
                 .withCollectionId(FACE_COLLECTION_ID) // todo : just one global cellection used for now - shall we use eventCategoryId of photo instead as the collection ID ?? How would we make sure the collection is initialized ? have a map that indicates true or false ?
                 .withExternalImageId(filename) // external image ID must be without '/' - only filename
                 .withDetectionAttributes("DEFAULT");
