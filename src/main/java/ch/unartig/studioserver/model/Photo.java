@@ -296,10 +296,13 @@ public class Photo extends GeneratedPhoto
             params.put("dpr","2");
 
             // add number recognition text
-
             // *****
-            // test only / todo : show numbers for logged in users only / only test dev?
-            // addNumberRecognitionText(params,startnumbers);
+            // test only
+            if (Registry.isDevEnv() || Registry.isIntEnv()) {
+                _logger.debug("printing out startnumber on display image");
+                printStartnumbersOnPhoto(params, getStartnumbersAsString());
+                // addNumberRecognitionText(params, getStartnumbersAsString());
+            }
             // ****
 
             displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
@@ -312,9 +315,28 @@ public class Photo extends GeneratedPhoto
         return displayUrl;    }
 
     /**
+     * iterate through photoSubjects and eventrunners, create a list of startnumbers and return them
+     * @return list of Startnumber Objects
+     */
+    private String getStartnumbersAsString() {
+
+        List <String> startnumbers = new ArrayList<>();
+
+        for (Object o : getPhotoSubjects()) {
+            PhotoSubject photoSubject = (PhotoSubject) o;
+
+            for (Object o1 : photoSubject.getEventRunners()) {
+                EventRunner eventRunner = (EventRunner) o1;
+                startnumbers.add(eventRunner.getStartnumber());
+            }
+        }
+        return startnumbers.stream().collect(Collectors.joining("/"));
+    }
+
+    /**
      * todo delete again - testing only
-     * @param params
-     * @param allStartnumbers
+     * @param params imgix URL creation params
+     * @param allStartnumbers list of Startnumber objects
      */
     private void addNumberRecognitionText(Map<String, String> params, List<Startnumber> allStartnumbers) {
         try {
@@ -322,22 +344,22 @@ public class Photo extends GeneratedPhoto
             Test test =  new Test();
             List<Startnumber> photoStartnumbers = test.getRecognizedNumbersFor(this,allStartnumbers);
             allStartnumbers.addAll(photoStartnumbers);
-            String numbers = photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));;
-
-
-
-
-            _logger.debug("startnumbers  : " + numbers);
-
-            params.put("txtsize","30");
-            params.put("txtalign","bottom,right");
-            params.put("txtclr","AADD44");
-            params.put("txt", numbers);
+            String numbers = photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
+            printStartnumbersOnPhoto(params, numbers);
 
         } catch (Exception e) {
             _logger.debug("error trying to recognize number on photo",e);
             e.printStackTrace();
         }
+    }
+
+    private void printStartnumbersOnPhoto(Map<String, String> params, String numbers) {
+        _logger.debug("startnumbers  : " + numbers);
+
+        params.put("txtsize","30");
+        params.put("txtalign","bottom,right");
+        params.put("txtclr","AADD44");
+        params.put("txt", numbers);
     }
 
     public String getDisplayUrl3x() {

@@ -214,9 +214,9 @@ public final class Registry
     public static final String _SESSION_CLIENT_NAME = "clientInSession";
     public static final String _ALBUM_ID_NAME = "albumId";
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
-    public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env
-    public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env
-    public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env
+    public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env / used in JSPa
+    public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env / used in JSPa
+    public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env / used in JSPa
 
     // todo: move to appSettings
 //read from prop-file
@@ -376,8 +376,9 @@ public final class Registry
 //        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
 //        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
 
-        setApplicationEnvironment(appSettings.getMessage("application.environment"));
-        _logger.info("***** application environment = " + appSettings.getMessage("application.environment"));
+        String appEnv = appSettings.getMessage("application.environment");
+        setApplicationEnvironment(appEnv);
+        _logger.info("***** setting application environment = " + appEnv);
         // constants needed for jsp EL if conditions
         switch (applicationEnvironment) {
             case "dev":
@@ -737,10 +738,14 @@ public final class Registry
         return googleHttpTransport;
     }
 
-    public static void setApplicationEnvironment(String applicationEnvironment) {
-        Registry.applicationEnvironment = applicationEnvironment;
+    public static void setApplicationEnvironment(String appEnv) {
+        Registry.applicationEnvironment = appEnv;
     }
 
+    /**
+     * private access only - use the is*Env methods
+     * @return
+     */
     public static String getApplicationEnvironment() {
         return applicationEnvironment;
     }
@@ -758,7 +763,7 @@ public final class Registry
      * @return
      */
     public static boolean isDevEnv() {
-        return getApplicationEnvironment().equals("Dev");
+        return getApplicationEnvironment().equals("dev");
     }
 
     /**
@@ -766,7 +771,7 @@ public final class Registry
      * @return
      */
     public static boolean isIntEnv() {
-        return getApplicationEnvironment().equals("Int");
+        return getApplicationEnvironment().equals("int");
     }
 
     /**
@@ -774,6 +779,6 @@ public final class Registry
      * @return
      */
     public static boolean isProdEnv() {
-        return getApplicationEnvironment().equals("Prod");
+        return getApplicationEnvironment().equals("prod");
     }
 }
