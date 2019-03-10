@@ -4,7 +4,6 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.sportrait.imgRecognition.ImgRecognitionHelper;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
-import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
@@ -13,7 +12,6 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
-import org.apache.bcel.generic.NEW;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -57,6 +55,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
         List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
 
         List<RunnerFace> runnerFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
+        // todo : faceID / startnumber matches ? check Startnumber object
         facesWithoutNumbers.addAll(runnerFaces);
 
         persistStartnumbers(startnumbersForFile, path, photoId);
@@ -108,42 +107,42 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
 
         // process face records detected for the file
         for (FaceRecord faceRecord : photoFaceRecords) {
-            boolean matchingNumber=false;
-
+            boolean faceHasMatchingNumber;
             _logger.debug("** Processing FaceID " + faceRecord.getFace().getFaceId() );
             // for each number detected in the file:
-            for (Startnumber startnumber : startnumbersForFile) {
-                _logger.debug("  startnumber = " + startnumber);
-                BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
-                float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
-                _logger.debug("     startnumber middle position = " + startnumber.getMiddlePosition());
-                _logger.debug("     Face left position = " + faceBoundingBox.getLeft());
-                _logger.debug("     Face right position = " + faceBoundingBoxRightPosition);
-
-                if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
-                    _logger.debug("******* Found a match for " + startnumber.getStartnumberText() + " - faceID : " + faceRecord.getFace().getFaceId());
-                    matchingNumber = true;
-                    startnumber.setFace(faceRecord);
-
-                    // todo : then can this done most efficiently ? needs other records
-                    _logger.warn("*****************************************************");
-                    _logger.warn("******** Skipping mapBetterNumbersForMatching Faces() call - todo later  ******");
-                    _logger.warn("*****************************************************");
-                    // mapBetterNumbersForMatchingFaces(startnumber, collectionId, startnumbers);
-
-
-                    // todo : no need to continue here - improve. return after match is true
-                }
-
-
-            }
-            if (!matchingNumber) { // face w/o matching number -> add to list
+            faceHasMatchingNumber = matchNumbers(startnumbersForFile, faceRecord);
+            if (!faceHasMatchingNumber) { // face w/o matching number -> add to list
                 _logger.debug("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
                 unknownFaces.add(new RunnerFace(faceRecord,path));
                 _logger.debug("*** added to list of faces without numbers for later processing");
             }
         }
         return unknownFaces;
+    }
+
+    private boolean matchNumbers(List<Startnumber> startnumbersForFile, FaceRecord faceRecord) {
+        // return first matching startnumber for the face
+        for (Startnumber startnumber : startnumbersForFile) {
+            _logger.debug("  startnumber = " + startnumber);
+            BoundingBox faceBoundingBox = faceRecord.getFaceDetail().getBoundingBox();
+            float faceBoundingBoxRightPosition = faceBoundingBox.getLeft() + faceBoundingBox.getWidth();
+            _logger.debug("     startnumber middle position = " + startnumber.getMiddlePosition());
+            _logger.debug("     Face left position = " + faceBoundingBox.getLeft());
+            _logger.debug("     Face right position = " + faceBoundingBoxRightPosition);
+
+            if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
+                _logger.debug("******* Found a match for " + startnumber.getStartnumberText() + " - faceID : " + faceRecord.getFace().getFaceId());
+                startnumber.setFace(faceRecord);
+                // todo : then can this done most efficiently ? needs other records
+                _logger.warn("*****************************************************");
+                _logger.warn("******** Skipping mapBetterNumbersForMatching Faces() call - todo later  ******");
+                _logger.warn("*****************************************************");
+                // mapBetterNumbersForMatchingFaces(startnumber, collectionId, startnumbers);
+
+                return true; // match found, return true
+            }
+        }
+        return false; // no match, return false
     }
 
     /**
