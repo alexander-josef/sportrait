@@ -47,18 +47,25 @@ public class PhotoSubjectDAO
     /**
      * Returns a photosubject with matching startnumber
      * One or  more photosubjects can be returned? if there could be more, a different import routine that has more information shall be used
-     * // todo : enhance with faceID information ! this is exactly what a photosubject was planned for and not implemented before
+     * todo : CAUTION : used existing "name" field for faceID - change later
      * @param startNumber
      * @param album
+     * @param faceId new with image recognition - amazon face collection ID - WILL BE SAVED TO NAME FIELD OF SUBJECT !!
      * @return
      * @throws UAPersistenceException
      */
-    public PhotoSubject findByStartNumberAndAlbum(String startNumber, Album album) throws UAPersistenceException
+    public PhotoSubject findByStartNumberAndAlbum(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(PhotoSubject.class)
                 .createAlias("eventRunners", "runner")
                 .add(Restrictions.eq("runner.startnumber", startNumber))
                 .add(Restrictions.eq("runner.event", album.getEvent()));
+
+        if (faceId!=null && !faceId.isEmpty()) {
+            //todo : CAUTION : used existing "name" field for faceID - change later
+            criteria
+                    .add(Restrictions.eq("name", faceId));
+        }
 
 
         return (PhotoSubject) criteria.uniqueResult();
@@ -111,14 +118,17 @@ public class PhotoSubjectDAO
      *
      * @param startNumber
      * @param album
+     * @param faceId new face id with image recognition - FROM NAME FIELD OF SUBJECT - CAUTION - todo: CHANGE LATER
      * @return PhotoSubject
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public PhotoSubject createNewSubject(String startNumber, Album album) throws UAPersistenceException
+    public PhotoSubject createNewSubject(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
         GenericLevelDAO glDao = new GenericLevelDAO();
         EventRunnerDAO eventRunnerDao = new EventRunnerDAO();
         PhotoSubject photoSubject = createPhotoSubject();
+        // CAUTTION : faceID saved in name field
+        photoSubject.setName(faceId); // needs to be saved separately in creation method ??
 
         // since the session was closed before we need to reload album:
         // if we uncomment the following line, does the 'no session' problem disappear?? YES!
@@ -126,12 +136,13 @@ public class PhotoSubjectDAO
 //        System.out.println("album = " + album);
         try
         {
-            HibernateUtil.beginTransaction();
+            // HibernateUtil.beginTransaction();
             album = (Album) glDao.load(album.getGenericLevelId(), Album.class);
             _logger.debug("creating and saving new eventRunner");
             EventRunner eventRunner = new EventRunner(album.getEvent(), startNumber, photoSubject);
             eventRunnerDao.save(eventRunner);
-            HibernateUtil.commitTransaction();
+            _logger.debug("eventrunner saved to db");
+            // HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
         {
             _logger.error("cannot save eventRunner, rolling back", e);
@@ -149,20 +160,19 @@ public class PhotoSubjectDAO
      *
      * @param startNumber
      * @param album
+     * @param faceId
      * @return
      * @throws UAPersistenceException
      */
-    public PhotoSubject findOrCreateSubjectByStartNumber(String startNumber, Album album) throws UAPersistenceException
+    public PhotoSubject findOrCreateSubjectByStartNumberAndFace(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
         PhotoSubjectDAO photoSubjDao = new PhotoSubjectDAO();
 
-        // todo : enhance search with FaceID information
-
-        PhotoSubject subj = photoSubjDao.findByStartNumberAndAlbum(startNumber, album);
+        PhotoSubject subj = photoSubjDao.findByStartNumberAndAlbum(startNumber, album, faceId);
         if (subj == null)
         {
-            _logger.debug("no photo subject found, going to creating a new one");
-            subj = photoSubjDao.createNewSubject(startNumber, album);
+            _logger.debug("no photo subject found, going to creating a new one - with faceId : " + faceId);
+            subj = photoSubjDao.createNewSubject(startNumber, album, faceId);
         }
         _logger.debug("returning photo-subject : " + subj);
         return subj;

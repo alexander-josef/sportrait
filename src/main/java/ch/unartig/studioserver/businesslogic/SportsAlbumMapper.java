@@ -180,7 +180,7 @@ public class SportsAlbumMapper
         PhotoDAO photoDao = new PhotoDAO();
         PhotoSubjectDAO photoSubjectgDao = new PhotoSubjectDAO();
 
-        PhotoSubject subj = photoSubjectgDao.findOrCreateSubjectByStartNumber(startNumber, album);
+        PhotoSubject subj = photoSubjectgDao.findOrCreateSubjectByStartNumberAndFace(startNumber, album, null);
         try
         {
             HibernateUtil.beginTransaction();
@@ -215,7 +215,7 @@ public class SportsAlbumMapper
         PhotoDAO photoDao = new PhotoDAO();
         PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         Date finishTime = null;
-        PhotoSubject subj = photoSubjectDAO.findOrCreateSubjectByStartNumber(startNumber, album);
+        PhotoSubject subj = photoSubjectDAO.findOrCreateSubjectByStartNumberAndFace(startNumber, album, null);
 
         // we will ignore the year month and day information of the date and only focus on the time part
         SimpleDateFormat simpleFormater = new SimpleDateFormat("HH:mm:ss");

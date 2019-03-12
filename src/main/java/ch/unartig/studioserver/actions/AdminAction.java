@@ -205,6 +205,8 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.imgRecognition.ImageRecognitionPostProcessor;
+import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.businesslogic.*;
@@ -367,17 +369,43 @@ public class AdminAction extends MappingDispatchAction
      */
     public ActionForward deleteFinishtimeMappings(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UAPersistenceException
     {
-        GenericLevelDAO glDao = new GenericLevelDAO();
-        PhotoDAO photoDao = new PhotoDAO();
-        DynaActionForm startnumberMappingForm = (DynaActionForm) form;
-
-        Long albumId = (Long) startnumberMappingForm.get("sportsAlbumId");
-        _logger.debug("albumId [" + albumId + "]");
-        Album album = (Album) glDao.load(albumId, Album.class);
+        Album album = getAlbum((DynaActionForm) form);
 
         SportsAlbumMapper mapper = SportsAlbumMapper.createMapper(album);
         mapper.delete();
         return mapping.findForward("success");
+    }
+
+    /**
+     * delete all startnumber-mappings for a given album
+     *
+     * @param mapping
+     * @param form
+     * @param request
+     * @param response
+     * @return actionforward
+     */
+    public ActionForward postProcessMappings(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UAPersistenceException
+    {
+        Album album = getAlbum((DynaActionForm) form);
+
+
+        ImageRecognitionPostProcessor postProcessor = new ImageRecognitionPostProcessor(album.getGenericLevelId());
+        Thread postProcessorServer = new Thread(postProcessor);
+        postProcessorServer.start();
+        _logger.info("Post Processor for unknown faces started up - for etappe : " + album.getEventCategory());
+
+
+        return mapping.findForward("success");
+    }
+
+    private Album getAlbum(DynaActionForm form) {
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        DynaActionForm startnumberMappingForm = form;
+
+        Long albumId = (Long) startnumberMappingForm.get("sportsAlbumId");
+        _logger.debug("albumId [" + albumId + "]");
+        return (Album) glDao.load(albumId, Album.class);
     }
 
     /**

@@ -17,23 +17,21 @@ import java.util.Map;
  * Singleton class to handle amazon sqs queues related logic
  */
 public class MessageQueueHandler {
-
+    private Logger _logger = Logger.getLogger(getClass().getName());
     public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
     public static final String PHOTO_ID = "photoId"; // used as message attribute
-    private Logger _logger = Logger.getLogger(getClass().getName());
-
+    public static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
+    private String sportraitQueueName;
     private AmazonSQS sqs;
-
-
     /**
      * Single instance of class to be retrieved via the static getter
      */
     private static final MessageQueueHandler INSTANCE = new MessageQueueHandler();
-    private String sportraitQueueName;
 
     public static MessageQueueHandler getInstance() {
         return INSTANCE;
     }
+
     private MessageQueueHandler() {
         sqs = AmazonSQSClientBuilder.defaultClient();
         sportraitQueueName = "sportraitQueueName"; // todo : either name per album or move to Registry
@@ -44,7 +42,7 @@ public class MessageQueueHandler {
      * @param album needed to derive the queue name (-> generic level ID)
      * @return
      */
-    private CreateQueueResult getQueue(Album album) {
+    private CreateQueueResult getImageRecognitionQueue(Album album) {
         // todo later : create a queue per album - start with queue
         // CreateQueueResult queueResult = sqs.createQueue(album.getGenericLevelId().toString());
         CreateQueueResult queueResult = sqs.createQueue(sportraitQueueName);
@@ -77,7 +75,7 @@ public class MessageQueueHandler {
      * @return
      */
     public SendMessageResult addMessage(Album album, Long photoId, String path) {
-        String queueUrl = getQueue(album).getQueueUrl();
+        String queueUrl = getImageRecognitionQueue(album).getQueueUrl();
         _logger.info("Posting message : " + path + " to queue ["+ queueUrl +"]");
         _logger.debug("with param [eventCategoryId] : " + album.getEventCategory().getEventCategoryId().toString());
         _logger.debug("with param [photoId] : " + photoId.toString());
@@ -107,4 +105,47 @@ public class MessageQueueHandler {
     public String getSportraitQueueName() {
         return sportraitQueueName;
     }
+
+    public String getUnknownFacesQueueName(Long albumId) {
+        return UNKNOWN_FACES_QUEUE_PREFIX+albumId;
+    }
+
+    /**
+     * Add a message to a separate queue for every unknown face in a etappe
+     * @param runnerFace used to extract faceID for the message body
+     * @param photoId - will be submitted as a message attribute
+     * @param albumId
+     * @return SendMessageResult
+     */
+    public SendMessageResult addMessageForUnknownFace(RunnerFace runnerFace, String photoId, Long albumId) {
+        String path = runnerFace.getPath();
+        String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
+
+        CreateQueueResult queueResult = sqs.createQueue(UNKNOWN_FACES_QUEUE_PREFIX+albumId);
+
+        String queueUrl = queueResult.getQueueUrl();
+        _logger.info("Posting message for unknown face in  : " + path + " to queue ["+ queueUrl +"]");
+        _logger.debug("with param [photoId] : " + photoId.toString());
+
+
+        final Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+
+        messageAttributes.put(PHOTO_ID, new MessageAttributeValue()
+                .withDataType("String")
+                .withStringValue(photoId));
+
+
+        SendMessageRequest msg = new SendMessageRequest()
+                .withQueueUrl(queueUrl)
+                .withMessageBody(faceId)
+                .withMessageAttributes(messageAttributes);
+
+        SendMessageResult result = sqs.sendMessage(msg);
+
+        return result;
+
+
+    }
+
+
 }

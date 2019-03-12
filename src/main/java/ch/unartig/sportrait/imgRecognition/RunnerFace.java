@@ -90,4 +90,12 @@ public class RunnerFace {
     private String getDefaultValue() {
         return "**********";
     }
+
+    public FaceRecord getFaceRecord() {
+        return faceRecord;
+    }
+
+    public String getPath() {
+        return path;
+    }
 }
