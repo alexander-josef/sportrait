@@ -107,7 +107,7 @@ public class StartnumberRecognitionProcessorTest implements SportraitImageProces
      * @param faceRecord // todo : can we assign a unique faceId ?
      */
     private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, FaceRecord faceRecord) {
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId, rekognitionClient, faceRecord);
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId, rekognitionClient, faceRecord.getFace().getFaceId());
 
 
         for (FaceMatch matchingFace: faceImageMatches) { // check for a startnumber instance that contains the matching faceID and has a valid startnumber

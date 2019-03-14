@@ -1,22 +1,32 @@
 package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
+import ch.unartig.studioserver.model.EventRunner;
+import ch.unartig.studioserver.model.Photo;
+import ch.unartig.studioserver.model.PhotoSubject;
+import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
+import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
+import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.InvalidParameterException;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.amazonaws.services.sqs.model.DeleteQueueRequest;
 import com.amazonaws.services.sqs.model.Message;
 import com.amazonaws.services.sqs.model.QueueDoesNotExistException;
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 
 public class ImageRecognitionPostProcessor implements Runnable{
@@ -115,6 +125,9 @@ public class ImageRecognitionPostProcessor implements Runnable{
             } else if (idleCounter > MAX_IDLE) {
                 _logger.info("idle counter reached MAX_IDLE - shutting down");
                 shutdown();
+                sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
+                _logger.info("shut down polling and deleted queue : " +queueUrl);
+
             }
 
 
@@ -125,10 +138,65 @@ public class ImageRecognitionPostProcessor implements Runnable{
     }
 
     private boolean processTask(Message message) {
+        // todo : think about mapBetterNumber logic ... call here? separate executor?
+
+
         _logger.debug("processing post processing task for : " + message.getBody());
-        _logger.debug(" ******* do nothing *********");
+        PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
+        PhotoDAO photoDAO = new PhotoDAO();
+
+        String faceId = message.getBody();
+        Photo photo = photoDAO.load(Long.valueOf(message.getMessageAttributes().get(MessageQueueHandler.PHOTO_ID).getStringValue()));
+
+
+
+        // todo :  improve accuracy by checking if there's already a startnumber match for this face -
+        //     if yes :
+        //            - replace startnumber if the old startnumber contains less digies (for example 2 instead of 3) - or if accurcy is different?
+
+        // search face record in collection
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(StartnumberProcessor.FACE_COLLECTION_ID,rekognitionClient, faceId);
+
+        if (faceImageMatches.size()==0) {
+            _logger.debug("No face matches for faceId : " + faceId);
+            return false;
+        }
+        List<PhotoSubject> matchingPhotoSubjects = photoSubjectDAO.getMatchingPhotoSubjects(faceImageMatches,albumId);
+
+
+        // todo : go through matching photoSubjects and add entries for photoId gotten by message!!
+
+        PhotoSubject bestPhotoSubject = null; // store the photoSubject here that contains a startnumber with the most digits
+        int startnumberLength=0;
+        String startnumber="n/a";
+        for (PhotoSubject photoSubject : matchingPhotoSubjects) {
+            EventRunner runnerWithBestNumber = photoSubject.getEventRunners().stream()
+                    .max(Comparator.comparing(o -> o.getStartnumber().length()))
+                    .orElse(null);
+            if (runnerWithBestNumber!=null && runnerWithBestNumber.getStartnumber().length() >startnumberLength) {
+                startnumber = runnerWithBestNumber.getStartnumber();
+                startnumberLength = runnerWithBestNumber.getStartnumber().length();
+                bestPhotoSubject=photoSubject;
+                _logger.debug("Startnumber length now : [" + runnerWithBestNumber.getStartnumber().length() +"] and photo subject = " + photoSubject);
+                _logger.debug("Startnumber  = " + runnerWithBestNumber.getStartnumber());
+            }
+        }
+        _logger.debug("");
+        if (bestPhotoSubject!=null) {
+            _logger.debug("**************************************************************************************************");
+            _logger.debug("*********** Found startnumber for unmapped FaceID " + faceId + " --> Photosubject : " + bestPhotoSubject + "Startnumber : " + startnumber);
+            _logger.debug("*********** Added for photo : " + photo.getFilename() + "**********");
+            _logger.debug("**************************************************************************************************");
+            photo.addPhotoSubject(bestPhotoSubject);
+            photoDAO.saveOrUpdate(photo);
+        }
+
         return true;
     }
+
+
+
+
 
     public void shutdown() {
         executor.shutdown(); // don't use shutdownNow() - we want to finish execution of pending threads

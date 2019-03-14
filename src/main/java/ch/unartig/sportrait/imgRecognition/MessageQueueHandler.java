@@ -117,14 +117,15 @@ public class MessageQueueHandler {
      * @param albumId
      * @return SendMessageResult
      */
-    public SendMessageResult addMessageForUnknownFace(RunnerFace runnerFace, String photoId, Long albumId) {
+    public SendMessageResult    addMessageForUnknownFace(RunnerFace runnerFace, String photoId, Long albumId) {
+        // todo : too many messaages sent - find out why
         String path = runnerFace.getPath();
         String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
 
         CreateQueueResult queueResult = sqs.createQueue(UNKNOWN_FACES_QUEUE_PREFIX+albumId);
 
         String queueUrl = queueResult.getQueueUrl();
-        _logger.info("Posting message for unknown face in  : " + path + " to queue ["+ queueUrl +"]");
+        _logger.info("Posting message for unknown face [ID : "+faceId+"] in  : " + path + " to queue ["+ queueUrl +"]");
         _logger.debug("with param [photoId] : " + photoId.toString());
 
 

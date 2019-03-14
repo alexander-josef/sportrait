@@ -533,7 +533,7 @@ public class Photo extends GeneratedPhoto
         {
             subjects = new HashSet();
         }
-        boolean result = subjects.add(subj);
+        subjects.add(subj);
     }
 
     /**

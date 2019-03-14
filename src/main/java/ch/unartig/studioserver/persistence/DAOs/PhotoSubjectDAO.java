@@ -35,10 +35,16 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.EventRunner;
 import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import com.amazonaws.services.rekognition.model.FaceMatch;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PhotoSubjectDAO
 {
@@ -86,17 +92,17 @@ public class PhotoSubjectDAO
     {
         PhotoSubjectDAO subjDao = new PhotoSubjectDAO();
         PhotoSubject retVal = new PhotoSubject();
-        HibernateUtil.beginTransaction();
+        // do we have problems with the transactions ? not all subjects were saved to db in a test run
+        // HibernateUtil.beginTransaction();
         Long photoSubjectId = null;
         try
         {
             _logger.debug("going to save new PhotoSubject");
             photoSubjectId = subjDao.saveOrUpdate(retVal);
-            HibernateUtil.commitTransaction();
+            // HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
         {
-            _logger.error("cannot save photoSubject, rolling back", e);
-            HibernateUtil.rollbackTransaction();
+            _logger.error("cannot save photoSubject", e);
             throw new UAPersistenceException("cannot save photoSubject", e);
         } finally
         {
@@ -130,23 +136,20 @@ public class PhotoSubjectDAO
         // CAUTTION : faceID saved in name field
         photoSubject.setName(faceId); // needs to be saved separately in creation method ??
 
-        // since the session was closed before we need to reload album:
-        // if we uncomment the following line, does the 'no session' problem disappear?? YES!
-//        System.out.println("buuuh!");
-//        System.out.println("album = " + album);
         try
         {
+            // todo : delete if not needed
             // HibernateUtil.beginTransaction();
             album = (Album) glDao.load(album.getGenericLevelId(), Album.class);
             _logger.debug("creating and saving new eventRunner");
             EventRunner eventRunner = new EventRunner(album.getEvent(), startNumber, photoSubject);
             eventRunnerDao.save(eventRunner);
-            _logger.debug("eventrunner saved to db");
+            _logger.debug("eventrunner saved");
+            // todo : delete if not needed
             // HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
         {
-            _logger.error("cannot save eventRunner, rolling back", e);
-            HibernateUtil.rollbackTransaction();
+            _logger.error("cannot save eventRunner", e);
             throw new UAPersistenceException("cannot save eventRunner", e);
         }
         return photoSubject;
@@ -166,16 +169,41 @@ public class PhotoSubjectDAO
      */
     public PhotoSubject findOrCreateSubjectByStartNumberAndFace(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
-        PhotoSubjectDAO photoSubjDao = new PhotoSubjectDAO();
-
-        PhotoSubject subj = photoSubjDao.findByStartNumberAndAlbum(startNumber, album, faceId);
+        PhotoSubject subj = findByStartNumberAndAlbum(startNumber, album, faceId);
         if (subj == null)
         {
             _logger.debug("no photo subject found, going to creating a new one - with faceId : " + faceId);
-            subj = photoSubjDao.createNewSubject(startNumber, album, faceId);
+            subj = createNewSubject(startNumber, album, faceId);
         }
         _logger.debug("returning photo-subject : " + subj);
         return subj;
     }
 
+
+    public List<PhotoSubject> getMatchingPhotoSubjects(List<FaceMatch> faceImageMatches, Long albumId) {
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        Album album = (Album)glDao.load(albumId, Album.class);
+
+        List<String> faceIds =  faceImageMatches.stream()
+                .map(faceMatch -> faceMatch.getFace().getFaceId())
+                .collect(Collectors.toList());
+
+        _logger.debug("faceIDs from face matches : " + faceIds);
+        // todo : use projections to return only startnumbers?
+
+        Criteria criteria = HibernateUtil.currentSession().createCriteria(PhotoSubject.class)
+                .createAlias("eventRunners", "runner")
+                .add(Restrictions.in("name", faceIds))
+                .add(Restrictions.eq("runner.event", album.getEvent()));
+
+        List<PhotoSubject> photoSubjects = null;
+        try {
+            photoSubjects = criteria.list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+
+        _logger.debug("PhotoSubjects with matching faces : " + photoSubjects);
+        return photoSubjects;
+    }
 }

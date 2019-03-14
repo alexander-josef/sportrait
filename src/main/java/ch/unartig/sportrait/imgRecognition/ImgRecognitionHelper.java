@@ -7,17 +7,17 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 public class ImgRecognitionHelper {
-    static Logger _logger = Logger.getLogger("ImgRecognitionHelper");
-    public static List<FaceMatch>  searchMatchingFaces(String faceCollectionId, AmazonRekognition rekognitionClient, FaceRecord faceRecord) {
+    private static Logger _logger = Logger.getLogger("ImgRecognitionHelper");
+    public static List<FaceMatch>  searchMatchingFaces(String faceCollectionId, AmazonRekognition rekognitionClient, String faceId) {
         // search face record in collection
         SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
                 .withCollectionId(faceCollectionId)
-                .withFaceId(faceRecord.getFace().getFaceId())
+                .withFaceId(faceId)
                 .withFaceMatchThreshold(95F) // defaulted to 70F
                 .withMaxFaces(3); // used to be 2
 
         List<FaceMatch> retVal = rekognitionClient.searchFaces(searchFacesRequest).getFaceMatches();
-        System.out.println("Face(s) in collection matching faceId [" + faceRecord.getFace().getFaceId()+"] found - number of matches : "+ retVal.size());
+        _logger.debug("Face(s) in collection matching faceId [" + faceId+"] found - number of matches : "+ retVal.size());
         return retVal;
     }
 
