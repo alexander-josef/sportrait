@@ -13,21 +13,16 @@ import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.InvalidParameterException;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
-import com.amazonaws.services.sqs.model.DeleteQueueRequest;
-import com.amazonaws.services.sqs.model.Message;
-import com.amazonaws.services.sqs.model.QueueDoesNotExistException;
-import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
+import com.amazonaws.services.sqs.model.*;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 
 public class ImageRecognitionPostProcessor implements Runnable{
@@ -70,9 +65,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
     @Override
     public void run() {
         int idleCounter=0; // idle counter - if idle counter reaches MAX_IDLE, shutdown the polling server
-        // todo : check, does this work ? or is the queue only created further down in the catch clause?
         String queueUrl = MessageQueueHandler.getInstance().getUnknownFacesQueueName(albumId);
-
 
         while (!executor.isShutdown()) {
             // poll for messages on the queue.
@@ -110,7 +103,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
                 });
 
                 // remove the job from the queue when completed successfully (or skipped)
-                sqs.deleteMessage(queueUrl, message.getReceiptHandle());
+                DeleteMessageResult result = sqs.deleteMessage(queueUrl, message.getReceiptHandle());
+                _logger.debug("message processed - deleted message from queue with result : "+result.toString());
                 idleCounter=0; // reset idle counter after successfully processing a message
             }
 
@@ -126,8 +120,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
             } else if (idleCounter > MAX_IDLE) {
                 _logger.info("idle counter reached MAX_IDLE - shutting down");
                 shutdown();
-                sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
-                _logger.info("shut down polling and deleted queue : " +queueUrl);
+                DeleteQueueResult result = sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
+                _logger.info("shut down polling and deleted queue : " +queueUrl + " -- result : " + result);
 
             }
 
@@ -140,6 +134,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
 
     private boolean processTask(Message message) {
         // todo : think about mapBetterNumber logic ... call here? separate executor?
+
         String faceId = message.getBody();
         String photoId = message.getMessageAttributes().get(MessageQueueHandler.PHOTO_ID).getStringValue();
 
@@ -147,20 +142,13 @@ public class ImageRecognitionPostProcessor implements Runnable{
         PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         PhotoDAO photoDAO = new PhotoDAO();
 
-        // todo :  improve accuracy by checking if there's already a startnumber match for this face -
-        //     if yes :
-        //            - replace startnumber if the old startnumber contains less digies (for example 2 instead of 3) - or if accurcy is different?
-
         // search face record in collection
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(StartnumberProcessor.FACE_COLLECTION_ID,rekognitionClient, faceId);
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(ImgRecognitionHelper.FACE_COLLECTION_ID,rekognitionClient, faceId);
 
         if (faceImageMatches.size()==0) {
             _logger.debug("No face matches for faceId : " + faceId);
             return false;
         }
-
-
-        // todo : go through matching photoSubjects and add entries for photoId gotten by message!!
 
         PhotoSubject bestPhotoSubject = null; // store the photoSubject here that contains a startnumber with the most digits
         int startnumberLength=0;

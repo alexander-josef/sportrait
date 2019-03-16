@@ -118,7 +118,6 @@ public class MessageQueueHandler {
      * @return SendMessageResult
      */
     public SendMessageResult    addMessageForUnknownFace(RunnerFace runnerFace, String photoId, Long albumId) {
-        // todo : too many messaages sent - find out why
         String path = runnerFace.getPath();
         String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
 

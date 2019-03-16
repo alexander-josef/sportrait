@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * polls sqs for queues of albums with images to process
  */
 public class StartnumberProcessor implements Runnable {
-    public static final String FACE_COLLECTION_ID = "sportraitFaces2019";
     public static final int MAX_FACES = 5;
     private Logger _logger = Logger.getLogger(getClass().getName());
     public static final int MAX_NUMBER_OF_MESSAGES = 10;
@@ -74,7 +73,7 @@ public class StartnumberProcessor implements Runnable {
         /**
          * just one faces collection ?
          */
-        ImgRecognitionHelper.createFacesCollection(rekognitionClient, FACE_COLLECTION_ID);
+        ImgRecognitionHelper.createFacesCollection(rekognitionClient);
     }
 
     /**
@@ -193,8 +192,7 @@ public class StartnumberProcessor implements Runnable {
         // Process downstream actions:
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
-            // todo : add facedetections to processor and do all in once processor?
-            processor.process(photoTextDetections, photoFaceRecords, photoPath, FACE_COLLECTION_ID, photoId);
+            processor.process(photoTextDetections, photoFaceRecords, photoPath, ImgRecognitionHelper.FACE_COLLECTION_ID, photoId);
         }
     }
 
@@ -213,6 +211,7 @@ public class StartnumberProcessor implements Runnable {
     private List<FaceRecord> addFacesToCollection(String bucket, String key, String filename, String collectionId) {
         // todo : put faces to collections per album
         // todo : only add one face per startnumber to collection ? --> price wise not necessary
+        // todo : check if we have too many false positives when collection grows
 
         _logger.debug("Adding faces to collection for :  " + bucket + " " + key);
         _logger.debug("filename used as external image id :  " + filename);
@@ -226,7 +225,7 @@ public class StartnumberProcessor implements Runnable {
                 .withImage(image)
                 .withQualityFilter(QualityFilter.AUTO) // use AUTO to apply amazon defined quality filtering - seems to work good
                 .withMaxFaces(MAX_FACES) // detecting up to 5 faces - the biggest boxes will be returned
-                .withCollectionId(FACE_COLLECTION_ID) // todo : just one global cellection used for now - shall we use eventCategoryId of photo instead as the collection ID ?? How would we make sure the collection is initialized ? have a map that indicates true or false ?
+                .withCollectionId(ImgRecognitionHelper.FACE_COLLECTION_ID) // todo : just one global collection used for now - shall we use eventCategoryId of photo instead as the collection ID ?? How would we make sure the collection is initialized ? have a map that indicates true or false ?
                 .withExternalImageId(filename) // external image ID must be without '/' - only filename
                 .withDetectionAttributes("DEFAULT");
 

@@ -55,24 +55,25 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
     public void process(List<TextDetection> textDetections, List<FaceRecord> photoFaceRecords, String path, String collectionId, String photoId) {
         PhotoDAO photoDAO = new PhotoDAO();
 
-        List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
-        List<RunnerFace> unknownFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
+        try {
+            List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
+            // todo : only relevant unknown faces here :
+            List<RunnerFace> unknownFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
 
-        HibernateUtil.beginTransaction();
-        Photo photo = photoDAO.load(new Long(photoId));
-        Long albumId = photo.getAlbum().getGenericLevelId();
+            HibernateUtil.beginTransaction();
+            Photo photo = photoDAO.load(new Long(photoId));
+            Long albumId = photo.getAlbum().getGenericLevelId();
 
-        // todo : use photo as param and avoid 2nd loading of photo in method
-        persistStartnumbers(startnumbersForFile, path, photo);
-        photoDAO.saveOrUpdate(photo);
-        _logger.debug("going to update photo ...");
-        HibernateUtil.commitTransaction();
-        _logger.debug("photo updated and commited to db");
-        // todo : new session needed?
-        //HibernateUtil.currentSession();
-
-        // add faces w/o matches to separate queue per album
-        putUnknownFacesToPostProcessingQueue(unknownFaces, photoId, albumId);
+            persistStartnumbers(startnumbersForFile, path, photo);
+            photoDAO.saveOrUpdate(photo);
+            _logger.debug("going to update photo ...");
+            HibernateUtil.commitTransaction();
+            _logger.debug("photo updated and commited to db");
+            // add faces w/o matches to separate queue per album
+            putUnknownFacesToPostProcessingQueue(unknownFaces, photoId, albumId);
+        } catch (UAPersistenceException | NumberFormatException e) {
+            _logger.warn("Problem processing number recognition for photoId ["+photoId+"]/ path ["+path+"] - ignoring, continuing with next message",e);
+        }
 
         _logger.debug("*************************************");
         _logger.debug("*********** Done for File ***********");
@@ -125,6 +126,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
         _logger.debug("*************************************");
         _logger.debug("Mapping added/indexed faces to startnumbers");
         List<RunnerFace> unknownFaces = new ArrayList<>(); // return value - local list to collect unknown faces
+        List<String> unknownIgnoredFaceIds = new ArrayList<>();
 
         // process face records detected for the file
         for (FaceRecord faceRecord : photoFaceRecords) {
@@ -136,14 +138,22 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
                 _logger.debug("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
                 // todo : check quality of face recognition : ignore low quality faces (-> out of focus etc.) for postprocessing
                 // todo : delete them from the collection?
-                // sharpness level threshold:
-                // brightness level threshold:
-                // confidence level threshold:
-                faceRecord.getFaceDetail().getQuality().getSharpness();
-                unknownFaces.add(new RunnerFace(faceRecord, path));
-                _logger.debug("*** added to list of faces without numbers for later processing");
+                boolean isQualityOk = (faceRecord.getFaceDetail().getQuality().getSharpness() > ImgRecognitionHelper.MIN_FACES_SHARPNESS)
+                        && (faceRecord.getFaceDetail().getQuality().getBrightness()> ImgRecognitionHelper.MIN_FACES_BRIGHTNESS)
+                        && (faceRecord.getFaceDetail().getConfidence()> ImgRecognitionHelper.MIN_FACES_CONFIDENCE);
+                if (isQualityOk) {
+                    unknownFaces.add(new RunnerFace(faceRecord, path));
+                    _logger.debug("*** added to list of faces without numbers for later processing");
+                } else {
+                    _logger.debug("*** ignoring face ["+faceRecord.getFace().getFaceId()+"] - quality too low; will be removed from collection");
+                    unknownIgnoredFaceIds.add(faceRecord.getFace().getFaceId());
+                }
             }
+            _logger.debug("done for face : " + faceRecord.getFace().getFaceId());
         }
+        // remove faces from low quality from collection
+        ImgRecognitionHelper.removeFromCollection(unknownIgnoredFaceIds, rekognitionClient);
+
         return unknownFaces;
     }
 
