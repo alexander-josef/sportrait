@@ -18,7 +18,7 @@ public class ImgRecognitionHelper {
     private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
     static final String FACE_COLLECTION_ID = "sportraitFaces2019";
     private AmazonRekognition rekognitionClient;
-    private Logger _logger = Logger.getLogger("ImgRecognitionHelper");
+    private Logger _logger = Logger.getLogger(getClass().getName());
     private static ImgRecognitionHelper _instance=null;
 
     private ImgRecognitionHelper() {
