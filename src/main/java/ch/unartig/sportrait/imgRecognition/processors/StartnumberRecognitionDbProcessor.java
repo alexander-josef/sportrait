@@ -10,8 +10,6 @@ import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import com.amazonaws.services.rekognition.AmazonRekognition;
-import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
 import org.apache.log4j.Logger;
 
@@ -29,11 +27,9 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
 
     List<Startnumber> startnumbers = new ArrayList<>(); // reference to numbers stored in startnumberprocessor ?
     private List<RunnerFace> facesWithoutNumbers = new ArrayList<>(); // list of detected faces from runners without a match, detected startnumber
-    private final AmazonRekognition rekognitionClient;
+    // private final AmazonRekognition rekognitionClient;
 
     public StartnumberRecognitionDbProcessor() {
-        rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
-        // faceCollectionId according to album or eventcategory
     }
 
     @Override
@@ -57,7 +53,6 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
 
         try {
             List<Startnumber> startnumbersForFile = getStartnumbers(textDetections, path);
-            // todo : only relevant unknown faces here :
             List<RunnerFace> unknownFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
 
             HibernateUtil.beginTransaction();
@@ -98,13 +93,9 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             for (Startnumber startnumber : startnumbersForFile) {
                 _logger.debug("number of photo subjects : " + photo.getPhotoSubjects().size());
                 PhotoSubject ps = photoSubjectDAO.findOrCreateSubjectByStartNumberAndFace(startnumber.getStartnumberText(), photo.getAlbum(), startnumber.getFaceId());
-                // todo  : following line needed ?
-                // photoDAO.initializePhotoSubjects(photo);
                 photo.addPhotoSubject(ps);
                 _logger.debug("                  added photoSubject : " + ps.getPhotoSubjectId().toString());
             }
-            // todo : remove if not needed
-            // photoDAO.saveOrUpdate(photo);
             _logger.debug("                  saved !");
         } catch (NumberFormatException e) {
             _logger.warn("Number format exception for Photo ID - cannot persist Startnumber", e);
@@ -121,6 +112,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
      * @param path
      * @param startnumbersForFile
      * @param collectionId
+     * @return list of RunnerFace object to send to a separate post processing queue
      */
     public List<RunnerFace> mapFacesToStartnumbers(List<FaceRecord> photoFaceRecords, String path, List<Startnumber> startnumbersForFile, String collectionId) {
         _logger.debug("*************************************");
@@ -134,10 +126,8 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             _logger.debug("** Processing FaceID " + faceRecord.getFace().getFaceId());
             // for each number detected in the file:
             startnumber = findAndMapStartnumberForFace(startnumbersForFile, faceRecord);
-            if (startnumber.isEmpty()) { // face w/o matching number -> add to list
+            if (startnumber.isEmpty()) { // face w/o matching number -> check if it needs to be added to list
                 _logger.debug("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
-                // todo : check quality of face recognition : ignore low quality faces (-> out of focus etc.) for postprocessing
-                // todo : delete them from the collection?
                 boolean isQualityOk = (faceRecord.getFaceDetail().getQuality().getSharpness() > ImgRecognitionHelper.MIN_FACES_SHARPNESS)
                         && (faceRecord.getFaceDetail().getQuality().getBrightness()> ImgRecognitionHelper.MIN_FACES_BRIGHTNESS)
                         && (faceRecord.getFaceDetail().getConfidence()> ImgRecognitionHelper.MIN_FACES_CONFIDENCE);
@@ -151,8 +141,13 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             }
             _logger.debug("done for face : " + faceRecord.getFace().getFaceId());
         }
+
         // remove faces from low quality from collection
-        ImgRecognitionHelper.removeFromCollection(unknownIgnoredFaceIds, rekognitionClient);
+        _logger.debug("  Going to remove following IDs from Faces Collection : ");
+        for (String s : unknownIgnoredFaceIds) {
+            _logger.debug("Face : " + s);
+        }
+        ImgRecognitionHelper.getInstance().removeFromFacesCollection(unknownIgnoredFaceIds);
 
         return unknownFaces;
     }
@@ -200,7 +195,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
      * @param startnumbers        list of all startnumber objects that should be compared
      */
     private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, String collectionId, List<Startnumber> startnumbers) {
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(collectionId, rekognitionClient, detectedStartnumber.getFaceId());
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.getInstance().searchMatchingFaces(collectionId, detectedStartnumber.getFaceId());
         for (FaceMatch matchingFace : faceImageMatches) { // check for a startnumber instance that contains the matching faceID and has a valid startnumber
             // put in different method, extract number and return with 1st match
             _logger.debug("     matching face = " + matchingFace.getFace().getFaceId() + " -- in image : " + matchingFace.getFace().getExternalImageId()); // we do have the link to the path of the image!!!

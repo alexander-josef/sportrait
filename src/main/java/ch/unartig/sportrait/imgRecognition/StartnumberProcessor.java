@@ -3,7 +3,6 @@ package ch.unartig.sportrait.imgRecognition;
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor;
 import com.amazonaws.services.rekognition.AmazonRekognition;
-import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -53,7 +52,6 @@ public class StartnumberProcessor implements Runnable {
      */
     public StartnumberProcessor() {
         _logger.info("**** Starting up Startnumber Processor");
-        rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
         maxImagesToProcess = -1;
         sqs = AmazonSQSClientBuilder.defaultClient();
 
@@ -73,7 +71,7 @@ public class StartnumberProcessor implements Runnable {
         /**
          * just one faces collection ?
          */
-        ImgRecognitionHelper.createFacesCollection(rekognitionClient);
+        ImgRecognitionHelper.getInstance().createFacesCollection();
     }
 
     /**
@@ -186,7 +184,7 @@ public class StartnumberProcessor implements Runnable {
 
 
         // text detection:
-        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getInstance().getTextDetectionsFor(bucket, key);
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key, filename, eventCategoryId);
 
         // Process downstream actions:

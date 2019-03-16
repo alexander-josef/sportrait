@@ -1,10 +1,7 @@
 package ch.unartig.sportrait.imgRecognition;
 
-import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.FaceRecord;
-import com.amazonaws.services.rekognition.model.SearchFacesRequest;
-import com.amazonaws.services.rekognition.model.SearchFacesResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,16 +27,15 @@ public class RunnerFace {
     /**
      *
      * @param faceCollectionId
-     * @param rekognitionClient
      * @param startnumbers
      */
-    void addStartnumberFromMatchingFacesInCollection(String faceCollectionId, AmazonRekognition rekognitionClient, List<Startnumber> startnumbers) {
+    void addStartnumberFromMatchingFacesInCollection(String faceCollectionId, List<Startnumber> startnumbers) {
         // todo :  improve accuracy by checking if there's already a startnumber match for this face -
         //     if yes :
         //            - replace startnumber if the old startnumber contains less digies (for example 2 instead of 3) - or if accurcy is different?
 
         // search face record in collection
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId,rekognitionClient, faceId);
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.getInstance().searchMatchingFaces(faceCollectionId, faceId);
 
         String startnumber;
         startnumber = getFirstStartnumberFromMatchingFaces(faceImageMatches, startnumbers); // check why "no startnumber found" is also returned

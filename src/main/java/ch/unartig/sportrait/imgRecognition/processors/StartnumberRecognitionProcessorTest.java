@@ -3,7 +3,6 @@ package ch.unartig.sportrait.imgRecognition.processors;
 import ch.unartig.sportrait.imgRecognition.ImgRecognitionHelper;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
-import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.*;
 
 import java.util.ArrayList;
@@ -16,13 +15,11 @@ public class StartnumberRecognitionProcessorTest implements SportraitImageProces
 
     List<Startnumber> startnumbers;
     private List<RunnerFace> facesWithoutNumbers; // list of detected faces from runners without a matche, detected startnumber
-    private final AmazonRekognition rekognitionClient;
     private final String faceCollectionId;
 
-    public StartnumberRecognitionProcessorTest(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, AmazonRekognition rekognitionClient, String faceCollectionId) {
+    public StartnumberRecognitionProcessorTest(List<Startnumber> sn, List<RunnerFace> facesWithoutNumbers, String faceCollectionId) {
         startnumbers = sn;
         this.facesWithoutNumbers = facesWithoutNumbers;
-        this.rekognitionClient = rekognitionClient;
         this.faceCollectionId = faceCollectionId;
     }
 
@@ -107,7 +104,7 @@ public class StartnumberRecognitionProcessorTest implements SportraitImageProces
      * @param faceRecord // todo : can we assign a unique faceId ?
      */
     private void mapBetterNumbersForMatchingFaces(Startnumber detectedStartnumber, FaceRecord faceRecord) {
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(faceCollectionId, rekognitionClient, faceRecord.getFace().getFaceId());
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.getInstance().searchMatchingFaces(faceCollectionId, faceRecord.getFace().getFaceId());
 
 
         for (FaceMatch matchingFace: faceImageMatches) { // check for a startnumber instance that contains the matching faceID and has a valid startnumber

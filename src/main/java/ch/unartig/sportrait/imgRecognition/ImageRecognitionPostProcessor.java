@@ -7,8 +7,6 @@ import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import com.amazonaws.services.rekognition.AmazonRekognition;
-import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.InvalidParameterException;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -34,7 +32,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
     private final ThreadPoolExecutor executor;
-    private AmazonRekognition rekognitionClient;
     private final AmazonSQS sqs;
     private AtomicInteger numSeenProcessor = new AtomicInteger();
 
@@ -48,7 +45,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
     public ImageRecognitionPostProcessor(Long genericLevelId) {
         this.albumId = genericLevelId;
         _logger.info("**** Starting up Startnumber Post Processor");
-        rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
         maxImagesToProcess = -1;
         sqs = AmazonSQSClientBuilder.defaultClient();
 
@@ -143,7 +139,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
         PhotoDAO photoDAO = new PhotoDAO();
 
         // search face record in collection
-        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.searchMatchingFaces(ImgRecognitionHelper.FACE_COLLECTION_ID,rekognitionClient, faceId);
+        List<FaceMatch> faceImageMatches = ImgRecognitionHelper.getInstance().searchMatchingFaces(ImgRecognitionHelper.FACE_COLLECTION_ID, faceId);
 
         if (faceImageMatches.size()==0) {
             _logger.debug("No face matches for faceId : " + faceId);

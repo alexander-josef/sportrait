@@ -1,21 +1,40 @@
 package ch.unartig.sportrait.imgRecognition;
 
 import com.amazonaws.services.rekognition.AmazonRekognition;
+import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
 import org.apache.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Helper class for amazon image rekognition operations - implemented as a singleton
+ */
 public class ImgRecognitionHelper {
     public static final Float MIN_FACES_SHARPNESS =  10F; // see Apple notes for comparison of OK and not OK images of faces
     public static final Float MIN_FACES_CONFIDENCE = 99.9F;
     public static final Float MIN_FACES_BRIGHTNESS = 80F;
-    public static final int MAX_FACES_RETURNED_FROM_SEARCH = 3;
-    public static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
-    public static final String FACE_COLLECTION_ID = "sportraitFaces2019";
-    private static Logger _logger = Logger.getLogger("ImgRecognitionHelper");
+    private static final int MAX_FACES_RETURNED_FROM_SEARCH = 3;
+    private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
+    static final String FACE_COLLECTION_ID = "sportraitFaces2019";
+    private AmazonRekognition rekognitionClient;
+    private Logger _logger = Logger.getLogger("ImgRecognitionHelper");
+    private static ImgRecognitionHelper _instance=null;
 
-    public static List<FaceMatch>  searchMatchingFaces(String faceCollectionId, AmazonRekognition rekognitionClient, String faceId) {
+    private ImgRecognitionHelper() {
+        _instance = new ImgRecognitionHelper();
+    }
+
+    public static synchronized ImgRecognitionHelper getInstance() {
+
+        if (_instance==null) {
+            _instance = new ImgRecognitionHelper();
+            _instance.rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+        }
+        return _instance;
+    }
+
+    public List<FaceMatch>  searchMatchingFaces(String faceCollectionId, String faceId) {
         // search face record in collection
         SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
                 .withCollectionId(faceCollectionId)
@@ -29,12 +48,11 @@ public class ImgRecognitionHelper {
     }
 
     /**
-     * @param rekognitionClient
      * @param bucket
      * @param key
      * @return
      */
-    static List<TextDetection> getTextDetectionsFor(AmazonRekognition rekognitionClient, String bucket, String key) {
+    List<TextDetection> getTextDetectionsFor(String bucket, String key) {
         // text detection:
         DetectTextRequest textRequest = new DetectTextRequest()
                 .withImage(new Image()
@@ -57,7 +75,7 @@ public class ImgRecognitionHelper {
     }
 
 
-    static void createFacesCollection(AmazonRekognition rekognitionClient) {
+    void createFacesCollection() {
         _logger.info("Creating collection: " + ImgRecognitionHelper.FACE_COLLECTION_ID);
 
         CreateCollectionRequest request = new CreateCollectionRequest()
@@ -79,9 +97,10 @@ public class ImgRecognitionHelper {
     /**
      * Remove a list of faces from the collection - faces have been identified to be of low quality
      * @param faceIds the FaceIds for the faces to be removed from the collection
-     * @param rekognitionClient
+     *
      */
-    public static void removeFromCollection(List<String> faceIds, AmazonRekognition rekognitionClient) {
+    public void removeFromFacesCollection(List<String> faceIds) {
+        _logger.debug("Faces to be removed : " + faceIds.size());
         if (!faceIds.isEmpty()) {
             DeleteFacesRequest deleteFacesRequest = new DeleteFacesRequest().
                     withCollectionId(FACE_COLLECTION_ID).

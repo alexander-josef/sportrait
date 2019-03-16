@@ -67,7 +67,7 @@ public class Test {
         // define a processor for the tasks from the queue
 
         // process startnumber recognition
-        processors.add(new StartnumberRecognitionProcessorTest(startnumbers,facesWithoutNumbers,rekognitionClient, faceCollectionId));
+        processors.add(new StartnumberRecognitionProcessorTest(startnumbers,facesWithoutNumbers, faceCollectionId));
 
 
         // no limit for queue entries
@@ -101,10 +101,10 @@ public class Test {
         // need bucket and path
         String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
         String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
-        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getInstance().getTextDetectionsFor(bucket, key);
 
 
-        StartnumberRecognitionProcessorTest processor = new StartnumberRecognitionProcessorTest(allStartnumbers,facesWithoutNumbers, rekognitionClient, faceCollectionId);
+        StartnumberRecognitionProcessorTest processor = new StartnumberRecognitionProcessorTest(allStartnumbers,facesWithoutNumbers, faceCollectionId);
         List<Startnumber> photoStartnumbers = processor.getStartnumbers(photoTextDetections,key);
 
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
@@ -351,7 +351,7 @@ public class Test {
         System.out.println("Starting processing faces w/o numbers");
         System.out.println("######################");
         for (RunnerFace runnerFace : facesWithoutNumbers) {
-            runnerFace.addStartnumberFromMatchingFacesInCollection(faceCollectionId, rekognitionClient, startnumbers);
+            runnerFace.addStartnumberFromMatchingFacesInCollection(faceCollectionId, startnumbers);
         }
 
     }
@@ -371,7 +371,7 @@ public class Test {
 
 
         // text detection:
-        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getTextDetectionsFor(rekognitionClient, bucket, key);
+        List<TextDetection> photoTextDetections = ImgRecognitionHelper.getInstance().getTextDetectionsFor(bucket, key);
 
 
         // add the faces of the file/photo to the collection and get a list of face records as return value
