@@ -11,9 +11,10 @@ import java.util.List;
  * Helper class for amazon image rekognition operations - implemented as a singleton
  */
 public class ImgRecognitionHelper {
+    public static final int MAX_FACES = 5;
     public static final Float MIN_FACES_SHARPNESS =  10F; // see Apple notes for comparison of OK and not OK images of faces
     public static final Float MIN_FACES_CONFIDENCE = 99.9F;
-    public static final Float MIN_FACES_BRIGHTNESS = 80F;
+    public static final Float MIN_FACES_BRIGHTNESS = 60F;
     private static final int MAX_FACES_RETURNED_FROM_SEARCH = 3;
     private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
     static final String FACE_COLLECTION_ID = "sportraitFaces2019";
@@ -22,7 +23,6 @@ public class ImgRecognitionHelper {
     private static ImgRecognitionHelper _instance=null;
 
     private ImgRecognitionHelper() {
-        _instance = new ImgRecognitionHelper();
     }
 
     public static synchronized ImgRecognitionHelper getInstance() {
@@ -116,4 +116,70 @@ public class ImgRecognitionHelper {
         }
 
     }
+
+    /**
+     * add the faces of the file/photo to the collection and get a list of face records as return value
+     * use indexFaces operation to add detected faces - with defined quality - to collection with ID = eventCategoryId of the image that is processed - creates an indexFacesResult
+     * faces needed in collection for later comparison
+     * Check todo's
+     *
+     * @param bucket
+     * @param key
+     * @return list of faces records - can be null
+     */
+    public List<FaceRecord> addFacesToCollection(String bucket, String key, String filename) {
+        // todo : put faces to collections per album
+        // todo : only add one face per startnumber to collection ? --> price wise not necessary
+        // todo : check if we have too many false positives when collection grows
+
+        _logger.debug("Adding faces to collection for :  " + bucket + " " + key);
+        _logger.debug("filename used as external image id :  " + filename);
+
+        Image image = new Image()
+                .withS3Object(new S3Object()
+                        .withBucket(bucket)
+                        .withName(key));
+
+        IndexFacesRequest indexFacesRequest = new IndexFacesRequest()
+                .withImage(image)
+                .withQualityFilter(QualityFilter.AUTO) // use AUTO to apply amazon defined quality filtering - seems to work good
+                .withMaxFaces(MAX_FACES) // detecting up to 5 faces - the biggest boxes will be returned
+                .withCollectionId(FACE_COLLECTION_ID) // todo : just one global collection used for now - shall we use eventCategoryId of photo instead as the collection ID ?? How would we make sure the collection is initialized ? have a map that indicates true or false ?
+                .withExternalImageId(filename) // external image ID must be without '/' - only filename
+                .withDetectionAttributes("DEFAULT");
+
+        IndexFacesResult indexFacesResult = null;
+        try {
+            indexFacesResult = rekognitionClient.indexFaces(indexFacesRequest);
+        } catch (AmazonRekognitionException e) {
+            _logger.warn("Cannot index faces, see stacktrace - continuing");
+            e.printStackTrace();
+        }
+
+        _logger.debug("Done adding faces to collection for : " + key);
+        List<FaceRecord> faceRecords = null;
+        if (indexFacesResult != null) {
+            _logger.debug("Faces indexed:");
+            faceRecords = indexFacesResult.getFaceRecords();
+            for (FaceRecord faceRecord : faceRecords) {
+                _logger.debug("  Face ID: " + faceRecord.getFace().getFaceId());
+                _logger.debug("  Location:" + faceRecord.getFaceDetail().getBoundingBox().toString());
+            }
+
+            // for debug purposes:
+            List<UnindexedFace> unindexedFaces = indexFacesResult.getUnindexedFaces();
+            _logger.debug("Faces not indexed:");
+            for (UnindexedFace unindexedFace : unindexedFaces) {
+                _logger.debug("  Location:" + unindexedFace.getFaceDetail().getBoundingBox().toString());
+                _logger.debug("  Reasons:");
+                for (String reason : unindexedFace.getReasons()) {
+                    _logger.debug("   " + reason);
+                }
+            }
+        } else {
+            _logger.warn("No faces indexed - indexFacesResult = null !");
+        }
+        return faceRecords;
+    }
+
 }
