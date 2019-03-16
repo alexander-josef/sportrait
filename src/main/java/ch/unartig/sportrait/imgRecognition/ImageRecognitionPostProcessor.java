@@ -6,6 +6,7 @@ import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.FaceMatch;
@@ -139,16 +140,12 @@ public class ImageRecognitionPostProcessor implements Runnable{
 
     private boolean processTask(Message message) {
         // todo : think about mapBetterNumber logic ... call here? separate executor?
-
+        String faceId = message.getBody();
+        String photoId = message.getMessageAttributes().get(MessageQueueHandler.PHOTO_ID).getStringValue();
 
         _logger.debug("processing post processing task for : " + message.getBody());
         PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         PhotoDAO photoDAO = new PhotoDAO();
-
-        String faceId = message.getBody();
-        Photo photo = photoDAO.load(Long.valueOf(message.getMessageAttributes().get(MessageQueueHandler.PHOTO_ID).getStringValue()));
-
-
 
         // todo :  improve accuracy by checking if there's already a startnumber match for this face -
         //     if yes :
@@ -161,7 +158,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
             _logger.debug("No face matches for faceId : " + faceId);
             return false;
         }
-        List<PhotoSubject> matchingPhotoSubjects = photoSubjectDAO.getMatchingPhotoSubjects(faceImageMatches,albumId);
 
 
         // todo : go through matching photoSubjects and add entries for photoId gotten by message!!
@@ -169,6 +165,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
         PhotoSubject bestPhotoSubject = null; // store the photoSubject here that contains a startnumber with the most digits
         int startnumberLength=0;
         String startnumber="n/a";
+        HibernateUtil.beginTransaction();
+        List<PhotoSubject> matchingPhotoSubjects = photoSubjectDAO.getMatchingPhotoSubjects(faceImageMatches,albumId);
         for (PhotoSubject photoSubject : matchingPhotoSubjects) {
             EventRunner runnerWithBestNumber = photoSubject.getEventRunners().stream()
                     .max(Comparator.comparing(o -> o.getStartnumber().length()))
@@ -182,14 +180,20 @@ public class ImageRecognitionPostProcessor implements Runnable{
             }
         }
         _logger.debug("");
+
+
         if (bestPhotoSubject!=null) {
+            Photo photo = photoDAO.load(Long.valueOf(photoId));
+            photo.addPhotoSubject(bestPhotoSubject);
+            photoDAO.saveOrUpdate(photo);
+
             _logger.debug("**************************************************************************************************");
             _logger.debug("*********** Found startnumber for unmapped FaceID " + faceId + " --> Photosubject : " + bestPhotoSubject + "Startnumber : " + startnumber);
             _logger.debug("*********** Added for photo : " + photo.getFilename() + "**********");
             _logger.debug("**************************************************************************************************");
-            photo.addPhotoSubject(bestPhotoSubject);
-            photoDAO.saveOrUpdate(photo);
         }
+        HibernateUtil.commitTransaction();
+        _logger.debug("Post-Processing Transaction committed");
 
         return true;
     }

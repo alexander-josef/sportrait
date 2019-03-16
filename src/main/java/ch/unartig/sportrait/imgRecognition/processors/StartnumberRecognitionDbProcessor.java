@@ -134,6 +134,12 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             startnumber = findAndMapStartnumberForFace(startnumbersForFile, faceRecord);
             if (startnumber.isEmpty()) { // face w/o matching number -> add to list
                 _logger.debug("*** no number Match found for face " + faceRecord.getFace().getFaceId() + " - returning false");
+                // todo : check quality of face recognition : ignore low quality faces (-> out of focus etc.) for postprocessing
+                // todo : delete them from the collection?
+                // sharpness level threshold:
+                // brightness level threshold:
+                // confidence level threshold:
+                faceRecord.getFaceDetail().getQuality().getSharpness();
                 unknownFaces.add(new RunnerFace(faceRecord, path));
                 _logger.debug("*** added to list of faces without numbers for later processing");
             }
@@ -157,6 +163,9 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             _logger.debug("     startnumber middle position = " + startnumber.getMiddlePosition());
             _logger.debug("     Face left position = " + faceBoundingBox.getLeft());
             _logger.debug("     Face right position = " + faceBoundingBoxRightPosition);
+            _logger.debug("     Face-Detail confidence = " + faceRecord.getFaceDetail().getConfidence());
+            _logger.debug("     Face sharpness = " + faceRecord.getFaceDetail().getQuality().getSharpness());
+            _logger.debug("     Face brightness = " + faceRecord.getFaceDetail().getQuality().getBrightness());
 
             if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
                 _logger.debug("******* Found a match for " + startnumber.getStartnumberText() + " - faceID : " + faceRecord.getFace().getFaceId());

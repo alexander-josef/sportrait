@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ImgRecognitionHelper {
     private static Logger _logger = Logger.getLogger("ImgRecognitionHelper");
+
     public static List<FaceMatch>  searchMatchingFaces(String faceCollectionId, AmazonRekognition rekognitionClient, String faceId) {
         // search face record in collection
         SearchFacesRequest searchFacesRequest = new SearchFacesRequest()
