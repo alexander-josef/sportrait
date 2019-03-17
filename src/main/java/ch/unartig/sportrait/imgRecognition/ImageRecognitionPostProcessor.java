@@ -24,7 +24,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class ImageRecognitionPostProcessor implements Runnable{
-    public static final int MAX_IDLE = 5;
+    private static final int QUEUE_MAX_IDLE = 5;
+    private static final int EXECUTOR_KEEP_ALIVE_TIME = 30;
+    private static final int MAX_WORKERS = 4;
     private final int maxImagesToProcess;
     private final Long albumId;
     private Logger _logger = Logger.getLogger(getClass().getName());
@@ -48,9 +50,9 @@ public class ImageRecognitionPostProcessor implements Runnable{
         maxImagesToProcess = -1;
         sqs = AmazonSQSClientBuilder.defaultClient();
 
-        int maxWorkers = 1; // no max workers defined ? 1 ?
+        int maxWorkers = MAX_WORKERS;
         executor = new ThreadPoolExecutor(
-                1, maxWorkers, 30, TimeUnit.SECONDS,
+                1, maxWorkers, EXECUTOR_KEEP_ALIVE_TIME, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(maxWorkers * 2, false),
                 new ThreadPoolExecutor.CallerRunsPolicy() // prevents backing up too many jobs
         );
@@ -60,7 +62,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
 
     @Override
     public void run() {
-        int idleCounter=0; // idle counter - if idle counter reaches MAX_IDLE, shutdown the polling server
+        int idleCounter=0; // idle counter - if idle counter reaches QUEUE_MAX_IDLE, shutdown the polling server
         String queueUrl = MessageQueueHandler.getInstance().getUnknownFacesQueueName(albumId);
 
         while (!executor.isShutdown()) {
@@ -113,8 +115,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
             if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {
                 _logger.debug("Seen enough (" + numSeenProcessor.get() + "), quitting. maxImagesToProcess = " + maxImagesToProcess);
                 shutdown();
-            } else if (idleCounter > MAX_IDLE) {
-                _logger.info("idle counter reached MAX_IDLE - shutting down");
+            } else if (idleCounter > QUEUE_MAX_IDLE) {
+                _logger.info("idle counter reached QUEUE_MAX_IDLE - shutting down");
                 shutdown();
                 DeleteQueueResult result = sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
                 _logger.info("shut down polling and deleted queue : " +queueUrl + " -- result : " + result);

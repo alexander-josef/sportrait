@@ -212,6 +212,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             objects = s3.listObjects(listObjectsRequest);
 
             for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
+                // todo : think if this can be done multi-threaded via a ThreadPoolExecutor: (see StartnumberProcessor.class, for example)
                 _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
                 String filename = "null";
 

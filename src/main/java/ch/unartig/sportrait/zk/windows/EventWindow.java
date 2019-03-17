@@ -13,7 +13,7 @@ import org.zkoss.zul.Messagebox;
 
 
 public class EventWindow extends Window {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
 
     /**
