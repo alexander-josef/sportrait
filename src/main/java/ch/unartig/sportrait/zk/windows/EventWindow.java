@@ -35,7 +35,7 @@ public class EventWindow extends Window {
 
     public void saveEvent(Event event) {
         _logger.debug("Saving event ....");
-        System.out.println("Event = " + event);
+        _logger.debug("Event = " + event);
         try {
             GenericLevelDAO genericLevelDao = new GenericLevelDAO();
             genericLevelDao.saveOrUpdate(event);
