@@ -22,6 +22,9 @@ import java.util.stream.Stream;
  * Processor that stores the mapped startnumbers to the DB
  */
 public class StartnumberRecognitionDbProcessor implements SportraitImageProcessorIF {
+    private static final int TEXT_CONFIDENCE = 80;
+    // public static final String REG_EXP_STARTNUMBER_RECOGNITION = "(.*\\s+)(\\d{1,3})(\\s+.*)";
+    public static final String REG_EXP_STARTNUMBER_RECOGNITION = "(\\w*\\s)?(\\d{1,3})(\\s\\w*)?";
     private Logger _logger = Logger.getLogger(getClass().getName());
 
 
@@ -251,10 +254,11 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             BoundingBox boundingBox = text.getGeometry().getBoundingBox();
             if (
                     text.getType().equals("LINE")
-                            && text.getConfidence() > 80
+                            && text.getConfidence() > TEXT_CONFIDENCE
                             && text.getParentId() == null
 //                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))
-                            && text.getDetectedText().matches("\\d{1,3}") // regex : matches if there's 1 2, or 3 digits
+                            // regex : matches if there's 1 2, or 3 digits, that can be have characters - deviced by a space - either before or after the number
+                            && text.getDetectedText().matches(REG_EXP_STARTNUMBER_RECOGNITION)
                             // improve search and exclude bounding boxes that start or end outside the photo (left < 0 || left + width > 1)
                             && (boundingBox.getLeft() > 0 && (boundingBox.getLeft() + boundingBox.getWidth()) < 1)
             ) { // got a startnumber:

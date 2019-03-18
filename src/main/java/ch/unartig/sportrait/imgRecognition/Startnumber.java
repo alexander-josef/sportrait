@@ -3,10 +3,16 @@ package ch.unartig.sportrait.imgRecognition;
 import com.amazonaws.services.rekognition.model.Face;
 import com.amazonaws.services.rekognition.model.FaceRecord;
 import com.amazonaws.services.rekognition.model.TextDetection;
+import org.apache.log4j.Logger;
 
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor.REG_EXP_STARTNUMBER_RECOGNITION;
 
 public class Startnumber {
+    private Logger _logger = Logger.getLogger(getClass().getName());
     private final Float leftPosition;
     private final Float width;
     private final Float middlePosition;
@@ -23,10 +29,22 @@ public class Startnumber {
      * @param path
      */
     public Startnumber(TextDetection textDetection, String path) {
-        startnumberText = textDetection.getDetectedText();
+        // now split according to the group in the regexp:
+        Pattern p = Pattern.compile(REG_EXP_STARTNUMBER_RECOGNITION);
+        Matcher m = p.matcher(textDetection.getDetectedText());
+        if (m.matches()) {
+            _logger.debug("Entire text recognized [group(0)] : " + Optional.of(m.group(0)).orElse("n/a")); // must not be null
+            _logger.debug("Optional text before number [group(1)] : " + Optional.ofNullable(m.group(1)).orElse("n/a")); // can be null
+            _logger.debug("** Startnumber text recognized [group(2)] : " + Optional.of(m.group(2)).orElse("n/a")); // must not be null
+            _logger.debug("Optional text after number [group(3)] : " + Optional.ofNullable(m.group(3)).orElse("n/a")); // can be null
+            startnumberText = m.group(2); // 0 is the entire string, 1 the character - divided by space - before the number
+
+        } else {
+            _logger.warn("regexp pattern matcher didn't match for :" + textDetection.getDetectedText());
+        }
         leftPosition = textDetection.getGeometry().getBoundingBox().getLeft();
         width = textDetection.getGeometry().getBoundingBox().getWidth();
-        middlePosition = leftPosition+(width/2);
+        middlePosition = leftPosition + (width / 2);
         filePath = path;
     }
 

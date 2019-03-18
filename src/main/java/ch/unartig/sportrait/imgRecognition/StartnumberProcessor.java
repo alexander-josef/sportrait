@@ -22,7 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class StartnumberProcessor implements Runnable {
     private static final int EXECUTOR_KEEP_ALIVE_TIME = 30;
-    private static final int MAX_WORKERS = 4; // used to be 1 - what's possible with the rekognition service? will we run into problem with a higher number?
+    private static final int MAX_WORKERS = 8; // used to be 1 - what's possible with the rekognition service? will we run into problem with a higher number?
+    public static final int CORE_POOL_SIZE = 4;
     private Logger _logger = Logger.getLogger(getClass().getName());
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
@@ -56,10 +57,9 @@ public class StartnumberProcessor implements Runnable {
 
 
         // Executor Service
-        int maxWorkers = MAX_WORKERS; // no max workers defined ? 1 ?
         executor = new ThreadPoolExecutor(
-                1, maxWorkers, EXECUTOR_KEEP_ALIVE_TIME, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<>(maxWorkers * 2, false),
+                CORE_POOL_SIZE, MAX_WORKERS, EXECUTOR_KEEP_ALIVE_TIME, TimeUnit.SECONDS,
+                new ArrayBlockingQueue<>(MAX_WORKERS * 2, false),
                 new ThreadPoolExecutor.CallerRunsPolicy() // prevents backing up too many jobs
         );
 
@@ -138,7 +138,7 @@ public class StartnumberProcessor implements Runnable {
         }
 
 
-        System.out.println("####### Executor has shutdown ##########");
+        _logger.info("####### Executor has shutdown ##########");
 
         // todo: think about faces collection ??
 

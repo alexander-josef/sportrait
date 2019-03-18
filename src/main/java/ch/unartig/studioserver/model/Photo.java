@@ -269,7 +269,7 @@ public class Photo extends GeneratedPhoto
 
 
             if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                _logger.debug("printing out startnumber on display image");
+                // _logger.debug("printing out startnumber on display image");
                 printStartnumbersOnPhoto(params, getStartnumbersAsString());
                 // addNumberRecognitionText(params, getStartnumbersAsString());
             }
@@ -306,7 +306,7 @@ public class Photo extends GeneratedPhoto
             // *****
             // test only
             if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                _logger.debug("printing out startnumber on display image");
+                // _logger.debug("printing out startnumber on display image");
                 printStartnumbersOnPhoto(params, getStartnumbersAsString());
                 // addNumberRecognitionText(params, getStartnumbersAsString());
             }
@@ -359,7 +359,7 @@ public class Photo extends GeneratedPhoto
             params.put("dpr","3");
 
             if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                _logger.debug("printing out startnumber on display image");
+                // _logger.debug("printing out startnumber on display image");
                 printStartnumbersOnPhoto(params, getStartnumbersAsString());
                 // addNumberRecognitionText(params, getStartnumbersAsString());
             }
@@ -396,7 +396,7 @@ public class Photo extends GeneratedPhoto
     }
 
     private void printStartnumbersOnPhoto(Map<String, String> params, String numbers) {
-        _logger.debug("startnumbers  : " + numbers);
+        //_logger.debug("startnumbers  : " + numbers);
 
         params.put("txtsize","30");
         params.put("txtalign","bottom,right");
