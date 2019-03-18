@@ -2,6 +2,7 @@ package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -106,6 +107,8 @@ public class StartnumberProcessor implements Runnable {
                 CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
                 messages = sqs.receiveMessage(poll).getMessages();
+            } catch (SdkClientException e) {
+                _logger.warn("ignoring unknown exception : ",e);
             }
             _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
 
