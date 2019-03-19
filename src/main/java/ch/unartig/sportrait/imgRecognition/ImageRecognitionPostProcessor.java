@@ -154,8 +154,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
         HibernateUtil.beginTransaction();
         List<PhotoSubject> matchingPhotoSubjects = photoSubjectDAO.getMatchingPhotoSubjects(faceImageMatches,albumId);
         for (PhotoSubject photoSubject : matchingPhotoSubjects) {
-            EventRunner runnerWithBestNumber = photoSubject.getEventRunners().stream()
-                    .max(Comparator.comparing(o -> o.getStartnumber().length()))
+            EventRunner runnerWithBestNumber = (EventRunner) photoSubject.getEventRunners().stream()
+                    .max(Comparator.comparing((EventRunner o) -> o.getStartnumber().length()))
                     .orElse(null);
             if (runnerWithBestNumber!=null && runnerWithBestNumber.getStartnumber().length() >startnumberLength) {
                 startnumber = runnerWithBestNumber.getStartnumber();
