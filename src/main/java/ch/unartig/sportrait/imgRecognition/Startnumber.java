@@ -33,7 +33,7 @@ public class Startnumber {
         Pattern p = Pattern.compile(REG_EXP_STARTNUMBER_RECOGNITION);
         Matcher m = p.matcher(textDetection.getDetectedText());
         if (m.matches()) {
-            _logger.debug("Entire text recognized [group(0)] : " + Optional.of(m.group(0)).orElse("n/a")); // must not be null
+            _logger.debug("Entire text recognized [group(0)] : " + Optional.of(m.group(0)).orElse("n/a") + "for :" + path); // must not be null
             _logger.debug("Optional text before number [group(1)] : " + Optional.ofNullable(m.group(1)).orElse("n/a")); // can be null
             _logger.debug("** Startnumber text recognized [group(2)] : " + Optional.of(m.group(2)).orElse("n/a")); // must not be null
             _logger.debug("Optional text after number [group(3)] : " + Optional.ofNullable(m.group(3)).orElse("n/a")); // can be null
