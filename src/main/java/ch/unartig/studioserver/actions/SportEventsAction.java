@@ -81,6 +81,7 @@ public class SportEventsAction extends MappingDispatchAction
      * d) success or failure message
      * <p/>
      * This method called from upload page in admin section on sportrait site and handles all upload actions
+     *  - s3Upload : upload images from temp s3 storage
      *
      * @param mapping
      * @param form
@@ -119,7 +120,7 @@ public class SportEventsAction extends MappingDispatchAction
                 _logger.info("Going to import an album from uploaded Files in S3 'upload' Folder : " + storageProviderUploadPath);
                 // todo : call in event?
                 // todo: same as next option?
-
+                // ***** S3 Upload *****
                 event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, createThumbDisplay,applyLogoOnFineImages);
 
             } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )

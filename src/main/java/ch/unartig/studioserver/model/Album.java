@@ -437,8 +437,11 @@ public class Album extends GeneratedAlbum {
 
         // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
         Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp, applyLogoOnFineImages);
+        // todo : think whether do startnumber recognition here or in registerFromTempPath
+        // better solution would be to have a pattern on "registerFromTempPath" where the startnumber recognition is one task (and not to do everything in the filestorageprovider specific methods)
+
         // after registering fine images, delete the temp folder on the file storage provider
-        Registry.getFileStorageProvider().delete(tempSourceDir);
+        Registry.getFileStorageProvider().deleteFile(tempSourceDir, this);
     }
 
 
@@ -465,25 +468,24 @@ public class Album extends GeneratedAlbum {
      * @param filename               The filename used for registering the photo in the db photos table
      * @param createThumbDisp        set to true to create the display and thumbnail images
      * @param applyLogoOnFineImages
+     * @return newly created and registered photo
      */
-    public void registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
+    public Photo registerSinglePhoto(Set problemFiles, InputStream photoFileContentStream, String filename, boolean createThumbDisp, boolean applyLogoOnFineImages) {
 
 
-        Integer pictureWidth;
-        Integer pictureHeight;
+        int pictureWidth;
+        int pictureHeight;
         Date pictureTakenDate;
         int pictureOrientation;
 
         try {
-            // introduce metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
-
-
+            // use metadata-extractor (com.drewnoakes.metadata-extractor) , get rid of JAI and own ExifData implementation
             Metadata metadata = ImageMetadataReader.readMetadata(photoFileContentStream);
             Directory jpegDirectory = metadata.getFirstDirectoryOfType(JpegDirectory.class);
             ExifDirectoryBase exifDirectoryBase = metadata.getFirstDirectoryOfType(ExifDirectoryBase.class);
             ExifSubIFDDirectory directory = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory.class);
 
-            // this can cause an error in case the Tag does not exist. check using containsTag() first
+            // todo : this can cause an error in case the Tag does not exist. check using containsTag() first
             if (exifDirectoryBase.containsTag(ExifDirectoryBase.TAG_ORIENTATION)) {
 
                 pictureOrientation = exifDirectoryBase.getInt(ExifDirectoryBase.TAG_ORIENTATION);
@@ -529,14 +531,17 @@ public class Album extends GeneratedAlbum {
             // add to db:
             add(photo);
 
+
             // removed logic to add thumbnails or logo montage on master images
             // see 1.6-branch
+            return photo;
 
         } catch (Exception e3) {
             // todo: catch specific (Metadata extractor)
             _logger.info("unknown error; continue with next image", e3);
             //noinspection unchecked
             problemFiles.add(filename);
+            return null;
         }
     }
 

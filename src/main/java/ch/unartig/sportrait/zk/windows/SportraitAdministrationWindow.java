@@ -92,7 +92,7 @@ public class SportraitAdministrationWindow extends Window
 //        page = Executions.getCurrent().getDesktop().getPage("sportraitAdministrationWindow");
         String selectedTab = Executions.getCurrent().getParameter("tab");
 
-        System.out.println("selectedTab = " + selectedTab);
+        _logger.debug("selectedTab = " + selectedTab);
         if (selectedTab != null && getFellow(selectedTab) != null && getFellow(selectedTab) instanceof Tab)
         {
             tabbox.setSelectedTab((Tab) getFellow(selectedTab));
@@ -111,7 +111,7 @@ public class SportraitAdministrationWindow extends Window
         // first clear the listbox:
         albumListbox.getItems().clear();
 
-        System.out.println("photographer = " + photographer);
+        _logger.debug("photographer = " + photographer);
         GenericLevelDAO levelDao = new GenericLevelDAO();
         List eventGroups;
         _logger.debug("Loading event groups");

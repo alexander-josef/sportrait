@@ -2,26 +2,25 @@ package ch.unartig.studioserver.storageProvider;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
+import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -31,17 +30,18 @@ import java.util.zip.ZipInputStream;
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonS3 s3;
-    final private String bucketName = Registry.getS3BucketName();
+    // final private String bucketName = Registry.getS3BucketName();
+    final private String preImageServiceBucketName = Registry.getS3BucketName();
     final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
 //    private final static String awsS3Url = "s3.amazonaws.com";
     private final static String awsS3RegionUrl = "s3-"+ awsRegion+".amazonaws.com";
     // todo: http or https
     // see for example: http://stackoverflow.com/questions/3048236/amazon-s3-https-ssl-is-it-possible
 //    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3RegionUrl;
-    private String bucketHttpsUrl = "https://" + awsS3RegionUrl+"/"+bucketName;
+    private String bucketHttpsUrl = "https://" + awsS3RegionUrl+"/"+preImageServiceBucketName;
 
 
     public AwsS3FileStorageProvider() {
@@ -54,7 +54,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
          * The ProfileCredentialsProvider will return your [default]
          * credential profile by reading from the credentials file located at
          * (~/.aws/credentials).
-         */
+
         AWSCredentials credentials = null;
         try {
             credentials = new ProfileCredentialsProvider().getCredentials();
@@ -66,8 +66,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                     e);
         }
 
-        s3 = new AmazonS3Client(credentials);
-        s3.setRegion(awsRegion);
+         */
+
+        s3 = AmazonS3ClientBuilder.defaultClient();
+        // s3.setRegion(awsRegion);
 
 
         _logger.debug("======================================================");
@@ -84,7 +86,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
         try {
             String key = getFineImageKey(album, photoFile.getName());
-            s3.putObject(new PutObjectRequest(bucketName, key, photoFile));
+            s3.putObject(new PutObjectRequest(getS3BucketNameFor(album), key, photoFile));
         } catch (AmazonClientException e) {
             _logger.error("Problem putting photo to S3", e);
             throw new UAPersistenceException(e);
@@ -98,7 +100,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = getFineImageKey(album, fineImageFileName);
 
-        putImage((ByteArrayOutputStream) fineImageAsOutputStream, key, false);
+        putImage((ByteArrayOutputStream) fineImageAsOutputStream, key, getS3BucketNameFor(album), false);
         // todo: file exists already? Move from other s3 location? check for only JPG files? return success message? no space? other exceptions from S3?
 
 
@@ -116,7 +118,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = Registry.getWebImagesContext()+"/"+album.getGenericLevelId()+"/"+Registry.getDisplayPath()+name;
 
-        putImage((ByteArrayOutputStream) scaledImage, key, true);
+        putImage((ByteArrayOutputStream) scaledImage, key, getS3BucketNameFor(album), true);
 
     }
 
@@ -124,7 +126,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         String key = Registry.getWebImagesContext()+"/"+album.getGenericLevelId()+"/"+Registry.getThumbnailPath() + name;
 
-        putImage((ByteArrayOutputStream) scaledImage, key, true);
+        putImage((ByteArrayOutputStream) scaledImage, key, getS3BucketNameFor(album), true);
     }
 
     public InputStream getFineImageFileContent(Album album, String filename) {
@@ -133,7 +135,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // example for key: fine-images/163/fine/sola14_e01_fm_0005.JPG
 
         String key = getFineImageKey(album, filename);
-        GetObjectRequest objectRequest = new GetObjectRequest(bucketName, key);
+        GetObjectRequest objectRequest = new GetObjectRequest(getS3BucketNameFor(album), key);
         S3Object object; // todo : check if the s3 object is closed again --> prevent connection pool leaks
         try {
             object = s3.getObject(objectRequest);
@@ -149,12 +151,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     /**
-     * Helper method for fine image key
+     * Static helper method for fine image key
      * @param album
      * @param filename
      * @return
      */
-    private String getFineImageKey(Album album, String filename) {
+    public static String getFineImageKey(Album album, String filename) {
         // todo: parameters
         return FINE_IMAGES_PREFIX + "/" +album.getGenericLevelId()+"/"+ Registry.getFinePath()+filename;
     }
@@ -162,6 +164,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     public Set registerStoredFinePhotos(Album album, Boolean createThumbnailDisplay, boolean applyLogoOnFineImages) {
 
 
+        String bucketName = getS3BucketNameFor(album);
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix(FINE_IMAGES_PREFIX + "/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
@@ -191,11 +194,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
     public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
-
-
+        MessageQueueHandler queueHandler = MessageQueueHandler.getInstance();
+        boolean applyNumberRecognition = true; // todo : add parameter if needed - default true so far
         long base = System.currentTimeMillis();
 
         // loop through jpeg files on S3
+        String bucketName = getS3BucketNameFor(album);
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
                 withBucketName(bucketName).
                 withPrefix(tempSourceDir).
@@ -208,6 +212,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             objects = s3.listObjects(listObjectsRequest);
 
             for (int i = 0; i < objects.getObjectSummaries().size(); i++) {
+                // todo : think if this can be done multi-threaded via a ThreadPoolExecutor: (see StartnumberProcessor.class, for example)
                 _logger.debug("register Photo " + i + ", " + System.currentTimeMillis());
                 String filename = "null";
 
@@ -222,18 +227,25 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         // todo : check if photo is already registered for album in DB?
 
                         objectContent = s3.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
-                        album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
+                        Photo newPhoto = album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
                         String fineImageKey = getFineImageKey(album, filename);
+
                         _logger.debug("applyLogoOnFineImages " + applyLogoOnFineImages);
+                        _logger.debug("applyNumberRecognition " + applyNumberRecognition);
                         _logger.debug("key temp file : "+ key);
                         _logger.debug("key fine file : "+ fineImageKey);
                         if (!applyLogoOnFineImages && !key.equals(fineImageKey)) { // if no logo has been copied on the fine image and the file is not yet stored in the right location, move the file now:
-                            moveObject(key, fineImageKey);
+                            moveObject(bucketName, key, fineImageKey);
                             _logger.debug("moved master image to correct S3 directory");
                         } else if (!key.equals(fineImageKey)) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
-                            delete(key);
+                            deleteFile(key, album); // delete key / album needed for bucket
                             _logger.debug("master image deleted from temp location");
+                        }
+                        if (applyNumberRecognition) { // add logic in case there should be a switch in the UI
+                            // add fine Image to queue for number recognition
+                            String path = s3ObjectSummary.getBucketName() + "/" + fineImageKey;
+                            queueHandler.addMessage(album,newPhoto.getPhotoId(),path);
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);
@@ -265,18 +277,22 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     /**
      * Helper method to move an object from a temporary location to its final location.
-     * First copy to destination, then delete source
+     * First copy to destination, then delete source - EXCEPT for Dev env as a convenience for testing
      * Assumption: s3objects are closed after operations
+     *
+     * @param bucketName
      * @param sourceKey
      * @param destinationKey
      * @return True if copy was successful, false otherwise
      */
-    private boolean moveObject(String sourceKey, String destinationKey) {
+    private boolean moveObject(String bucketName, String sourceKey, String destinationKey) {
         try {
             CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName,sourceKey,bucketName,destinationKey);
             s3.copyObject(copyObjectRequest);
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
-            s3.deleteObject(deleteObjectRequest);
+            if (!Registry.isDevEnv()) {
+                DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
+                s3.deleteObject(deleteObjectRequest);
+            }
         } catch (AmazonServiceException ase) {
             _logger.error("Amazon Service Exception while moving File",ase);
             return false;
@@ -296,7 +312,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * @return
      */
     public int getNumberOfFineImageFiles(String key) {
-
+        String bucketName = getCurrenctS3Bucket();
         int fileCount=0;
         ObjectListing objectListing;
         ListObjectsRequest listObjectRequest;
@@ -316,10 +332,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return fileCount;
     }
 
-    public void delete(String key) {
+    public void deleteFile(String key, Album album) {
 
         // todo : exception handling? if key is folder and folder is not empty?
-        s3.deleteObject(bucketName, key);
+        s3.deleteObject(getS3BucketNameFor(album), key);
 
     }
 
@@ -352,6 +368,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     }
 
 
+    /**
+     * Return a list with all paths available under the "upload/" path (the albums that have been uploaded)
+     * @return
+     */
     public List<String> getUploadPaths() {
 
         _logger.debug("preparing ArrayList with upload paths");
@@ -360,7 +380,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         List<String> objectListing = null;
         try {
             ListObjectsRequest listObjectRequest = new ListObjectsRequest().
-                    withBucketName(bucketName).
+                    withBucketName(getCurrenctS3Bucket()).
                     withPrefix("upload/").
                     withDelimiter("/");
             objectListing = s3.listObjects(listObjectRequest).getCommonPrefixes();
@@ -380,9 +400,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return retVal;
     }
 
+
+
     public void deletePhotos(Album album) throws UAPersistenceException {
 
-
+        String bucketName = getS3BucketNameFor(album);
         ListObjectsRequest listObjectsRequest;
 
         // delete fine images
@@ -391,7 +413,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withPrefix(FINE_IMAGES_PREFIX + "/" + album.getGenericLevelId() + "/"+ Registry.getFinePath()).
                 withDelimiter("/");
 
-        deleteFromListObject(listObjectsRequest);
+        deleteFromListObject(listObjectsRequest,bucketName);
 
         // delete display images
         listObjectsRequest = new ListObjectsRequest().
@@ -399,7 +421,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withPrefix(Registry.getWebImagesContext() +"/" + album.getGenericLevelId() + "/"+ Registry.getDisplayPath()).
                 withDelimiter("/");
 
-        deleteFromListObject(listObjectsRequest);
+        deleteFromListObject(listObjectsRequest,bucketName);
 
         // delete thumbnail images
         listObjectsRequest = new ListObjectsRequest().
@@ -407,12 +429,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withPrefix(Registry.getWebImagesContext() +"/" + album.getGenericLevelId() + "/"+ Registry.getThumbnailPath()).
                 withDelimiter("/");
 
-        deleteFromListObject(listObjectsRequest);
+        deleteFromListObject(listObjectsRequest,bucketName);
 
 
     }
 
-    private void deleteFromListObject(ListObjectsRequest listObjectsRequest) {
+    private void deleteFromListObject(ListObjectsRequest listObjectsRequest, String bucketName) {
         ObjectListing objects;
         // loop through all listed objects - might be truncated and needs to be called several times
         do {
@@ -440,11 +462,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
     /**
-     *  @param scaledImage
+     *   @param scaledImage
      * @param key
+     * @param bucket
      * @param setPublicReadAccess
      */
-    private void putImage(ByteArrayOutputStream scaledImage, String key, boolean setPublicReadAccess) {
+    private void putImage(ByteArrayOutputStream scaledImage, String key, String bucket, boolean setPublicReadAccess) {
         // todo: check piped output stream. performance? memory?
         ByteArrayInputStream bais = new ByteArrayInputStream(scaledImage.toByteArray());
 
@@ -452,7 +475,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType("image/jpeg");
         metadata.setContentLength(scaledImage.size());
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, bais, metadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, bais, metadata);
         // set access control to public read:
         if (setPublicReadAccess) {
             putObjectRequest.setCannedAcl(CannedAccessControlList.PublicRead);
@@ -528,7 +551,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         ObjectMetadata metadata = new ObjectMetadata();
                         metadata.setContentType("image/jpeg");
                         metadata.setContentLength(bites.length);
-                        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, new ByteArrayInputStream(bites),metadata);
+                        PutObjectRequest putObjectRequest = new PutObjectRequest(getS3BucketNameFor(album), key, new ByteArrayInputStream(bites),metadata);
                         // set access control: bucket owner (i.e. photographer ?) and Object owner gets full control
                         putObjectRequest.setCannedAcl(CannedAccessControlList.BucketOwnerFullControl);
                         s3.putObject(putObjectRequest);
@@ -561,5 +584,28 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     }
 
+    /**
+     * Static helper to retrieve bucket name and make it variable according to the album that needs a bucket name
+     * change of buckets with amazon rekognition -> not available in frankfurt, using Ireland
+     * @param album
+     * @return
+     */
+    public static String getS3BucketNameFor(Album album) {
+
+        // todo here: add logic if mapping per event is needed. currently only distinction is Frankfurt (before 2019) and Ireland (after 2019 to use rekognition API)
+        if (album.getEvent().getEventDateYear() < 2019) {
+            return Registry.getS3BucketName(); // old bucket name (Frankfurt) for events uploaded before 2019
+        } else {
+            return Registry.getS3BucketNameIreland();
+        }
+    }
+
+    private String getCurrenctS3Bucket() {
+        if (LocalDateTime.now().getYear() < 2019) {
+            return Registry.getS3BucketName();
+        } else {
+            return Registry.getS3BucketNameIreland();
+        }
+    }
 
 }

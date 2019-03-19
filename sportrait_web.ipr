@@ -28,6 +28,20 @@
             <element id="module-output" name="sportrait_web" />
           </element>
           <element id="directory" name="lib">
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.500" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.500" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.500" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.5" />
+            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.9" />
+            <element id="library" level="project" name="Maven: software.amazon.ion:ion-java:1.0.2" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.7.2" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.7" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.7" />
+            <element id="library" level="project" name="Maven: joda-time:joda-time:2.8.1" />
+            <element id="library" level="project" name="Maven: com.amazonaws:jmespath-java:1.11.500" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-rekognition:1.11.500" />
+            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-sqs:1.11.500" />
             <element id="library" level="project" name="Maven: org.zkoss.zk:zhtml:3.0.7" />
             <element id="library" level="project" name="Maven: org.zkoss.zk:zk:3.0.7" />
             <element id="library" level="project" name="Maven: org.zkoss.zk:zkplus:3.0.7" />
@@ -66,18 +80,6 @@
             <element id="library" level="project" name="Maven: com.paypal.sdk:paypal-core:1.7.2" />
             <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.2.2" />
             <element id="library" level="project" name="Maven: org.imgscalr:imgscalr-lib:4.2" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.304" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.304" />
-            <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.304" />
-            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.5.5" />
-            <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.4.9" />
-            <element id="library" level="project" name="Maven: software.amazon.ion:ion-java:1.0.2" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.7.1" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.6.0" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.6.7" />
-            <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.7" />
-            <element id="library" level="project" name="Maven: joda-time:joda-time:2.8.1" />
-            <element id="library" level="project" name="Maven: com.amazonaws:jmespath-java:1.11.304" />
             <element id="library" level="project" name="Maven: com.google.api-client:google-api-client:1.23.0" />
             <element id="library" level="project" name="Maven: com.google.oauth-client:google-oauth-client:1.23.0" />
             <element id="library" level="project" name="Maven: com.google.http-client:google-http-client:1.23.0" />
@@ -128,7 +130,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/sportrait</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5431/sportrait</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
       <driver-ref>postgresql</driver-ref>
@@ -151,6 +153,16 @@
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
       <option name="myName" value="Project Default" />
+      <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+        <option name="myValues">
+          <value>
+            <list size="1">
+              <item index="0" class="java.lang.String" itemvalue="media" />
+            </list>
+          </value>
+        </option>
+        <option name="myCustomValuesEnabled" value="true" />
+      </inspection_tool>
     </profile>
     <version value="1.0" />
   </component>
@@ -289,6 +301,11 @@
     </group>
   </component>
   <component name="ProjectDictionaryState">
+    <dictionary name="ajosef">
+      <words>
+        <w>startnummern</w>
+      </words>
+    </dictionary>
     <dictionary name="alexanderjosef">
       <words>
         <w>alexanderjosef</w>
@@ -557,7 +574,7 @@
   </component>
   <component name="dataSourceStorageLocal">
     <data-source name="jdbc/sportrait" uuid="992b10cd-954e-4db5-9376-1428749e078a">
-      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="10.4">
+      <database-info product="PostgreSQL" version="11.1 (Debian 11.1-1.pgdg90+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
@@ -647,48 +664,70 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/adobe/xmp/xmpcore/5.1.3/xmpcore-5.1.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-core:1.11.304">
+    <library name="Maven: com.amazonaws:aws-java-sdk-core:1.11.500">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.304/aws-java-sdk-core-1.11.304.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.500/aws-java-sdk-core-1.11.500.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.304/aws-java-sdk-core-1.11.304-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.500/aws-java-sdk-core-1.11.500-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.304/aws-java-sdk-core-1.11.304-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-core/1.11.500/aws-java-sdk-core-1.11.500-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.304">
+    <library name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.500">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.304/aws-java-sdk-kms-1.11.304.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.500/aws-java-sdk-kms-1.11.500.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.304/aws-java-sdk-kms-1.11.304-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.500/aws-java-sdk-kms-1.11.500-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.304/aws-java-sdk-kms-1.11.304-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-kms/1.11.500/aws-java-sdk-kms-1.11.500-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.304">
+    <library name="Maven: com.amazonaws:aws-java-sdk-rekognition:1.11.500">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.304/aws-java-sdk-s3-1.11.304.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-rekognition/1.11.500/aws-java-sdk-rekognition-1.11.500.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.304/aws-java-sdk-s3-1.11.304-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-rekognition/1.11.500/aws-java-sdk-rekognition-1.11.500-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.304/aws-java-sdk-s3-1.11.304-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-rekognition/1.11.500/aws-java-sdk-rekognition-1.11.500-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.amazonaws:jmespath-java:1.11.304">
+    <library name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.500">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.304/jmespath-java-1.11.304.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.500/aws-java-sdk-s3-1.11.500.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.304/jmespath-java-1.11.304-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.500/aws-java-sdk-s3-1.11.500-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.304/jmespath-java-1.11.304-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.500/aws-java-sdk-s3-1.11.500-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.amazonaws:aws-java-sdk-sqs:1.11.500">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-sqs/1.11.500/aws-java-sdk-sqs-1.11.500.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-sqs/1.11.500/aws-java-sdk-sqs-1.11.500-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-sqs/1.11.500/aws-java-sdk-sqs-1.11.500-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.amazonaws:jmespath-java:1.11.500">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.500/jmespath-java-1.11.500.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.500/jmespath-java-1.11.500-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/jmespath-java/1.11.500/jmespath-java-1.11.500-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.drewnoakes:metadata-extractor:2.11.0">
@@ -724,15 +763,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.6.7/jackson-core-2.6.7-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.7.1">
+    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.6.7.2">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.1/jackson-databind-2.6.7.1.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.2/jackson-databind-2.6.7.2.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.1/jackson-databind-2.6.7.1-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.2/jackson-databind-2.6.7.2-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.1/jackson-databind-2.6.7.1-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.7.2/jackson-databind-2.6.7.2-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.7">

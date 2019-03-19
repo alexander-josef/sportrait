@@ -26,10 +26,6 @@
                 </li>
                 <!-- loop album start: -->
                 <logic:iterate id="album" name="event" property="photographerAlbums(${clientInSession.photographer.photographerId})" indexId="albumIndex">
-                    <%
-                        System.out.println("album Level Id = " + ((Album)album).getGenericLevelId());
-                        System.out.println("album publish  = " + ((Album)album).getPublish());
-                    %>
 
                     <li class="albumAdmin">
                         <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
@@ -127,7 +123,7 @@
                     <table class="pricelist_box">
                         <tr>
                             <th>Produkt</th>
-                            <th>Preis & Verf�gbarkeit</th>
+                            <th>Preis & Verfügbarkeit</th>
                         </tr>
                         <c:forEach var="productType" items="${photographerAdminBean.productTypeList}">
                             <tr>
@@ -160,7 +156,7 @@
     <html:form action="/admin/startnumberMapping" method="POST" enctype="multipart/form-data">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (�ber Unartig Client):</h3></th>
+            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (über Unartig Client):</h3></th>
             <td></td>
             <td></td>
         </tr>
@@ -245,11 +241,26 @@
     <html:form action="/admin/deleteFinishtimeMappings" method="POST">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Alle Startnummer-Zuweisungen l�schen!</h3></th>
+            <th><h3 class="orange">Alle Startnummer-Zuweisungen löschen!</h3></th>
             <td>
                 <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
                 <html:submit value="Loeschen!" onclick="return confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?');"/>
-                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gel�scht!</p>
+                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelöscht!</p>
+            </td>
+            <td></td>
+        </tr>
+    </html:form>
+
+    <%-- New for image recognition --%>
+
+    <html:form action="/admin/postProcessMappings" method="POST">
+        <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
+        <tr>
+            <th><h3 class="orange">Post-Processing für Startnummern in Etappe <b>${photographerAdminBean.level.description}</b></h3></th>
+            <td>
+                <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
+                <html:submit value="Start Post-Processing"/>
+                <p>Queue mit Gesichtern ohne Startnummern sowie schlecht erkannte Startnummern werden gesucht</p>
             </td>
             <td></td>
         </tr>

@@ -150,7 +150,8 @@ public class Uploader extends Thread
      */
     private Album doImport() throws IOException, UnartigException
     {
-        // why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID. To prevent session timeout issues? Not important, this process is not done frequently.
+        // why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID.
+        // To prevent session timeout issues? Not important, this process is not done frequently.
         GenericLevelDAO glDao = new GenericLevelDAO();
         Album album = (Album) glDao.load(albumId, Album.class);
 

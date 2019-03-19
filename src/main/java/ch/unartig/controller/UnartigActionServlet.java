@@ -89,6 +89,7 @@
  ****************************************************************/
 package ch.unartig.controller;
 
+import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.PhotoOrderService;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
@@ -110,6 +111,8 @@ import java.security.SecureRandom;
 public class UnartigActionServlet extends ActionServlet
 {
     Logger logger = Logger.getLogger(getClass().getName());
+    private Thread startnumberProcessorServer;
+    private StartnumberProcessor startnumberProcessor;
 
     /**
      * This is called only upon servlet startup
@@ -124,8 +127,12 @@ public class UnartigActionServlet extends ActionServlet
         logger.debug("Calling init on Registry");
         try
         {
-        Registry.init();
+            Registry.init();
 
+            startnumberProcessor = new StartnumberProcessor();
+            startnumberProcessorServer = new Thread(startnumberProcessor);
+            startnumberProcessorServer.start();
+            logger.info("Startnumber Processor started up");
             logger.info("Init security");
             CryptoUtil.setPrng(SecureRandom.getInstance("SHA1PRNG"));
 //            logger.info("new navigation tree for tigra tree menu generated!");
@@ -266,6 +273,9 @@ public class UnartigActionServlet extends ActionServlet
         logger.info("destroying unartig action servlet!");
         logger.info("Going to stop order service ......");
         PhotoOrderService.getInstance().stopService();
+        logger.info("Going to stop startnumber processing server ......");
+        startnumberProcessor.shutdown();
+        logger.info("..... StartnumberProcessor stopped!");
         logger.info("..... Order Service stopped!");
         logger.info("Going to stop Hibernate......");
         HibernateUtil.destroy();

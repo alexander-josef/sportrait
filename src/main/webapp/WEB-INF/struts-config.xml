@@ -489,6 +489,14 @@
             <forward name="success" path="/photographer/admin/edit.html" redirect="true"/>
         </action>
 
+        <action path="/admin/postProcessMappings" type="ch.unartig.studioserver.actions.AdminAction"
+                scope="request"
+                parameter="postProcessMappings"
+                name="sportsAlbumMappingForm"
+                roles="unartigadmin">
+            <forward name="success" path="/photographer/admin/edit.html" redirect="true"/>
+        </action>
+
 
         <action path="/admin/deleteLevel" type="ch.unartig.studioserver.actions.AdminAction" scope="request"
                 parameter="deleteLevel"

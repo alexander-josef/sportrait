@@ -60,17 +60,24 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import ch.unartig.sportrait.imgRecognition.Startnumber;
+import ch.unartig.sportrait.imgRecognition.Test;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
+import org.apache.log4j.Logger;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Photo extends GeneratedPhoto
 {
     // todo: store thumbnail and display width and height pixels . here? globally?
+    Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
      * default empty constructor
@@ -173,7 +180,7 @@ public class Photo extends GeneratedPhoto
             params.put("q","40");
             params.put("usm","20");
 
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey() ) ;
         } else {
             // URL to thumbnail file - legacy solution before image service (imgix)
             return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
@@ -202,7 +209,7 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","2");
 
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
         } else {
             // URL to thumbnail file - legacy solution before image service (imgix)
             return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
@@ -231,7 +238,7 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","3");
 
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
         } else {
             // URL to thumbnail file - legacy solution before image service (imgix)
             return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
@@ -260,7 +267,14 @@ public class Photo extends GeneratedPhoto
             params.put("q","50");
             params.put("usm","20");
 
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+
+            if (Registry.isDevEnv() || Registry.isIntEnv()) {
+                // _logger.debug("printing out startnumber on display image");
+                printStartnumbersOnPhoto(params, getStartnumbersAsString());
+                // addNumberRecognitionText(params, getStartnumbersAsString());
+            }
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(),getImageServiceSignKey()) ;
 
         } else {
             // URL to display file - before image service migration (imgix)
@@ -288,7 +302,17 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","2");
 
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            // add number recognition text
+            // *****
+            // test only
+            if (Registry.isDevEnv() || Registry.isIntEnv()) {
+                // _logger.debug("printing out startnumber on display image");
+                printStartnumbersOnPhoto(params, getStartnumbersAsString());
+                // addNumberRecognitionText(params, getStartnumbersAsString());
+            }
+            // ****
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
 
         } else {
             // URL to display file - before image service migration (imgix)
@@ -296,6 +320,25 @@ public class Photo extends GeneratedPhoto
 
         }
         return displayUrl;    }
+
+    /**
+     * iterate through photoSubjects and eventrunners, create a list of startnumbers and return them
+     * @return list of Startnumber Objects
+     */
+    private String getStartnumbersAsString() {
+
+        List <String> startnumbers = new ArrayList<>();
+
+        for (Object o : getPhotoSubjects()) {
+            PhotoSubject photoSubject = (PhotoSubject) o;
+
+            for (Object o1 : photoSubject.getEventRunners()) {
+                EventRunner eventRunner = (EventRunner) o1;
+                startnumbers.add(eventRunner.getStartnumber());
+            }
+        }
+        return String.join("/", startnumbers);
+    }
 
     public String getDisplayUrl3x() {
 
@@ -315,14 +358,51 @@ public class Photo extends GeneratedPhoto
             params.put("usm","20");
             params.put("dpr","3");
 
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            if (Registry.isDevEnv() || Registry.isIntEnv()) {
+                // _logger.debug("printing out startnumber on display image");
+                printStartnumbersOnPhoto(params, getStartnumbersAsString());
+                // addNumberRecognitionText(params, getStartnumbersAsString());
+            }
+
+
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(),getImageServiceDomain(),getImageServiceSignKey() ) ;
 
         } else {
             // URL to display file - before image service migration (imgix)
             return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
 
         }
-        return displayUrl;    }
+        return displayUrl;
+    }
+
+    /**
+     * todo delete again - testing only
+     * @param params imgix URL creation params
+     * @param allStartnumbers list of Startnumber objects
+     */
+    private void addNumberRecognitionText(Map<String, String> params, List<Startnumber> allStartnumbers) {
+        try {
+
+            Test test =  new Test();
+            List<Startnumber> photoStartnumbers = test.getRecognizedNumbersFor(this,allStartnumbers);
+            allStartnumbers.addAll(photoStartnumbers);
+            String numbers = photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
+            printStartnumbersOnPhoto(params, numbers);
+
+        } catch (Exception e) {
+            _logger.debug("error trying to recognize number on photo",e);
+            e.printStackTrace();
+        }
+    }
+
+    private void printStartnumbersOnPhoto(Map<String, String> params, String numbers) {
+        //_logger.debug("startnumbers  : " + numbers);
+
+        params.put("txtsize","30");
+        params.put("txtalign","bottom,right");
+        params.put("txtclr","AADD44");
+        params.put("txt", numbers);
+    }
 
     public String getDisplayUrlFacebookSharingImage() {
 
@@ -340,14 +420,19 @@ public class Photo extends GeneratedPhoto
             params.put("q","20");
             params.put("usm","20");
 
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService()) ;
+            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey() ) ;
 
         } else {
             // URL to display file - before image service migration (imgix)
             return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
 
         }
-        return displayUrl;    }
+        return displayUrl;
+    }
+
+    public URL getImgixUrl(Map<String, String> imgixParams) throws MalformedURLException {
+        return new URL(ImagingHelper.getSignedImgixUrl(imgixParams, getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()));
+    }
 
     /**
      * Helper method to determine if photo belongs to an event that has been imported after the image service migration imgix
@@ -365,8 +450,42 @@ public class Photo extends GeneratedPhoto
         return "https://" + Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
     }
 
+    /**
+     * Path (without domain name / host from image service)
+     * @return
+     */
     public String getPathForImageService() {
         return "fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
+    }
+
+
+
+    /**
+     * Returns the domain (host name) of the image service (i.e. from imgix.com) source to address this image.
+     * Needed to be introduced after we split the s3 buckets and introducted an ireland (eu-west) bucket in order to use amazon rekognition
+     * @return String containing the domain (host) name
+     */
+    public String getImageServiceDomain() {
+        String domain;
+        if (getAlbum().getEvent().getEventDateYear() < 2019) {
+            domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
+        } else { // after 2019 use new imgix source that links to ireland s3 bucket
+            domain = Registry.getApplicationEnvironment() + "2-sportrait.imgix.net"; // adding an index after the environment
+        }
+
+        return domain;
+    }
+
+
+    public String getImageServiceSignKey() {
+        String signKey;
+        if (getAlbum().getEvent().getEventDateYear() < 2019) {
+            signKey = Registry.getImgixSignKey();
+        } else { // after 2019 use new imgix source that links to ireland s3 bucket
+            signKey =  Registry.getImgixSignKey2();
+        }
+
+        return signKey;
     }
 
     public String getHighResUrl()
@@ -414,7 +533,7 @@ public class Photo extends GeneratedPhoto
         {
             subjects = new HashSet();
         }
-        boolean result = subjects.add(subj);
+        subjects.add(subj);
     }
 
     /**
@@ -425,6 +544,7 @@ public class Photo extends GeneratedPhoto
     {
         return getAlbum().getPhotographer();
     }
+
 
 
 }

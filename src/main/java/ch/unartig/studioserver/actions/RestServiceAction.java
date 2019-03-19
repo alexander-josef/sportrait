@@ -1,5 +1,6 @@
 package ch.unartig.studioserver.actions;
 
+import ch.unartig.sportrait.imgRecognition.Startnumber;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.Photo;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class RestServiceAction extends Action {
     public ActionForward execute(ActionMapping actionMapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse httpServletResponse)
     {
         String method = request.getMethod();
-        System.out.println("method = " + method);
-        System.out.println("request.getRequestURI() = " + request.getRequestURI());
+        _logger.debug("method = " + method);
+        _logger.debug("request.getRequestURI() = " + request.getRequestURI());
 
         // todo check action mapping possibilities from Struts in manual
 
@@ -57,6 +59,8 @@ public class RestServiceAction extends Action {
     }
 
     private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
+
+
 
 
         StringBuilder jsonResponse= new StringBuilder();

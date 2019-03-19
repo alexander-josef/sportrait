@@ -8,7 +8,7 @@
 
     <tiles:insert attribute="hallo"/>
 
-    <html:img styleId="fotostack" page="/images/fotostack.jpg" alt="fotostack_1"/>
+    <html:img styleId="fotostack" page="/images/fotostack_1_frei.png" alt="fotostack_1"/>
 
     <div id="tabnavigationHome">
 

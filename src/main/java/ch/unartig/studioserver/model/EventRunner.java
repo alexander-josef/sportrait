@@ -29,7 +29,7 @@
 package ch.unartig.studioserver.model;
 
 /**
- * class eventrunner maps events (i.e. Sola 2014 Etappe 9) with photosubjects (photosubjects then are mapped to a number of photos)
+ * class eventrunner (with a startnumber) maps events (i.e. Sola 2014 Etappe 9) with photosubjects (photosubjects then are mapped to a number of photos)
  */
 public class EventRunner extends GeneratedEventRunner
 {

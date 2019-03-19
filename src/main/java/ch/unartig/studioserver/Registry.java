@@ -192,12 +192,9 @@
  ****************************************************************/
 package ch.unartig.studioserver;
 
-import ch.unartig.studioserver.storageProvider.AwsS3FileStorageProvider;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
-import ch.unartig.studioserver.storageProvider.LocalFileSystemStorageProvider;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.util.Utils;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import org.apache.log4j.Logger;
@@ -217,9 +214,9 @@ public final class Registry
     public static final String _SESSION_CLIENT_NAME = "clientInSession";
     public static final String _ALBUM_ID_NAME = "albumId";
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
-    public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env
-    public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env
-    public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env
+    public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env / used in JSPa
+    public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env / used in JSPa
+    public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env / used in JSPa
 
     // todo: move to appSettings
 //read from prop-file
@@ -351,12 +348,14 @@ public final class Registry
     private static String logosOverlayLandscapeFile;
     private static boolean applyLogoOrWatermarkOnFineImage;
     private static String s3BucketName;
+    private static String s3BucketNameIreland;
     private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
     private static JsonFactory googleJasonFactory;
     private static NetHttpTransport googleHttpTransport;
     private static String applicationEnvironment; // dev, int or prod
     private static String imgixSignKey; // environment dependant sign key as generated on the imgix admin website
+    private static String imgixSignKey2; // environment dependant sign key as generated on the imgix admin website for the 2nd imgix source
 
 
     /**
@@ -377,8 +376,9 @@ public final class Registry
 //        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
 //        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
 
-        setApplicationEnvironment(appSettings.getMessage("application.environment"));
-        _logger.info("***** application environment = " + appSettings.getMessage("application.environment"));
+        String appEnv = appSettings.getMessage("application.environment");
+        setApplicationEnvironment(appEnv);
+        _logger.info("***** setting application environment = " + appEnv);
         // constants needed for jsp EL if conditions
         switch (applicationEnvironment) {
             case "dev":
@@ -455,7 +455,8 @@ public final class Registry
 
         /******************* Storage Provider / AWS S3 Settings ******************/
         _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
-        s3BucketName = appSettings.getMessage("awsS3BucketName"); // must be set before instantiation of fileStorageProvider class
+        s3BucketName = appSettings.getMessage("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
+        s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
         fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
@@ -467,6 +468,8 @@ public final class Registry
 
         _logger.info("***** imgixSignKey = " + appSettings.getMessage("imgixSignKey"));
         imgixSignKey=appSettings.getMessage("imgixSignKey");
+        _logger.info("***** imgixSignKey2 = " + appSettings.getMessage("imgixSignKey2"));
+        imgixSignKey2=appSettings.getMessage("imgixSignKey2");
 
 
 
@@ -699,6 +702,10 @@ public final class Registry
         return s3BucketName;
     }
 
+    public static String getS3BucketNameIreland() {
+        return s3BucketNameIreland;
+    }
+
     public static String getSponsorBarFile() {
         return sponsorBarFile;
     }
@@ -731,10 +738,14 @@ public final class Registry
         return googleHttpTransport;
     }
 
-    public static void setApplicationEnvironment(String applicationEnvironment) {
-        Registry.applicationEnvironment = applicationEnvironment;
+    public static void setApplicationEnvironment(String appEnv) {
+        Registry.applicationEnvironment = appEnv;
     }
 
+    /**
+     * private access only - use the is*Env methods
+     * @return
+     */
     public static String getApplicationEnvironment() {
         return applicationEnvironment;
     }
@@ -743,12 +754,16 @@ public final class Registry
         return imgixSignKey;
     }
 
+    public static String getImgixSignKey2() {
+        return imgixSignKey2;
+    }
+
     /**
      * used for templates to set tiles according to environment
      * @return
      */
     public static boolean isDevEnv() {
-        return getApplicationEnvironment().equals("Dev");
+        return getApplicationEnvironment().equals("dev");
     }
 
     /**
@@ -756,7 +771,7 @@ public final class Registry
      * @return
      */
     public static boolean isIntEnv() {
-        return getApplicationEnvironment().equals("Int");
+        return getApplicationEnvironment().equals("int");
     }
 
     /**
@@ -764,6 +779,6 @@ public final class Registry
      * @return
      */
     public static boolean isProdEnv() {
-        return getApplicationEnvironment().equals("Prod");
+        return getApplicationEnvironment().equals("prod");
     }
 }

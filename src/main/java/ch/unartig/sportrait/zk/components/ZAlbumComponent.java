@@ -57,7 +57,7 @@ public class ZAlbumComponent extends Div
 
     public void onCreate()
     {
-        System.out.println("ZAlbumComponent.onCreate");
+        _logger.debug("ZAlbumComponent.onCreate");
     }
 
 

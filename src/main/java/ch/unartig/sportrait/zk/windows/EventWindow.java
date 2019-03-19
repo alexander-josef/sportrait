@@ -13,7 +13,7 @@ import org.zkoss.zul.Messagebox;
 
 
 public class EventWindow extends Window {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
 
     /**
@@ -35,7 +35,7 @@ public class EventWindow extends Window {
 
     public void saveEvent(Event event) {
         _logger.debug("Saving event ....");
-        System.out.println("Event = " + event);
+        _logger.debug("Event = " + event);
         try {
             GenericLevelDAO genericLevelDao = new GenericLevelDAO();
             genericLevelDao.saveOrUpdate(event);

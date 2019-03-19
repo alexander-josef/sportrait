@@ -327,14 +327,6 @@ public class DisplayBean implements NavigableObject
 
 
     /**
-     * Getter to be used with EL in JSPs if needed
-     * @return
-     */
-    public String getApplicationEnvironment() {
-        return Registry.getApplicationEnvironment();
-    }
-
-    /**
      *
      * @return the web application url (including schema, address, port)
      */

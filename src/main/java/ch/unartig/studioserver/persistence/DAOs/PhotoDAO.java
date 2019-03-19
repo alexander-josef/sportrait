@@ -134,6 +134,7 @@ import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -1043,6 +1044,15 @@ Note: if you list each property explicitly, you must include all properties of t
         } catch (HibernateException h) {
             throw new UAPersistenceException("Could not load and delete Photo by ID, see stack trace", h);
         }
+    }
+
+    /**
+     * added after having problem with laziliy initializing photosubject with the new image recognition import
+     * @param photo
+     */
+    public void initializePhotoSubjects(Photo photo) {
+        Set photoSubjects = photo.getPhotoSubjects();
+        Hibernate.initialize(photoSubjects);
     }
 }
 
