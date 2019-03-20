@@ -2,6 +2,7 @@ package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor;
+import ch.unartig.studioserver.Registry;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -79,7 +80,7 @@ public class StartnumberProcessor implements Runnable {
      */
     public void run() {
         String queueUrl = MessageQueueHandler.getInstance().getSportraitQueueName();
-        _logger.info("Start Polling the SQS queues for incoming images to recognize ....");
+        _logger.info("Start Polling the SQS queue - environment  : ["+ Registry.getApplicationEnvironment() +"] for incoming images to recognize ....");
         if (processors.isEmpty()) {
             _logger.warn("No processors defined, will not start up.");
             return;

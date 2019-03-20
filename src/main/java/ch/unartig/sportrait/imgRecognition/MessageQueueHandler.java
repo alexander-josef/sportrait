@@ -1,5 +1,6 @@
 package ch.unartig.sportrait.imgRecognition;
 
+import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -34,7 +35,7 @@ public class MessageQueueHandler {
 
     private MessageQueueHandler() {
         sqs = AmazonSQSClientBuilder.defaultClient();
-        sportraitQueueName = "sportraitQueueName"; // todo : either name per album or move to Registry
+        sportraitQueueName = "sportraitQueueName-" + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
     }
 
     /**
@@ -107,7 +108,7 @@ public class MessageQueueHandler {
     }
 
     public String getUnknownFacesQueueName(Long albumId) {
-        return UNKNOWN_FACES_QUEUE_PREFIX+albumId;
+        return UNKNOWN_FACES_QUEUE_PREFIX+ Registry.getApplicationEnvironment() +albumId;
     }
 
     /**
@@ -125,7 +126,7 @@ public class MessageQueueHandler {
 
         String queueUrl = queueResult.getQueueUrl();
         _logger.info("Posting message for unknown face [ID : "+faceId+"] in  : " + path + " to queue ["+ queueUrl +"]");
-        _logger.debug("with param [photoId] : " + photoId.toString());
+        _logger.debug("with param [photoId] : " + photoId);
 
 
         final Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
