@@ -35,7 +35,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private AmazonS3 s3;
     // final private String bucketName = Registry.getS3BucketName();
     final private String preImageServiceBucketName = Registry.getS3BucketName();
-    final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt
+    final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
 //    private final static String awsS3Url = "s3.amazonaws.com";
     private final static String awsS3RegionUrl = "s3-"+ awsRegion+".amazonaws.com";
     // todo: http or https
