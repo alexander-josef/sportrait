@@ -242,10 +242,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                             deleteFile(key, album); // delete key / album needed for bucket
                             _logger.debug("master image deleted from temp location");
                         }
-                        if (applyNumberRecognition) { // add logic in case there should be a switch in the UI
+                        if (applyNumberRecognition && newPhoto!=null) { // add logic in case there should be a switch in the UI
                             // add fine Image to queue for number recognition
                             String path = s3ObjectSummary.getBucketName() + "/" + fineImageKey;
-                            queueHandler.addMessage(album,newPhoto.getPhotoId(),path);
+                            queueHandler.addMessage(album,newPhoto.getPhotoId(),path); // newPhoto could be null for unknown file
                         }
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + key);
