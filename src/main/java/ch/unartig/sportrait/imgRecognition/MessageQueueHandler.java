@@ -20,9 +20,9 @@ import java.util.Map;
 public class MessageQueueHandler {
     private static final String SPORTRAIT_QUEUE_NAME_PREFIX = "sportraitQueueName-";
     private Logger _logger = Logger.getLogger(getClass().getName());
-    public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
-    public static final String PHOTO_ID = "photoId"; // used as message attribute
-    public static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
+    static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
+    static final String PHOTO_ID = "photoId"; // used as message attribute
+    private static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
     private String sportraitQueueName;
     private AmazonSQS sqs;
     /**
@@ -109,7 +109,7 @@ public class MessageQueueHandler {
     }
 
     public String getUnknownFacesQueueName(Long albumId) {
-        return UNKNOWN_FACES_QUEUE_PREFIX+ Registry.getApplicationEnvironment() +albumId;
+        return UNKNOWN_FACES_QUEUE_PREFIX+ +albumId +"_"+Registry.getApplicationEnvironment() ;
     }
 
     /**
@@ -123,7 +123,7 @@ public class MessageQueueHandler {
         String path = runnerFace.getPath();
         String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
 
-        CreateQueueResult queueResult = sqs.createQueue(UNKNOWN_FACES_QUEUE_PREFIX+albumId);
+        CreateQueueResult queueResult = sqs.createQueue(getUnknownFacesQueueName(albumId));
 
         String queueUrl = queueResult.getQueueUrl();
         _logger.info("Posting message for unknown face [ID : "+faceId+"] in  : " + path + " to queue ["+ queueUrl +"]");
