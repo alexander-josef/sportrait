@@ -18,6 +18,7 @@ import java.util.Map;
  * Singleton class to handle amazon sqs queues related logic
  */
 public class MessageQueueHandler {
+    private static final String SPORTRAIT_QUEUE_NAME_PREFIX = "sportraitQueueName-";
     private Logger _logger = Logger.getLogger(getClass().getName());
     public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
     public static final String PHOTO_ID = "photoId"; // used as message attribute
@@ -35,12 +36,12 @@ public class MessageQueueHandler {
 
     private MessageQueueHandler() {
         sqs = AmazonSQSClientBuilder.defaultClient();
-        sportraitQueueName = "sportraitQueueName-" + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
+        sportraitQueueName = SPORTRAIT_QUEUE_NAME_PREFIX + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
     }
 
     /**
-     * return a queue that holds messages for the album passed as parameter. queue will be created if it doens't exist yet
-     * @param album needed to derive the queue name (-> generic level ID)
+     * return a queue that holds messages for the album passed as parameter. queue will be created if it doesn't exist yet
+     * @param album needed to derive the queue name (-> generic level ID) - not used yet
      * @return
      */
     private CreateQueueResult getImageRecognitionQueue(Album album) {
