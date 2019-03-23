@@ -28,11 +28,11 @@
                 <td><span class="bold">Kategorie:</span></td>
                 <td>
                     <html:select name="uploadBean" property="eventCategoryId">
-                        <html:option value="">-- Kategorie w�hlen --</html:option>
+                        <html:option value="">-- Kategorie wählen --</html:option>
                         <html:optionsCollection name="uploadBean" property="eventCategories" label="title" value="eventCategoryId"/>
                     </html:select>
                 </td>
-                <td>&nbsp;(bestehende Kategorie w�hlen oder neue erstellen)</td>
+                <td>&nbsp;(bestehende Kategorie wählen oder neue erstellen)</td>
             </tr>
             <tr>
                 <td><span class="bold">Create Thumbnail/Display?</span></td>
