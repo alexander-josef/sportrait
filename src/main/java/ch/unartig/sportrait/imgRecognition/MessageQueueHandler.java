@@ -109,7 +109,9 @@ public class MessageQueueHandler {
     }
 
     public String getUnknownFacesQueueName(Long albumId) {
-        return UNKNOWN_FACES_QUEUE_PREFIX+ +albumId +"_"+Registry.getApplicationEnvironment() ;
+        String queueName = UNKNOWN_FACES_QUEUE_PREFIX + +albumId + "_" + Registry.getApplicationEnvironment();
+        _logger.debug("returning unknown faces queue name : " + queueName);
+        return queueName;
     }
 
     /**
