@@ -77,10 +77,10 @@ public class ImgRecognitionHelper {
 
 
     void createFacesCollection() {
-        _logger.info("Creating collection: " + ImgRecognitionHelper.FACE_COLLECTION_ID);
+        _logger.info("Creating collection: " + FACE_COLLECTION_ID);
 
         CreateCollectionRequest request = new CreateCollectionRequest()
-                .withCollectionId(ImgRecognitionHelper.FACE_COLLECTION_ID);
+                .withCollectionId(FACE_COLLECTION_ID);
 
         CreateCollectionResult createCollectionResult = null;
         try {

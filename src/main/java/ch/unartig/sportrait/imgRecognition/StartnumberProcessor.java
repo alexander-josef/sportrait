@@ -70,7 +70,7 @@ public class StartnumberProcessor implements Runnable {
         // todo : startnumbers to be stored to db?
         processors.add(new StartnumberRecognitionDbProcessor());
         /**
-         * just one faces collection ?
+         * just one faces collection ? Deleted after post-processing an album?
          */
         ImgRecognitionHelper.getInstance().createFacesCollection();
     }
