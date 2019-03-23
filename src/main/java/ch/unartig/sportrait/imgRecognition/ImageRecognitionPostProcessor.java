@@ -37,9 +37,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
     private final AmazonSQS sqs;
     private AtomicInteger numSeenProcessor = new AtomicInteger();
 
-    private List<SportraitImageProcessorIF> processors = new ArrayList<>();
-
-
     /**
      * Constructor for post processor
      * @param genericLevelId ID of queue to be post processed (-> album-Id of imported album)
@@ -72,16 +69,17 @@ public class ImageRecognitionPostProcessor implements Runnable{
                     .withMaxNumberOfMessages(MAX_NUMBER_OF_MESSAGES)
                     .withWaitTimeSeconds(WAIT_TIME_SECONDS)
                     .withMessageAttributeNames("All");
-            List<Message> messages = null;
+            List<Message> messages;
             try {
                 messages = sqs.receiveMessage(poll).getMessages();
             } catch (QueueDoesNotExistException e) {
-                _logger.error("Queue does not exist");
+                _logger.error("Queue does not exist - initializing messages list, continue polling queue");
 /*
                 CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
                 messages = sqs.receiveMessage(poll).getMessages();
 */
+                messages = new ArrayList<>();
             }
             _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
 
@@ -188,7 +186,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
 
 
 
-    public void shutdown() {
+    private void shutdown() {
         executor.shutdown(); // don't use shutdownNow() - we want to finish execution of pending threads
         try {
             // Wait a while for existing tasks to terminate
