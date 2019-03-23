@@ -110,6 +110,7 @@ public class StartnumberProcessor implements Runnable {
                 messages = sqs.receiveMessage(poll).getMessages();
             } catch (SdkClientException e) {
                 _logger.warn("ignoring unknown exception : ",e);
+                messages = new ArrayList<>();
             }
             _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
 
