@@ -61,10 +61,12 @@ public class RestServiceAction extends Action {
         return null;
     }
 
+    /**
+     *
+     * @param albumBeanInSession
+     * @return
+     */
     private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
-
-
-
 
         StringBuilder jsonResponse= new StringBuilder();
         jsonResponse.append("[ ");
