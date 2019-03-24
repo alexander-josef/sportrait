@@ -223,17 +223,19 @@
                 jsonResponse = this.responseText;
                 // console.log(jsonResponse); // caution! a lot of data ...
 
-                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse);
+                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse); // todo : this causes an exception with big categories
              }
         };
+
         startDownloadMillis = Date.now();
         console.log('loading ...  ', startDownloadMillis);
-        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true);
+        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true); // what is loaded ? everything?
 
         xhttp.send();
     }
 
-    if (!sessionStorage.getItem(${albumBean.eventCategoryId})) {
+    // when page is loaded : check for existing sessionStorage data for current eventCategory:
+    if (!sessionStorage.getItem(${albumBean.eventCategoryId})) { // load from REST service if not available:
         getCategoryPhotosDataForSessionStorage();
     } else {
         console.log('photo data for event ', ${albumBean.eventCategoryId}, 'already stored in sessionStorage')

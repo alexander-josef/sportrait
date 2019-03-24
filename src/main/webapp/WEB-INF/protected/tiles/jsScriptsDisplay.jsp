@@ -230,14 +230,14 @@
 
 
     function initDisplayView() {
-        console.log('stored data available for eventcategory? ID : ', eventCategoryId);
+        console.log('checking for stored data available for eventcategory ID : ', eventCategoryId);
         if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
             console.log('Reading from session storage ...');
             displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
             currentPhotoIndex = getCurrentPhotoIndex();
             setInitialPhotos();
             console.log('done, initial photos set');
-        } else { // JSON not stored, (is this possible???) - call REST service
+        } else { // JSON not stored, (is this possible??? -> yes, if pre-loading in album.jsp fails!) - call REST service
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             var jsonResponse;
@@ -260,7 +260,7 @@
 
             }
         };
-        xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true);
+        xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true); // todo : how is the service called and what does it return? everything??
 
         console.log('reading JSON data from REST service ....')
         xhttp.send();

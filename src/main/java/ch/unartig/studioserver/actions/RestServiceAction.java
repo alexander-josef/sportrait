@@ -45,6 +45,9 @@ public class RestServiceAction extends Action {
         String jsonResponse = constructJsonResponse(albumBeanInSession);
         PrintWriter out = null;
         try {
+            int contentLength = jsonResponse.getBytes("UTF8").length;
+            _logger.debug("content lenght of REST API restponse : " + contentLength);
+            httpServletResponse.setContentLength(contentLength);
             out = httpServletResponse.getWriter();
         } catch (IOException e) {
             e.printStackTrace();
