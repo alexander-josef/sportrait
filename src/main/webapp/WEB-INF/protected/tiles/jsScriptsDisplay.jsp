@@ -52,10 +52,10 @@
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
-        document.getElementById("displayDownloadButtonLink").setAttribute('href',"/downloadPhoto.html?photoId="+displayPhotos.photos[currentPhotoIndex].photoId);
+        document.getElementById("displayDownloadButtonLink").setAttribute('href', "/downloadPhoto.html?photoId=" + displayPhotos.photos[currentPhotoIndex].photoId);
         // document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
-        document.getElementById("metaTagUrl").setAttribute('content','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
-        dataLayer.push({'photoId':displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
+        document.getElementById("metaTagUrl").setAttribute('content', '/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
+        dataLayer.push({'photoId': displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
         dataLayer.push({'event': 'displayView'});
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
@@ -64,15 +64,15 @@
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
             var previousPhotoLink = document.getElementById("previousPhotoLink");
             var previousPhotoTextLink = document.getElementById("previousPhotoTextLink");
-            previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex-1].thumbnailURL1x;
+            previousPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x;
             if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
                 previousPhotoThumbnail.srcset = displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL1x + ' 1x,' + //  use src-set to support 2x and 3x resolution displays, but only for images after introduction of image service
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex - 1].thumbnailURL3x + ' 3x';
             }
             previousPhotoThumbnail.className = displayPhotos.photos[currentPhotoIndex - 1].orientation;
-            previousPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
-            previousPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex-1].photoId + '/display.html';
+            previousPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex - 1].photoId + '/display.html';
+            previousPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex - 1].photoId + '/display.html';
             document.getElementById("previousSlideLeft").style.display = "unset";
         } else {
             // hide previous preview slide
@@ -83,7 +83,7 @@
 
         if (!mySwiper.isEnd) {
             var nextPhotoThumbnail = document.getElementById("nextPhotoThumbnail");
-            nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex+1].thumbnailURL1x;
+            nextPhotoThumbnail.src = displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL1x;
             var nextPhotoLink = document.getElementById("nextPhotoLink");
             var nextPhotoTextLink = document.getElementById("nextPhotoTextLink");
             if (dataLayer[0].eventYear >= 2018) { // only for images after chagne to image service
@@ -91,9 +91,9 @@
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL2x + ' 2x,' +
                     displayPhotos.photos[currentPhotoIndex + 1].thumbnailURL3x + ' 3x';
             }
-            nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex+1].orientation;
-            nextPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
-            nextPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex+1].photoId + '/display.html';
+            nextPhotoThumbnail.class = displayPhotos.photos[currentPhotoIndex + 1].orientation;
+            nextPhotoLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex + 1].photoId + '/display.html';
+            nextPhotoTextLink.href = '/display/' + displayPhotos.photos[currentPhotoIndex + 1].photoId + '/display.html';
             document.getElementById("nextSlideRight").style.display = "unset";
         } else {
             // hide next preview slide
@@ -108,12 +108,12 @@
     // in the array the can be added (appended) to the right of the swiper
     mySwiper.on('slideNextTransitionEnd', function () {
         console.log('slide changed - forward - updating photo array index');
-        currentPhotoIndex = Number(currentPhotoIndex)+1; // increase next photo index
+        currentPhotoIndex = Number(currentPhotoIndex) + 1; // increase next photo index
 
         if (mySwiper.isEnd) { // only add if we're at the end of the slides
-            if (currentPhotoIndex+1 < displayPhotos.photos.length) { // length = max index +1
+            if (currentPhotoIndex + 1 < displayPhotos.photos.length) { // length = max index +1
                 console.log('adding Photo with ID: ' + displayPhotos.photos[currentPhotoIndex].photoId);
-                console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) +1));
+                console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) + 1));
                 mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
                 console.log('slide added');
                 // this.mySwiper.update();
@@ -132,11 +132,11 @@
     // in the array the can be added (prepended) to the left of the swiper
     mySwiper.on('slidePrevTransitionEnd', function () {
         console.log('slide changed - backwards - updating photo array index');
-        currentPhotoIndex = Number(currentPhotoIndex)-1; // decrease photo index
+        currentPhotoIndex = Number(currentPhotoIndex) - 1; // decrease photo index
 
         if (mySwiper.isBeginning) {
-            if (currentPhotoIndex-1 >= 0) {
-                console.log("PhotoIndex for prepending : " + currentPhotoIndex-1);
+            if (currentPhotoIndex - 1 >= 0) {
+                console.log("PhotoIndex for prepending : " + currentPhotoIndex - 1);
                 mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
             }
         }
@@ -152,8 +152,8 @@
     console.log(eventCategoryId);
     var initialPhotoId = "${display.displayPhotoId}";
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
-    var displayPhotos = {eventCategoryId:eventCategoryId,photos:undefined};
-    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId+" on page)");
+    var displayPhotos = {eventCategoryId: eventCategoryId, photos: undefined};
+    console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId + " on page)");
 
     initDisplayView();
 
@@ -167,13 +167,13 @@
                 displayPhotos.photos[photoIndex].displayURL2x + ' 2x,' +
                 displayPhotos.photos[photoIndex].displayURL3x + ' 3x"';
         } else {
-            imgSrcset='';
+            imgSrcset = '';
         }
         // console.log("srcSet = ",imgSrcset);
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> '+
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> ' +
             '<img ' + imgSrcset +
-            'src="'+ displayPhotos.photos[photoIndex].displayURL1x +'" >' +
+            'src="' + displayPhotos.photos[photoIndex].displayURL1x + '" >' +
             ' </html:link>' +
             '</div>';
         // console.log("returning htmlString : ",htmlString);
@@ -186,6 +186,7 @@
 
         // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
+
     function setInitialPhotos() {
         // first set initial active photo
         console.log("Setting active photo - photoIndex for setting active photo : " + currentPhotoIndex);
@@ -193,23 +194,21 @@
         dataLayer.push({'event': 'displayView'});
 
         // then set initial left photo in case there are photos to the left
-        if (currentPhotoIndex-1 >= 0) {
-            console.log("PhotoIndex for setting initial left : " + currentPhotoIndex-1);
+        if (currentPhotoIndex - 1 >= 0) {
+            console.log("PhotoIndex for setting initial left : " + currentPhotoIndex - 1);
             mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
 
         }
 
         // then set initial right photo
-        if (currentPhotoIndex< displayPhotos.photos.length) {
+        if (currentPhotoIndex < displayPhotos.photos.length) {
             console.log("setting right photo - ");
             mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
 
         }
 
 
-
     }
-
 
 
     function getCurrentPhotoIndex() {
@@ -218,7 +217,7 @@
 
         for (var i = 0; i < displayPhotos.photos.length; i++) {
             var photoId = displayPhotos.photos[i].photoId;
-            if (photoId===initialPhotoId) {
+            if (photoId === initialPhotoId) {
                 console.log("found index for current photo - index = " + Number(i));
                 return Number(i); // return index of current photo
             }
@@ -226,7 +225,6 @@
 
         return undefined;
     }
-
 
 
     function initDisplayView() {
@@ -238,35 +236,34 @@
             setInitialPhotos();
             console.log('done, initial photos set');
         } else { // JSON not stored, (is this possible??? -> yes, if pre-loading in album.jsp fails!) - call REST service
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            var jsonResponse;
-            if (this.readyState == 4 && this.status == 200) {
-                console.log('done loading photo data')
-                // response now ready
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                var jsonResponse;
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('done loading photo data')
+                    // response now ready
 
-                jsonResponse = this.responseText;
-                // console.log(jsonResponse); // caution - can cause huge log output
-                displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
-                console.log("number of photos  : " + displayPhotos.photos.length);
-                // append(photos[0].displayURL);
+                    jsonResponse = this.responseText;
+                    // console.log(jsonResponse); // caution - can cause huge log output
+                    displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
+                    console.log("number of photos  : " + displayPhotos.photos.length);
+                    // append(photos[0].displayURL);
 
-                // we have to wait to call getCurrentPhotoIndex until call has returned:
-                currentPhotoIndex = getCurrentPhotoIndex();
-                console.log("setting currentPhotoIndex to :" + currentPhotoIndex);
-                console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
+                    // we have to wait to call getCurrentPhotoIndex until call has returned:
+                    currentPhotoIndex = getCurrentPhotoIndex();
+                    console.log("setting currentPhotoIndex to :" + currentPhotoIndex);
+                    console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
 
-                setInitialPhotos();
+                    setInitialPhotos();
 
-            }
-        };
-        xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true); // todo : how is the service called and what does it return? everything??
+                }
+            };
+            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true); // todo : how is the service called and what does it return? everything??
 
-        console.log('reading JSON data from REST service ....')
-        xhttp.send();
+            console.log('reading JSON data from REST service ....')
+            xhttp.send();
         }
     }
-
 
 
 </script>

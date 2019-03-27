@@ -229,7 +229,7 @@
 
         startDownloadMillis = Date.now();
         console.log('loading ...  ', startDownloadMillis);
-        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true); // what is loaded ? everything?
+        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true); // check RestServiceAction.java -> currently, 100 preloads
 
         xhttp.send();
     }
@@ -238,7 +238,7 @@
     if (!sessionStorage.getItem(${albumBean.eventCategoryId})) { // load from REST service if not available:
         getCategoryPhotosDataForSessionStorage();
     } else {
-        console.log('photo data for event ', ${albumBean.eventCategoryId}, 'already stored in sessionStorage')
+        console.log('photo data for event ', ${albumBean.eventCategoryId}, 'first 100 display images already stored in sessionStorage')
     }
 
 </script>

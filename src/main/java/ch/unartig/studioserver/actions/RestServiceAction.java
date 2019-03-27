@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
  * Used by the javascript part for swiping through the display images
  */
 public class RestServiceAction extends Action {
+    private static final int PRELOAD_PHOTOS = 100; // number of photos to preload (for album.jsp REST call, before display is called)
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
@@ -45,7 +47,7 @@ public class RestServiceAction extends Action {
         String jsonResponse = constructJsonResponse(albumBeanInSession);
         PrintWriter out = null;
         try {
-            int contentLength = jsonResponse.getBytes("UTF8").length;
+            int contentLength = jsonResponse.getBytes(StandardCharsets.UTF_8).length;
             _logger.debug("content lenght of REST API restponse : " + contentLength);
             httpServletResponse.setContentLength(contentLength);
             out = httpServletResponse.getWriter();
@@ -74,7 +76,7 @@ public class RestServiceAction extends Action {
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
         PhotoDAO photoDAO = new PhotoDAO();
-        List photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(),0,albumBeanInSession.getStartNumber());
+        List photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(), PRELOAD_PHOTOS,albumBeanInSession.getStartNumber());
         long timeMillisStart = System.currentTimeMillis();
         _logger.debug("before display REST call :" + timeMillisStart);
         for (Iterator iterator = photosForEventCategoryAndStartnumber.iterator(); iterator.hasNext(); ) {
