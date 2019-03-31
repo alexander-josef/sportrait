@@ -48,7 +48,8 @@
 
     // after swiper has changed the display slide, change needed elements on page
     function changeHTMLafterSlideTransition() {
-        // todo: catch exceptions
+        // todo : catch exceptions
+        // todo : Update photoId - needed if new photo metadata needs to be fetched from REST service
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
@@ -120,6 +121,9 @@
                 // mySwiper.updateAutoHeight(1000);
             } else {
                 console.log("Reached the end of the array");
+                // todo : load more photos to the right -- if not available, don't add and mark view as done (etappe ? startnumber search?)
+
+
             }
         }
         changeHTMLafterSlideTransition();
@@ -129,7 +133,7 @@
 
     // when navigating left (backwards) is done, update photo array index and
     // check if we are on the 1st slide and whether there are more photos
-    // in the array the can be added (prepended) to the left of the swiper
+    // in the array that can be added (prepended) to the left of the swiper
     mySwiper.on('slidePrevTransitionEnd', function () {
         console.log('slide changed - backwards - updating photo array index');
         currentPhotoIndex = Number(currentPhotoIndex) - 1; // decrease photo index
@@ -138,6 +142,11 @@
             if (currentPhotoIndex - 1 >= 0) {
                 console.log("PhotoIndex for prepending : " + currentPhotoIndex - 1);
                 mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
+            }
+            else {
+                console.log("PhotoIndex - 1 < 0 ? Photoindex : " + currentPhotoIndex); // cannot prepend slide anymore
+                // todo: need to check for new photos
+                // load more or we are done
             }
         }
         changeHTMLafterSlideTransition();
@@ -211,6 +220,10 @@
     }
 
 
+    /**
+     * loop through displayPhotos.photos array and find initial photoId -> determine the index of the photo in the array
+     * @returns {*}
+     */
     function getCurrentPhotoIndex() {
 
         console.log("getCurrentPhotoIndex is called");
@@ -223,6 +236,7 @@
             }
         }
 
+        // photo not defined in array - what to do? call Service?
         return undefined;
     }
 
@@ -258,7 +272,9 @@
 
                 }
             };
-            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html', true); // todo : how is the service called and what does it return? everything??
+            // add photoId in the request here from display (displayBean)
+            photoId = ${display.displayPhotoId}
+            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId, true); // todo : how is the service called and what does it return? everything??
 
             console.log('reading JSON data from REST service ....')
             xhttp.send();

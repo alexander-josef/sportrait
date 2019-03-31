@@ -3,7 +3,7 @@
  * FILENAME  :
  *    $RCSfile$
  *
- *    @author alex$             
+ *    @author alex$
  *    @since Oct 24, 2005$
  *
  * Copyright (c) 2005 unartig AG  --  All rights reserved
@@ -115,7 +115,7 @@
  *
  * Revision 1.1  2005/10/24 13:50:07  alex
  * upload of album
- * import in db 
+ * import in db
  * processing of images
  *
  ****************************************************************/
@@ -136,25 +136,18 @@ import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
 
 import java.util.*;
 
-public class PhotoDAO
-{
+public class PhotoDAO {
 
     Logger _logger = Logger.getLogger(getClass().getName());
 
-    public void saveOrUpdate(Photo photo) throws UAPersistenceException
-    {
-        try
-        {
+    public void saveOrUpdate(Photo photo) throws UAPersistenceException {
+        try {
             HibernateUtil.currentSession().saveOrUpdate(photo);
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             _logger.error("Cannot save or update a Photo, see stack trace");
             throw new UAPersistenceException("Cannot save or update a Photo, see stack trace", e);
         }
@@ -167,24 +160,23 @@ public class PhotoDAO
      * use the time/date functions like here (from ReportingDAO)
      * todo: replace deprecated call from classic session
      * <pre>
-
-     String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
-             "   oi.product.productType.productTypeId, " +
-             "   oi.product.price.priceId, " +
-             "   oi.product.productType.name, " +
-             "   oi.product.price.priceCHF , " +
-             "   year(oi.order.uploadCompletedDate), " +
-             "   month(oi.order.uploadCompletedDate), " +
-             "   sum(oi.quantity) , " +
-             "   oi.product.price.priceCHF * sum(oi.quantity)" +
-             ")  \n" +
-             " from OrderItem oi " +
-             " where oi.photo.album.photographer = :photographer " +
-             " group by oi.product.productType.productTypeId, oi.product.productType.name, oi.product.price.priceId, year(oi.order.uploadCompletedDate), month(oi.order.uploadCompletedDate), oi.product.price.priceCHF" +
-             " order by oi.product.productType.productTypeId, oi.product.price.priceCHF";
-
+     *
+     * String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
+     * "   oi.product.productType.productTypeId, " +
+     * "   oi.product.price.priceId, " +
+     * "   oi.product.productType.name, " +
+     * "   oi.product.price.priceCHF , " +
+     * "   year(oi.order.uploadCompletedDate), " +
+     * "   month(oi.order.uploadCompletedDate), " +
+     * "   sum(oi.quantity) , " +
+     * "   oi.product.price.priceCHF * sum(oi.quantity)" +
+     * ")  \n" +
+     * " from OrderItem oi " +
+     * " where oi.photo.album.photographer = :photographer " +
+     * " group by oi.product.productType.productTypeId, oi.product.productType.name, oi.product.price.priceId, year(oi.order.uploadCompletedDate), month(oi.order.uploadCompletedDate), oi.product.price.priceCHF" +
+     * " order by oi.product.productType.productTypeId, oi.product.price.priceCHF";
+     *
      * </pre>
-
      *
      * @param hour
      * @param minutes
@@ -201,18 +193,15 @@ public class PhotoDAO
         sql += " ORDER BY foto.pictureTakenDate ";
         sql += " LIMIT 1";
 
-        try
-        {
+        try {
             org.hibernate.classic.Session session = (org.hibernate.classic.Session) HibernateUtil.currentSession();
             firstPhoto = (Photo) session.createSQLQuery(sql, "foto", Photo.class).uniqueResult();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             _logger.error("Exception when getting first photo for time and albuem", e);
             throw new UAPersistenceException("trying to find first photo for time and albuem ... exception!!", e);
         }
         _logger.debug("firstPhoto = " + firstPhoto);
-        if (firstPhoto == null)
-        {
+        if (firstPhoto == null) {
             _logger.debug("no photo found for given time ... return first photo for album");
             firstPhoto = getFirstPhotoFor(album);
         }
@@ -225,22 +214,22 @@ public class PhotoDAO
      * Todo replace deprecated call
      * use the time/date functions like here (from ReportingDAO)
      * <pre>
-
-     String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
-             "   oi.product.productType.productTypeId, " +
-             "   oi.product.price.priceId, " +
-             "   oi.product.productType.name, " +
-             "   oi.product.price.priceCHF , " +
-             "   year(oi.order.uploadCompletedDate), " +
-             "   month(oi.order.uploadCompletedDate), " +
-             "   sum(oi.quantity) , " +
-             "   oi.product.price.priceCHF * sum(oi.quantity)" +
-             ")  \n" +
-             " from OrderItem oi " +
-             " where oi.photo.album.photographer = :photographer " +
-             " group by oi.product.productType.productTypeId, oi.product.productType.name, oi.product.price.priceId, year(oi.order.uploadCompletedDate), month(oi.order.uploadCompletedDate), oi.product.price.priceCHF" +
-             " order by oi.product.productType.productTypeId, oi.product.price.priceCHF";
-
+     *
+     * String hqlQuery = "select new ch.unartig.studioserver.model.ReportMonthlySalesSummary(" +
+     * "   oi.product.productType.productTypeId, " +
+     * "   oi.product.price.priceId, " +
+     * "   oi.product.productType.name, " +
+     * "   oi.product.price.priceCHF , " +
+     * "   year(oi.order.uploadCompletedDate), " +
+     * "   month(oi.order.uploadCompletedDate), " +
+     * "   sum(oi.quantity) , " +
+     * "   oi.product.price.priceCHF * sum(oi.quantity)" +
+     * ")  \n" +
+     * " from OrderItem oi " +
+     * " where oi.photo.album.photographer = :photographer " +
+     * " group by oi.product.productType.productTypeId, oi.product.productType.name, oi.product.price.priceId, year(oi.order.uploadCompletedDate), month(oi.order.uploadCompletedDate), oi.product.price.priceCHF" +
+     * " order by oi.product.productType.productTypeId, oi.product.price.priceCHF";
+     *
      * </pre>
      *
      * @param hour
@@ -250,16 +239,14 @@ public class PhotoDAO
      * @return a lost of photos
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public List getPhotosForInterval(int hour, int minutes, int interval, Album album) throws UAPersistenceException
-    {
+    public List getPhotosForInterval(int hour, int minutes, int interval, Album album) throws UAPersistenceException {
         List photos;
         String sql = "SELECT {foto.*} from photos as foto ";
         sql += "WHERE date_part('hour',foto.pictureTakenDate)=" + hour + " AND date_part('minute',foto.pictureTakenDate) BETWEEN " + minutes + " and " + (minutes + interval - 1) + " ";
         sql += "AND foto.albumId = '" + album.getGenericLevelId() + "' ";
         sql += "ORDER BY foto.pictureTakenDate";
 
-        try
-        {
+        try {
             org.hibernate.classic.Session session = (org.hibernate.classic.Session) HibernateUtil.currentSession();
             photos = session.createSQLQuery(sql, "foto", Photo.class).list();
             /*
@@ -268,8 +255,7 @@ public class PhotoDAO
                     .setMaxResults(50);
                     .list();
             */
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("cannot query photos for interval, see stack trace", e);
         }
 
@@ -307,11 +293,9 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    public List getPhotosForPage(int page, Album album, int itemsOnPage) throws UAPersistenceException
-    {
+    public List getPhotosForPage(int page, Album album, int itemsOnPage) throws UAPersistenceException {
         List photos;
-        if (page < 1)
-        {
+        if (page < 1) {
             page = 1;
         }
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
@@ -320,11 +304,9 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setMaxResults(itemsOnPage)
                 .setFirstResult((page - 1) * itemsOnPage);
 
-        try
-        {
+        try {
             photos = criteria.list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace");
         }
         DebugUtils.debugPhotos(photos);
@@ -343,12 +325,10 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    public List listPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage) throws UAPersistenceException
-    {
+    public List listPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage) throws UAPersistenceException {
         _logger.debug("extended get photos for page");
         List photos;
-        if (page < 1)
-        {
+        if (page < 1) {
             page = 1;
         }
         //if page=1 do not extend selection at the beginning:
@@ -356,18 +336,16 @@ Note: if you list each property explicitly, you must include all properties of t
         int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
                 .createAlias("album", "album")
-                .add(Expression.eq("album.publish",Boolean.TRUE))
+                .add(Expression.eq("album.publish", Boolean.TRUE))
                 .add(Expression.eq("album", album))
                 .addOrder(Order.asc("pictureTakenDate"))
                 .setMaxResults(maxResults)
                 .setFirstResult(firstResult);
 
-        try
-        {
+        try {
             photos = criteria.list();
-        } catch (HibernateException e)
-        {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace",e);
+        } catch (HibernateException e) {
+            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
         }
         DebugUtils.debugPhotos(photos);
         return photos;
@@ -375,12 +353,12 @@ Note: if you list each property explicitly, you must include all properties of t
 
     /**
      * Performant count on photos
+     *
      * @param album
      * @return
      * @throws UAPersistenceException
      */
-    public int countPhotos(Album album)
-    {
+    public int countPhotos(Album album) {
         // todo check performance of both calculations!
 
 //        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
@@ -393,7 +371,7 @@ Note: if you list each property explicitly, you must include all properties of t
         // if query should be cachable, use returnValue 2 - but check performance.
         // After import of new photos in the album, cached value must not be used anymore
         // method used for sportrait?
-        Number resultValue2 = (Number)HibernateUtil.currentSession()
+        Number resultValue2 = (Number) HibernateUtil.currentSession()
                 .createCriteria(Photo.class)
                 .createAlias("album", "album")
                 // .add(Expression.eq("album.publish", Boolean.TRUE))
@@ -409,8 +387,6 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
 
-
-
     /**
      * get the first photo of an album<br>
      * used to be private method
@@ -418,28 +394,23 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param album
      * @return
      */
-    public Photo getFirstPhotoFor(Album album)
-    {
+    public Photo getFirstPhotoFor(Album album) {
         Criteria c = HibernateUtil.currentSession().createCriteria(Photo.class);
         c.add(Expression.eq("album", album))
                 .addOrder(Order.asc("pictureTakenDate"))
                 .setMaxResults(1)
                 .setCacheable(true);
         Photo firstPhoto = (Photo) c.uniqueResult();
-        if (firstPhoto == null)
-        {
-            _logger.info("No photo found for getFirstPhoto in album ["+album.getLongTitle()+"].");
+        if (firstPhoto == null) {
+            _logger.info("No photo found for getFirstPhoto in album [" + album.getLongTitle() + "].");
         }
         return firstPhoto;
     }
 
-    public Photo load(Long photoId) throws UAPersistenceException
-    {
-        try
-        {
+    public Photo load(Long photoId) throws UAPersistenceException {
+        try {
             return (Photo) HibernateUtil.currentSession().load(Photo.class, photoId);
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
         }
     }
@@ -452,8 +423,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param minutes
      * @return
      */
-    public int getPageNrFor(Album album, int hour, int minutes)
-    {
+    public int getPageNrFor(Album album, int hour, int minutes) {
         Photo firstPhoto = getFirstPhotoAfterTime(hour, minutes, album);
         return (getAlbumPageNrFor(firstPhoto));
     }
@@ -536,8 +506,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    public int getAlbumPageNrFor(Long displayPhotoId) throws UAPersistenceException
-    {
+    public int getAlbumPageNrFor(Long displayPhotoId) throws UAPersistenceException {
         return getAlbumPageNrFor(load(displayPhotoId));
     }
 
@@ -550,8 +519,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    public int getAlbumPageNrFor(Long displayPhotoId, EventAlbum eventAlbum, String startNumber) throws UAPersistenceException
-    {
+    public int getAlbumPageNrFor(Long displayPhotoId, EventAlbum eventAlbum, String startNumber) throws UAPersistenceException {
         _logger.debug("getting page number for eventAlbum ....");
         Photo photo = load(displayPhotoId);
         int page = 1;
@@ -575,12 +543,11 @@ Note: if you list each property explicitly, you must include all properties of t
      *
      * @param displayPhotoId
      * @param sportsAlbum
+     * @param startNumber
      * @return
      * @throws UAPersistenceException
-     * @param startNumber
      */
-    public int getAlbumPageNrFor(Long displayPhotoId, SportsAlbum sportsAlbum, String startNumber) throws UAPersistenceException
-    {
+    public int getAlbumPageNrFor(Long displayPhotoId, SportsAlbum sportsAlbum, String startNumber) throws UAPersistenceException {
         _logger.debug("getting page number for sportsalbum ....");
         Photo photo = load(displayPhotoId);
         int page = 1;
@@ -604,12 +571,11 @@ Note: if you list each property explicitly, you must include all properties of t
      *
      * @param displayPhotoId
      * @param eventCategory
+     * @param startNumber
      * @return
      * @throws UAPersistenceException
-     * @param startNumber
      */
-    public int getAlbumPageNrFor(Long displayPhotoId, EventCategory eventCategory, String startNumber) throws UAPersistenceException
-    {
+    public int getAlbumPageNrFor(Long displayPhotoId, EventCategory eventCategory, String startNumber) throws UAPersistenceException {
         _logger.debug("getting page number for sportsalbum ....");
         Photo photo = load(displayPhotoId);
         int page;
@@ -617,8 +583,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
         // check if there is not a unique result for the time of the given photo:
         Object queryResult;
-        try
-        {
+        try {
             // also include filename for check?
 
             // this would fail for pictures without a date (i.e. with all the same entries for date)
@@ -628,8 +593,7 @@ Note: if you list each property explicitly, you must include all properties of t
                     .setCacheable(true)
                     .uniqueResult();
 
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             // exceptional case: not a single result: we now calcualte the page according to the photoid:
             _logger.info("not a unique result for this timestamp : " + photo.getPictureTakenDate());
             _logger.info("calculating page for this photo according to photoid");
@@ -648,8 +612,6 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
 
-
-
     /**
      * dao method to list photos for a given startnumber
      *
@@ -660,14 +622,11 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return a list of photos
      * @throws ch.unartig.exceptions.UAPersistenceException
      * @deprecated probably shouldn't be used - album not a valid criterion
-     *
      */
-    public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException
-    {
+    public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException {
         _logger.debug("extended get sport photos for page");
         List photos;
-        if (page < 1)
-        {
+        if (page < 1) {
             page = 1;
         }
         //if page=1 do not extend selection at the beginning:
@@ -678,15 +637,12 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setFirstResult(firstResult)
                 .addOrder(Order.asc("pictureTakenDate"))
                 .addOrder(Order.asc("photoId"));
-        try
-        {
+        try {
             photos = criteria.list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
         }
-        if (_logger.isDebugEnabled())
-        {
+        if (_logger.isDebugEnabled()) {
             DebugUtils.debugPhotos(photos);
         }
         return photos;
@@ -696,31 +652,29 @@ Note: if you list each property explicitly, you must include all properties of t
      * Retrieve all photos of an EventCategory that match the given parameter
      * first order is picturetakendate
      * set order if no time is available to photoid
+     *
      * @param page
      * @param eventCategory
-     * @param itemsOnPage the number of photos on page // 0 for all photos for given eventCategory and startNumber
-     * @param startNumber if null, ignore
+     * @param itemsOnPage   the number of photos on page // 0 for all photos for given eventCategory and startNumber
+     * @param startNumber   if null, ignore
      * @return a list of Photo s
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public List listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException
-    {
+    public List listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException {
         _logger.debug("extended get sport photos for page");
         List photos;
-        if (page < 1)
-        {
+        if (page < 1) {
             page = 1;
         }
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
 
-        if (itemsOnPage==0){ // don't limit result for pagination
+        if (itemsOnPage == 0) { // don't limit result for pagination
             criteria.addOrder(Order.asc("pictureTakenDate"))
                     .addOrder(Order.asc("photoId"))
                     .setCacheable(true) // also enable query caching
-        ;
+            ;
 
-        }
-        else {//if page=1 do not extend selection at the beginning:
+        } else {//if page=1 do not extend selection at the beginning:
             int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
             int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
             criteria.setMaxResults(maxResults)
@@ -730,15 +684,12 @@ Note: if you list each property explicitly, you must include all properties of t
                     .setCacheable(true) // also enable query caching
             ;
         }
-        try
-        {
+        try {
             photos = criteria.list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
         }
-        if (_logger.isDebugEnabled())
-        {
+        if (_logger.isDebugEnabled()) {
             DebugUtils.debugPhotos(photos);
         }
         return photos;
@@ -757,13 +708,11 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws UAPersistenceException
      * @deprecated still used ? see other signatures of same method that uses eventcategory - eventalbum probably not used this way
      */
-    public List listSportsPhotosOnPagePlusPreview(int page, EventAlbum album, int itemsOnPage, String startnumber) throws UAPersistenceException
-    {
+    public List listSportsPhotosOnPagePlusPreview(int page, EventAlbum album, int itemsOnPage, String startnumber) throws UAPersistenceException {
         _logger.debug("sport photos for EVENT ALBUM!!");
 
         List photos;
-        if (page < 1)
-        {
+        if (page < 1) {
             page = 1;
         }
         //if page=1 do not extend selection at the beginning:
@@ -778,15 +727,12 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setFirstResult(firstResult)
                 .addOrder(Order.asc("pictureTakenDate"))
                 .addOrder(Order.asc("photoId"));
-        try
-        {
+        try {
             photos = criteria.list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
         }
-        if (_logger.isDebugEnabled())
-        {
+        if (_logger.isDebugEnabled()) {
             DebugUtils.debugPhotos(photos);
         }
         return photos;
@@ -802,8 +748,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws UAPersistenceException
      * @deprecated should not be used anymore
      */
-    private Criteria createStartnumberCriteria(Album album, String startnumber) throws UAPersistenceException
-    {
+    private Criteria createStartnumberCriteria(Album album, String startnumber) throws UAPersistenceException {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
                 .add(Restrictions.eq("album", album));
 
@@ -819,10 +764,9 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    private Criteria createSportsPhotoCriteria(EventCategory eventCategory, String startnumber) throws UAPersistenceException
-    {
+    private Criteria createSportsPhotoCriteria(EventCategory eventCategory, String startnumber) throws UAPersistenceException {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
-                .createAlias("album","a")
+                .createAlias("album", "a")
                 .add(Restrictions.eq("a.eventCategory", eventCategory))
                 .add(Restrictions.eq("a.publish", Boolean.TRUE))
                 .setCacheable(true);
@@ -831,10 +775,8 @@ Note: if you list each property explicitly, you must include all properties of t
         return criteria;
     }
 
-    private void addStartNumberCriteria(String startnumber, Criteria criteria)
-    {
-        if (startnumber != null && !"".equals(startnumber))
-        {
+    private void addStartNumberCriteria(String startnumber, Criteria criteria) {
+        if (startnumber != null && !"".equals(startnumber)) {
             criteria.createAlias("photoSubjects", "sub")
                     .createAlias("sub.eventRunners", "eventRunner")
                     .add(Restrictions.eq("eventRunner.startnumber", startnumber));
@@ -849,8 +791,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return
      * @throws UAPersistenceException
      */
-    public int countPhotosFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException
-    {
+    public int countPhotosFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException {
         Integer count = (Integer) createSportsPhotoCriteria(eventCategory, startNumber)
                 .setProjection(Projections.rowCount())
                 .setCacheable(true)
@@ -868,8 +809,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param filename
      * @return Photo or null
      */
-    public Photo findPhoto(Album album, String filename) throws UAPersistenceException
-    {
+    public Photo findPhoto(Album album, String filename) throws UAPersistenceException {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
                 .add(Restrictions.eq("album", album))
                 .add(Restrictions.ilike("filename", filename));
@@ -885,8 +825,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return the last photo in an eventCategory filtered by startnumber
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public Photo getLastPhotoInCategoryAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException
-    {
+    public Photo getLastPhotoInCategoryAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException {
 
         Photo lastPhoto = (Photo) createSportsPhotoCriteria(eventCategory, startNumber)
                 .addOrder(Order.asc("pictureTakenDate"))
@@ -906,8 +845,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return the last photo in an album filtered by startnumber
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public Photo getLastPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException
-    {
+    public Photo getLastPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException {
 
 
         Integer count = (Integer) createEventAlbumStartNumberCriteria(album, startNumber)
@@ -933,8 +871,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return criteria
      * @throws UAPersistenceException
      */
-    private Criteria createEventAlbumStartNumberCriteria(EventAlbum album, String startNumber) throws UAPersistenceException
-    {
+    private Criteria createEventAlbumStartNumberCriteria(EventAlbum album, String startNumber) throws UAPersistenceException {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
                 .createAlias("album", "etappe")
                 .add(Restrictions.eq("etappe.event", album.getEvent()));
@@ -953,8 +890,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return first Photo
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public Photo getFirstPhotoInAlbumAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException
-    {
+    public Photo getFirstPhotoInAlbumAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException {
         Photo firstPhoto = (Photo) createSportsPhotoCriteria(eventCategory, startNumber)
                 .addOrder(Order.asc("pictureTakenDate"))
                 .addOrder(Order.asc("photoId"))
@@ -973,8 +909,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return first Photo
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public Photo getFirstPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException
-    {
+    public Photo getFirstPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException {
         Criteria criteria = createEventAlbumStartNumberCriteria(album, startNumber);
 
         Photo firstPhoto = (Photo) criteria
@@ -995,8 +930,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return index of the last photo for given album and startnumber
      * @throws UAPersistenceException
      */
-    private int lastIndexFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException
-    {
+    private int lastIndexFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException {
         return countPhotosFor(startNumber, eventCategory) - 1;
     }
 
@@ -1013,8 +947,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param maxMatchTime
      * @return List of Photo s
      */
-    public List findFinishTimePhotos(Album album, Date minMatchTime, Date maxMatchTime) throws UAPersistenceException
-    {
+    public List findFinishTimePhotos(Album album, Date minMatchTime, Date maxMatchTime) throws UAPersistenceException {
         List retVal;
 
         // todo: Only time, not dates!, are compared.
@@ -1033,12 +966,12 @@ Note: if you list each property explicitly, you must include all properties of t
 
     /**
      * DAO method to delete single photo
+     *
      * @param photoId
      */
     public void delete(Long photoId) throws UAPersistenceException {
 
-        try
-        {
+        try {
             HibernateUtil.currentSession().delete(HibernateUtil.currentSession().load(Photo.class, photoId));
 
         } catch (HibernateException h) {
@@ -1048,11 +981,87 @@ Note: if you list each property explicitly, you must include all properties of t
 
     /**
      * added after having problem with laziliy initializing photosubject with the new image recognition import
+     *
      * @param photo
      */
     public void initializePhotoSubjects(Photo photo) {
         Set photoSubjects = photo.getPhotoSubjects();
         Hibernate.initialize(photoSubjects);
     }
+
+    /**
+     * Used for REST Service in order to return a list of photos that contains neighboring photos to the given photoId
+     * On the frontend, this list is used in JSON format to swipe through the photos. once it reaches the end of the list,
+     * the REST API will be called for a new set of images
+     *
+     * @param photoId
+     * @param eventCategory
+     * @param startNumber
+     * @param backward
+     * @param forward
+     * @return
+     */
+    public List listNearbySportsPhotosFor(Long photoId, EventCategory eventCategory, String startNumber, int backward, int forward) {
+        List photos; // result value
+
+        _logger.debug("listing nearby photos for photoId : " + photoId);
+
+
+        // subquery for photo position
+        DetachedCriteria subquery = DetachedCriteria.forClass(Photo.class, "p");
+        subquery.createAlias("album", "a")
+                .add(Restrictions.eq("a.eventCategory", eventCategory))
+                .add(Restrictions.eq("a.publish", Boolean.TRUE))
+                .add(Restrictions.le("p.photoId", photoId))
+                .setProjection(Projections.rowCount());
+
+
+        // todo: remove, only debug ? can this be integrated as a subquery?
+        int position = (Integer)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult();
+        _logger.debug("Photo ["+photoId+"] at position : " + position);
+
+
+
+
+
+//        Criteria criteria = session.createCriteria(User.class, "u")
+//                .add( Subqueries.lt(10, subquery) );
+//
+//        Criteria photoCriteria  = createSportsPhotoCriteria(eventCategory,startNumber);
+//        photoCriteria.add(Expression)
+//
+//
+
+
+        Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber); // needed
+
+        int firstResult = position - backward;
+        int maxResults = backward + forward;
+        criteria.setMaxResults(maxResults+1) // starts with 0
+                .setFirstResult(firstResult-1) // starts with 0
+                .addOrder(Order.asc("pictureTakenDate"))
+                .addOrder(Order.asc("photoId"))
+                .setCacheable(true) // also enable query caching
+        ;
+
+
+
+        try
+        {
+            photos = criteria.list();
+        } catch (HibernateException e)
+        {
+            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
+        }
+        if (_logger.isDebugEnabled())
+        {
+            DebugUtils.debugPhotos(photos);
+        }
+
+        return photos;
+
+    }
+
+
 }
 

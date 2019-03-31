@@ -236,7 +236,10 @@
 
     // when page is loaded : check for existing sessionStorage data for current eventCategory:
     if (!sessionStorage.getItem(${albumBean.eventCategoryId})) { // load from REST service if not available:
-        getCategoryPhotosDataForSessionStorage();
+        // this is for preloading
+        // todo : enable again after display logic has been updated (disabling, so that we can test better the logic on the display side when no photos are available)
+        // getCategoryPhotosDataForSessionStorage();
+        console.log('do nothing ...')
     } else {
         console.log('photo data for event ', ${albumBean.eventCategoryId}, 'first 100 display images already stored in sessionStorage')
     }

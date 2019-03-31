@@ -26,7 +26,9 @@ import java.util.List;
  * Used by the javascript part for swiping through the display images
  */
 public class RestServiceAction extends Action {
-    private static final int PRELOAD_PHOTOS = 100; // number of photos to preload (for album.jsp REST call, before display is called)
+    private static final int PRELOAD_PHOTOS = 5; // number of photos to preload (for album.jsp REST call, before display is called)
+    public static final int FORWARD = 5; // todo : debug values - set to 50
+    public static final int BACKWARD = 2; // todo : debug values - set to 20
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
@@ -35,6 +37,7 @@ public class RestServiceAction extends Action {
         String method = request.getMethod();
         _logger.debug("method = " + method);
         _logger.debug("request.getRequestURI() = " + request.getRequestURI());
+        Long photoId = Long.valueOf(request.getParameter("photoId"));
 
         // todo check action mapping possibilities from Struts in manual
 
@@ -44,7 +47,7 @@ public class RestServiceAction extends Action {
         httpServletResponse.setCharacterEncoding("UTF-8");
         SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
 
-        String jsonResponse = constructJsonResponse(albumBeanInSession);
+        String jsonResponse = constructJsonResponse(albumBeanInSession,photoId);
         PrintWriter out = null;
         try {
             int contentLength = jsonResponse.getBytes(StandardCharsets.UTF_8).length;
@@ -66,19 +69,34 @@ public class RestServiceAction extends Action {
     /**
      *
      * @param albumBeanInSession
+     * @param photoId
      * @return
      */
-    private String constructJsonResponse(SportsAlbumBean albumBeanInSession) {
+    private String constructJsonResponse(SportsAlbumBean albumBeanInSession, Long photoId) {
+        long timeMillisStart = System.currentTimeMillis();
+        _logger.debug("before display REST call :" + timeMillisStart);
 
-        StringBuilder jsonResponse= new StringBuilder();
-        jsonResponse.append("[ ");
         // query db query for all photos of category (with startnumber if given)
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
         PhotoDAO photoDAO = new PhotoDAO();
-        List photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(), PRELOAD_PHOTOS,albumBeanInSession.getStartNumber());
-        long timeMillisStart = System.currentTimeMillis();
-        _logger.debug("before display REST call :" + timeMillisStart);
+        List photosForEventCategoryAndStartnumber;
+
+        // todo:
+        // in case photoId is given, find 1st result criteria parameter - separate query?
+        if (photoId != null) {
+            // get position of photo -- todo : what about startnummernsuche?
+            // load photos -20 +50 of current position
+            photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, albumBeanInSession.getEventCategory(), albumBeanInSession.getStartNumber(), BACKWARD, FORWARD);
+
+            //photoDAO.getFirstPhotoInAlbumAndSelection()
+        } else { // return first [PRELOAD_PHOTOS] photos of eventcategory (used to preload 1st photos when user accesses eventcategory?)
+            photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(), PRELOAD_PHOTOS,albumBeanInSession.getStartNumber());
+        }
+
+        StringBuilder jsonResponse= new StringBuilder();
+        jsonResponse.append("[ ");
+
         for (Iterator iterator = photosForEventCategoryAndStartnumber.iterator(); iterator.hasNext(); ) {
             Object aPhotosForEventCategoryAndStartnumber = iterator.next();
             Photo photo = (Photo) aPhotosForEventCategoryAndStartnumber;
