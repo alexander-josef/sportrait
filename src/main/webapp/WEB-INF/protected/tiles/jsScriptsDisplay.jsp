@@ -49,14 +49,18 @@
     // after swiper has changed the display slide, change needed elements on page
     function changeHTMLafterSlideTransition() {
         // todo : catch exceptions
-        // todo : Update photoId - needed if new photo metadata needs to be fetched from REST service
+        // Update photoId - needed if new photo metadata needs to be fetched from REST service
+
+        photoId = displayPhotos.photos[currentPhotoIndex].photoId;
+        console.log("Updated photoId to :" + photoId);
+
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayPhotoTitle").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle;
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
-        document.getElementById("displayDownloadButtonLink").setAttribute('href', "/downloadPhoto.html?photoId=" + displayPhotos.photos[currentPhotoIndex].photoId);
+        document.getElementById("displayDownloadButtonLink").setAttribute('href', "/downloadPhoto.html?photoId=" + photoId);
         // document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
-        document.getElementById("metaTagUrl").setAttribute('content', '/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
-        dataLayer.push({'photoId': displayPhotos.photos[currentPhotoIndex].photoId}); // update photoId in dataLayer
+        document.getElementById("metaTagUrl").setAttribute('content', '/display/' + photoId + '/display.html'); // for facebook sharing
+        dataLayer.push({'photoId': photoId}); // update photoId in dataLayer
         dataLayer.push({'event': 'displayView'});
 
         // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
@@ -110,21 +114,52 @@
     mySwiper.on('slideNextTransitionEnd', function () {
         console.log('slide changed - forward - updating photo array index');
         currentPhotoIndex = Number(currentPhotoIndex) + 1; // increase next photo index
+        console.log('current index : ' + currentPhotoIndex);
+        console.log('size of array : ' + displayPhotos.photos.length);
+
+        // anonymous function - change to global if needed
+        function fetchMoreRightFromRestApi() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                var jsonResponse;
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('done loading photo data')
+                    // response returned and is now ready
+
+                    jsonResponse = this.responseText;
+                    console.log(jsonResponse); // caution - can cause huge log output
+                    displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
+                    console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
+                    setCurrentPhotoIndex()
+
+
+                }
+            };
+            console.log('fetching JSON data from REST service for photos to the right of photo ['+photoId+']');
+            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId+'&direction=right', true);
+            xhttp.send();
+        }
 
         if (mySwiper.isEnd) { // only add if we're at the end of the slides
+            // check for more photos in the array
             if (currentPhotoIndex + 1 < displayPhotos.photos.length) { // length = max index +1
+                // there are more photos in the array to the right
                 console.log('adding Photo with ID: ' + displayPhotos.photos[currentPhotoIndex].photoId);
                 console.log("PhotoIndex for appending : " + (Number(currentPhotoIndex) + 1));
                 mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
                 console.log('slide added');
                 // this.mySwiper.update();
                 // mySwiper.updateAutoHeight(1000);
-            } else {
-                console.log("Reached the end of the array");
-                // todo : load more photos to the right -- if not available, don't add and mark view as done (etappe ? startnumber search?)
-
-
             }
+
+            if (currentPhotoIndex + 1===displayPhotos.photos.length) {
+                console.log("Reached the end of the selection - swiper is at the end");
+            } else if (currentPhotoIndex + 2 === displayPhotos.photos.length) { // todo : looking two images ahead, do we need to fetch more data?
+                // try to fetch more photos
+                console.log("trying to fetch more ...");
+                fetchMoreRightFromRestApi();
+            }
+
         }
         changeHTMLafterSlideTransition();
 
@@ -134,20 +169,55 @@
     // when navigating left (backwards) is done, update photo array index and
     // check if we are on the 1st slide and whether there are more photos
     // in the array that can be added (prepended) to the left of the swiper
+    // fetch more photos from REST API if necessary
     mySwiper.on('slidePrevTransitionEnd', function () {
         console.log('slide changed - backwards - updating photo array index');
         currentPhotoIndex = Number(currentPhotoIndex) - 1; // decrease photo index
 
+        // anonymous function - change to global if needed
+        function fetchMoreLeftFromRestApi() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                var jsonResponse;
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log('done loading photo data')
+                    // response returned and is now ready
+
+                    jsonResponse = this.responseText;
+                    console.log(jsonResponse); // caution - can cause huge log output
+                    displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
+                    console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
+                    setCurrentPhotoIndex()
+
+
+                }
+            };
+            console.log('fetching JSON data from REST service for photos to the left of photo ['+photoId+']');
+            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId+'&direction=left', true);
+            xhttp.send();
+        }
+
         if (mySwiper.isBeginning) {
             if (currentPhotoIndex - 1 >= 0) {
+                // there are more photos to the left
                 console.log("PhotoIndex for prepending : " + currentPhotoIndex - 1);
                 mySwiper.prependSlide(getPhotoSlideHTMLfromOffset(-1));
+                console.log('slide added to the left');
+
             }
             else {
-                console.log("PhotoIndex - 1 < 0 ? Photoindex : " + currentPhotoIndex); // cannot prepend slide anymore
-                // todo: need to check for new photos
-                // load more or we are done
+                console.log("Reached left end of the array");
+                console.log("PhotoIndex - 1 === 0 ? -> currentPhotoindex : " + currentPhotoIndex); // cannot prepend slide anymore
             }
+
+        }
+
+        // need to fetch more photos to the left from REST API? This is independent from swiper location
+        if (currentPhotoIndex - 2 === 0) {
+            console.log("currentPhotoIndex - 2 === 0");
+            console.log("trying to fetch more ...");
+            fetchMoreLeftFromRestApi();
+            console.log("adding to the left after fetching more from REST API");
         }
         changeHTMLafterSlideTransition();
 
@@ -157,9 +227,8 @@
     // todo in case of startnummer search
     // initial call
     var eventCategoryId = "${albumBean.eventCategoryId}"; // todo : was geschieht hier?
-    console.log("writing eventCategoryId .");
+    console.log("eventCategoryId : " + eventCategoryId);
     console.log(eventCategoryId);
-    var initialPhotoId = "${display.displayPhotoId}";
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId: eventCategoryId, photos: undefined};
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId + " on page)");
@@ -224,20 +293,26 @@
      * loop through displayPhotos.photos array and find initial photoId -> determine the index of the photo in the array
      * @returns {*}
      */
-    function getCurrentPhotoIndex() {
+    function setCurrentPhotoIndex() {
 
-        console.log("getCurrentPhotoIndex is called");
+        console.log("setCurrentPhotoIndex is called");
+
+        console.log('current photo id : ' + photoId);
 
         for (var i = 0; i < displayPhotos.photos.length; i++) {
-            var photoId = displayPhotos.photos[i].photoId;
-            if (photoId === initialPhotoId) {
+            var photoIdFromArray = Number(displayPhotos.photos[i].photoId);
+            console.log('photo id from array : ' + photoIdFromArray);
+            console.log('current photo id type : ' + typeof photoId);
+            console.log('photoId type in Array: ' + typeof photoIdFromArray);
+            if (photoIdFromArray === Number(photoId)) {
                 console.log("found index for current photo - index = " + Number(i));
-                return Number(i); // return index of current photo
+                currentPhotoIndex = Number(i);
+                return true;
             }
         }
-
         // photo not defined in array - what to do? call Service?
-        return undefined;
+        console.log('!!! index for current photo not found !!!');
+        return false;
     }
 
 
@@ -246,10 +321,10 @@
         if (sessionStorage.getItem(eventCategoryId)) { // if there is an entry with key = this event category, fill in stored JSON
             console.log('Reading from session storage ...');
             displayPhotos.photos = JSON.parse(sessionStorage.getItem(eventCategoryId));
-            currentPhotoIndex = getCurrentPhotoIndex();
+            setCurrentPhotoIndex();
             setInitialPhotos();
             console.log('done, initial photos set');
-        } else { // JSON not stored, (is this possible??? -> yes, if pre-loading in album.jsp fails!) - call REST service
+        } else { // JSON not stored, (is this possible??? -> yes, if pre-loading in album.jsp fails or has not match!) - call REST service
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 var jsonResponse;
@@ -258,13 +333,13 @@
                     // response now ready
 
                     jsonResponse = this.responseText;
-                    // console.log(jsonResponse); // caution - can cause huge log output
+                    console.log(jsonResponse); // caution - can cause huge log output
                     displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                     console.log("number of photos  : " + displayPhotos.photos.length);
                     // append(photos[0].displayURL);
 
                     // we have to wait to call getCurrentPhotoIndex until call has returned:
-                    currentPhotoIndex = getCurrentPhotoIndex();
+                    setCurrentPhotoIndex();
                     console.log("setting currentPhotoIndex to :" + currentPhotoIndex);
                     console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
 
@@ -272,11 +347,11 @@
 
                 }
             };
-            // add photoId in the request here from display (displayBean)
+            // add initial (!) photoId in the request here from display (displayBean)
             photoId = ${display.displayPhotoId}
             xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId, true); // todo : how is the service called and what does it return? everything??
 
-            console.log('reading JSON data from REST service ....')
+            console.log('reading JSON data from REST service ....');
             xhttp.send();
         }
     }

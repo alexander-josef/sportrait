@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class RestServiceAction extends Action {
     private static final int PRELOAD_PHOTOS = 5; // number of photos to preload (for album.jsp REST call, before display is called)
-    public static final int FORWARD = 5; // todo : debug values - set to 50
-    public static final int BACKWARD = 2; // todo : debug values - set to 20
+    private static final int FORWARD = 5; // todo : debug values - set to 50
+    private static final int BACKWARD = 4; // todo : debug values - set to 20 -- must not be 4 or higher because of swiper login in the frontend
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
@@ -38,6 +38,8 @@ public class RestServiceAction extends Action {
         _logger.debug("method = " + method);
         _logger.debug("request.getRequestURI() = " + request.getRequestURI());
         Long photoId = Long.valueOf(request.getParameter("photoId"));
+
+        String direction= request.getParameter("direction"); // fetch more from right or from left ? or no direction?
 
         // todo check action mapping possibilities from Struts in manual
 
