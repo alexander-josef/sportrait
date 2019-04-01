@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class RestServiceAction extends Action {
     private static final int PRELOAD_PHOTOS = 5; // number of photos to preload (for album.jsp REST call, before display is called)
-    private static final int FORWARD = 5; // todo : debug values - set to 50
-    private static final int BACKWARD = 4; // todo : debug values - set to 20 -- must not be 4 or higher because of swiper login in the frontend
+    private static final int FORWARD = 50; // todo : debug values - set to 50
+    private static final int BACKWARD = 10; // todo : debug values - set to 20 -- must not be 4 or higher because of swiper login in the frontend
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
