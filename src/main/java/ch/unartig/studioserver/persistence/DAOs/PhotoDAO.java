@@ -1004,7 +1004,11 @@ Note: if you list each property explicitly, you must include all properties of t
     public List listNearbySportsPhotosFor(Long photoId, EventCategory eventCategory, String startNumber, int backward, int forward) {
         List photos; // result value
 
-        _logger.debug("listing nearby photos for photoId : " + photoId);
+
+        Photo photo = load(photoId);
+        _logger.debug("listing nearby photos for photoId : " + photo.getFilename());
+
+        // todo : this does not work for photos with identical picturetakendates - it should be a row_number() query, ordered by picturetakendate and filename (or photoId)
 
 
         // subquery for photo position
@@ -1012,12 +1016,17 @@ Note: if you list each property explicitly, you must include all properties of t
         subquery.createAlias("album", "a")
                 .add(Restrictions.eq("a.eventCategory", eventCategory))
                 .add(Restrictions.eq("a.publish", Boolean.TRUE))
-                .add(Restrictions.le("p.photoId", photoId))
+                .add(Restrictions.le("p.pictureTakenDate", photo.getPictureTakenDate()))
                 .setProjection(Projections.rowCount());
 
 
         // todo: remove, only debug ? can this be integrated as a subquery?
-        int position = (Integer)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult();
+        int position = 0;
+        try {
+            position = (Integer)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult();
+        } catch (HibernateException e) {
+            _logger.error("Error retrieving photos",e);
+        }
         _logger.debug("Photo ["+photoId+"] at position : " + position);
 
 
