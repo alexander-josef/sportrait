@@ -166,6 +166,7 @@
 
         }
         changeHTMLafterSlideTransition();
+        triggerDisplayPhotoEvent();
 
 
     });
@@ -224,6 +225,7 @@
             console.log("adding to the left after fetching more from REST API");
         }
         changeHTMLafterSlideTransition();
+        triggerDisplayPhotoEvent();
 
     });
 
@@ -268,6 +270,13 @@
 
         // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
+
+
+    function triggerDisplayPhotoEvent() {
+        /* event tracking in google tag manager -- album or eventcategory ID as variable in data layer*/
+        dataLayer.push({'event': 'displayPhoto'});
+    }
+
 
     function setInitialPhotos() {
         // first set initial active photo
