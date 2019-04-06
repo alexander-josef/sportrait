@@ -136,7 +136,11 @@
                 }
             };
             console.log('fetching JSON data from REST service for photos to the right of photo ['+photoId+']');
+            // todo: check if this can be done without the webApplicationURL from display - does not work with CDN
+/*
             xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId+'&direction=right', true);
+*/
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&direction=right', true);
             xhttp.send();
         }
 

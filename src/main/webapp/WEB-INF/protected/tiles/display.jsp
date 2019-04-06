@@ -3,6 +3,15 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<script>
+    function appendPhotoId() {
+        var a = document.getElementById('displayAlbumBackLink');
+        console.log('old URL : ' + a);
+
+         a.href += '?photoId='+photoId;
+        console.log('new URL : ' + a);
+    }
+</script>
 <jsp:useBean id="display" type="ch.unartig.studioserver.beans.DisplayBean" scope="request"/>
 <html:xhtml/>
 <%--
@@ -15,9 +24,14 @@ todo refactor name albumBean as fast as possible
 <div class="pageNav">
     <ul id="fotoNav">
         <li>
-            <html:link action="/showCategory" styleClass="toAlbum">
+<%--
+
+            <html:link action="/showCategory" styleClass="toAlbum" onclick="">
                 zur Übersicht
             </html:link>
+
+--%>
+            <a href="${pageContext.request.contextPath}/showCategory.html" class="toAlbum" id="displayAlbumBackLink" onclick="appendPhotoId()">zur Übersicht</a>
         </li>
     </ul>
     <h1 id="pageName">${albumBean.sportsEvent.longTitle}</h1>

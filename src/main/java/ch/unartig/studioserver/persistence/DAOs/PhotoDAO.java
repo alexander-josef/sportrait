@@ -471,6 +471,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * query for the position of the photo within the album ????<br>
      * use this result to calculate page<br/>
      * todo: refactor all three getAlbumPageNrFor methods!!!! they're more or less the same!!
+     * todo : for sportrait? this only works if photos in album and eventcategory are identical. what about many albums per eventcategory?
      *
      * @param photo
      * @return '1' in case photo is null or a page number for the passed photo.
@@ -567,11 +568,11 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
     /**
-     * Given the photoId , startnumber (if any) and an EventCategory, calculate the pagenumber
+     * Given the photoId , startnumber (if any, use null or empty value if no startnumber shall be used in the query) and an EventCategory, calculate the pagenumber
      *
      * @param displayPhotoId
      * @param eventCategory
-     * @param startNumber
+     * @param startNumber can be null or empty if it shouldn't be used in the criteria
      * @return
      * @throws UAPersistenceException
      */
@@ -760,7 +761,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * construct a criteria for a passed eventCategory and startNumber
      *
      * @param eventCategory An event has photos one or more categories, i.e. "junioren", "elite", "etappe1", "impressionen" etc.
-     * @param startnumber
+     * @param startnumber can be null or empty if it should not be used in criteria
      * @return
      * @throws UAPersistenceException
      */
@@ -775,6 +776,11 @@ Note: if you list each property explicitly, you must include all properties of t
         return criteria;
     }
 
+    /**
+     * helper method to create startnumber criteria (if given)
+     * @param startnumber can be null or empty
+     * @param criteria will only be added a startnumber if one is given
+     */
     private void addStartNumberCriteria(String startnumber, Criteria criteria) {
         if (startnumber != null && !"".equals(startnumber)) {
             criteria.createAlias("photoSubjects", "sub")
