@@ -1,5 +1,6 @@
 package ch.unartig.sportrait.imgRecognition;
 
+import ch.unartig.studioserver.Registry;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
@@ -11,13 +12,13 @@ import java.util.List;
  * Helper class for amazon image rekognition operations - implemented as a singleton
  */
 public class ImgRecognitionHelper {
-    public static final int MAX_FACES = 5;
+    private static final int MAX_FACES = 5;
     public static final Float MIN_FACES_SHARPNESS =  10F; // see Apple notes for comparison of OK and not OK images of faces
     public static final Float MIN_FACES_CONFIDENCE = 99.9F;
     public static final Float MIN_FACES_BRIGHTNESS = 60F;
     private static final int MAX_FACES_RETURNED_FROM_SEARCH = 3;
     private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
-    static final String FACE_COLLECTION_ID = "sportraitFaces2019";
+    static final String FACE_COLLECTION_ID = "sportraitFaces2019-"+ Registry.getApplicationEnvironment();
     private AmazonRekognition rekognitionClient;
     private Logger _logger = Logger.getLogger(getClass().getName());
     private static ImgRecognitionHelper _instance=null;
@@ -76,10 +77,10 @@ public class ImgRecognitionHelper {
 
 
     void createFacesCollection() {
-        _logger.info("Creating collection: " + ImgRecognitionHelper.FACE_COLLECTION_ID);
+        _logger.info("Creating collection: " + FACE_COLLECTION_ID);
 
         CreateCollectionRequest request = new CreateCollectionRequest()
-                .withCollectionId(ImgRecognitionHelper.FACE_COLLECTION_ID);
+                .withCollectionId(FACE_COLLECTION_ID);
 
         CreateCollectionResult createCollectionResult = null;
         try {

@@ -223,20 +223,25 @@
                 jsonResponse = this.responseText;
                 // console.log(jsonResponse); // caution! a lot of data ...
 
-                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse);
+                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse); // todo : this causes an exception with big categories
              }
         };
+
         startDownloadMillis = Date.now();
         console.log('loading ...  ', startDownloadMillis);
-        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true);
+        xhttp.open('GET', '${albumBean.webApplicationURL}/api/sportsalbum/photos.html', true); // check RestServiceAction.java -> currently, 100 preloads
 
         xhttp.send();
     }
 
-    if (!sessionStorage.getItem(${albumBean.eventCategoryId})) {
-        getCategoryPhotosDataForSessionStorage();
+    // when page is loaded : check for existing sessionStorage data for current eventCategory:
+    if (!sessionStorage.getItem(${albumBean.eventCategoryId})) { // load from REST service if not available:
+        // this is for preloading
+        // todo : enable again after display logic has been updated (disabling, so that we can test better the logic on the display side when no photos are available)
+        // getCategoryPhotosDataForSessionStorage();
+        console.log('do nothing ...')
     } else {
-        console.log('photo data for event ', ${albumBean.eventCategoryId}, 'already stored in sessionStorage')
+        console.log('photo data for event ', ${albumBean.eventCategoryId}, 'first 100 display images already stored in sessionStorage')
     }
 
 </script>

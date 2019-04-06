@@ -38,6 +38,7 @@ import ch.unartig.studioserver.businesslogic.SessionHelper;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.util.HttpUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
@@ -66,8 +67,13 @@ public class EventCategoryAction extends MappingDispatchAction {
      * @throws UnartigException
      */
     public ActionForward showCategory(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException {
+        PhotoDAO photoDAO = new PhotoDAO();
+        int page;
         ActionMessages msgs;
         msgs = new ActionMessages();
+        String photoId = request.getParameter("photoId");
+
+
 
         DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
         EventCategoryDAO eventCategoryDao = new EventCategoryDAO();
@@ -75,17 +81,13 @@ public class EventCategoryAction extends MappingDispatchAction {
         Long eventCategoryIdFromForm = (Long) eventCategoryOverviewForm.get("eventCategoryId");
         String pageFromForm = eventCategoryOverviewForm.getString("page");
         _logger.debug("params: page [" + pageFromForm + "],eventCategoryId [" + eventCategoryIdFromForm + "]");
-        // todo: Form could live already in session or/and if coming from a deep link, form params are not set. Find better solution or populate form here if needed
-        // todo:
+        // Form could live already in session or/and if coming from a deep link, form params are not set.
+        //
         // * if category changes? --> update sportsAlbumBean
         // * if page changes ? --> update sportsAlbumBean
         // * if eventcategory changes? (not here, check relevant action) --> update page / event / eventCategoryId (?)
 
         // if "album bean" not in session or if eventCategory of album bean in session not equal to passed eventCategory URL-parameter, reload
-
-        SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
-
-
         // needs to reload every time ! Could change because of deleted photos.
 //        if (
 //                albumBeanInSession == null // (re)load if there's no album bean in session
@@ -97,6 +99,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         _logger.debug("SportsAlbumBean not yet in session, creating new one from form (showCategory)");
         SportsAlbumBean sportsAlbumBean;
         sportsAlbumBean = new SportsAlbumBean(HttpUtil.getWebApplicationUrl(request)); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
+
         SportsEvent event = null;
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:
@@ -110,6 +113,12 @@ public class EventCategoryAction extends MappingDispatchAction {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
                 saveMessages(request, msgs);
                 return mapping.findForward("notFound");
+            }
+            // make sure correct page is set when returning from new display page
+            // get page from photoId that is submitted as a url parameter
+            if (photoId!=null && !photoId.isEmpty()) {
+                page = photoDAO.getAlbumPageNrFor(Long.valueOf(photoId),eventCategory,"");
+                sportsAlbumBean.setPage(page);
             }
             sportsAlbumBean.setEventCategory(eventCategory);
             sportsAlbumBean.setSportsEvent(event);

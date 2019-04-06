@@ -1,5 +1,6 @@
 package ch.unartig.sportrait.imgRecognition;
 
+import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -17,10 +18,11 @@ import java.util.Map;
  * Singleton class to handle amazon sqs queues related logic
  */
 public class MessageQueueHandler {
+    private static final String SPORTRAIT_QUEUE_NAME_PREFIX = "sportraitQueueName-";
     private Logger _logger = Logger.getLogger(getClass().getName());
-    public static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
-    public static final String PHOTO_ID = "photoId"; // used as message attribute
-    public static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
+    static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
+    static final String PHOTO_ID = "photoId"; // used as message attribute
+    private static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
     private String sportraitQueueName;
     private AmazonSQS sqs;
     /**
@@ -34,12 +36,12 @@ public class MessageQueueHandler {
 
     private MessageQueueHandler() {
         sqs = AmazonSQSClientBuilder.defaultClient();
-        sportraitQueueName = "sportraitQueueName"; // todo : either name per album or move to Registry
+        sportraitQueueName = SPORTRAIT_QUEUE_NAME_PREFIX + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
     }
 
     /**
-     * return a queue that holds messages for the album passed as parameter. queue will be created if it doens't exist yet
-     * @param album needed to derive the queue name (-> generic level ID)
+     * return a queue that holds messages for the album passed as parameter. queue will be created if it doesn't exist yet
+     * @param album needed to derive the queue name (-> generic level ID) - not used yet
      * @return
      */
     private CreateQueueResult getImageRecognitionQueue(Album album) {
@@ -107,7 +109,9 @@ public class MessageQueueHandler {
     }
 
     public String getUnknownFacesQueueName(Long albumId) {
-        return UNKNOWN_FACES_QUEUE_PREFIX+albumId;
+        String queueName = UNKNOWN_FACES_QUEUE_PREFIX + +albumId + "_" + Registry.getApplicationEnvironment();
+        _logger.debug("returning unknown faces queue name : " + queueName);
+        return queueName;
     }
 
     /**
@@ -121,11 +125,11 @@ public class MessageQueueHandler {
         String path = runnerFace.getPath();
         String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
 
-        CreateQueueResult queueResult = sqs.createQueue(UNKNOWN_FACES_QUEUE_PREFIX+albumId);
+        CreateQueueResult queueResult = sqs.createQueue(getUnknownFacesQueueName(albumId));
 
         String queueUrl = queueResult.getQueueUrl();
         _logger.info("Posting message for unknown face [ID : "+faceId+"] in  : " + path + " to queue ["+ queueUrl +"]");
-        _logger.debug("with param [photoId] : " + photoId.toString());
+        _logger.debug("with param [photoId] : " + photoId);
 
 
         final Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();

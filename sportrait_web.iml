@@ -26,7 +26,9 @@
         <datasource-map>
           <unit-entry name="sportraitSessionFactory" value="992b10cd-954e-4db5-9376-1428749e078a" />
         </datasource-map>
-        <naming-strategy-map />
+        <naming-strategy-map>
+          <unit-entry name="sportraitSessionFactory" value="org.hibernate.cfg.DefaultNamingStrategy" />
+        </naming-strategy-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" />
       </configuration>
     </facet>
@@ -44,6 +46,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.drewnoakes:metadata-extractor:2.11.0" level="project" />
     <orderEntry type="library" name="platform" level="application" />
+    <orderEntry type="library" name="struts-struts" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.500" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.500" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.500" level="project" />

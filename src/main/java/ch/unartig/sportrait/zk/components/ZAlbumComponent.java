@@ -224,7 +224,7 @@ public class ZAlbumComponent extends Div
                     }
                 } else
                 {
-                    item.setLabel("Nicht verf�gbar");
+                    item.setLabel("Nicht verfügbar");
                 }
 
             }

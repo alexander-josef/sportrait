@@ -2,6 +2,8 @@ package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor;
+import ch.unartig.studioserver.Registry;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.rekognition.model.*;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -23,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class StartnumberProcessor implements Runnable {
     private static final int EXECUTOR_KEEP_ALIVE_TIME = 30;
     private static final int MAX_WORKERS = 8; // used to be 1 - what's possible with the rekognition service? will we run into problem with a higher number?
-    public static final int CORE_POOL_SIZE = 4;
+    private static final int CORE_POOL_SIZE = 4;
     private Logger _logger = Logger.getLogger(getClass().getName());
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
@@ -68,7 +70,7 @@ public class StartnumberProcessor implements Runnable {
         // todo : startnumbers to be stored to db?
         processors.add(new StartnumberRecognitionDbProcessor());
         /**
-         * just one faces collection ?
+         * just one faces collection ? Deleted after post-processing an album?
          */
         ImgRecognitionHelper.getInstance().createFacesCollection();
     }
@@ -78,7 +80,7 @@ public class StartnumberProcessor implements Runnable {
      */
     public void run() {
         String queueUrl = MessageQueueHandler.getInstance().getSportraitQueueName();
-        _logger.info("Start Polling the SQS queues for incoming images to recognize ....");
+        _logger.info("Start Polling the SQS queue - environment  : ["+ Registry.getApplicationEnvironment() +"] for incoming images to recognize ....");
         if (processors.isEmpty()) {
             _logger.warn("No processors defined, will not start up.");
             return;
@@ -98,14 +100,18 @@ public class StartnumberProcessor implements Runnable {
                     .withMaxNumberOfMessages(MAX_NUMBER_OF_MESSAGES)
                     .withWaitTimeSeconds(WAIT_TIME_SECONDS)
                     .withMessageAttributeNames("All");
-            List<Message> messages = null;
+            List<Message> messages;
             try {
                 messages = sqs.receiveMessage(poll).getMessages();
             } catch (QueueDoesNotExistException e) {
                 _logger.error("Queue does not exist");
+                // todo : don't create directly - use MessageQueueHandler:
                 CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
                 messages = sqs.receiveMessage(poll).getMessages();
+            } catch (SdkClientException e) {
+                _logger.warn("ignoring unknown exception : "); // todo : shut down after repeated connection fails?
+                messages = new ArrayList<>();
             }
             _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
 
