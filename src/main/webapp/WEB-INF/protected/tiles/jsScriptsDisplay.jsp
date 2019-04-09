@@ -198,7 +198,7 @@
                 }
             };
             console.log('fetching JSON data from REST service for photos to the left of photo ['+photoId+']');
-            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId+'&direction=left', true);
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&direction=left', true);
             xhttp.send();
         }
 
@@ -362,7 +362,7 @@
             };
             // add initial (!) photoId in the request here from display (displayBean)
             photoId = ${display.displayPhotoId}
-            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId, true); // todo : how is the service called and what does it return? everything??
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId, true); // todo : how is the service called and what does it return? everything??
 
             console.log('reading JSON data from REST service ....');
             xhttp.send();

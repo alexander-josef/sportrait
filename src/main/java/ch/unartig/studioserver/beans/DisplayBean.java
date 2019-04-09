@@ -86,7 +86,7 @@ import java.util.Map;
 
 public class DisplayBean implements NavigableObject
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
     private Photo displayPhoto;
     private Photo previousPhoto;
     private Photo nextPhoto;
