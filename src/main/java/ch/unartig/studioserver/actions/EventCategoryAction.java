@@ -75,12 +75,14 @@ public class EventCategoryAction extends MappingDispatchAction {
 
 
 
-        DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
+        // DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
         EventCategoryDAO eventCategoryDao = new EventCategoryDAO();
         _logger.debug("populating category, showCategory");
-        Long eventCategoryIdFromForm = (Long) eventCategoryOverviewForm.get("eventCategoryId");
-        String pageFromForm = eventCategoryOverviewForm.getString("page");
-        _logger.debug("params: page [" + pageFromForm + "],eventCategoryId [" + eventCategoryIdFromForm + "]");
+        // Long eventCategoryIdFromForm = (Long) eventCategoryOverviewForm.get("eventCategoryId");
+
+
+        // String pageFromForm = eventCategoryOverviewForm.getString("page");
+        // _logger.debug("params: page [" + pageFromForm + "],eventCategoryId [" + eventCategoryIdFromForm + "]");
         // Form could live already in session or/and if coming from a deep link, form params are not set.
         //
         // * if category changes? --> update sportsAlbumBean
@@ -104,12 +106,13 @@ public class EventCategoryAction extends MappingDispatchAction {
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:
         try {
-            BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
-            eventCategory = eventCategoryDao.load(sportsAlbumBean.getEventCategoryId());
+            Long eventCategoryId = Long.valueOf(request.getParameter("eventCategoryId"));
+            // BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
+            eventCategory = eventCategoryDao.load(eventCategoryId);
             event = eventCategory.getEvent();
             List list = event.getEventCategories();
             if (eventCategory.getEventCategoryId() == null) {
-                _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
+                // _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
                 saveMessages(request, msgs);
                 return mapping.findForward("notFound");
@@ -125,14 +128,8 @@ public class EventCategoryAction extends MappingDispatchAction {
             sportsAlbumBean.setEventCategories(list);
             sportsAlbumBean.setShoppingCart(SessionHelper.getShoppingCartFromSession(request));
 
-        } catch (IllegalAccessException e) {
-            _logger.error("problem with params");
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            _logger.error("problem with params");
-            e.printStackTrace();
-        } catch (HibernateException he) {
-            _logger.info("Could not load eventCategory with ID : " + eventCategoryIdFromForm + " -- Showing homepage");
+        } catch (HibernateException | NumberFormatException he) {
+            _logger.info("Could not load eventCategory with ID -- Showing homepage");
             msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
             saveMessages(request, msgs);
             return mapping.findForward("notFound");

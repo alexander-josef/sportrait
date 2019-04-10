@@ -8,7 +8,7 @@
         var a = document.getElementById('displayAlbumBackLink');
         console.log('old URL : ' + a);
 
-         a.href += '?photoId='+photoId;
+         a.href += '&photoId='+photoId;
         console.log('new URL : ' + a);
     }
 </script>
@@ -31,7 +31,7 @@ todo refactor name albumBean as fast as possible
             </html:link>
 
 --%>
-            <a href="${pageContext.request.contextPath}/showCategory.html" class="toAlbum" id="displayAlbumBackLink" onclick="appendPhotoId()">zur Übersicht</a>
+            <a href="${pageContext.request.contextPath}/showCategory.html?eventCategoryId=${albumBean.eventCategoryId}" class="toAlbum" id="displayAlbumBackLink" onclick="appendPhotoId()">zur Übersicht</a>
         </li>
     </ul>
     <h1 id="pageName">${albumBean.sportsEvent.longTitle}</h1>

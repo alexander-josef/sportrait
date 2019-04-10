@@ -10,8 +10,8 @@
 <div class="pageNav">
     <ul id="fotoNav">
         <li>
-            <html:link action="/event?sportsEventId=${albumBean.sportsEvent.genericLevelId}" styleClass="arrowUp">zum
-                Anlass
+            <html:link action="/event?sportsEventId=${albumBean.sportsEvent.genericLevelId}" styleClass="arrowUp">
+                zum Anlass
             </html:link>
         </li>
     </ul>
