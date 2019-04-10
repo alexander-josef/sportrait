@@ -35,7 +35,7 @@
                                        title="Startnummer eingeben"/>
                         </td>
                         <td>
-                            <html:link action="/showCategory?page=1&startNumber=" styleClass="noUnderline">
+                            <html:link action="/showCategory?page=1&startNumber=&eventCategoryId=${albumBean.eventCategoryId}" styleClass="noUnderline">
                                 <html:img page="/images/buttons/x.gif" alt=""/>&nbsp;
                             </html:link>
                         </td>

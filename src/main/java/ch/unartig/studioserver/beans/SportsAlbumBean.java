@@ -159,8 +159,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
 
     public String getActionString()
     {
-        String actionString = "/showCategory";
-        return actionString;
+        return "/showCategory?eventCategoryId="+eventCategoryId; // no session dependency: add eventCategoryId
     }
 
     public String getStartNumber()

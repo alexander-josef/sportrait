@@ -75,7 +75,7 @@ public class EventCategoryAction extends MappingDispatchAction {
 
 
 
-        // DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form;
+        DynaActionForm eventCategoryOverviewForm = (DynaActionForm) form; // needed for startnumber search?
         EventCategoryDAO eventCategoryDao = new EventCategoryDAO();
         _logger.debug("populating category, showCategory");
         // Long eventCategoryIdFromForm = (Long) eventCategoryOverviewForm.get("eventCategoryId");
@@ -107,7 +107,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         // used to mark photos that are in the shopping cart:
         try {
             Long eventCategoryId = Long.valueOf(request.getParameter("eventCategoryId"));
-            // BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
+            BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
             eventCategory = eventCategoryDao.load(eventCategoryId);
             event = eventCategory.getEvent();
             List list = event.getEventCategories();
@@ -132,6 +132,9 @@ public class EventCategoryAction extends MappingDispatchAction {
             _logger.info("Could not load eventCategory with ID -- Showing homepage");
             msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
             saveMessages(request, msgs);
+            return mapping.findForward("notFound");
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            _logger.info("Could not process eventcategory overview -- Showing homepage");
             return mapping.findForward("notFound");
         }
 
