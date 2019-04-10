@@ -137,10 +137,7 @@
             };
             console.log('fetching JSON data from REST service for photos to the right of photo ['+photoId+']');
             // todo: check if this can be done without the webApplicationURL from display - does not work with CDN
-/*
-            xhttp.open('GET', '${display.webApplicationURL}/api/sportsalbum/photos.html?photoId='+photoId+'&direction=right', true);
-*/
-            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&direction=right', true);
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&eventCategoryId='+eventCategoryId+'&startNumber=' + startNumber+'&direction=right', true);
             xhttp.send();
         }
 
@@ -198,7 +195,7 @@
                 }
             };
             console.log('fetching JSON data from REST service for photos to the left of photo ['+photoId+']');
-            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&direction=left', true);
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&eventCategoryId='+eventCategoryId+'&startNumber=' + startNumber+'&direction=left', true);
             xhttp.send();
         }
 
@@ -233,8 +230,9 @@
     // todo in case of startnummer search
     // initial call
     var eventCategoryId = "${albumBean.eventCategoryId}"; // todo : was geschieht hier?
+    var startNumber = "${albumBean.startNumber}"; // todo : was geschieht hier?
     console.log("eventCategoryId : " + eventCategoryId);
-    console.log(eventCategoryId);
+    console.log("startNumber : " + startNumber);
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object
     var displayPhotos = {eventCategoryId: eventCategoryId, photos: undefined};
     console.log("initializing - calling photos service (eventcategoryid " + eventCategoryId + " on page)");
@@ -361,8 +359,10 @@
                 }
             };
             // add initial (!) photoId in the request here from display (displayBean)
-            photoId = ${display.displayPhotoId}
-            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId, true); // todo : how is the service called and what does it return? everything??
+            // add eventCategoryId and make it stateless (behind CDN - no session available)
+            // add startnumber
+            photoId = ${display.displayPhotoId};
+            xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId + '&eventCategoryId='+eventCategoryId+'&startNumber=' + startNumber, true); // todo : how is the service called and what does it return? everything??
 
             console.log('reading JSON data from REST service ....');
             xhttp.send();

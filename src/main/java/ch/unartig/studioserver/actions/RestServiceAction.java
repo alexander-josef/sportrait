@@ -3,7 +3,9 @@ package ch.unartig.studioserver.actions;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
 import ch.unartig.studioserver.businesslogic.SessionHelper;
+import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.Photo;
+import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -27,8 +29,8 @@ import java.util.List;
  */
 public class RestServiceAction extends Action {
     private static final int PRELOAD_PHOTOS = 5; // number of photos to preload (for album.jsp REST call, before display is called)
-    private static final int FORWARD = 50; // todo : debug values - set to 50
-    private static final int BACKWARD = 10; // todo : debug values - set to 20 -- must not be 4 or higher because of swiper login in the frontend
+    private static final int FORWARD = 50;
+    private static final int BACKWARD = 10; // must not be 4 or lower because of swiper login in the frontend
     Logger _logger = Logger.getLogger(getClass().getName());
 
 
@@ -38,6 +40,8 @@ public class RestServiceAction extends Action {
         _logger.debug("method = " + method);
         _logger.debug("request.getRequestURI() = " + request.getRequestURI());
         Long photoId = Long.valueOf(request.getParameter("photoId"));
+        Long eventCategoryId = Long.valueOf(request.getParameter("eventCategoryId"));
+        String startNumber = request.getParameter("startNumber");
 
         String direction= request.getParameter("direction"); // fetch more from right or from left ? or no direction?
 
@@ -47,9 +51,8 @@ public class RestServiceAction extends Action {
         
         httpServletResponse.setContentType("application/json");
         httpServletResponse.setCharacterEncoding("UTF-8");
-        SportsAlbumBean albumBeanInSession = (SportsAlbumBean) SessionHelper.getAlbumBeanFromSession(request);
 
-        String jsonResponse = constructJsonResponse(albumBeanInSession,photoId);
+        String jsonResponse = constructJsonResponse(eventCategoryId,photoId,startNumber);
         PrintWriter out = null;
         try {
             int contentLength = jsonResponse.getBytes(StandardCharsets.UTF_8).length;
@@ -70,11 +73,12 @@ public class RestServiceAction extends Action {
 
     /**
      *
-     * @param albumBeanInSession
+     * @param eventCategoryId
      * @param photoId
+     * @param startNumber
      * @return
      */
-    private String constructJsonResponse(SportsAlbumBean albumBeanInSession, Long photoId) {
+    private String constructJsonResponse(Long eventCategoryId, Long photoId, String startNumber) {
         long timeMillisStart = System.currentTimeMillis();
         _logger.debug("before display REST call :" + timeMillisStart);
 
@@ -82,18 +86,20 @@ public class RestServiceAction extends Action {
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
         PhotoDAO photoDAO = new PhotoDAO();
+        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
         List photosForEventCategoryAndStartnumber;
 
+        EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
         // todo:
         // in case photoId is given, find 1st result criteria parameter - separate query?
         if (photoId != null) {
             // get position of photo -- todo : what about startnummernsuche?
             // load photos -20 +50 of current position
-            photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, albumBeanInSession.getEventCategory(), albumBeanInSession.getStartNumber(), BACKWARD, FORWARD);
+            photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, eventCategory, startNumber, BACKWARD, FORWARD);
 
             //photoDAO.getFirstPhotoInAlbumAndSelection()
         } else { // return first [PRELOAD_PHOTOS] photos of eventcategory (used to preload 1st photos when user accesses eventcategory?)
-            photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,albumBeanInSession.getEventCategory(), PRELOAD_PHOTOS,albumBeanInSession.getStartNumber());
+            photosForEventCategoryAndStartnumber = photoDAO.listSportsPhotosOnPagePlusPreview(1,eventCategory, PRELOAD_PHOTOS,startNumber);
         }
 
         StringBuilder jsonResponse= new StringBuilder();
