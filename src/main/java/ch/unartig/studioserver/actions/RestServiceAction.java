@@ -72,7 +72,7 @@ public class RestServiceAction extends Action {
     }
 
     /**
-     *
+     * constructs the JSON response string to be returned by the REST API
      * @param eventCategoryId
      * @param photoId
      * @param startNumber
