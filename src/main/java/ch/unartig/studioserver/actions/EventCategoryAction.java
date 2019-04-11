@@ -102,7 +102,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         SportsAlbumBean sportsAlbumBean;
         sportsAlbumBean = new SportsAlbumBean(HttpUtil.getWebApplicationUrl(request)); // sportsAlbumBean will be newly created, even if an instance already exists in session (no need to use existing)
 
-        SportsEvent event = null;
+        SportsEvent event;
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:
         try {
@@ -119,8 +119,10 @@ public class EventCategoryAction extends MappingDispatchAction {
             }
             // make sure correct page is set when returning from new display page
             // get page from photoId that is submitted as a url parameter
+            // todo : startnumber?
+            _logger.debug("looking up page for startnumber ["+sportsAlbumBean.getStartNumber()+"] and photoId ["+photoId+"]");
             if (photoId!=null && !photoId.isEmpty()) {
-                page = photoDAO.getAlbumPageNrFor(Long.valueOf(photoId),eventCategory,"");
+                page = photoDAO.getAlbumPageNrFor(Long.valueOf(photoId),eventCategory,sportsAlbumBean.getStartNumber());
                 sportsAlbumBean.setPage(page);
             }
             sportsAlbumBean.setEventCategory(eventCategory);
