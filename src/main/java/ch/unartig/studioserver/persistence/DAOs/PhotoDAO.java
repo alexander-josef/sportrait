@@ -1025,6 +1025,14 @@ Note: if you list each property explicitly, you must include all properties of t
                 .add(Restrictions.le("p.pictureTakenDate", photo.getPictureTakenDate()))
                 .setProjection(Projections.rowCount());
 
+        // also take care of startnumber - if exists:
+        if (startNumber != null && !"".equals(startNumber)) {
+            _logger.debug("adding startnumber ["+startNumber+ "] for subquery" );
+            subquery.createAlias("photoSubjects", "sub")
+                    .createAlias("sub.eventRunners", "eventRunner")
+                    .add(Restrictions.eq("eventRunner.startnumber", startNumber));
+        }
+
 
         // todo: remove, only debug ? can this be integrated as a subquery?
         int position = 0;
