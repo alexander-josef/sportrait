@@ -35,13 +35,14 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private AmazonS3 s3;
     // final private String bucketName = Registry.getS3BucketName();
     final private String preImageServiceBucketName = Registry.getS3BucketName();
-    final static private Region awsRegion = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
+    final static private Region awsRegionFrankfurt = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
+    final static private Region awsRegionIreland = Region.getRegion(Regions.EU_WEST_1); // Ireland - used for bucket URLs after image recognition
 //    private final static String awsS3Url = "s3.amazonaws.com";
-    private final static String awsS3RegionUrl = "s3-"+ awsRegion+".amazonaws.com";
+    private final static String awsS3RegionUrlFrankfurt = "s3-"+ awsRegionFrankfurt +".amazonaws.com";
     // todo: http or https
     // see for example: http://stackoverflow.com/questions/3048236/amazon-s3-https-ssl-is-it-possible
-//    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3RegionUrl;
-    private String bucketHttpsUrl = "https://" + awsS3RegionUrl+"/"+preImageServiceBucketName;
+//    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3RegionUrlFrankfurt;
+    private String bucketHttpsUrl = "https://" + awsS3RegionUrlFrankfurt +"/"+preImageServiceBucketName;
 
 
     public AwsS3FileStorageProvider() {
@@ -69,7 +70,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
          */
 
         s3 = AmazonS3ClientBuilder.defaultClient();
-        // s3.setRegion(awsRegion);
+        // s3.setRegion(awsRegionFrankfurt);
 
 
         _logger.debug("======================================================");
@@ -138,7 +139,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         GetObjectRequest objectRequest = new GetObjectRequest(getS3BucketNameFor(album), key);
         S3Object object; // todo : check if the s3 object is closed again --> prevent connection pool leaks
         try {
-            object = s3.getObject(objectRequest);
+            s3.setRegion(getBucketLocation(album));// todo : check if the region must be set back to Ireland (or if all S3 access need to be configured with the region)
+            object = s3.getObject(objectRequest); // fails if region is not set correctly ! must know where the object lives!
         } catch (AmazonClientException e) {
             _logger.error("cannot get fine image file from s3 for filename : " + filename, e);
             throw new UAPersistenceException(e);
@@ -148,6 +150,20 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
         S3ObjectInputStream objectContent = object.getObjectContent();
         return objectContent;
+    }
+
+    /**
+     * Helper method to return the correct S3 bucket location depending on the year of the event
+     * after 2019  : Ireland (EU_WEST_1) ist used to support image rekognition
+     * @param album album to determine the event date
+     * @return the constant for the aws location
+     */
+    private Region getBucketLocation(Album album) {
+        if (album.getEvent().getEventDateYear() < 2019) {
+            return awsRegionFrankfurt;
+        } else {
+            return awsRegionIreland;
+        }
     }
 
     /**

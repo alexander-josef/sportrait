@@ -466,6 +466,7 @@ public class Photo extends GeneratedPhoto
      * @return String containing the domain (host) name
      */
     public String getImageServiceDomain() {
+        // todo: refactor : introduce constants und use helper method also for AWS S3 Bucket location query (see AwsS3FileStorageProvide)
         String domain;
         if (getAlbum().getEvent().getEventDateYear() < 2019) {
             domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
