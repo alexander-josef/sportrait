@@ -82,14 +82,18 @@ public class RestServiceAction extends Action {
         // simply use PhotoDAO.listSportsPhotosOnPagePlusPreview() und use '0' for items on page to receive all photos
 
         PhotoDAO photoDAO = new PhotoDAO();
-        List photosForEventCategoryAndStartnumber;
+        List photosForEventCategoryAndStartnumber = new ArrayList();
 
         // todo:
         // in case photoId is given, find 1st result criteria parameter - separate query?
         if (photoId != null) {
             // get position of photo -- todo : what about startnummernsuche?
             // load photos -20 +50 of current position
-            photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, albumBeanInSession.getEventCategory(), albumBeanInSession.getStartNumber(), BACKWARD, FORWARD);
+            try {
+                photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, albumBeanInSession.getEventCategory(), albumBeanInSession.getStartNumber(), BACKWARD, FORWARD);
+            } catch (Exception e) {
+                _logger.debug("problem loading photos for display - see stack trace ",e);
+            }
 
             //photoDAO.getFirstPhotoInAlbumAndSelection()
         } else { // return first [PRELOAD_PHOTOS] photos of eventcategory (used to preload 1st photos when user accesses eventcategory?)

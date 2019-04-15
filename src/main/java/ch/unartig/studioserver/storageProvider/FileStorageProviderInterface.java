@@ -70,7 +70,7 @@ public interface FileStorageProviderInterface {
     void putThumbnailImage(Album album, OutputStream scaledThumbnailImage, String name);
 
     /**
-     * Retrieve a stored file from the storage provider
+     * Retrieve a stored file from the storage provider - only relevant for pre-image service operations
      *
      * @param album The album where the file is from
      * @param filename Name of the file (within the album)

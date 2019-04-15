@@ -1010,9 +1010,10 @@ Note: if you list each property explicitly, you must include all properties of t
     public List listNearbySportsPhotosFor(Long photoId, EventCategory eventCategory, String startNumber, int backward, int forward) {
         List photos; // result value
 
+        _logger.debug("loading photoId : " + photoId);
 
         Photo photo = load(photoId);
-        _logger.debug("listing nearby photos for photoId : " + photo.getFilename());
+        _logger.debug("listing nearby photos for photo : " + photo.getFilename());
 
         // todo : this does not work for photos with identical picturetakendates - it should be a row_number() query, ordered by picturetakendate and filename (or photoId)
 
