@@ -136,10 +136,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         // example for key: fine-images/163/fine/sola14_e01_fm_0005.JPG
 
         String key = getFineImageKey(album, filename);
+        _logger.debug("Key : " + key);
         GetObjectRequest objectRequest = new GetObjectRequest(getS3BucketNameFor(album), key);
         S3Object object; // todo : check if the s3 object is closed again --> prevent connection pool leaks
         try {
-            s3.setRegion(getBucketLocation(album));// todo : check if the region must be set back to Ireland (or if all S3 access need to be configured with the region)
+            // todo : introduce logging here
+            s3.setRegion(getBucketRegion(album));// todo : check if the region must be set back to Ireland (or if all S3 access need to be configured with the region)
             object = s3.getObject(objectRequest); // fails if region is not set correctly ! must know where the object lives!
         } catch (AmazonClientException e) {
             _logger.error("cannot get fine image file from s3 for filename : " + filename, e);
@@ -158,10 +160,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * @param album album to determine the event date
      * @return the constant for the aws location
      */
-    private Region getBucketLocation(Album album) {
+    private Region getBucketRegion(Album album) {
         if (album.getEvent().getEventDateYear() < 2019) {
+            _logger.debug("before 2019 - returning aws location Frankfurt");
             return awsRegionFrankfurt;
         } else {
+            _logger.debug("after 2019 - returning aws location Ireland");
             return awsRegionIreland;
         }
     }
@@ -606,12 +610,15 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * @param album
      * @return
      */
-    public static String getS3BucketNameFor(Album album) {
+    private String getS3BucketNameFor(Album album) {
 
         // todo here: add logic if mapping per event is needed. currently only distinction is Frankfurt (before 2019) and Ireland (after 2019 to use rekognition API)
+        _logger.debug("event year for ["+album+"]? -> bucket is either in Franfurt or Ireland");
         if (album.getEvent().getEventDateYear() < 2019) {
+            _logger.debug("before 2019 - returning Frankfurt bucket name");
             return Registry.getS3BucketName(); // old bucket name (Frankfurt) for events uploaded before 2019
         } else {
+            _logger.debug("after 2019 - returning Ireland bucket name");
             return Registry.getS3BucketNameIreland();
         }
     }

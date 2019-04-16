@@ -99,7 +99,8 @@ public class Test {
         createFacesCollection();
 
         // need bucket and path
-        String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
+        //String bucket = AwsS3FileStorageProvider.getS3BucketNameFor(photo.getAlbum());
+        String bucket = "see above";
         String key = AwsS3FileStorageProvider.getFineImageKey(photo.getAlbum(),photo.getFilename());
         List<TextDetection> photoTextDetections = ImgRecognitionHelper.getInstance().getTextDetectionsFor(bucket, key);
 
