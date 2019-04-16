@@ -138,7 +138,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         String key = getFineImageKey(album, filename);
         _logger.debug("Key : " + key);
         GetObjectRequest objectRequest = new GetObjectRequest(getS3BucketNameFor(album), key);
-        S3Object object; // todo : check if the s3 object is closed again --> prevent connection pool leaks
+        S3Object object = null; // todo : check if the s3 object is closed again --> prevent connection pool leaks
         try {
             // todo : introduce logging here
             s3.setRegion(getBucketRegion(album));// todo : check if the region must be set back to Ireland (or if all S3 access need to be configured with the region)
@@ -146,6 +146,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         } catch (AmazonClientException e) {
             _logger.error("cannot get fine image file from s3 for filename : " + filename, e);
             throw new UAPersistenceException(e);
+        } catch (Exception ex) {
+            _logger.error("general exception - check stack trace ",ex);
         }
         _logger.debug("S3 File Content-Type: " + object.getObjectMetadata().getContentType());
         _logger.debug("S3 File Content-Length: " + object.getObjectMetadata().getContentLength());
@@ -162,10 +164,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      */
     private Region getBucketRegion(Album album) {
         if (album.getEvent().getEventDateYear() < 2019) {
-            _logger.debug("before 2019 - returning aws location Frankfurt");
+            _logger.debug("before 2019 - returning aws region Frankfurt");
             return awsRegionFrankfurt;
         } else {
-            _logger.debug("after 2019 - returning aws location Ireland");
+            _logger.debug("after 2019 - returning aws region Ireland");
             return awsRegionIreland;
         }
     }
