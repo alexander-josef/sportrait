@@ -87,7 +87,7 @@ public class RestServiceAction extends Action {
 
         PhotoDAO photoDAO = new PhotoDAO();
         EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
-        List photosForEventCategoryAndStartnumber;
+        List photosForEventCategoryAndStartnumber = new ArrayList();
 
         EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
         // todo:
@@ -95,7 +95,11 @@ public class RestServiceAction extends Action {
         if (photoId != null) {
             // get position of photo -- todo : what about startnummernsuche?
             // load photos -20 +50 of current position
-            photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, eventCategory, startNumber, BACKWARD, FORWARD);
+            try {
+                photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, eventCategory, startNumber, BACKWARD, FORWARD);
+            } catch (Exception e) {
+                _logger.debug("problem loading photos for display - see stack trace ",e);
+            }
 
             //photoDAO.getFirstPhotoInAlbumAndSelection()
         } else { // return first [PRELOAD_PHOTOS] photos of eventcategory (used to preload 1st photos when user accesses eventcategory?)
