@@ -204,20 +204,14 @@ public class    ImagingHelper
 
     /**
      * Construct signed imgix URL
-     * todo  : imgix Sign Key
      * @return signed imgix url including the needed parameters
      */
     public static String getSignedImgixUrl(Map<String, String> params, String path, String domain, String imgixSignKey)
     {
-        // todo : find solution for multiple imgix domains because of multiple buckets (new: ireland because of image recognition)
-        // String imgixSignKey = Registry.getImgixSignKey();
-        //String imgixSignKey = "6rTyMFEnEmuCmGg6"; // dev env sign key gotten from imgix admin web page
         // todo find solution to securely store sign keys for all environments
         URLBuilder builder = new URLBuilder(domain);
-        builder.setUseHttps(true); // use https
+        builder.setUseHttps(false); // use https
         builder.setSignKey(imgixSignKey); // set sign key
-        // params.put("w", "100");
-        // params.put("h", "100");
         return builder.createURL(path, params);
     }
 

@@ -442,13 +442,6 @@ public class Photo extends GeneratedPhoto
         return getAlbum().getEvent().getEventDateYear() >= 2018;
     }
 
-    /**
-     * For imgix return the master file url for this photo
-     * @return imgix url for this photo
-     */
-    public String getMasterImageUrlFromImageService() {
-        return "https://" + Registry.getApplicationEnvironment() + "-sportrait.imgix.net/fine-images/" + getAlbum().getGenericLevelId().toString() + "/fine/" + getFilename();
-    }
 
     /**
      * Path (without domain name / host from image service)
@@ -465,20 +458,21 @@ public class Photo extends GeneratedPhoto
      * Needed to be introduced after we split the s3 buckets and introducted an ireland (eu-west) bucket in order to use amazon rekognition
      * @return String containing the domain (host) name
      */
-    public String getImageServiceDomain() {
-        // todo: refactor : introduce constants und use helper method also for AWS S3 Bucket location query (see AwsS3FileStorageProvide)
+    private String getImageServiceDomain() {
+        // todo: refactor : introduce constants / map / enum and use helper method also for AWS S3 Bucket location query (see AwsS3FileStorageProvide)
         String domain;
         if (getAlbum().getEvent().getEventDateYear() < 2019) {
             domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
         } else { // after 2019 use new imgix source that links to ireland s3 bucket
-            domain = Registry.getApplicationEnvironment() + "2-sportrait.imgix.net"; // adding an index after the environment
+            domain = "imgs-2."+Registry.getApplicationEnvironment() + ".sportrait.com"; // adding an index after the environment
+            // domain = Registry.getApplicationEnvironment() + "2-sportrait.imgix.net"; // adding an index after the environment
         }
 
         return domain;
     }
 
 
-    public String getImageServiceSignKey() {
+    private String getImageServiceSignKey() {
         String signKey;
         if (getAlbum().getEvent().getEventDateYear() < 2019) {
             signKey = Registry.getImgixSignKey();

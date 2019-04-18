@@ -59,8 +59,6 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <%-- <script src="<html:rewrite page="/js/imgix.min.js"/>"></script> --%>
-    <meta property="ix:host" content="dev-sportrait.imgix.net">
-    <meta property="ix:useHttps" content="true">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id"
           content="780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com">

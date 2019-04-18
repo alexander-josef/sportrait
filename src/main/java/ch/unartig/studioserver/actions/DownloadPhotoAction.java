@@ -116,9 +116,6 @@ public class DownloadPhotoAction extends Action {
 
                     FileUtils.copyFile(imgixUrl.openStream(), httpServletResponse.getOutputStream());
 
-
-                    // FileUtils.copyFile(new URL("https://int-sportrait.imgix.net/fine-images/215/fine/sola15_e12_mf_2011.JPG?bm=normal&blend64=L2xvZ28vc29sYS1zcG9uc29ycy1iYXItYm90dG9tLW5ldS5wbmc&mark64=L2xvZ28vYXN2ei1sb2dvLTIwMTctcmVzaXplZC03MDBweC5wbmc&markalign=right%2Ctop&ba=bottom%2C%20center&bs=inherit").openStream(), httpServletResponse.getOutputStream());
-
                 } else { // legacy solution before 2018 - Stream directly from S3
                     FileUtils.copyFile(photo.getFileContent(), httpServletResponse.getOutputStream());
                 }
