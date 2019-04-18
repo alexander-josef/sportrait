@@ -463,8 +463,9 @@ public class Photo extends GeneratedPhoto
         String domain;
         if (getAlbum().getEvent().getEventDateYear() < 2019) {
             domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
+            // domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
         } else { // after 2019 use new imgix source that links to ireland s3 bucket
-            domain = "imgs-2."+Registry.getApplicationEnvironment() + ".sportrait.com"; // adding an index after the environment
+            domain = "cdn.imgs-2."+Registry.getApplicationEnvironment() + ".sportrait.com"; // adding an index after the environment
             // domain = Registry.getApplicationEnvironment() + "2-sportrait.imgix.net"; // adding an index after the environment
         }
 
