@@ -53,8 +53,8 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
         // todo : create new API access
         // API access not active anymore ... don't store in public git repo!!
         profile.setAPIUsername("aj_api1.unartig.ch");
-        profile.setAPIPassword("7U686HK6MN27GRX5");
-        profile.setSignature("ATNLM76uyV2QXdOt2q18SNHXBqlGADXW4bOBVVLzgepvg0dQU2vV6igB");
+        profile.setAPIPassword("---");
+        profile.setSignature("---");
         profile.setEnvironment("live");
     }
 
@@ -63,9 +63,9 @@ public class PaypalPaymentOrder implements PhotoOrderIF {
      * @throws PayPalException
      */
     public static void getPaypalSanboxProfile(APIProfile profile) throws PayPalException {
-        profile.setAPIUsername("seller_1295092736_biz_api1.unartig.ch");
-        profile.setAPIPassword("1295092747");
-        profile.setSignature("AS09Xn3myqiJJijuHSqjKPSskBhVATzb4fUv-kxZGWqkAF5Dxcx3k3Jt");
+        profile.setAPIUsername("---");
+        profile.setAPIPassword("---");
+        profile.setSignature("---");
         profile.setEnvironment("sandbox");
     }
 

@@ -15,7 +15,6 @@ import java.util.Set;
  * This interface defines how the storage and retrieval of files are handled. We want a common interface regardless of what kind of storage
  * provider is being used, e.g. a local file system, amazon S3, google cloud storage or what else
  *
- * todo: configure bucket ?
  */
 public interface FileStorageProviderInterface {
 

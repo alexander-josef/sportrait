@@ -118,7 +118,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
                 shutdown();
                 DeleteQueueResult result = sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
                 _logger.info("shut down polling and deleted queue : " +queueUrl + " -- result : " + result);
-                // todo : delete faces colleciton after album has been post processed?
+                // todo : delete faces collection after album has been post processed?
                 // ImgRecognitionHelper.getInstance().deleteFacesCollection(albumId);
 
             }

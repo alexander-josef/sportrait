@@ -437,7 +437,7 @@ public class Album extends GeneratedAlbum {
 
         // loop through temp directory on local file system with uploaded files (independent of file storage provider for the temporary photo location)
         Registry.getFileStorageProvider().registerFromTempPath(this, tempSourceDir, createThumbDisp, applyLogoOnFineImages);
-        // todo : think whether do startnumber recognition here or in registerFromTempPath
+        // think whether do startnumber recognition here or in registerFromTempPath
         // better solution would be to have a pattern on "registerFromTempPath" where the startnumber recognition is one task (and not to do everything in the filestorageprovider specific methods)
 
         // after registering fine images, delete the temp folder on the file storage provider

@@ -58,7 +58,6 @@ public class Test {
 
         filter = Pattern.compile(defaultFilter, Pattern.CASE_INSENSITIVE);
 
-        // todo : not here
         CreateQueueResult queueResult = sqs.createQueue(sqsQueue); // empty queue name? does that work?
 //        CreateQueueResult queueResult = sqs.createQueue(new CreateQueueRequest());
         queueUrl = queueResult.getQueueUrl();
@@ -252,7 +251,6 @@ public class Test {
         return true;
     }
 
-    // todo - interface method passed in scanBucket if you need more than a regex
     private boolean shouldEnqueue(S3ObjectSummary object) {
         return filter.matcher(object.getKey()).find();
     }
@@ -270,7 +268,7 @@ public class Test {
 
         while (!executor.isShutdown()) {
             // poll for messages on the queue.
-            // todo : how many messages will be fetched? max =10 - but actual?
+            // how many messages will be fetched? max =10 - but actual?
             ReceiveMessageRequest poll = new ReceiveMessageRequest(queueUrl)
                     .withMaxNumberOfMessages(10)
                     .withWaitTimeSeconds(20);
@@ -328,7 +326,7 @@ public class Test {
 
         // process faces w/o number - try to find face matches and extract startnumber from the matches, add the startnumbers to the list of mapped startnumbers
 
-        // todo : separate queue handling ?
+        // separate queue handling ?
         processFacesWithoutNumber();
 
         System.out.println("");
@@ -347,7 +345,7 @@ public class Test {
     }
 
     private void processFacesWithoutNumber() {
-        // for every face that has not been matched to a number: // todo : check for too many faces, bystanders etc.
+        // for every face that has not been matched to a number: // check for too many faces, bystanders etc.
         System.out.println("######################");
         System.out.println("Starting processing faces w/o numbers");
         System.out.println("######################");
@@ -377,7 +375,7 @@ public class Test {
 
         // add the faces of the file/photo to the collection and get a list of face records as return value
         // faces needed in collection for later comparison
-        // todo : only add one face per startnumber to collection ? --> price wise not necessary
+        // only add one face per startnumber to collection ? --> price wise not necessary
         List<FaceRecord> photoFaceRecords = addFacesToCollection(bucket, key);
         // getFacesDetails(bucket, key);
 
@@ -385,7 +383,7 @@ public class Test {
         // Process downstream actions:
         for (SportraitImageProcessorIF processor : processors) {
             // only one processor so far
-            // todo : add facedetections to processor and do all in once processor?
+            // add facedetections to processor and do all in once processor?
             processor.process(photoTextDetections, photoFaceRecords, photoPath);
         }
     }
@@ -453,7 +451,7 @@ public class Test {
                 .withMaxFaces(5) // detecting up to 5 faces - the biggest boxes will be returned
                 .withCollectionId(faceCollectionId)
                 .withExternalImageId(filename) // external image ID must be without '/' - only filename
-                .withDetectionAttributes("DEFAULT"); // todo define
+                .withDetectionAttributes("DEFAULT"); //
 
         IndexFacesResult indexFacesResult = null;
         try {

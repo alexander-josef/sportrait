@@ -79,7 +79,7 @@ public class StartnumberRecognitionProcessorTest implements SportraitImageProces
                     startnumber.setFace(faceRecord);
                     System.out.println("******* Found a match for "+ startnumber.getStartnumberText()+ " - faceID : " + faceRecord.getFace().getFaceId());
                     // todo : no need to continue here - improve. return after match is true
-                    // todo : check for better number with matching face from different images
+                    // check for better number with matching face from different images
                     mapBetterNumbersForMatchingFaces(startnumber,faceRecord);
                 }
 

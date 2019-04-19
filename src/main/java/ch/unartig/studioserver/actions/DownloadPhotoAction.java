@@ -55,7 +55,6 @@ public class DownloadPhotoAction extends Action {
                 // copy the file to the outputstream:
                 // digital negative copy the file to the output stream
                 _logger.info("streaming the digital negative from imgix");
-                // todo: how to protect high res photos available to imgix?
 
 
                 // sponsor / logo location scheme by year. i.e. for example"/logos/2017/asvz-logo.png"

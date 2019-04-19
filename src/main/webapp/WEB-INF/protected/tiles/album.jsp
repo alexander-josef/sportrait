@@ -223,7 +223,7 @@
                 jsonResponse = this.responseText;
                 // console.log(jsonResponse); // caution! a lot of data ...
 
-                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse); // todo : this causes an exception with big categories
+                sessionStorage.setItem(${albumBean.eventCategoryId},jsonResponse); // this causes an exception with big categories
              }
         };
 

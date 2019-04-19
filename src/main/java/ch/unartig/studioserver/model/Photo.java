@@ -376,7 +376,7 @@ public class Photo extends GeneratedPhoto
     }
 
     /**
-     * todo delete again - testing only
+     * delete again - testing only
      * @param params imgix URL creation params
      * @param allStartnumbers list of Startnumber objects
      */

@@ -178,7 +178,6 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             if ((startnumber.getMiddlePosition() > faceBoundingBox.getLeft()) && (startnumber.getMiddlePosition() < faceBoundingBoxRightPosition)) {
                 _logger.debug("******* Found a match for " + startnumber.getStartnumberText() + " - faceID : " + faceRecord.getFace().getFaceId());
                 startnumber.setFace(faceRecord); // map face in startnumber object
-                // todo : then can this done most efficiently ? needs other records
                 _logger.warn("*****************************************************");
                 _logger.warn("******** Skipping mapBetterNumbersForMatching Faces() call - todo later  ******");
                 _logger.warn("*****************************************************");

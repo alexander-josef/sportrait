@@ -1,12 +1,11 @@
 1.1
 
-- Changed Photographer Mapping : todo
+- Changed Photographer Mapping :
 
 - Changed eventcategories of event: list instead of set. new column "category_position" inserted. Needs to be updated manually for existing records:
 
 
 
 
-Todo: fortschrittsanzeige ... beschriften, 1 status mehr, vergangene ausblenden
 
 back butten bestaetigung: error

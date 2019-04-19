@@ -189,9 +189,7 @@ public class UnartigActionServlet extends ActionServlet
         }
         logger.debug("@@ processing doGet()");
         logger.debug("@@ processing requestURL : "  + httpServletRequest.getRequestURL());
-        // todo: handle new authentication
         // authentication now handled by clientside js call
-        // handleClientAuthorization(httpServletRequest);
         super.doGet(httpServletRequest, httpServletResponse);
     }
 
@@ -199,9 +197,6 @@ public class UnartigActionServlet extends ActionServlet
     public void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ServletException
     {
         logger.debug("@@ processing doPost()");
-        // todo: handle new authentication
-        // handleClientAuthorization(httpServletRequest);
-        // this removes the userprofile from this thread. If used later, a new session shall be attached to a new thread
         super.doPost(httpServletRequest, httpServletResponse);
     }
 

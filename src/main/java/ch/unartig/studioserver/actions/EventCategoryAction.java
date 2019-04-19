@@ -57,7 +57,6 @@ public class EventCategoryAction extends MappingDispatchAction {
 
     /**
      * This action will be called to populate photos from an eventCategory
-     * todo: what happens to session
      *
      * @param mapping
      * @param form
@@ -119,7 +118,6 @@ public class EventCategoryAction extends MappingDispatchAction {
             }
             // make sure correct page is set when returning from new display page
             // get page from photoId that is submitted as a url parameter
-            // todo : startnumber?
             _logger.debug("looking up page for startnumber ["+sportsAlbumBean.getStartNumber()+"] and photoId ["+photoId+"]");
             if (photoId!=null && !photoId.isEmpty()) {
                 page = photoDAO.getAlbumPageNrFor(Long.valueOf(photoId),eventCategory,sportsAlbumBean.getStartNumber());

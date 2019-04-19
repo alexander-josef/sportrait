@@ -138,15 +138,11 @@ public class PhotoSubjectDAO
 
         try
         {
-            // todo : delete if not needed
-            // HibernateUtil.beginTransaction();
             album = (Album) glDao.load(album.getGenericLevelId(), Album.class);
             _logger.debug("creating and saving new eventRunner");
             EventRunner eventRunner = new EventRunner(album.getEvent(), startNumber, photoSubject);
             eventRunnerDao.save(eventRunner);
             _logger.debug("eventrunner saved");
-            // todo : delete if not needed
-            // HibernateUtil.commitTransaction();
         } catch (UAPersistenceException e)
         {
             _logger.error("cannot save eventRunner", e);

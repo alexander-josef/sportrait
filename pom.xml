@@ -317,7 +317,7 @@
             <!-- Removed Plugin configuation: Unpack the client artifact to a location where it can be accessed as an applet-->
             <!--#########################################################################################-->
 
-            <!--todo: test this plugin. codehouse repo removed-->
+            <!-- codehouse repo removed-->
 
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

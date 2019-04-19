@@ -48,7 +48,7 @@
 
     // after swiper has changed the display slide, change needed elements on page
     function changeHTMLafterSlideTransition() {
-        // todo : catch exceptions
+        //
         // Update photoId - needed if new photo metadata needs to be fetched from REST service
 
         photoId = displayPhotos.photos[currentPhotoIndex].photoId;
@@ -63,7 +63,7 @@
         dataLayer.push({'photoId': photoId}); // update photoId in dataLayer
         dataLayer.push({'event': 'displayView'});
 
-        // previous / next thumbnails. Todo : treat start and beginning. currently error is thrown.
+        // previous / next thumbnails.
         if (!mySwiper.isBeginning) {
 
             var previousPhotoThumbnail = document.getElementById("previousPhotoThumbnail");
@@ -136,7 +136,6 @@
                 }
             };
             console.log('fetching JSON data from REST service for photos to the right of photo ['+photoId+']');
-            // todo: check if this can be done without the webApplicationURL from display - does not work with CDN
             xhttp.open('GET', '/api/sportsalbum/photos.html?photoId='+photoId+'&eventCategoryId='+eventCategoryId+'&startNumber=' + startNumber+'&direction=right', true);
             xhttp.send();
         }
@@ -155,7 +154,7 @@
 
             if (currentPhotoIndex + 1===displayPhotos.photos.length) {
                 console.log("Reached the end of the selection - swiper is at the end");
-            } else if (currentPhotoIndex + 2 === displayPhotos.photos.length) { // todo : looking two images ahead, do we need to fetch more data?
+            } else if (currentPhotoIndex + 2 === displayPhotos.photos.length) { // looking two images ahead, do we need to fetch more data?
                 // try to fetch more photos
                 console.log("trying to fetch more ...");
                 fetchMoreRightFromRestApi();
@@ -227,10 +226,9 @@
     });
 
 
-    // todo in case of startnummer search
     // initial call
-    var eventCategoryId = "${albumBean.eventCategoryId}"; // todo : was geschieht hier?
-    var startNumber = "${albumBean.startNumber}"; // todo : was geschieht hier?
+    var eventCategoryId = "${albumBean.eventCategoryId}";
+    var startNumber = "${albumBean.startNumber}";
     console.log("eventCategoryId : " + eventCategoryId);
     console.log("startNumber : " + startNumber);
     // define displayPhotos as an array - [eventCategoryId,photos] - photos = array of photo object

@@ -163,7 +163,6 @@ public class CoplaPhotoOrder implements PhotoOrderIF
     ---- OIPS Stuff
     */
     public URL oipsServer;
-    // todo palce in resource file
     public static final String coplaServerRoot = "http://oips.colorplaza.com";
     /*the service ID SEID determines the country for the order ??*/
     public static final Map _SEID_MAP = new HashMap();
@@ -283,7 +282,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
     }
 
     /**
-     * @return true for a successful order todo return an error code here
+     * @return true for a successful order
      */
     public boolean processOrder() throws UnartigException {
         _logger.debug("processing order NOW...");
@@ -396,7 +395,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
     {
         if (ccDetail == null)
         {
-            payId = "4"; // rechnung; TODO also for Germany ??
+            payId = "4"; // rechnung;
         } else if (CreditCardDetails._CC_TYPE_CODE_MASTERCARD == ccDetail.getCreditCardType())
         {
             payId = Integer.toString(ccDetail.getCreditCardType());
@@ -462,7 +461,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
 
     /**
      * Set the global payment method for the order. See the following query-outputs for "GetPaymentMethods".<br>
-     * <b>todo should COPLA be queried for the correct payid every time by using the payName?<br>
+     * <b> should COPLA be queried for the correct payid every time by using the payName?<br>
      * For now use: 1 For Visa and 2 for Master Card</b>
      * <p>From "GetPaymentMethods" for Demo Order SEID:</p>
      * <pre>
@@ -665,7 +664,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
 
             for (Object orderedPhoto : orderedPhotos)
             {
-                // todo: check for zero ordered photos
+                //  check for zero ordered photos
                 Photo photo = (Photo) orderedPhoto;
                 // File imageFile = photo.getFileContent();
                 // not working anymore
@@ -936,7 +935,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
                 break;
             case 24:
                 _logger.error("COPLA ORDER ERROR CODE 24: customer does not belong to the chosen service");
-                // todo handle case 24: customer does not belong to the chosen service
+                //  handle case 24: customer does not belong to the chosen service
                 break;
         }
     }
@@ -985,7 +984,7 @@ public class CoplaPhotoOrder implements PhotoOrderIF
         switch (Integer.parseInt(status))
         {
             case 0: // ok
-                // todo: sanity check for the returned customer ???
+                // sanity check for the returned customer ???
                 String firstName = rootElement.getChild("First").getTextTrim();
                 _logger.debug("first name  = " + firstName);
                 username = unartigCustomer.getOipsUsername();

@@ -130,7 +130,7 @@ public class ImgRecognitionHelper {
      */
     public List<FaceRecord> addFacesToCollection(String bucket, String key, String filename) {
         // todo : put faces to collections per album
-        // todo : only add one face per startnumber to collection ? --> price wise not necessary
+        // only add one face per startnumber to collection ? --> price wise not necessary
         // todo : check if we have too many false positives when collection grows
 
         _logger.debug("Adding faces to collection for :  " + bucket + " " + key);

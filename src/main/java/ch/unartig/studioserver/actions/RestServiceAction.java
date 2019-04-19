@@ -90,10 +90,9 @@ public class RestServiceAction extends Action {
         List photosForEventCategoryAndStartnumber = new ArrayList();
 
         EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
-        // todo:
         // in case photoId is given, find 1st result criteria parameter - separate query?
         if (photoId != null) {
-            // get position of photo -- todo : what about startnummernsuche?
+            // get position of photo
             // load photos -20 +50 of current position
             try {
                 photosForEventCategoryAndStartnumber = photoDAO.listNearbySportsPhotosFor(photoId, eventCategory, startNumber, BACKWARD, FORWARD);
