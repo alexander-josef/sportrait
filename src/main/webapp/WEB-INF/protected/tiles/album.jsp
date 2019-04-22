@@ -142,7 +142,7 @@
                 <c:if test="${albumBean.numberOfPages > albumBean.maxPageNumbersFitOnNavigation}">
                     <!--first page link is shown if page is higher than maxpagenumberfitonnavigation -2 -->
                     <c:if test="${albumBean.page >= albumBean.maxPageNumbersFitOnNavigation-2}">
-                        <html:link action="${albumBean.actionString}?page=1">
+                        <html:link action="${albumBean.actionString}&page=1">
                             <li>1...</li>
                         </html:link>
                     </c:if>
