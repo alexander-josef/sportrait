@@ -24,8 +24,9 @@ public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestPro
     {
         // Is this action protected by role requirements?
         logger.debug("calling custom request processor. Request: " + request.getRequestURL());
-        String roles[] = mapping.getRoleNames();
+        String[] roles = mapping.getRoleNames();
         if ((roles == null) || (roles.length < 1)) {
+            // no role necessary for processing this action / request - return true always
             return (true);
         }
 

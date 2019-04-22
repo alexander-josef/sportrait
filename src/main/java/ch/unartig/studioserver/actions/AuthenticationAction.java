@@ -46,6 +46,8 @@ public class AuthenticationAction extends MappingDispatchAction {
 
     /**
      * Authenticate a google sign in request in the back end
+     * todo : implement stateless - does currently not work behind CDN
+     *
      * @param actionMapping
      * @param actionForm
      * @param request

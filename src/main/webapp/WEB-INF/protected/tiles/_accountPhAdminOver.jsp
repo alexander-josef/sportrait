@@ -123,7 +123,7 @@
                     <table class="pricelist_box">
                         <tr>
                             <th>Produkt</th>
-                            <th>Preis & VerfÃ¼gbarkeit</th>
+                            <th>Preis & Verfügbarkeit</th>
                         </tr>
                         <c:forEach var="productType" items="${photographerAdminBean.productTypeList}">
                             <tr>
@@ -156,7 +156,7 @@
     <html:form action="/admin/startnumberMapping" method="POST" enctype="multipart/form-data">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (Ã¼ber Unartig Client):</h3></th>
+            <th><h3 class="orange">Manuelle Starnummer-Zuweisung (über Unartig Client):</h3></th>
             <td></td>
             <td></td>
         </tr>
@@ -241,11 +241,11 @@
     <html:form action="/admin/deleteFinishtimeMappings" method="POST">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Alle Startnummer-Zuweisungen lÃ¶schen!</h3></th>
+            <th><h3 class="orange">Alle Startnummer-Zuweisungen löschen!</h3></th>
             <td>
                 <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
                 <html:submit value="Loeschen!" onclick="return confirm('Alle Startnummern-Mappings fuer dieses Album loeschen?');"/>
-                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelÃ¶scht!</p>
+                <p>Alle Startnummer-Zuweisungen in <b>${photographerAdminBean.level.description}</b> werden gelöscht!</p>
             </td>
             <td></td>
         </tr>
@@ -256,7 +256,7 @@
     <html:form action="/admin/postProcessMappings" method="POST">
         <html:hidden property="sportsAlbumId" value="${photographerAdminBean.level.genericLevelId}"/>
         <tr>
-            <th><h3 class="orange">Post-Processing fÃ¼r Startnummern in Etappe <b>${photographerAdminBean.level.description}</b></h3></th>
+            <th><h3 class="orange">Post-Processing für Startnummern in Etappe <b>${photographerAdminBean.level.description}</b></h3></th>
             <td>
                 <!--<input type="image" src="/images/buttons/bt_delete_de.jpg"/>-->
                 <html:submit value="Start Post-Processing"/>

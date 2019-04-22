@@ -144,6 +144,7 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/_accountPhAdminOver.jsp" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/protected/tiles/twitterCard.jsp" charset="ISO-8859-1" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
