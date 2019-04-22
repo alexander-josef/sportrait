@@ -427,6 +427,7 @@ public class AdminAction extends MappingDispatchAction
 
         Long photoId = (Long)eventCategoryForm.get("photoId");
         Long nextPhotoId = (Long)eventCategoryForm.get("nextPhotoId");
+        Long eventCategoryIdParam = (Long)eventCategoryForm.get("eventCategoryId");
 
         try
         {
@@ -445,8 +446,10 @@ public class AdminAction extends MappingDispatchAction
             return redirect;
         }
         else {
+            ActionRedirect redirect = new ActionRedirect(mapping.findForward("success"));
+            redirect.addParameter("eventCategoryId",eventCategoryIdParam);
+            return redirect;
 
-            return mapping.findForward("success");
 
         }
 

@@ -104,7 +104,7 @@
                     <li class="slideBottom">
                             ${thumbnail.shortTimeString}
                         <c:if test="${clientInSession!=null}">
-                            <html:link action="/admin/deletePhoto?photoId=${thisPhotoId}"  >
+                            <html:link action="/admin/deletePhoto?photoId=${thisPhotoId}&eventCategoryId=${albumBean.eventCategory.eventCategoryId}"  >
                                 <html:img page="/images/admin_trash.gif" alt="delete"/>
                             </html:link>
                         </c:if>

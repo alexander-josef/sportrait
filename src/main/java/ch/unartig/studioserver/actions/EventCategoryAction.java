@@ -105,7 +105,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         EventCategory eventCategory;
         // used to mark photos that are in the shopping cart:
         try {
-            Long eventCategoryId = Long.valueOf(request.getParameter("eventCategoryId"));
+            Long eventCategoryId = Long.valueOf(request.getParameter("eventCategoryId")); // this is needed to work without a session / eventcategory from bean
             BeanUtils.copyProperties(sportsAlbumBean, eventCategoryOverviewForm); // what's this? --> convenience method to copy form params to bean.
             eventCategory = eventCategoryDao.load(eventCategoryId);
             event = eventCategory.getEvent();
@@ -129,12 +129,14 @@ public class EventCategoryAction extends MappingDispatchAction {
             sportsAlbumBean.setShoppingCart(SessionHelper.getShoppingCartFromSession(request));
 
         } catch (HibernateException | NumberFormatException he) {
-            _logger.info("Could not load eventCategory with ID -- Showing homepage");
+            _logger.info("Could not load eventCategory with ID (eventCategoryId present as parameter?) -- Showing homepage");
+            _logger.debug("stacktrace : " , he);
             msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errors.eventCategory.notFound"));
             saveMessages(request, msgs);
             return mapping.findForward("notFound");
         } catch (IllegalAccessException | InvocationTargetException e) {
-            _logger.info("Could not process eventcategory overview -- Showing homepage");
+            _logger.info("Could not process eventcategory overview (eventCategoryId present as parameter?) -- Showing homepage");
+            _logger.debug("stacktrace : ", e);
             return mapping.findForward("notFound");
         }
 
