@@ -54,6 +54,7 @@
             table="PhotoSubjects2Photos">
             <meta attribute="scope-set">protected</meta>
             <meta attribute="scope-get">protected</meta>
+            <cache usage="read-write"/>
             <key column="photoSubjectId"/>
             <many-to-many class="ch.unartig.studioserver.model.Photo" column="photoId"/>
         </set>
@@ -62,8 +63,8 @@
         <set name="eventRunners"
              lazy="true"
              inverse="true"
-             cascade="save-update"
-                >
+             cascade="save-update">
+            <cache usage="read-write"/>
             <key column="photoSubjectId"/>
             <one-to-many class="ch.unartig.studioserver.model.EventRunner"/>
         </set>

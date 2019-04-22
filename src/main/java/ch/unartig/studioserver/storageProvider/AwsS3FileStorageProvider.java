@@ -428,6 +428,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     public void deletePhotos(Album album) throws UAPersistenceException {
 
+        _logger.info("deleting on S3 ...");
         String bucketName = getS3BucketNameFor(album);
         ListObjectsRequest listObjectsRequest;
 
@@ -454,6 +455,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
 
         deleteFromListObject(listObjectsRequest,bucketName);
+        _logger.info("done deleting on S3");
 
 
     }

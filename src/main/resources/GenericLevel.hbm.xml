@@ -214,6 +214,7 @@
                      cascade="all-delete-orphan"
                      inverse="true"
                      >
+                    <cache usage="read-write"/>
                     <key column="eventID" not-null="false"/>
                     <one-to-many class="ch.unartig.studioserver.model.EventRunner"/>
                 </set>

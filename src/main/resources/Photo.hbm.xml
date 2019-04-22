@@ -86,6 +86,7 @@
              cascade="save-update">
             <!--<meta attribute="scope-set">protected</meta>-->
             <!--<meta attribute="scope-get">protected</meta>-->
+            <cache usage="read-write"/>
             <key column="photoId"/>
             <many-to-many class="ch.unartig.studioserver.model.PhotoSubject" column="photoSubjectId"/>
         </set>
