@@ -210,7 +210,7 @@ public class    ImagingHelper
     {
         // todo find solution to securely store sign keys for all environments
         URLBuilder builder = new URLBuilder(domain);
-        builder.setUseHttps(false); // use https
+        builder.setUseHttps(true); // use https (mixing non-https images in a https secured web site will lead to errors in certain browsers (Chrome)
         builder.setSignKey(imgixSignKey); // set sign key
         return builder.createURL(path, params);
     }
