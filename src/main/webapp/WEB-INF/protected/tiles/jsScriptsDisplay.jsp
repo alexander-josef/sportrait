@@ -52,6 +52,7 @@
         // Update photoId - needed if new photo metadata needs to be fetched from REST service
 
         photoId = displayPhotos.photos[currentPhotoIndex].photoId;
+        currentPhotoURL='/display/' + photoId+ '/display.html';
         console.log("Updated photoId to :" + photoId);
 
         document.getElementById("displayPhotoTime").innerHTML = displayPhotos.photos[currentPhotoIndex].time;
@@ -59,9 +60,11 @@
         document.getElementById("displayImageCaption").innerHTML = displayPhotos.photos[currentPhotoIndex].displayTitle + ' -- ' + displayPhotos.photos[currentPhotoIndex].time;
         document.getElementById("displayDownloadButtonLink").setAttribute('href', "/downloadPhoto.html?photoId=" + photoId);
         // document.getElementById("fbShareButton").setAttribute('data-href','/display/' + displayPhotos.photos[currentPhotoIndex].photoId + '/display.html'); // for facebook sharing
-        document.getElementById("metaTagUrl").setAttribute('content', '/display/' + photoId + '/display.html'); // for facebook sharing
+        document.getElementById("metaTagUrl").setAttribute('content', currentPhotoURL); // for facebook sharing
         dataLayer.push({'photoId': photoId}); // update photoId in dataLayer
         dataLayer.push({'event': 'displayView'});
+        // and update the browser history:
+        history.pushState(null,null,currentPhotoURL);
 
         // previous / next thumbnails.
         if (!mySwiper.isBeginning) {

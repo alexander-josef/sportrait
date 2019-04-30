@@ -388,8 +388,8 @@ public class SportsEvent extends GeneratedSportsEvent
      */
     public List getEventCategoriesWithPhotos()
     {
-        List retVal = new ArrayList(); // debug: cached results? probably not
-        for (Object o : getEventCategories())
+        List retVal = new ArrayList(); // todo debug: cached results? probably not, many sql statements issued
+        for (Object o : getEventCategories()) // --> eventcategories on event are cached
         {
             EventCategory eventCategory = (EventCategory) o;
             try
