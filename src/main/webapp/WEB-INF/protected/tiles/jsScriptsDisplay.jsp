@@ -7,6 +7,7 @@
 <script src="<html:rewrite page="/js/swiper.min.js"/>"></script>
 <script>
     var currentPhotoIndex;
+    var currentPhotoURL;
 
     var mySwiper = new Swiper('.swiper-container', {
         // Enable preloading of all images
@@ -63,8 +64,8 @@
         document.getElementById("metaTagUrl").setAttribute('content', currentPhotoURL); // for facebook sharing
         dataLayer.push({'photoId': photoId}); // update photoId in dataLayer
         dataLayer.push({'event': 'displayView'});
-        // and update the browser history:
-        history.pushState(null,null,currentPhotoURL);
+        // and update the browser history: (not for every change of the slide)
+        // history.pushState(null,null,currentPhotoURL);
 
         // previous / next thumbnails.
         if (!mySwiper.isBeginning) {
@@ -130,7 +131,7 @@
                     // response returned and is now ready
 
                     jsonResponse = this.responseText;
-                    console.log(jsonResponse); // caution - can cause huge log output
+                    // console.log(jsonResponse); // caution - can cause huge log output
                     displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                     console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
                     setCurrentPhotoIndex()
@@ -188,7 +189,7 @@
                     // response returned and is now ready
 
                     jsonResponse = this.responseText;
-                    console.log(jsonResponse); // caution - can cause huge log output
+                    // console.log(jsonResponse); // caution - can cause huge log output
                     displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                     console.log("displayPhotos.photos is array ? " + Array.isArray(displayPhotos.photos));
                     setCurrentPhotoIndex()
@@ -254,7 +255,7 @@
         }
         // console.log("srcSet = ",imgSrcset);
         var htmlString = '<div class="swiper-slide" style="width: 250px;height: 380px">' +
-            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent()"> ' +
+            '<html:link action="/downloadPhoto?photoId=' + displayPhotos.photos[photoIndex].photoId + '" title="BILD HERUNTERLADEN - Datei wird nur als gratis Download angeboten"  onclick="highresDownloadEvent();history.pushState(null,null,currentPhotoURL)"> ' +
             '<img ' + imgSrcset +
             'src="' + displayPhotos.photos[photoIndex].displayURL1x + '" >' +
             ' </html:link>' +
@@ -267,7 +268,6 @@
         /* event tracking in google tag manager -- album or eventcategory ID as variable in data layer*/
         dataLayer.push({'event': 'highresDownload'});
 
-        // _gaq.push(['_trackEvent', '${display.albumFromPhoto.event.longTitle} / ${display.albumFromPhoto.longTitle}', 'download_free_highres', 'album_ID', '${display.albumFromPhoto.genericLevelId}']);
     }
 
 
@@ -291,7 +291,7 @@
         }
 
         // then set initial right photo
-        if (currentPhotoIndex < displayPhotos.photos.length) {
+        if (currentPhotoIndex +1 < displayPhotos.photos.length) {
             console.log("setting right photo - ");
             mySwiper.appendSlide(getPhotoSlideHTMLfromOffset(+1));
 
@@ -345,7 +345,7 @@
                     // response now ready
 
                     jsonResponse = this.responseText;
-                    console.log(jsonResponse); // caution - can cause huge log output
+                    // console.log(jsonResponse); // caution - can cause huge log output
                     displayPhotos.photos = JSON.parse(jsonResponse); // store array of URLs for current display (eventcategory / startnumber);
                     console.log("number of photos  : " + displayPhotos.photos.length);
                     // append(photos[0].displayURL);

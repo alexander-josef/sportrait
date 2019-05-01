@@ -6,10 +6,8 @@
 <script>
     function appendPhotoId() {
         var a = document.getElementById('displayAlbumBackLink');
-        console.log('old URL : ' + a);
-
          a.href += '&photoId='+photoId;
-        console.log('new URL : ' + a);
+        history.pushState(null,null,currentPhotoURL);
     }
 </script>
 <jsp:useBean id="display" type="ch.unartig.studioserver.beans.DisplayBean" scope="request"/>
@@ -62,7 +60,7 @@ todo refactor name albumBean as fast as possible
 
                                             <html:link styleId="displayDownloadButtonLink" action="/downloadPhoto?photoId=${display.displayPhotoId}"
                                                        title="BILD HERUNTERLADEN -- Datei wird nur als gratis Download angeboten"
-                                                       onclick="dataLayer.push({'event': 'highresDownload'});">
+                                                       onclick="dataLayer.push({'event': 'highresDownload'});history.pushState(null,null,currentPhotoURL)">
                                                 <html:img page="/images/buttons/bt_download_picture_de.gif" />
                                             </html:link>
 
@@ -137,7 +135,7 @@ todo refactor name albumBean as fast as possible
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link styleId="previousPhotoLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
-                                       property="previousPhotoLinkParams" title="vorheriges Foto">
+                                       property="previousPhotoLinkParams"  onclick="history.pushState(null,null,currentPhotoURL)" title="vorheriges Foto">
                                 <img id="previousPhotoThumbnail"
                                      class="${display.previousPhoto.orientationSuffix}"
                                      src="${display.previousPhoto.thumbnailUrl}"
@@ -146,7 +144,7 @@ todo refactor name albumBean as fast as possible
                         </li>
                         <li class="slideBottom">
                             <html:link styleId="previousPhotoTextLink" action="/display/${display.previousPhoto.photoId}/display.html" name="display"
-                                       property="previousPhotoLinkParams" title="vorheriges Foto">zurück
+                                       property="previousPhotoLinkParams" title="vorheriges Foto" onclick="history.pushState(null,null,currentPhotoURL);">zurück
                             </html:link>
                         </li>
                     </ul>
@@ -226,7 +224,7 @@ todo refactor name albumBean as fast as possible
                         <li class="slideTop"></li>
                         <li class="slideImage">
                             <html:link styleId="nextPhotoLink" action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                                       property="nextPhotoLinkParams" title="nächstes Foto">
+                                       property="nextPhotoLinkParams" onclick="history.pushState(null,null,currentPhotoURL)" title="nächstes Foto">
                                 <img id="nextPhotoThumbnail"
                                         class="${display.nextPhoto.orientationSuffix}"
                                         src="${display.nextPhoto.thumbnailUrl}"
@@ -235,7 +233,7 @@ todo refactor name albumBean as fast as possible
                         </li>
                         <li class="slideBottom">
                             <html:link styleId="nextPhotoTextLink" action="/display/${display.nextPhoto.photoId}/display.html" name="display"
-                                       property="nextPhotoLinkParams" title="nächstes Foto">weiter
+                                       property="nextPhotoLinkParams" title="nächstes Foto" onclick="history.pushState(null,null,currentPhotoURL);">weiter
                             </html:link>
                         </li>
                     </ul>
