@@ -1,17 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-
-<!-- the URL for the mappings file above is a small trick to get around a problem with hibernate
-    (relative URLs in this XML file are not resolved as relative to the containing file...
-    See discussions at:
-    - http://forum.hibernate.org/viewtopic.php?t=927396
-    - http://forum.hibernate.org/viewtopic.php?t=928282
-    - http://forum.hibernate.org/viewtopic.php?t=928504
-    - and the fix see: http://opensource.atlassian.com/projects/hibernate/secure/ViewIssue.jspa?key=HB-677
-    It looks like Hibernate 2.2 will support configurable entity resolvers which could solve this.
--->
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 
