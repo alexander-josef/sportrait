@@ -137,6 +137,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.*;
+import org.hibernate.query.NativeQuery;
 
 import java.util.*;
 
@@ -187,15 +188,19 @@ public class PhotoDAO {
     private Photo getFirstPhotoAfterTime(int hour, int minutes, Album album) {
         _logger.debug("getting first photo for time and album");
         Photo firstPhoto;
-        String sql = "SELECT {foto.*} from photos as foto ";
+        String sql = "SELECT * from photos as foto ";
         sql += " WHERE date_part('hour',foto.pictureTakenDate)=" + hour + " AND date_part('minute',foto.pictureTakenDate) >=     " + minutes;
         sql += " AND foto.albumId = '" + album.getGenericLevelId() + "' ";
         sql += " ORDER BY foto.pictureTakenDate ";
         sql += " LIMIT 1";
 
         try {
-            org.hibernate.classic.Session session = (org.hibernate.classic.Session) HibernateUtil.currentSession();
-            firstPhoto = (Photo) session.createSQLQuery(sql, "foto", Photo.class).uniqueResult();
+            // needed to refactor after migration to Hibernate 5 - does it work? -> only used for unartig app - ignore
+            // firstPhoto = (Photo) HibernateUtil.currentSession().createSQLQuery(sql, "foto", Photo.class).uniqueResult();
+            NativeQuery query = HibernateUtil.currentSession().createSQLQuery(sql);
+            query.addEntity(Photo.class);
+            firstPhoto = (Photo)query.uniqueResult();
+
         } catch (HibernateException e) {
             _logger.error("Exception when getting first photo for time and albuem", e);
             throw new UAPersistenceException("trying to find first photo for time and albuem ... exception!!", e);
@@ -241,20 +246,16 @@ public class PhotoDAO {
      */
     public List getPhotosForInterval(int hour, int minutes, int interval, Album album) throws UAPersistenceException {
         List photos;
-        String sql = "SELECT {foto.*} from photos as foto ";
+        String sql = "SELECT * from photos as foto ";
         sql += "WHERE date_part('hour',foto.pictureTakenDate)=" + hour + " AND date_part('minute',foto.pictureTakenDate) BETWEEN " + minutes + " and " + (minutes + interval - 1) + " ";
         sql += "AND foto.albumId = '" + album.getGenericLevelId() + "' ";
         sql += "ORDER BY foto.pictureTakenDate";
 
         try {
-            org.hibernate.classic.Session session = (org.hibernate.classic.Session) HibernateUtil.currentSession();
-            photos = session.createSQLQuery(sql, "foto", Photo.class).list();
-            /*
-            List cats = sess.createSQLQuery("select {cat.*} from cats cat")
-                    .addEntity("cat", Cat.class);
-                    .setMaxResults(50);
-                    .list();
-            */
+            NativeQuery query = HibernateUtil.currentSession().createSQLQuery(sql);
+            query.addEntity(Photo.class);
+            photos = query.list();
+
         } catch (HibernateException e) {
             throw new UAPersistenceException("cannot query photos for interval, see stack trace", e);
         }

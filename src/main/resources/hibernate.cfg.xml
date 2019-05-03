@@ -8,7 +8,7 @@
     <session-factory name="sportraitSessionFactory">
 
         <property name="connection.datasource">java:comp/env/jdbc/sportrait</property>
-        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
 
         <!--suppress HibernateConfigDomInspection -->
         <property name="show_sql">${hibernate.showSQL}</property>
@@ -16,13 +16,15 @@
         <property name="hibernate.use_sql_comments">true</property>
 
 
-        <property name="hibernate.current_session_context_class">org.hibernate.context.ThreadLocalSessionContext</property>
+        <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.connection.release_mode">auto</property>
 
         <!-- Enable the second-level cache  -->
-        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <!--<property name="cache.provider_class">net.sf.ehcache.hibernate.SingletonEhCacheProvider</property>-->
-        <property name="cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</property>
+
         <!-- problem with old data when using query cache? -->
         <property name="hibernate.cache.use_query_cache">true</property>
 

@@ -37,7 +37,7 @@ import java.io.IOException;
 
 public class HibernateFilter implements Filter
 {
-    final Logger _logger = Logger.getLogger(this.getClass());
+    private final Logger _logger = Logger.getLogger(this.getClass());
 
     /**
      */
@@ -65,7 +65,7 @@ public class HibernateFilter implements Filter
                 return;
             }
 
-//            _logger.debug("Beginning transaction ......... ");
+            _logger.debug("Beginning transaction ......... ");
             HibernateUtil.currentSession().beginTransaction();
 //            _logger.debug("Open Transaction in current session : " + HibernateUtil.currentSession().hashCode());
 
@@ -74,7 +74,7 @@ public class HibernateFilter implements Filter
 //            _logger.debug("Hibernate Filter after the execution of the request: commits transaction and closes current sesssion :" + HibernateUtil.currentSession().hashCode());
             HibernateUtil.currentSession().getTransaction().commit();
             HibernateUtil.currentSession().close();
-//            _logger.debug("..... Hibernate Session closed!");
+            _logger.debug("..... Hibernate Session commited and closed!");
         }
         catch (Throwable t)
         // Rollback

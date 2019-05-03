@@ -80,6 +80,9 @@
             <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" />
             <element id="library" level="project" name="Maven: org.jvnet.staxex:stax-ex:1.8" />
             <element id="library" level="project" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
+            <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:5.4.2.Final" />
+            <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.10.6" />
+            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
             <element id="library" level="project" name="Maven: struts:struts:1.2.9" />
             <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.6" />
             <element id="library" level="project" name="Maven: commons-collections:commons-collections:2.1" />
@@ -1115,6 +1118,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.9.10/byte-buddy-1.9.10-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: net.sf.ehcache:ehcache:2.10.6">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.apache.httpcomponents:httpclient:4.5.5">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.5/httpclient-4.5.5.jar!/" />
@@ -1203,6 +1217,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/5.4.2.Final/hibernate-core-5.4.2.Final-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.hibernate:hibernate-ehcache:5.4.2.Final">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.imgscalr:imgscalr-lib:4.2">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/imgscalr/imgscalr-lib/4.2/imgscalr-lib-4.2.jar!/" />
@@ -1267,6 +1292,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:slf4j-api:1.7.25">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.testng:testng:jdk15:5.5">

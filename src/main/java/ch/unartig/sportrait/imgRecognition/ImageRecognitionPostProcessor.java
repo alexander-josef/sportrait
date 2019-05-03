@@ -151,6 +151,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
         PhotoSubject bestPhotoSubject = null; // store the photoSubject here that contains a startnumber with the most digits
         int startnumberLength=0;
         String startnumber="n/a";
+        _logger.debug("beginning Transaction for Image Recognition Post Processing");
         HibernateUtil.beginTransaction();
         List<PhotoSubject> matchingPhotoSubjects = photoSubjectDAO.getMatchingPhotoSubjects(faceImageMatches,albumId);
         for (PhotoSubject photoSubject : matchingPhotoSubjects) {
