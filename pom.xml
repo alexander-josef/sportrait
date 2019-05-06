@@ -218,8 +218,15 @@
 
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-ehcache</artifactId>
+            <artifactId>hibernate-jcache</artifactId>
             <version>5.4.2.Final</version>
+        </dependency>
+
+        <!-- Ehcache 3.x -->
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.3.1</version>
         </dependency>
 
         <dependency>

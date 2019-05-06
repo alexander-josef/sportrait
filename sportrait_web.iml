@@ -101,9 +101,10 @@
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.staxex:stax-ex:1.8" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-ehcache:5.4.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache:2.10.6" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-jcache:5.4.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.cache:cache-api:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.ehcache:ehcache:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.7" level="project" />
     <orderEntry type="library" name="Maven: struts:struts:1.2.9" level="project" />
     <orderEntry type="library" name="Maven: commons-digester:commons-digester:1.6" level="project" />
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:2.1" level="project" />

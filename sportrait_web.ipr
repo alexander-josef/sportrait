@@ -80,9 +80,10 @@
             <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" />
             <element id="library" level="project" name="Maven: org.jvnet.staxex:stax-ex:1.8" />
             <element id="library" level="project" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
-            <element id="library" level="project" name="Maven: org.hibernate:hibernate-ehcache:5.4.2.Final" />
-            <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache:2.10.6" />
-            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
+            <element id="library" level="project" name="Maven: org.hibernate:hibernate-jcache:5.4.2.Final" />
+            <element id="library" level="project" name="Maven: javax.cache:cache-api:1.0.0" />
+            <element id="library" level="project" name="Maven: org.ehcache:ehcache:3.3.1" />
+            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
             <element id="library" level="project" name="Maven: struts:struts:1.2.9" />
             <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.6" />
             <element id="library" level="project" name="Maven: commons-collections:commons-collections:2.1" />
@@ -1019,6 +1020,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: javax.cache:cache-api:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/cache/cache-api/1.0.0/cache-api-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/cache/cache-api/1.0.0/cache-api-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/cache/cache-api/1.0.0/cache-api-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: javax.mail:mail:1.4">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/mail/mail/1.4/mail-1.4.jar!/" />
@@ -1118,17 +1130,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.9.10/byte-buddy-1.9.10-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: net.sf.ehcache:ehcache:2.10.6">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/net/sf/ehcache/ehcache/2.10.6/ehcache-2.10.6-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: org.apache.httpcomponents:httpclient:4.5.5">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpclient/4.5.5/httpclient-4.5.5.jar!/" />
@@ -1171,6 +1172,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.ehcache:ehcache:3.3.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ehcache/ehcache/3.3.1/ehcache-3.3.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ehcache/ehcache/3.3.1/ehcache-3.3.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/ehcache/ehcache/3.3.1/ehcache-3.3.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.1">
@@ -1217,15 +1229,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/5.4.2.Final/hibernate-core-5.4.2.Final-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.hibernate:hibernate-ehcache:5.4.2.Final">
+    <library name="Maven: org.hibernate:hibernate-jcache:5.4.2.Final">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-jcache/5.4.2.Final/hibernate-jcache-5.4.2.Final.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-jcache/5.4.2.Final/hibernate-jcache-5.4.2.Final-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-ehcache/5.4.2.Final/hibernate-ehcache-5.4.2.Final-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-jcache/5.4.2.Final/hibernate-jcache-5.4.2.Final-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.imgscalr:imgscalr-lib:4.2">
@@ -1294,15 +1306,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.slf4j:slf4j-api:1.7.25">
+    <library name="Maven: org.slf4j:slf4j-api:1.7.7">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.testng:testng:jdk15:5.5">
