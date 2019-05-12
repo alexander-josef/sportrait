@@ -44,7 +44,7 @@
         <!--took out update="false" and insert="false" which led to problems. seems to be needed for bi-directional mappings of lists/ 2015-05-01 -->
         <many-to-one
                 name="event"
-                class="ch.unartig.studioserver.model.SportsEvent"
+                class="ch.unartig.studioserver.model.GeneratedSportsEvent"
                 lazy="false"
                 not-null="true"
                 update="false"
@@ -64,7 +64,7 @@
 
             <cache usage="read-write" />
             <key column="eventCategoryId"/>
-            <one-to-many class="ch.unartig.studioserver.model.Album"/>
+            <one-to-many class="ch.unartig.studioserver.model.GeneratedAlbum"/>
         </set>
 
 

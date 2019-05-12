@@ -95,6 +95,7 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 
@@ -196,7 +197,8 @@ public class GenericLevelDAO
     {
         try
         {
-            return (GenericLevel) HibernateUtil.currentSession().load(levelClass, genericLevelId);
+            Session session = HibernateUtil.currentSession();
+            return (GenericLevel) session.load(levelClass, genericLevelId);
         } catch (HibernateException e)
         {
             _logger.error("Could not load Generic Level, see stack trace", e);

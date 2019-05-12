@@ -48,6 +48,7 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.UploadBean;
+import ch.unartig.studioserver.model.GenericLevel;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
@@ -58,6 +59,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.MappingDispatchAction;
 import org.apache.struts.upload.FormFile;
+import org.hibernate.Session;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -237,6 +239,7 @@ public class SportEventsAction extends MappingDispatchAction
     {
         String forward = "success";
 
+        Session session = HibernateUtil.currentSession();
         GenericLevelDAO glDao = new GenericLevelDAO();
         String sportsEventId = request.getParameter("sportsEventId");
         if (sportsEventId != null)
@@ -244,11 +247,17 @@ public class SportEventsAction extends MappingDispatchAction
             SportsEvent sportsEvent = null;
             try
             {
-                sportsEvent = (SportsEvent) glDao.load(new Long(sportsEventId), SportsEvent.class);
+                // sportsEvent = (SportsEvent) glDao.load(new Long(sportsEventId), SportsEvent.class);
+
+                sportsEvent = session.load( SportsEvent.class,new Long(sportsEventId));
+                //sportsEvent = (SportsEvent) glDao.load(new Long(sportsEventId), SportsEvent.class);
+                _logger.debug("sportsEvent ID : " + sportsEvent.getGenericLevelId());
+                _logger.debug("sportsEvent ID : " + sportsEvent.getEventDate());
+                _logger.debug("sportsEvent ID : " + sportsEvent.getDescription());
             } catch (Exception e)
             {
                 // could be number format exception or database problem
-                _logger.info("cannot instantiate a sports event");
+                _logger.info("cannot instantiate a sports event",e);
                 forward = "noEvent";
             }
             request.setAttribute("sportsEvent", sportsEvent);

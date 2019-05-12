@@ -192,6 +192,7 @@ public class HibernateUtil
         {
 //            System.out.println("**************************** Getting session from factory : " + sessionFactory + "*************************************");
             Session session = sessionFactory.getCurrentSession();
+
             // start a transaction. We will always need a transaction. If beginTransaction will be called again for the same unit of work, it should do nothing (??)
             // not sure here : always start a transaction? will also be started with filter on every request ... causes an exception in Hibernate 5
             // session.beginTransaction();

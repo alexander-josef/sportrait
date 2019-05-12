@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestProcessor {
 
-    Logger logger = Logger.getLogger(getClass().getName());
+    private Logger logger = Logger.getLogger(getClass().getName());
 
     protected boolean processRoles(HttpServletRequest request,
                                    HttpServletResponse response, ActionMapping mapping)

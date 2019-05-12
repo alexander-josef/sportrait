@@ -8,6 +8,7 @@
 
 <div class="pageNav">
     <h1 id="pageName">${sportsEvent.longTitle}</h1>
+    <h1 id="pageName">${sportsEvent.navTitle}</h1>
     <%--
     <!--<html:link action="/index">Home</html:link>&nbsp;>>&nbsp;
     ${sportsEvent.longTitle}-->

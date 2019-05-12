@@ -93,7 +93,7 @@
 
         <many-to-one
                 name="album"
-                class="ch.unartig.studioserver.model.Album"
+                class="ch.unartig.studioserver.model.GeneratedAlbum"
                 lazy="false"
                 not-null="true"
                 >

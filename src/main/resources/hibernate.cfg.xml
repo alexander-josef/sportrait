@@ -27,6 +27,9 @@
 
         <!-- problem with old data when using query cache? -->
         <property name="hibernate.cache.use_query_cache">true</property>
+<!--
+        <property name="hibernate.javax.cache.missing_cache_strategy">create</property>
+-->
 
         <!-- Mapping files -->
         <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->
@@ -34,7 +37,16 @@
         <!--<mapping resource="ch/unartig/studioserver/model/Photo.hbm.xml"/>-->
 
 
-        <mapping resource="GenericLevel.hbm.xml"/>
+
+        <mapping class="ch.unartig.studioserver.model.GeneratedGenericLevel"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedAlbum"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedCategory"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedEventGroup"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedEvent"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedSportsAlbum"/>
+        <mapping class="ch.unartig.studioserver.model.GeneratedSportsEvent"/>
+
+
         <mapping resource="Photo.hbm.xml"/>
         <mapping resource="Customer.hbm.xml"/>
         <mapping resource="Order.hbm.xml"/>

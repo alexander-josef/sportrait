@@ -27,7 +27,7 @@
             <key-many-to-one
                     name="event"
                     column="eventId"
-                    class="ch.unartig.studioserver.model.Event"
+                    class="ch.unartig.studioserver.model.GeneratedEvent"
                     >
                 <meta attribute="use-in-tostring">true</meta>
 
