@@ -103,7 +103,7 @@
  * init. version
  *
  * Revision 1.2  2005/11/19 11:08:20  alex
- * index navigation works, (extended GenericLevel functions)
+ * index navigation works, (extended GeneratedGenericLevel functions)
  * wrong calculation of fixed checkout overview eliminated
  *
  * Revision 1.1  2005/11/09 21:59:36  alex

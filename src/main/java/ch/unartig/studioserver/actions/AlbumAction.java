@@ -159,7 +159,6 @@ public class AlbumAction extends Action
             _logger.error("the album Id part in the URL could not be parsed into a Long : " + albumIdPart, e);
             return actionMapping.findForward("error");
         }
-        request.setAttribute("indexNavEntries", albumBean.getAlbum().getIndexNavEntries());
         // set the level to be available as request param throughout the page
         request.setAttribute("level", album);
 //        request.setAttribute("albumBean",albumBean);

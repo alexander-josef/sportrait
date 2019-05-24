@@ -52,17 +52,42 @@
 package ch.unartig.studioserver.model;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Processed Order after checking out the shopping cart
  */
-public class Order extends GeneratedOrder
-{
+@Entity
+@Table(name = "customers")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Order implements java.io.Serializable {
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long orderId;
+    private Date orderDate;
+    private Date uploadCompletedDate;
+    private String oipsOrderId;
+
+    @ManyToOne
+    @JoinColumn(name = "customerid",nullable = false)
+    private Customer customer;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<OrderItem> orderItems = new HashSet<OrderItem>(0);
 
     /**
      * standard noarg constructor
@@ -132,4 +157,70 @@ public class Order extends GeneratedOrder
         _logger.debug("all products digital, returning true");
         return true;
     }
+
+    public Long getOrderId() {
+        return this.orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public Date getOrderDate() {
+        return this.orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
+
+    public Date getUploadCompletedDate() {
+        return this.uploadCompletedDate;
+    }
+
+    public void setUploadCompletedDate(Date uploadCompletedDate) {
+        this.uploadCompletedDate = uploadCompletedDate;
+    }
+
+    public String getOipsOrderId() {
+        return this.oipsOrderId;
+    }
+
+    public void setOipsOrderId(String oipsOrderId) {
+        this.oipsOrderId = oipsOrderId;
+    }
+
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Set getOrderItems() {
+        return this.orderItems;
+    }
+
+    public void setOrderItems(Set orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("orderId").append("='").append(getOrderId()).append("' ");
+      buffer.append("orderDate").append("='").append(getOrderDate()).append("' ");
+      buffer.append("uploadCompletedDate").append("='").append(getUploadCompletedDate()).append("' ");
+      buffer.append("oipsOrderId").append("='").append(getOipsOrderId()).append("' ");
+      buffer.append("customer").append("='").append(getCustomer()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

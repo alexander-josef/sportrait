@@ -38,28 +38,28 @@
 
 
 
-        <mapping class="ch.unartig.studioserver.model.GeneratedGenericLevel"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedAlbum"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedCategory"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedEventGroup"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedEvent"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedSportsAlbum"/>
-        <mapping class="ch.unartig.studioserver.model.GeneratedSportsEvent"/>
+        <mapping class="ch.unartig.studioserver.model.GenericLevel"/>
+        <mapping class="ch.unartig.studioserver.model.Album"/>
+        <mapping class="ch.unartig.studioserver.model.Category"/>
+        <mapping class="ch.unartig.studioserver.model.EventGroup"/>
+        <mapping class="ch.unartig.studioserver.model.Event"/>
+        <mapping class="ch.unartig.studioserver.model.SportsAlbum"/>
+        <mapping class="ch.unartig.studioserver.model.SportsEvent"/>
+        <mapping class="ch.unartig.studioserver.model.EventRunner"/>
+        <mapping class="ch.unartig.studioserver.model.EventCategory"/>
+        <mapping class="ch.unartig.studioserver.model.Customer"/>
+        <mapping class="ch.unartig.studioserver.model.Order"/>
+        <mapping class="ch.unartig.studioserver.model.OrderItem"/>
+        <mapping class="ch.unartig.studioserver.model.Photo"/>
+        <mapping class="ch.unartig.studioserver.model.OrderHash"/>
 
 
-        <mapping resource="Photo.hbm.xml"/>
-        <mapping resource="Customer.hbm.xml"/>
-        <mapping resource="Order.hbm.xml"/>
         <mapping resource="Product.hbm.xml"/>
-        <mapping resource="OrderItem.hbm.xml"/>
         <mapping resource="PhotoSubject.hbm.xml"/>
-        <mapping resource="EventRunner.hbm.xml"/>
-        <mapping resource="OrderHash.hbm.xml"/>
         <mapping resource="Price.hbm.xml"/>
         <mapping resource="ProductType.hbm.xml"/>
         <mapping resource="UserRole.hbm.xml"/>
         <mapping resource="UserProfile.hbm.xml"/>
-        <mapping resource="EventCategory.hbm.xml"/>
         <mapping resource="Photographer.hbm.xml"/>
 
     </session-factory>

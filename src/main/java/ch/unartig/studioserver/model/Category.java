@@ -117,19 +117,33 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
  * Festliche Anlässe / Sportliche Anlässe
  * --> not relevant anymore for sportrait
  */
-public class Category extends GeneratedCategory
-{
+@Entity
+@DiscriminatorValue("CATEGORY")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class Category extends GenericLevel implements java.io.Serializable {
+
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OrderBy("navTitle asc ")
+    private Set<EventGroup> eventGroups = new HashSet<EventGroup>(0);
 
     public Category()
     {
@@ -153,25 +167,6 @@ public class Category extends GeneratedCategory
         setDescription(description);
     }
 
-    /**
-     * return all eventGroups for this category
-     *
-     * @return list of eventGroups
-     */
-    public List listChildrenForNavTree()
-    {
-        return listChildren();
-    }
-
-
-    /**
-     * overridden for category: return 0 as link
-     * @return the link to be shown in the nav tree
-     */
-//    public String getTreeNavLink()
-//    {
-//        return "0";
-//    }
 
     public List listChildren()
     {
@@ -201,64 +196,12 @@ public class Category extends GeneratedCategory
         return this;
     }
 
-    public String[] getIndexNavEntry()
-    {
-        return new String[]{getIndexNavLink(),getNavTitle()};
-    }
 
     public String getEventDateDisplay()
     {
         return "";
     }
 
-
-    /**
-     * overriden nav-Title method; return empty string in apostrophes .... text is in images
-     *
-     * @return String for the category nav title which is ''
-     */
-    public String getTreeNavTitle()
-    {
-        return "";
-    }
-
-    /**
-     * custom category implemention using the overwritten item scope seetings
-     * <ul>
-     * <li>DON'T FORGET TO INCLUDE THE "'" character
-     * <li>DON'T FORGET: NO !!! no comma in the last item scope settings line
-     * </ul>
-     * the name of the category is represented with an image:<br>
-     * image names follow this schema:<br>
-     * [nav Title]_[icon-state]_[language depending suffix].gif<br>
-     * example: sport_anlaesse_closed_de.gif  (for category with nav title 'sport_anlaesse')
-     * @return the item scope settings as string
-     * @param langSuffix
-     * @noinspection StringConcatenationInsideStringBufferAppend
-     */
-    protected String getItemScopeSettings(String langSuffix)
-    {
-        StringBuffer sb = new StringBuffer();
-
-        String languageDepImageSuffix="_"+langSuffix+".gif";
-        sb.append("{'st' : 1,\n" +
-                "\t\t\t\t\t'sb' : '"+ this.getLongTitle()+"', \n" +
-                "\t\t\t\t\t'i0' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_ITEM +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i4' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_ITEM +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i8' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_OPENED_ITEM +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i12' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_OPEN_ITEM +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i64' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i68' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i72' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_OPENED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t'i76' : '"+ Registry._TREE_ICONS_PATH +getNavTitle()+Registry._ICON_FOR_SELECTED_OPENED_ITEM_MOUSE_OVER +languageDepImageSuffix+"', \n" +
-                "\t\t\t\t\t's4' : '"+Registry._PSEUDO_ROOT_CLASS+"', \n" +
-                "\t\t\t\t\t's12' : '"+Registry._PSEUDO_ROOT_CLASS+"', \n" +
-                "\t\t\t\t\t's68' : '"+Registry._PSEUDO_ROOT_CLASS+"', \n" +
-                "\t\t\t\t\t's76' : '"+Registry._PSEUDO_ROOT_CLASS+"' \n" +
-                "\t\t\t\t\t}");
-
-        return sb.toString();
-    }
 
     public boolean isCategoryLevel()
     {
@@ -277,4 +220,11 @@ public class Category extends GeneratedCategory
         }
     }
 
+    public Set<EventGroup> getEventGroups() {
+        return this.eventGroups;
+    }
+
+    public void setEventGroups(Set<EventGroup> eventGroups) {
+        this.eventGroups = eventGroups;
+    }
 }

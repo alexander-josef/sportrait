@@ -62,7 +62,7 @@
     </ul>
 </div>
 <c:if test="${photographerAdminBean.level!=null}">
-<%--<jsp:useBean id="level" type="ch.unartig.studioserver.model.GenericLevel" scope="request"/>--%>
+<%--<jsp:useBean id="level" type="ch.unartig.studioserver.model.GenericLevelrequest"/>--%>
 <%--<jsp:useBean id="productTypeList" type="java.util.List" scope="request"/>--%>
 <html:form action="/photographer/updateAlbum">
 <html:hidden property="genericLevelId" value="${photographerAdminBean.level.genericLevelId}"/>

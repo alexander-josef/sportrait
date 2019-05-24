@@ -34,6 +34,11 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 
 
@@ -44,9 +49,24 @@ import java.util.Date;
  * - it shall not be possible to guess another, valid link to downloadable photos
  * - the link shall expire after some time
  */
-public class OrderHash extends GeneratedOrderHash
-{
+@Entity
+@Table(name = "orderhashes")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class OrderHash implements java.io.Serializable {
 
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long orderHashId;
+
+    private String hash;
+    private Date expiryDate;
+
+    @ManyToOne
+    @JoinColumn(name = "orderid",nullable = false)
+    private Order order;
 
     /**
      * default constructor
@@ -67,4 +87,53 @@ public class OrderHash extends GeneratedOrderHash
         setExpiryDate(expiryDate);
         setHash(hash);
     }
+
+    public Long getOrderHashId() {
+        return this.orderHashId;
+    }
+
+    public void setOrderHashId(Long orderHashId) {
+        this.orderHashId = orderHashId;
+    }
+
+    public String getHash() {
+        return this.hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public Order getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("orderHashId").append("='").append(getOrderHashId()).append("' ");
+      buffer.append("hash").append("='").append(getHash()).append("' ");
+      buffer.append("expiryDate").append("='").append(getExpiryDate()).append("' ");
+      buffer.append("order").append("='").append(getOrder()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

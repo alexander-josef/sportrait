@@ -206,7 +206,6 @@ import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.ImageRecognitionPostProcessor;
-import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AdminForm;
 import ch.unartig.studioserver.businesslogic.*;

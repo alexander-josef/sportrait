@@ -8,7 +8,7 @@
             name="ch.unartig.studioserver.model.GenericLevel"
             table="GenericLevels" discriminator-value="GENERIC"
             >
-        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GeneratedGenericLevel</meta>
+        <meta attribute="generated-class" inherit="false">ch.unartig.studioserver.model.GenericLevel</meta>
         <cache usage="read-write"/>
 
         <id

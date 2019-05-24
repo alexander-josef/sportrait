@@ -39,7 +39,7 @@
              inverse="true"
                 >
             <key column="photographerId"/>
-            <one-to-many class="ch.unartig.studioserver.model.GeneratedAlbum"/>
+            <one-to-many class="ch.unartig.studioserver.model.Album"/>
         </set>
 
         <property

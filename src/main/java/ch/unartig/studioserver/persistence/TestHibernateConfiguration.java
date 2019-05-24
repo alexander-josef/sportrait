@@ -1,9 +1,7 @@
 package ch.unartig.studioserver.persistence;
 
 import ch.unartig.studioserver.model.Event;
-import ch.unartig.studioserver.model.GeneratedGenericLevel;
-import ch.unartig.studioserver.model.GeneratedSportsEvent;
-import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import ch.unartig.studioserver.model.SportsEvent;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,7 +21,7 @@ public class TestHibernateConfiguration {
 
             session = newSessionFactory().getCurrentSession();
 
-            Event event = session.load(GeneratedSportsEvent.class,1);
+            Event event = session.load(SportsEvent.class,1);
 
             session.getTransaction().commit();
             session.close();

@@ -85,17 +85,38 @@ import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-/**
- * Relevant for sprotrait? not sure if needed at all ...
- */
-public class EventGroup extends GeneratedEventGroup
-{
+
+@Entity
+@DiscriminatorValue("EVENTGROUP")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class EventGroup extends GenericLevel implements java.io.Serializable {
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+
+    @ManyToOne
+    @JoinColumn(name = "categoryid")
+    private Category category;
+
+
+    private String zipcode;
+    private String city;
+
+    @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OrderBy("eventDate desc ")
+    private Set<Event> events = new HashSet<Event>(0);
+
 
     public EventGroup()
     {
@@ -113,27 +134,7 @@ public class EventGroup extends GeneratedEventGroup
         }
     }
 
-    public EventGroup(String navTitle, String longTitle, String description)
-    {
-        setNavTitle(navTitle);
-        setLongTitle(longTitle);
-        setDescription(description);
-    }
 
-    public StringBuffer composeTreeItem()
-    {
-        return null;
-    }
-
-    /**
-     * return a list of events
-     *
-     * @return list of events
-     */
-    public List listChildrenForNavTree()
-    {
-        return new ArrayList(getEvents());
-    }
 
     public List listChildren()
     {
@@ -165,10 +166,6 @@ public class EventGroup extends GeneratedEventGroup
         return getCategory();
     }
 
-    public String[] getIndexNavEntry()
-    {
-        return new String[]{getIndexNavLink(), getNavTitle()};
-    }
 
     public String getEventDateDisplay()
     {
@@ -176,23 +173,6 @@ public class EventGroup extends GeneratedEventGroup
     }
 
 
-    /**
-     * @param langSuffix
-     * @return item scope settings
-     */
-    protected String getItemScopeSettings(String langSuffix)
-    {
-        String retVal;
-        if (getIsPrivate() != null && getIsPrivate().booleanValue())
-        {
-            retVal = "{'s0':'node_protected','s12':'node_protected'," + "'s8':'node_protected','s4':'node_preotected_selected'," + "'s12':'node_protected_selected'," + "'s64':'node_protected_hover'," + "'s72':'node_protected_hover'," + "'s76':'node_protected_selected_hover'," + "'s4':'node_protected_selected'," + "'s68':'node_protected_selected_hover'}";
-        } else
-        {
-            retVal = "null";
-        }
-
-        return retVal;
-    }
 
     public boolean isEventGroupLevel()
     {
@@ -212,7 +192,7 @@ public class EventGroup extends GeneratedEventGroup
     }
 
     /**
-     * Creation method to construct by loaction
+     * Creation method to construct by loction
      *
      * @param zipCode  Zip Code
      * @param city     City
@@ -270,4 +250,51 @@ public class EventGroup extends GeneratedEventGroup
     }
 
 
+    public Category getCategory() {
+        return this.category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getZipcode() {
+        return this.zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Set<Event> getEvents() {
+        return this.events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("category").append("='").append(getCategory()).append("' ");
+      buffer.append("zipcode").append("='").append(getZipcode()).append("' ");
+      buffer.append("city").append("='").append(getCity()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

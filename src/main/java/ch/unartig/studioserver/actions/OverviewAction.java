@@ -47,7 +47,6 @@
  ****************************************************************/
 package ch.unartig.studioserver.actions;
 
-import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.GenericLevel;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -89,7 +88,6 @@ public class OverviewAction extends Action
         _logger.debug("going to process overview for level [" + level.getGenericLevelId().toString() + "]");
         _logger.debug("");
         processOverviewBean(request, level);
-        request.setAttribute("indexNavEntries", level.getIndexNavEntries());
         request.setAttribute("level", level);
         return actionMapping.findForward(forwardView);
     }

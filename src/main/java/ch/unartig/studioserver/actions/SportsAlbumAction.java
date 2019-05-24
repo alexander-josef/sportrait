@@ -138,7 +138,6 @@ public class SportsAlbumAction extends Action
             _logger.error("the album could not be populated", e);
             return actionMapping.findForward("error");
         }
-        request.setAttribute("indexNavEntries", sportsAlbumBean.getAlbum().getIndexNavEntries());
         if (sportsAlbumBean.getAlbum() instanceof EventAlbum)
         {
             _logger.debug("!!!!!!!!! EVENT ALBUM");

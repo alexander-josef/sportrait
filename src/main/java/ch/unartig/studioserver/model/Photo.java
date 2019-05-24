@@ -66,7 +66,12 @@ import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -74,10 +79,43 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Photo extends GeneratedPhoto
-{
+@Entity
+@Table(name = "photos")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Photo implements java.io.Serializable {
     // todo: store thumbnail and display width and height pixels . here? globally?
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long photoId;
+
+
+    private String filename;
+    private String displayTitle;
+    private Integer widthPixels;
+    private Integer heightPixels;
+    private Date pictureTakenDate;
+    private Date uploadDate;
+
+    @OneToMany(mappedBy = "photo", cascade = CascadeType.PERSIST, orphanRemoval = true,fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<OrderItem> orderItems = new HashSet<>(0);
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "photosubjects2photos")
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<PhotoSubject> photoSubjects = new HashSet<>(0);
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "albumid",nullable = false)
+    private Album album;
 
     /**
      * default empty constructor
@@ -86,7 +124,9 @@ public class Photo extends GeneratedPhoto
     {
     }
 
+    @Transient
     private SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+    @Transient
     private SimpleDateFormat hoursMinutesSecondsDateFormatter = new SimpleDateFormat("HH:mm:ss");
 
 
@@ -544,5 +584,104 @@ public class Photo extends GeneratedPhoto
     }
 
 
+    public Long getPhotoId() {
+        return this.photoId;
+    }
 
+    public void setPhotoId(Long photoId) {
+        this.photoId = photoId;
+    }
+
+    public String getFilename() {
+        return this.filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getDisplayTitle() {
+        return this.displayTitle;
+    }
+
+    public void setDisplayTitle(String displayTitle) {
+        this.displayTitle = displayTitle;
+    }
+
+    public Integer getWidthPixels() {
+        return this.widthPixels;
+    }
+
+    public void setWidthPixels(Integer widthPixels) {
+        this.widthPixels = widthPixels;
+    }
+
+    public Integer getHeightPixels() {
+        return this.heightPixels;
+    }
+
+    public void setHeightPixels(Integer heightPixels) {
+        this.heightPixels = heightPixels;
+    }
+
+    public Date getPictureTakenDate() {
+        return this.pictureTakenDate;
+    }
+
+    public void setPictureTakenDate(Date pictureTakenDate) {
+        this.pictureTakenDate = pictureTakenDate;
+    }
+
+    public Date getUploadDate() {
+        return this.uploadDate;
+    }
+
+    public void setUploadDate(Date uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    public Set getOrderItems() {
+        return this.orderItems;
+    }
+
+    public void setOrderItems(Set orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Set getPhotoSubjects() {
+        return this.photoSubjects;
+    }
+
+    public void setPhotoSubjects(Set photoSubjects) {
+        this.photoSubjects = photoSubjects;
+    }
+
+    public Album getAlbum() {
+        return this.album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("photoId").append("='").append(getPhotoId()).append("' ");
+      buffer.append("filename").append("='").append(getFilename()).append("' ");
+      buffer.append("displayTitle").append("='").append(getDisplayTitle()).append("' ");
+      buffer.append("widthPixels").append("='").append(getWidthPixels()).append("' ");
+      buffer.append("heightPixels").append("='").append(getHeightPixels()).append("' ");
+      buffer.append("pictureTakenDate").append("='").append(getPictureTakenDate()).append("' ");
+      buffer.append("uploadDate").append("='").append(getUploadDate()).append("' ");
+      buffer.append("album").append("='").append(getAlbum()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

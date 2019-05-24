@@ -99,6 +99,9 @@
     <!-- ========================================= Global Exception Definitions -->
 
     <global-exceptions>
+<!--
+        Todo : This causes an endless loop in case the /index pages throws an exception :)
+-->
         <exception
                 key="global.error.Message"
                 type="java.lang.Exception"

@@ -36,13 +36,42 @@ package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UnartigException;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Example: Etappen in Sola
  */
-public class EventCategory extends GeneratedEventCategory
-{
+@Entity
+@Table(name = "eventcategories")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class EventCategory implements java.io.Serializable {
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long eventCategoryId;
+
+    private String title;
+
+    private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventid",updatable = false, insertable = false,nullable = false)
+    private SportsEvent event;
+
+    @OneToMany(mappedBy = "eventCategory", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Album> albums = new HashSet<Album>(0);
 
     /**
      * default constructor needed for hibernate
@@ -78,4 +107,61 @@ public class EventCategory extends GeneratedEventCategory
         }
         return false;
     }
+
+    public Long getEventCategoryId() {
+        return this.eventCategoryId;
+    }
+
+    public void setEventCategoryId(Long eventCategoryId) {
+        this.eventCategoryId = eventCategoryId;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SportsEvent getEvent() {
+        return this.event;
+    }
+
+    public void setEvent(SportsEvent event) {
+        this.event = event;
+    }
+
+    public Set getAlbums() {
+        return this.albums;
+    }
+
+    public void setAlbums(Set albums) {
+        this.albums = albums;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("eventCategoryId").append("='").append(getEventCategoryId()).append("' ");
+      buffer.append("title").append("='").append(getTitle()).append("' ");
+      buffer.append("description").append("='").append(getDescription()).append("' ");
+      buffer.append("event").append("='").append(getEvent()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

@@ -60,19 +60,34 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Alexander Josef, 2006
  */
-public class SportsEvent extends GeneratedSportsEvent
-{
+
+@Entity
+@DiscriminatorValue("SPORTSEVENT")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class SportsEvent extends Event implements java.io.Serializable {
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private List<EventCategory> eventCategories = new ArrayList<EventCategory>(0);
+
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<EventRunner> eventRunners = new HashSet<EventRunner>(0);
 
     /**
      * this is called via introspection from the admin action when a new SportsEvent is created.
@@ -223,7 +238,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param eventCategoryId Id as Long
      * @return Event Category as object
      */
-    public EventCategory getEventCategoryById(Long eventCategoryId)
+    private EventCategory getEventCategoryById(Long eventCategoryId)
     {
         for (Object o : getEventCategories())
         {
@@ -339,7 +354,7 @@ public class SportsEvent extends GeneratedSportsEvent
      * @param photographer Photographer who owns the new album
      * @return the newly created album
      */
-    public SportsAlbum getOrCreateSportsAlbumFor(Long eventCategoryId, Photographer photographer) throws UAPersistenceException
+    private SportsAlbum getOrCreateSportsAlbumFor(Long eventCategoryId, Photographer photographer) throws UAPersistenceException
     {
         SportsAlbum sportsAlbum;
         GenericLevelDAO glDao = new GenericLevelDAO();
@@ -417,4 +432,19 @@ public class SportsEvent extends GeneratedSportsEvent
     }
 
 
+    public List<EventCategory> getEventCategories() {
+        return this.eventCategories;
+    }
+
+    public void setEventCategories(List<EventCategory> eventCategories) {
+        this.eventCategories = eventCategories;
+    }
+
+    public Set<EventRunner> getEventRunners() {
+        return this.eventRunners;
+    }
+
+    public void setEventRunners(Set<EventRunner> eventRunners) {
+        this.eventRunners = eventRunners;
+    }
 }

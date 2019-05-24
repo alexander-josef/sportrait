@@ -50,16 +50,24 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.SportsAlbumBean;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.Cacheable;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.io.InputStream;
 
 /**
  * this album object that can be made persistent in the db is searchable by "Startnumber" and 'etappe'
  * @author Alexander Josef, 2006
  */
-public class SportsAlbum extends GeneratedSportsAlbum
-{
-    private String actionStringPart = "/sportsAlbum/";
+
+@Entity
+@DiscriminatorValue("SPORTSALBUM")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class SportsAlbum extends Album implements java.io.Serializable {
 
     /**
      * This is called via introspection from the admin action when a new SportsEvent is created.
@@ -89,6 +97,7 @@ public class SportsAlbum extends GeneratedSportsAlbum
 
     public String getActionStringPart()
     {
+        String actionStringPart = "/sportsAlbum/";
         return actionStringPart;
     }
 
@@ -119,7 +128,6 @@ public class SportsAlbum extends GeneratedSportsAlbum
     /**
      * Method extracts zip archive to file storage provider
      * @param fileInputStream InputStream that contains an Zip archive with Photos
-     * @throws ch.unartig.exceptions.UnartigException
      */
     void extractPhotosFromArchive(InputStream fileInputStream) throws UnartigException
     {

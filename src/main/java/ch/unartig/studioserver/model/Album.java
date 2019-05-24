@@ -212,7 +212,9 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
 import java.io.*;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -222,16 +224,50 @@ import java.util.zip.ZipEntry;
 /**
  *
  */
-public class Album extends GeneratedAlbum {
+
+@Entity
+@DiscriminatorValue("ALBUM")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class Album extends GenericLevel implements Serializable {
+
+    @Transient
     private Set problemFiles;
     /**
      * this String defines the action url that is to be called for viewing this album
      */
+    @Transient
     private String actionString;
+
     /**
      * this will be overwritten be inheriting classes
      */
+    @Transient
     private String actionStringPart = "/album/";
+
+    @Transient
+    private String albumTypeString;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "photographerid")
+    private Photographer photographer;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "eventid")
+    private Event event;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "eventcategoryid" )
+    private EventCategory eventCategory;
+
+    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OrderBy("pictureTakenDate")
+    private Set<Photo> photos = new HashSet<Photo>(0);
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Product> products = new HashSet<Product>(0);
 
     /**
      * default constructor
@@ -239,11 +275,6 @@ public class Album extends GeneratedAlbum {
     public Album() {
     }
 
-    /**
-     * full constructor needed because of hbm2java generation
-     */
-    public Album(String navTitle, String longTitle, String description, String quickAccess, Boolean aPrivate, Boolean publish, String privateAccessCode, String albumTypeString, Photographer photographer, Event event, EventCategory eventCategory, Set photos, Set products) {
-    }
 
     /**
      * actionString must be lazily initialized
@@ -278,20 +309,12 @@ public class Album extends GeneratedAlbum {
     }
 
 
-    public List listChildrenForNavTree() {
-        return Collections.EMPTY_LIST;
-    }
-
     public List listChildren() {
         return null;
     }
 
     public Class getParentClazz() {
         return Event.class;
-    }
-
-    public String[] getIndexNavEntry() {
-        return new String[]{getIndexNavLink(), getNavTitle()};
     }
 
     public String getEventDateDisplay() {
@@ -880,6 +903,70 @@ public class Album extends GeneratedAlbum {
         }
         return false;
     }
+
+    public String getAlbumTypeString() {
+        return this.albumTypeString;
+    }
+
+    public void setAlbumTypeString(String albumTypeString) {
+        this.albumTypeString = albumTypeString;
+    }
+
+    public Photographer getPhotographer() {
+        return this.photographer;
+    }
+
+    public void setPhotographer(Photographer photographer) {
+        this.photographer = photographer;
+    }
+
+    public Event getEvent() {
+        return this.event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public EventCategory getEventCategory() {
+        return this.eventCategory;
+    }
+
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+
+    public Set<Photo> getPhotos() {
+        return this.photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public Set<Product> getProducts() {
+        return this.products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
+      buffer.append("event").append("='").append(getEvent()).append("' ");
+      buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 
 
     /**

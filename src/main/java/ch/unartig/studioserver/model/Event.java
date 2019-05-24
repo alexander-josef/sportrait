@@ -101,7 +101,9 @@ import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -112,34 +114,38 @@ import java.util.*;
  *
  * @author Alexander Josef,2005-2006
  */
-public class Event extends GeneratedEvent
-{
+@Entity
+@DiscriminatorValue("EVENT")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
+public class Event extends GenericLevel implements java.io.Serializable {
+
+
+    @Transient
     SimpleDateFormat simpleFormate = new SimpleDateFormat("dd.MM.yyyy");
+
+    @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
+
+    private Date eventDate;
+
+    private String weblink;
+
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventgroupid")
+    private EventGroup eventGroup;
+
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OrderBy("genericLevelId")
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    private Set<Album> albums = new HashSet<Album>(0);
 
 
     public Event()
     {
     }
 
-    /**
-     * somehow this seems to be needed since the genereated class calls this ..... can be ignored
-     *
-     * @param navTitle
-     * @param longTitle
-     * @param description
-     * @param quickAccess
-     * @param aPrivate
-     * @param publish
-     * @param privateAccessCode
-     * @param eventDate
-     * @param weblink
-     * @param eventGroup
-     * @param studios
-     */
-    public Event(String navTitle, String longTitle, String description, String quickAccess, Boolean aPrivate, boolean publish, String privateAccessCode, Date eventDate, String weblink, EventGroup eventGroup, Set studios)
-    {
-    }
+
 
     public void accept(GenericLevelVisitor visitor)
     {
@@ -169,21 +175,8 @@ public class Event extends GeneratedEvent
         setDescription(description);
     }
 
-    public StringBuffer composeTreeItem()
-    {
-        return null;
-    }
 
-    /**
-     * concrete implemention for Event
-     * Event returns an empty List since no child items for the nav tree have to be generated
-     *
-     * @return an empty List
-     */
-    public List listChildrenForNavTree()
-    {
-        return Collections.EMPTY_LIST;
-    }
+
 
     /**
      * concrete implementation
@@ -259,7 +252,7 @@ public class Event extends GeneratedEvent
      */
     public void setEventDate(Date eventDate)
     {
-        super.setEventDate(eventDate);
+        this.eventDate = eventDate;
     }
 
     /**
@@ -281,23 +274,6 @@ public class Event extends GeneratedEvent
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * @param langSuffix
-     * @return item scope settings
-     */
-    protected String getItemScopeSettings(String langSuffix)
-    {
-        String retVal;
-        if (getIsPrivate() != null && getIsPrivate())
-        {
-            retVal = "{'s0':'protected'," + "'s64':'protected_hover'," + "'s4':'protected_selected'," + "'s68':'protected_selected_hover'}";
-        } else
-        {
-            retVal = "null";
-        }
-        return retVal;
     }
 
     public boolean isEventLevel()
@@ -357,5 +333,48 @@ public class Event extends GeneratedEvent
             _logger.error("error getting photographer albums",e);
             throw new RuntimeException("error getting photographer albums",e);
         }
+     }
+
+    public Date getEventDate() {
+        return this.eventDate;
+    }
+
+    public String getWeblink() {
+        return this.weblink;
+    }
+
+    public void setWeblink(String weblink) {
+        this.weblink = weblink;
+    }
+
+    public EventGroup getEventGroup() {
+        return this.eventGroup;
+    }
+
+    public void setEventGroup(EventGroup eventGroup) {
+        this.eventGroup = eventGroup;
+    }
+
+    public Set<Album> getAlbums() {
+        return this.albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("weblink").append("='").append(getWeblink()).append("' ");
+      buffer.append("eventGroup").append("='").append(getEventGroup()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
      }
 }
