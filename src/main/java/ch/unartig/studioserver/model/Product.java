@@ -84,7 +84,11 @@ package ch.unartig.studioserver.model;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.util.Map;
 
 /**
@@ -92,14 +96,33 @@ import java.util.Map;
  * a product consists of a format (or 'fun' article like mousemat) and a price<br>
  * there will be more than one product for the same format if this format is sold for different prices<br>
  */
-public class Product extends GeneratedProduct
-{
+@Entity
+@Table(name = "products")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+public class Product implements java.io.Serializable {
 
     public static final double _SHIPPING_HANDLING_CHE_CHF = 4.90; // 4.90 SFr.
     public static final double _SHIPPING_HANDLING_INTERNATIONAL_EUR = 3.30; // 3.30 Euros
 
     // array of initial producttypes from highest to lowest priority, first one that exists gets chosen
-    static Long[] preselectedProductTypeIds = {(long) 5, (long)3, (long) 4};
+    private static Long[] preselectedProductTypeIds = {(long) 5, (long)3, (long) 4};
+
+    @Id
+    @GeneratedValue(generator = "increment")
+    @GenericGenerator(name = "increment", strategy = "increment")
+    private Long productId;
+
+    private String productName;
+    private Boolean inactive;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "priceid",nullable = false)
+    private Price price;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "producttypeid",nullable = false)
+    private ProductType productType;
 
     public Product()
     {
@@ -162,4 +185,62 @@ public class Product extends GeneratedProduct
     {
         return Price.monetaryAmountFormat.format(getPrice().getPriceGBP());
     }
+
+    public Long getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return this.productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public Boolean getInactive() {
+        return this.inactive;
+    }
+
+    public void setInactive(Boolean inactive) {
+        this.inactive = inactive;
+    }
+
+    public Price getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
+    }
+
+    public ProductType getProductType() {
+        return this.productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
+    /**
+     * toString
+     * @return String
+     */
+     public String toString() {
+	  StringBuffer buffer = new StringBuffer();
+
+      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+      buffer.append("productId").append("='").append(getProductId()).append("' ");
+      buffer.append("productName").append("='").append(getProductName()).append("' ");
+      buffer.append("inactive").append("='").append(getInactive()).append("' ");
+      buffer.append("price").append("='").append(getPrice()).append("' ");
+      buffer.append("productType").append("='").append(getProductType()).append("' ");
+      buffer.append("]");
+
+      return buffer.toString();
+     }
 }

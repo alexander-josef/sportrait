@@ -52,15 +52,13 @@
         <mapping class="ch.unartig.studioserver.model.OrderItem"/>
         <mapping class="ch.unartig.studioserver.model.Photo"/>
         <mapping class="ch.unartig.studioserver.model.OrderHash"/>
-
-
-        <mapping resource="Product.hbm.xml"/>
-        <mapping resource="PhotoSubject.hbm.xml"/>
-        <mapping resource="Price.hbm.xml"/>
-        <mapping resource="ProductType.hbm.xml"/>
-        <mapping resource="UserRole.hbm.xml"/>
-        <mapping resource="UserProfile.hbm.xml"/>
-        <mapping resource="Photographer.hbm.xml"/>
+        <mapping class="ch.unartig.studioserver.model.PhotoSubject"/>
+        <mapping class="ch.unartig.studioserver.model.Photographer"/>
+        <mapping class="ch.unartig.studioserver.model.UserProfile"/>
+        <mapping class="ch.unartig.studioserver.model.UserRole"/>
+        <mapping class="ch.unartig.studioserver.model.Price"/>
+        <mapping class="ch.unartig.studioserver.model.ProductType"/>
+        <mapping class="ch.unartig.studioserver.model.Product"/>
 
     </session-factory>
 

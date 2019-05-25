@@ -23,12 +23,37 @@
 package ch.unartig.studioserver.model;
 
 import ch.unartig.studioserver.persistence.DAOs.UserRoleDAO;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 
  */
-public class Photographer extends GeneratedPhotographer
-{
+@Entity
+@Table(name = "photographers")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Photographer implements java.io.Serializable {
+
+    @Id
+    private Long photographerId;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private UserProfile userProfile;
+
+    @OneToMany(mappedBy = "photographer", fetch = FetchType.LAZY)
+    private Set<Album> albums = new HashSet<>(0);
+
+    private String cameraModel;
+    private String website;
+    private String contactInformation;
 
     /**
      * default constructor
@@ -66,4 +91,75 @@ public class Photographer extends GeneratedPhotographer
     {
         return getPhotographerId()+";"+getFullName();
     }
+
+    public Long getPhotographerId() {
+        return this.photographerId;
+    }
+
+    public void setPhotographerId(Long photographerId) {
+        this.photographerId = photographerId;
+    }
+
+    public UserProfile getUserProfile() {
+        return this.userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
+
+    public Set getAlbums() {
+        return this.albums;
+    }
+
+    public void setAlbums(Set albums) {
+        this.albums = albums;
+    }
+
+    public String getCameraModel() {
+        return this.cameraModel;
+    }
+
+    public void setCameraModel(String cameraModel) {
+        this.cameraModel = cameraModel;
+    }
+
+    public String getWebsite() {
+        return this.website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getContactInformation() {
+        return this.contactInformation;
+    }
+
+    public void setContactInformation(String contactInformation) {
+        this.contactInformation = contactInformation;
+    }
+
+    public boolean equals(Object other) {
+          if ( (this == other ) ) return true;
+          if ( (other == null ) ) return false;
+          if ( !(other instanceof Photographer) ) return false;
+          Photographer castOther = (Photographer) other;
+
+          return ( (this.getPhotographerId()==castOther.getPhotographerId()) || ( this.getPhotographerId()!=null && castOther.getPhotographerId()!=null && this.getPhotographerId().equals(castOther.getPhotographerId()) ) );
+    }
+
+    public int hashCode() {
+          int result = 17;
+
+          result = 37 * result + ( getPhotographerId() == null ? 0 : this.getPhotographerId().hashCode() );
+
+
+
+
+
+          return result;
+    }
+
+
 }
