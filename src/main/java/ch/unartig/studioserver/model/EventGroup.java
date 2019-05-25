@@ -97,8 +97,6 @@ import java.util.Set;
 
 @Entity
 @DiscriminatorValue("EVENTGROUP")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class EventGroup extends GenericLevel implements java.io.Serializable {
 
     @Transient

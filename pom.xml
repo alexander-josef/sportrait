@@ -331,48 +331,6 @@
 
             <!-- codehouse repo removed-->
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>hibernate3-maven-plugin</artifactId>
-                <version>2.2</version>
-
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>hbm2java</goal>
-                        </goals>
-                    </execution>
-                </executions>
-
-
-                <configuration>
-                    <components>
-                        <!--change generated-sources directory -->
-                        <component>
-                            <name>hbm2java</name>
-                            <outputDirectory>target/generated-sources/hibernate-plugin/</outputDirectory>
-                        </component>
-                    </components>
-
-
-                    <!-- Set the schema name -->
-                    <componentProperties>
-
-                        <export>false</export>
-                        <format>true</format>
-                        <outputfilename>schema-${project.version}.sql</outputfilename>
-                        <propertyfile>/src/main/resources/hibernate.postgresql.properties</propertyfile>
-                    </componentProperties>
-
-                    <hibernate>
-                        <propertyfile>/src/main/resources/hibernate.postgresql.properties</propertyfile>
-                        <configurationFile>/src/main/resources/hibernate.cfg.xml</configurationFile>
-                    </hibernate>
-
-                </configuration>
-
-            </plugin>
 
 
             <plugin>
@@ -415,15 +373,7 @@
         </plugins>
 
         <extensions>
-            <!-- why do we need this? -->
-<!--
 
-            <extension>
-                <groupId>postgresql</groupId>
-                <artifactId>postgresql</artifactId>
-                <version>8.1-407.jdbc3</version>
-            </extension>
--->
             <!--inserted after scpexe command didn't work anymore-->
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>

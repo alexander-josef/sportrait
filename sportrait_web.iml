@@ -47,6 +47,15 @@
     <orderEntry type="library" name="com.drewnoakes:metadata-extractor:2.11.0" level="project" />
     <orderEntry type="library" name="platform" level="application" />
     <orderEntry type="library" name="struts-struts" level="project" />
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Applications/apache-tomcat-9.0.8/lib/postgresql-42.2.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.500" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.500" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-core:1.11.500" level="project" />
@@ -125,14 +134,5 @@
     <orderEntry type="library" name="Maven: com.drewnoakes:metadata-extractor:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: com.adobe.xmp:xmpcore:5.1.3" level="project" />
     <orderEntry type="library" name="Maven: com.imgix:imgix-java:1.1.12" level="project" />
-    <orderEntry type="module-library" scope="PROVIDED">
-      <library>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Applications/apache-tomcat-9.0.8/lib/postgresql-42.2.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>

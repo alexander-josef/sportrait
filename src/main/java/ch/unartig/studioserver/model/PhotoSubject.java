@@ -60,10 +60,9 @@ public class PhotoSubject implements java.io.Serializable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Photo> photos = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "photoSubject", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "photoSubject", orphanRemoval = true,fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @JoinColumn(name = "photosubjectid")
     private Set<EventRunner> eventRunners = new HashSet<>(0);
 
     public Long getPhotoSubjectId() {

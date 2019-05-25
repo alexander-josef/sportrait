@@ -62,6 +62,7 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.InputStream;
@@ -74,8 +75,6 @@ import java.util.*;
 
 @Entity
 @DiscriminatorValue("SPORTSEVENT")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class SportsEvent extends Event implements java.io.Serializable {
 
     @Transient
@@ -83,7 +82,8 @@ public class SportsEvent extends Event implements java.io.Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private List<EventCategory> eventCategories = new ArrayList<EventCategory>(0);
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<EventCategory> eventCategories = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

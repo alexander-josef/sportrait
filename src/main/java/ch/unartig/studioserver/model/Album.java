@@ -227,8 +227,6 @@ import java.util.zip.ZipEntry;
 
 @Entity
 @DiscriminatorValue("ALBUM")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class Album extends GenericLevel implements Serializable {
 
     @Transient

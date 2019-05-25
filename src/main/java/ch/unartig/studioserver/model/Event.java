@@ -116,8 +116,6 @@ import java.util.*;
  */
 @Entity
 @DiscriminatorValue("EVENT")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class Event extends GenericLevel implements java.io.Serializable {
 
 

@@ -133,8 +133,6 @@ import java.util.Set;
  */
 @Entity
 @DiscriminatorValue("CATEGORY")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class Category extends GenericLevel implements java.io.Serializable {
 
 

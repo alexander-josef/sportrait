@@ -65,8 +65,6 @@ import java.io.InputStream;
 
 @Entity
 @DiscriminatorValue("SPORTSALBUM")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class SportsAlbum extends Album implements java.io.Serializable {
 
     /**
