@@ -54,6 +54,7 @@ package ch.unartig.studioserver.model;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -65,7 +66,7 @@ import java.util.Set;
  * Processed Order after checking out the shopping cart
  */
 @Entity
-@Table(name = "customers")
+@Table(name = "orders")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Order implements java.io.Serializable {
@@ -77,12 +78,14 @@ public class Order implements java.io.Serializable {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     private Long orderId;
+
     private Date orderDate;
     private Date uploadCompletedDate;
     private String oipsOrderId;
 
-    @ManyToOne
-    @JoinColumn(name = "customerid",nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @JoinColumn(name = "customerid")
     private Customer customer;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)

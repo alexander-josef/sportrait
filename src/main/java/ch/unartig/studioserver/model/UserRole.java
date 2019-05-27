@@ -53,7 +53,6 @@ public class UserRole implements java.io.Serializable {
     public static final String _PHOTOGRAPHER_ROLE_NAME = "photographer";
 
 
-    private Long userProfileId;
 
     @Id
     @GeneratedValue(generator = "increment")

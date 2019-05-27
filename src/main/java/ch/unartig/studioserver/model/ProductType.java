@@ -57,9 +57,11 @@ public class ProductType implements java.io.Serializable {
 
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "prices2producttypes")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "prices2producttypes",
+            joinColumns = { @JoinColumn(name = "priceid") },
+            inverseJoinColumns = { @JoinColumn(name = "producttypeid") }
+    )
     private Set<Price> prices = new HashSet<>(0);
 
     public Long getProductTypeId() {

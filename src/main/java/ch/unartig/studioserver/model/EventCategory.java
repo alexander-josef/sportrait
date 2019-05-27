@@ -67,11 +67,12 @@ public class EventCategory implements java.io.Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "eventid",updatable = false, insertable = false,nullable = false)
+    @OrderColumn(name = "category_position")
     private SportsEvent event;
 
     @OneToMany(mappedBy = "eventCategory", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Album> albums = new HashSet<Album>(0);
+    private Set<Album> albums = new HashSet<>(0);
 
     /**
      * default constructor needed for hibernate

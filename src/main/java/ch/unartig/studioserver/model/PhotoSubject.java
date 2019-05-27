@@ -28,12 +28,12 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +41,7 @@ import java.util.Set;
  * m:m table to map photos to event runners / can contain name and age
  */
 @Entity
-@Table(name = "customers")
+@Table(name = "photosubjects")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PhotoSubject implements java.io.Serializable {
@@ -55,8 +55,7 @@ public class PhotoSubject implements java.io.Serializable {
 
     private Integer age;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "photosubjects2photos")
+    @ManyToMany(mappedBy = "photoSubjects",fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Photo> photos = new HashSet<>(0);
 

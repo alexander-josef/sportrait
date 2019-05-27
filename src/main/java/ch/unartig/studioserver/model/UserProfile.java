@@ -69,15 +69,17 @@ public class UserProfile implements java.io.Serializable {
     private String country;
     private String gender;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "userProfile",fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Photographer photographer;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userprofiles2userroles")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @PrimaryKeyJoinColumn(name = "username") // not userProfileId - used to be necessary to be compliant with tomcat  datasource-authentication
+    @JoinTable(name = "userprofiles2userroles",
+            joinColumns = {@JoinColumn(name = "username") },
+            inverseJoinColumns = { @JoinColumn(name = "rolename",referencedColumnName = "rolename") }
+    )
     private Set<UserRole> roles = new HashSet<>(0);
 
     public UserProfile(UserRole role)

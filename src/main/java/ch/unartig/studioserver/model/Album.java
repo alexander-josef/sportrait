@@ -213,6 +213,7 @@ import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.IndexColumn;
 
 import javax.persistence.*;
 import java.io.*;
@@ -256,16 +257,17 @@ public class Album extends GenericLevel implements Serializable {
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "eventcategoryid" )
+    @JoinColumn(name = "eventcategoryid")
     private EventCategory eventCategory;
 
     @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @OrderBy("pictureTakenDate")
-    private Set<Photo> photos = new HashSet<Photo>(0);
+    private Set<Photo> photos = new HashSet<>(0);
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Product> products = new HashSet<Product>(0);
+    @OrderBy("productType")
+    private Set<Product> products = new HashSet<>(0);
 
     /**
      * default constructor

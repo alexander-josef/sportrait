@@ -5,7 +5,10 @@
 
 <hibernate-configuration>
 
-    <session-factory name="sportraitSessionFactory">
+    <session-factory>
+
+
+<!--        Database connection settings : -->
 
         <property name="connection.datasource">java:comp/env/jdbc/sportrait</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
@@ -27,9 +30,15 @@
 
         <!-- problem with old data when using query cache? -->
         <property name="hibernate.cache.use_query_cache">true</property>
+
+        <!-- validate the database schema on startup !-->
+        <property name="hbm2ddl.auto">validate</property>
 <!--
         <property name="hibernate.javax.cache.missing_cache_strategy">create</property>
 -->
+
+        <!-- set implicit naming strategy to legacy -->
+        <property name="hibernate.implicit_naming_strategy">legacy-hbm</property>
 
         <!-- Mapping files -->
         <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->

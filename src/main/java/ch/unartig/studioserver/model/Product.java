@@ -124,6 +124,12 @@ public class Product implements java.io.Serializable {
     @JoinColumn(name = "producttypeid",nullable = false)
     private ProductType productType;
 
+
+    // added after migrating to hibernate annotations - not used before, but now necessary because existing db schema needs it (there would be an additional table necessary, otherwise))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "albumid",nullable = false)
+    private Album album;
+
     public Product()
     {
     }

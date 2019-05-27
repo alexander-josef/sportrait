@@ -125,6 +125,7 @@ public class Event extends GenericLevel implements java.io.Serializable {
     @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
 
+    @Column(columnDefinition = "DATE")
     private Date eventDate;
 
     private String weblink;

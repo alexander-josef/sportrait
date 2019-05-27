@@ -80,9 +80,8 @@ public class SportsEvent extends Event implements java.io.Serializable {
     @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<EventCategory> eventCategories = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)

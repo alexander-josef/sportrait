@@ -108,9 +108,12 @@ public class Photo implements java.io.Serializable {
     private Set<OrderItem> orderItems = new HashSet<>(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "photosubjects2photos")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "photosubjects2photos",
+            joinColumns = { @JoinColumn(name = "photosubjectid") },
+            inverseJoinColumns = { @JoinColumn(name = "photoid") }
+            )
     private Set<PhotoSubject> photoSubjects = new HashSet<>(0);
 
     @ManyToOne(fetch = FetchType.EAGER)

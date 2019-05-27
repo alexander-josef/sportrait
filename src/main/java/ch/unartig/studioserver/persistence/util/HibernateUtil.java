@@ -51,7 +51,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -89,16 +94,53 @@ public class HibernateUtil
         {
             if (sessionFactory == null)
             {
-                System.out.println("Going to create SessionFactory ");
-                sessionFactory = new Configuration().configure().buildSessionFactory();
+
+                // A SessionFactory is set up once for an application!
+                final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                        .configure() // configures settings from hibernate.cfg.xml
+                        .build();
+
+                try {
+                    System.out.println("Going to create SessionFactory ");
+                    sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+                    System.out.println("Hibernate could create SessionFactory");
+                }
+
+                catch (Exception e) {
+                    // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+                    // so destroy it manually.
+                    System.out.println("exception during hibernate session factory creation = " + e);
+                    StandardServiceRegistryBuilder.destroy( registry );
+                }
+
+
+
+
+//                sessionFactory = new Configuration().configure().buildSessionFactory();
 //                sessionFactory.openSession();
-                System.out.println("Hibernate could create SessionFactory");
+                outputSchemaDdl();
             }
         } catch (Throwable t)
         {
             System.out.println("Hibernate could not create SessionFactory");
             t.printStackTrace();
         }
+    }
+
+    private static void outputSchemaDdl() {
+       /*
+
+       MetadataSources metadata = new MetadataSources();
+
+        SchemaExport schemaExport;
+        schemaExport = new SchemaExport(metadata.buildMetadata());
+        schemaExport.setHaltOnError(true);
+        schemaExport.setFormat(true);
+        schemaExport.setDelimiter(";");
+        schemaExport.setOutputFile("db-schema.sql");
+        schemaExport.execute(true, true, false, true);
+
+        */
     }
 
     /**
