@@ -134,6 +134,7 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
     private int countPhotos() {
+        // todo : check how many times this is called - how many times do we make a count on an album when starting up? seems many times for 1 album ...
         PhotoDAO photoDao = new PhotoDAO();
         int photoCount = 0;
 

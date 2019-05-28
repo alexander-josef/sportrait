@@ -361,6 +361,7 @@ Note: if you list each property explicitly, you must include all properties of t
      */
     public int countPhotos(Album album) {
         // todo check performance of both calculations!
+        // todo : How many times is this called?
 
 //        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
 //        Map map = new HashMap();
@@ -383,7 +384,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
 //        return resultValue1;
-        return resultValue2.intValue();
+        return resultValue2.intValue(); // works also after hibernate 5 migration. nothing changed.
 
     }
 
@@ -493,7 +494,7 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setProjection(Projections.rowCount())
                 .uniqueResult();
 
-        position = (Integer) queryResult;
+        position = ((Long) queryResult).intValue(); // used to be Integer - changed after hibernate 5 migration
         _logger.debug("position : " + position);
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
         _logger.debug("page : " + page);
@@ -606,7 +607,7 @@ Note: if you list each property explicitly, you must include all properties of t
                     .setCacheable(true)
                     .uniqueResult();
         }
-        position = (Integer) queryResult;
+        position = ((Long) queryResult).intValue();
         _logger.debug("position : " + position);
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
         _logger.debug("page : " + page);
@@ -799,12 +800,13 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws UAPersistenceException
      */
     public int countPhotosFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException {
-        Integer count = (Integer) createSportsPhotoCriteria(eventCategory, startNumber)
+        Long count; // Long vs int
+        count = (Long)createSportsPhotoCriteria(eventCategory, startNumber)
                 .setProjection(Projections.rowCount())
                 .setCacheable(true)
                 .uniqueResult();
-        _logger.debug("Photo count = " + count);
-        return count;
+        _logger.debug("Photo count = " + count); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
+        return count.intValue();
     }
 
 
@@ -1039,7 +1041,7 @@ Note: if you list each property explicitly, you must include all properties of t
         // todo: remove, only debug ? can this be integrated as a subquery?
         int position = 0;
         try {
-            position = (Integer)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult();
+            position = ((Long)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult()).intValue(); // used to be an Integer - changed after Hibernate 5 migration
         } catch (HibernateException e) {
             _logger.error("Error retrieving photos",e);
         }
@@ -1060,7 +1062,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber); // needed
 
-        int firstResult = position - backward;
+        int firstResult = position - backward; // todo : find out why negative
         int maxResults = backward + forward;
         criteria.setMaxResults(maxResults+1) // starts with 0
                 .setFirstResult(firstResult-1) // starts with 0
