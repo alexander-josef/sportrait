@@ -28,6 +28,7 @@
           <unit-entry name="sportraitSessionFactory" value="992b10cd-954e-4db5-9376-1428749e078a" />
         </datasource-map>
         <naming-strategy-map>
+          <unit-entry name="hibernate.cfg.xml" />
           <unit-entry name="sportraitSessionFactory" value="org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl" />
         </naming-strategy-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" />

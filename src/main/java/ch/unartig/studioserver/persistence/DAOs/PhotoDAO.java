@@ -125,20 +125,21 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.EventAlbum;
-import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.EventCategory;
-import ch.unartig.studioserver.model.Photo;
-import ch.unartig.studioserver.model.SportsAlbum;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.CacheMode;
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
+import org.hibernate.*;
 import org.hibernate.criterion.*;
+import org.hibernate.criterion.Order;
 import org.hibernate.query.NativeQuery;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 import java.util.*;
 
 public class PhotoDAO {
@@ -363,16 +364,24 @@ Note: if you list each property explicitly, you must include all properties of t
         // todo check performance of both calculations!
         // todo : How many times is this called?
 
-//        String query = "select count(*) from ch.unartig.studioserver.model.Photo as photo " + "       where photo.album = :album";
-//        Map map = new HashMap();
-//        map.put("album", album);
-//        Object queryObject = HibernateUtil.getUnique(query, map);
-//        int resultValue1 = ((Long) queryObject).intValue();
+
+        // new with Criteria hibernate 5.4
+        CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
+        javax.persistence.criteria.CriteriaQuery<Long> criteria = criteriaBuilder.createQuery(Long.class);
+
+        Root<Photo> photoRoot = criteria.from(Photo.class);
+
+        criteria.select(criteriaBuilder.count(photoRoot));
+        criteria.where(criteriaBuilder.equal(photoRoot.get("album"),album));
+
+        Long retValCriteria = HibernateUtil.currentSession()
+                .createQuery(criteria)
+                .setCacheable(true)
+                .getSingleResult();
 
 
-        // if query should be cachable, use returnValue 2 - but check performance.
-        // After import of new photos in the album, cached value must not be used anymore
-        // method used for sportrait?
+
+        // old - deprecated -- use for comparison
         Number resultValue2 = (Number) HibernateUtil.currentSession()
                 .createCriteria(Photo.class)
                 .createAlias("album", "album")
@@ -384,7 +393,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
 //        return resultValue1;
-        return resultValue2.intValue(); // works also after hibernate 5 migration. nothing changed.
+        return retValCriteria.intValue();
 
     }
 
@@ -584,6 +593,72 @@ Note: if you list each property explicitly, you must include all properties of t
         int page;
         int position;
 
+        // new : hibernate 5.4 with criteria API
+
+
+        CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
+        javax.persistence.criteria.CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
+        Join<Photo,Album> photoAlbumJoin = photoRoot.join("album");
+        Join<Photo,Album> photoPhotoSubjectsJoin = photoRoot.join("photoSubjects");
+        Join<Photo,Album> photoSubjectsEventRunnerJoin = photoPhotoSubjectsJoin.join("eventRunners");
+
+
+
+        Predicate publishedForEventCategoryPredicate = criteriaBuilder
+                .and(criteriaBuilder
+                        .equal(photoAlbumJoin.get("publish"),Boolean.TRUE),criteriaBuilder
+                        .equal(photoAlbumJoin.get("eventCategory"),eventCategory));
+
+        Predicate pictureTakenDatePredicate = criteriaBuilder
+                .lessThanOrEqualTo(photoRoot.get("pictureTakenDate"), photo.getPictureTakenDate());
+
+        Predicate startNumberPredicate = criteriaBuilder
+                .equal(photoSubjectsEventRunnerJoin.get("startNumber"),startNumber);
+
+        Predicate photoIdPredicate = criteriaBuilder
+                .lessThanOrEqualTo(photoRoot.get("photoId"), photo.getPhotoId());
+
+
+        Predicate finalPredicate = criteriaBuilder
+                .and(publishedForEventCategoryPredicate,pictureTakenDatePredicate);
+
+        if (startNumber != null && !"".equals(startNumber)) {
+            // create combined predicate
+            finalPredicate = criteriaBuilder.and(finalPredicate,startNumberPredicate);
+        }
+
+        criteriaQuery.select(criteriaBuilder.count(photoRoot))
+                .where(finalPredicate);
+
+
+        try {
+            Long criteriaResult = HibernateUtil.currentSession()
+                    .createQuery(criteriaQuery)
+                    .setCacheable(true)
+                    .getSingleResult();
+
+
+        } catch (NonUniqueObjectException e) {
+            // exceptional case: not a single result: we now calcualte the page according to the photoid:
+            _logger.info("not a unique result for this timestamp : " + photo.getPictureTakenDate());
+            _logger.info("calculating page for this photo according to photoid");
+
+            Predicate exceptionalPredicate = criteriaBuilder
+                    .and(publishedForEventCategoryPredicate,photoIdPredicate,startNumberPredicate);
+
+            criteriaQuery.select(criteriaBuilder.count(photoRoot))
+                    .where(exceptionalPredicate);
+
+            Long criteriaResult = HibernateUtil.currentSession()
+                    .createQuery(criteriaQuery)
+                    .setCacheable(true)
+                    .getSingleResult();
+
+        }
+
+
         // check if there is not a unique result for the time of the given photo:
         Object queryResult;
         try {
@@ -607,6 +682,8 @@ Note: if you list each property explicitly, you must include all properties of t
                     .setCacheable(true)
                     .uniqueResult();
         }
+
+
         position = ((Long) queryResult).intValue();
         _logger.debug("position : " + position);
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
@@ -766,6 +843,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param startnumber can be null or empty if it should not be used in criteria
      * @return
      * @throws UAPersistenceException
+     * @deprecated
      */
     private Criteria createSportsPhotoCriteria(EventCategory eventCategory, String startnumber) throws UAPersistenceException {
         Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)

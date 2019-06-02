@@ -99,6 +99,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.Date;
 import java.util.List;
 
@@ -274,11 +277,46 @@ public class GenericLevelDAO
     public List getSportsEventsBefore(Date date) throws UAPersistenceException
     {
         // do we need to restrict it? maybe later
-        return HibernateUtil.currentSession().createCriteria(SportsEvent.class)
+
+
+        // Create CriteriaBuilder
+        CriteriaBuilder builder = HibernateUtil.currentSession().getCriteriaBuilder();
+        // Create CriteriaQuery
+        CriteriaQuery<SportsEvent> criteria = builder.createQuery(SportsEvent.class);
+        // get Root element
+        Root<SportsEvent> root = criteria.from( SportsEvent.class );
+        criteria.select( root )
+                .where(builder.lessThanOrEqualTo(root.get("eventDate"),date))
+                .orderBy(builder.desc(root.get("eventDate")))
+                .orderBy(builder.desc(root.get("navTitle")));
+
+        List<SportsEvent> retValCriteria = HibernateUtil.currentSession()
+                .createQuery(criteria)
+                .setCacheable(true)
+                .getResultList();
+
+// example with HQL query
+
+        List retvalHql = HibernateUtil.currentSession().createQuery("from SportsEvent " +
+                "where eventDate <= :date " +
+                "order by eventDate,navTitle")
+                .setParameter("date",date)
+                .setCacheable(true)
+                .getResultList();
+
+
+//  hibernate 3.2 legacy code:
+
+        List retValLegacy = HibernateUtil.currentSession().createCriteria(SportsEvent.class)
                 .add(Expression.le("eventDate", date))
                 .addOrder(Order.desc("eventDate"))
                 .addOrder(Order.desc("navTitle"))
                 .list();
+
+
+        return retValCriteria;
+
+
     }
 
 

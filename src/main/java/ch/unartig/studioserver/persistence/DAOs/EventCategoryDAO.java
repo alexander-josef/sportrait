@@ -36,7 +36,7 @@ public class EventCategoryDAO {
 
     public EventCategory load(Long eventCategoryId) throws UAPersistenceException {
         try {
-            return (EventCategory) HibernateUtil.currentSession().load(EventCategory.class, eventCategoryId);
+            return HibernateUtil.currentSession().load(EventCategory.class, eventCategoryId);
         } catch (HibernateException e) {
             throw new UAPersistenceException("Could not load EventCategory, see stack trace", e);
         }
