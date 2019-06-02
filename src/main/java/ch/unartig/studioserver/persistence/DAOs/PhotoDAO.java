@@ -122,7 +122,6 @@
 package ch.unartig.studioserver.persistence.DAOs;
 
 import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.EventAlbum;
 import ch.unartig.studioserver.model.*;
@@ -133,13 +132,13 @@ import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.Metamodel;
+
 import java.util.*;
 
 public class PhotoDAO {
@@ -381,7 +380,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
 
-        // old - deprecated -- use for comparison
+        // hbm3: old - deprecated -- use for comparison
         Number resultValue2 = (Number) HibernateUtil.currentSession()
                 .createCriteria(Photo.class)
                 .createAlias("album", "album")
@@ -494,6 +493,8 @@ Note: if you list each property explicitly, you must include all properties of t
         }
         int page;
         int position; // position of that photo within the album
+
+        //hbm3: change
         Criteria c = HibernateUtil.currentSession().createCriteria(Photo.class);
 
         Object queryResult = c
@@ -594,31 +595,21 @@ Note: if you list each property explicitly, you must include all properties of t
         int position;
 
         // new : hibernate 5.4 with criteria API
-
-
         CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
         javax.persistence.criteria.CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Predicate startNumberPredicate = null;
+        Predicate photoIdPredicate;
 
         Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
-        Join<Photo,Album> photoAlbumJoin = photoRoot.join("album");
         Join<Photo,Album> photoPhotoSubjectsJoin = photoRoot.join("photoSubjects");
         Join<Photo,Album> photoSubjectsEventRunnerJoin = photoPhotoSubjectsJoin.join("eventRunners");
 
 
-
-        Predicate publishedForEventCategoryPredicate = criteriaBuilder
-                .and(criteriaBuilder
-                        .equal(photoAlbumJoin.get("publish"),Boolean.TRUE),criteriaBuilder
-                        .equal(photoAlbumJoin.get("eventCategory"),eventCategory));
+        Predicate publishedForEventCategoryPredicate = getPublishedForEventCategoryPredicate(eventCategory, criteriaBuilder, photoRoot);
 
         Predicate pictureTakenDatePredicate = criteriaBuilder
                 .lessThanOrEqualTo(photoRoot.get("pictureTakenDate"), photo.getPictureTakenDate());
 
-        Predicate startNumberPredicate = criteriaBuilder
-                .equal(photoSubjectsEventRunnerJoin.get("startNumber"),startNumber);
-
-        Predicate photoIdPredicate = criteriaBuilder
-                .lessThanOrEqualTo(photoRoot.get("photoId"), photo.getPhotoId());
 
 
         Predicate finalPredicate = criteriaBuilder
@@ -626,6 +617,8 @@ Note: if you list each property explicitly, you must include all properties of t
 
         if (startNumber != null && !"".equals(startNumber)) {
             // create combined predicate
+            startNumberPredicate = criteriaBuilder
+                    .equal(photoSubjectsEventRunnerJoin.get("startnumber"),startNumber);
             finalPredicate = criteriaBuilder.and(finalPredicate,startNumberPredicate);
         }
 
@@ -645,8 +638,16 @@ Note: if you list each property explicitly, you must include all properties of t
             _logger.info("not a unique result for this timestamp : " + photo.getPictureTakenDate());
             _logger.info("calculating page for this photo according to photoid");
 
+            photoIdPredicate = criteriaBuilder
+                    .lessThanOrEqualTo(photoRoot.get("photoId"), photo.getPhotoId());
+
             Predicate exceptionalPredicate = criteriaBuilder
-                    .and(publishedForEventCategoryPredicate,photoIdPredicate,startNumberPredicate);
+                    .and(publishedForEventCategoryPredicate,photoIdPredicate);
+
+            if (startNumber != null && !"".equals(startNumber)) {
+                // create combined predicate
+                exceptionalPredicate = criteriaBuilder.and(exceptionalPredicate, startNumberPredicate);
+            }
 
             criteriaQuery.select(criteriaBuilder.count(photoRoot))
                     .where(exceptionalPredicate);
@@ -689,6 +690,21 @@ Note: if you list each property explicitly, you must include all properties of t
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
         _logger.debug("page : " + page);
         return page;
+    }
+
+    /**
+     * Helper method to reuse the predicate for published eventCategories of an album - see pendant with old hibernate criteria
+     * @param eventCategory
+     * @param criteriaBuilder
+     * @param photoRoot
+     * @return
+     */
+    private Predicate getPublishedForEventCategoryPredicate(EventCategory eventCategory, CriteriaBuilder criteriaBuilder, Root<Photo> photoRoot) {
+        Join<Photo, Album> photoAlbumJoin = photoRoot.join("album");
+        return criteriaBuilder
+                .and(criteriaBuilder
+                        .equal(photoAlbumJoin.get("publish"),Boolean.TRUE),criteriaBuilder
+                        .equal(photoAlbumJoin.get("eventCategory"),eventCategory));
     }
 
 
@@ -746,33 +762,56 @@ Note: if you list each property explicitly, you must include all properties of t
         if (page < 1) {
             page = 1;
         }
+
+        // new hibernate 5.4
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory);
+        // --
+
+
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
 
+
         if (itemsOnPage == 0) { // don't limit result for pagination
+            // new hibernate 5.4: nothing here - see above photoQuery
+            // nothing ...
+            //--- old
             criteria.addOrder(Order.asc("pictureTakenDate"))
                     .addOrder(Order.asc("photoId"))
                     .setCacheable(true) // also enable query caching
             ;
+            // ---
 
         } else {//if page=1 do not extend selection at the beginning:
             int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
             int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
+            // new Hibernate 5.4
+            photoQuery
+                    .setFirstResult(firstResult)
+                    .setMaxResults(maxResults);
+
+
+            // hbm3: -- old
             criteria.setMaxResults(maxResults)
                     .setFirstResult(firstResult)
                     .addOrder(Order.asc("pictureTakenDate"))
                     .addOrder(Order.asc("photoId"))
                     .setCacheable(true) // also enable query caching
             ;
+            // ---
         }
+        List<Photo> criteriaQueryResult;
         try {
-            photos = criteria.list();
+            criteriaQueryResult = photoQuery.getResultList();
+
+            photos = criteria.list(); // hbm3: old result
         } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
         }
         if (_logger.isDebugEnabled()) {
-            DebugUtils.debugPhotos(photos);
+            DebugUtils.debugPhotos(photos); // hbm3:
+            DebugUtils.debugPhotos(criteriaQueryResult);
         }
-        return photos;
+        return criteriaQueryResult; // used to be "photos" from old hibernate 3.x criteria
     }
 
 
@@ -1098,7 +1137,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
         // todo : this does not work for photos with identical picturetakendates - it should be a row_number() query, ordered by picturetakendate and filename (or photoId)
 
-
+        // hbm3: migrate!
         // subquery for photo position
         DetachedCriteria subquery = DetachedCriteria.forClass(Photo.class, "p");
         subquery.createAlias("album", "a")
@@ -1136,20 +1175,28 @@ Note: if you list each property explicitly, you must include all properties of t
 //        photoCriteria.add(Expression)
 //
 //
+        int firstResult = (position - backward)>0?(position-backward):1; // position of first photo to show, or 1 in case 1st result would be smaller 1
+        int maxResults = backward + forward;
+
+        // new hibernate 5.4
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory);
+
+        photoQuery
+                .setFirstResult(firstResult-1) // starts with 0
+                .setMaxResults(maxResults+1); // starts with 0
+
+        List<Photo> criteriaQueryResult = photoQuery.getResultList();
 
 
+        // hbm3: old
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber); // needed
 
-        int firstResult = position - backward; // todo : find out why negative
-        int maxResults = backward + forward;
         criteria.setMaxResults(maxResults+1) // starts with 0
                 .setFirstResult(firstResult-1) // starts with 0
                 .addOrder(Order.asc("pictureTakenDate"))
                 .addOrder(Order.asc("photoId"))
                 .setCacheable(true) // also enable query caching
         ;
-
-
 
         try
         {
@@ -1161,10 +1208,34 @@ Note: if you list each property explicitly, you must include all properties of t
         if (_logger.isDebugEnabled())
         {
             DebugUtils.debugPhotos(photos);
+            DebugUtils.debugPhotos(criteriaQueryResult);
         }
 
-        return photos;
+        return criteriaQueryResult;
 
+    }
+
+    /**
+     * private helper for constructing a cached JPA query that return photos for an eventcategory, ordered 1st by picturetakendate, then photoId
+     * @param eventCategory eventCategory with the photos
+     * @return a Query that can be further processed
+     */
+    private Query<Photo> getPublishedPhotosForEventCategoryQuery(EventCategory eventCategory) {
+        CriteriaBuilder cb = HibernateUtil.currentSession().getCriteriaBuilder();
+
+        javax.persistence.criteria.CriteriaQuery<Photo> criteriaQuery = cb.createQuery(Photo.class);
+        Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
+
+        Predicate publishedForEventCategoryPredicate = getPublishedForEventCategoryPredicate(eventCategory, cb, photoRoot);
+        criteriaQuery
+                .select(photoRoot)
+                .where(publishedForEventCategoryPredicate)
+                .orderBy(cb.asc(photoRoot.get("pictureTakenDate")))
+                .orderBy(cb.asc(photoRoot.get("photoId")));
+
+        return HibernateUtil.currentSession()
+                .createQuery(criteriaQuery)
+                .setCacheable(true);
     }
 
 
