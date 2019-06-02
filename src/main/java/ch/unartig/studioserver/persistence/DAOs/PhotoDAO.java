@@ -1137,7 +1137,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
         // todo : this does not work for photos with identical picturetakendates - it should be a row_number() query, ordered by picturetakendate and filename (or photoId)
 
-        // hbm3: migrate!
+        // hbm3: migrate!!
         // subquery for photo position
         DetachedCriteria subquery = DetachedCriteria.forClass(Photo.class, "p");
         subquery.createAlias("album", "a")
