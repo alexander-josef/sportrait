@@ -41,6 +41,7 @@ public class PhotographerDAO
         // on production: error is thrown, probably here
         return Collections.emptyList();
 
+        // todo:
 /*
         _logger.debug("list() in PhotographerDAO ...");
         List allPhotographers = null;

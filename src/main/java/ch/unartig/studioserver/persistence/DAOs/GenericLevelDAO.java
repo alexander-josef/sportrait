@@ -181,11 +181,30 @@ public class GenericLevelDAO
      */
     public List listGenericLevel(Class levelClass)
     {
-            return HibernateUtil.currentSession()
-                    .createCriteria(levelClass)
-                    // highest id first (latest entry first)
-                    .addOrder(org.hibernate.criterion.Order.desc("genericLevelId"))
-                    .list();
+
+        // todo: check for active transaction !
+        Session session = HibernateUtil.currentSession();
+        _logger.debug("session is joined to transaction ? " + session.isJoinedToTransaction());
+        _logger.debug("session status " + session.getTransaction().getStatus());
+        // session.beginTransaction();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+
+        CriteriaQuery<Object> criteriaQuery = cb.createQuery(levelClass);
+
+        Root<Object> root = criteriaQuery.from( levelClass);
+
+        criteriaQuery.select(root).orderBy(cb.desc(root.get("genericLevelId")));
+
+        List resultList = session.createQuery(criteriaQuery).getResultList();
+
+        List listHbm3Old = session
+                .createCriteria(levelClass)
+                // highest id first (latest entry first)
+                .addOrder(Order.desc("genericLevelId"))
+                .list();
+
+        return resultList;
     }
 
     /**
@@ -274,7 +293,7 @@ public class GenericLevelDAO
      * @throws ch.unartig.exceptions.UAPersistenceException
      *
      */
-    public List getSportsEventsBefore(Date date) throws UAPersistenceException
+    public List<SportsEvent> getSportsEventsBefore(Date date) throws UAPersistenceException
     {
         // do we need to restrict it? maybe later
 

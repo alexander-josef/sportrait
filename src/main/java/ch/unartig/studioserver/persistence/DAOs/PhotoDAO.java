@@ -362,7 +362,7 @@ Note: if you list each property explicitly, you must include all properties of t
     public int countPhotos(Album album) {
         // todo check performance of both calculations!
         // todo : How many times is this called?
-
+  // hbm3:
 
         // new with Criteria hibernate 5.4
         CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();

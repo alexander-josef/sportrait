@@ -46,6 +46,7 @@ package ch.unartig.studioserver.persistence.util;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.UserProfile;
+import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -56,6 +57,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 import java.util.Collection;
@@ -67,6 +69,8 @@ import java.util.Map;
 
 public class HibernateUtil
 {
+    private static Logger  _logger = Logger.getLogger("ch.unartig.studioserver.persistence.util.HibernateUtil");
+
     private static SessionFactory sessionFactory;
 
 //    private static final ThreadLocal service = new ThreadLocal();
@@ -101,15 +105,15 @@ public class HibernateUtil
                         .build();
 
                 try {
-                    System.out.println("Going to create SessionFactory ");
+                    _logger.debug("Going to create SessionFactory ");
                     sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-                    System.out.println("Hibernate could create SessionFactory");
+                    _logger.debug("Hibernate could create SessionFactory");
                 }
 
                 catch (Exception e) {
                     // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
                     // so destroy it manually.
-                    System.out.println("exception during hibernate session factory creation = " + e);
+                    _logger.debug("exception during hibernate session factory creation",e);
                     StandardServiceRegistryBuilder.destroy( registry );
                 }
 
@@ -118,11 +122,11 @@ public class HibernateUtil
 
 //                sessionFactory = new Configuration().configure().buildSessionFactory();
 //                sessionFactory.openSession();
-                outputSchemaDdl();
+                // outputSchemaDdl();
             }
         } catch (Throwable t)
         {
-            System.out.println("Hibernate could not create SessionFactory");
+            _logger.debug("Hibernate could not create SessionFactory",t);
             t.printStackTrace();
         }
     }
@@ -164,62 +168,6 @@ public class HibernateUtil
         sessionFactory = null;
     }
 
-    /**
-     * Does nothing actually, DB connection is acquired on-demand.
-     *
-     * @see #currentSession
-     * @param request Servlet Request
-     */
-/*
-    public static void enterService(HttpServletRequest request)
-    {
-        if (request.getAttribute(_MYOWN) != null && ((String) request.getAttribute(_MYOWN)).length() != 0)
-        {
-            return;
-        }
-        request.setAttribute(_MYOWN, "hibernatefilter");
-        if (service.get() == null)
-        {
-            //            System.out.println("############Entering service setting true "+service.get());
-            service.set(Boolean.TRUE); //just something
-        } else
-        {
-            //            System.out.println("$$$$$$$$$$$$$$$$$$$$$ holds lock throwing exception ");
-            throw new IllegalStateException("Thread holds service lock.");
-        }
-    }
-*/
-
-    /**
-     * If DB connection was acquired, DB connection is released.
-     * @param request Servlet Request
-     * @throws ch.unartig.exceptions.UAPersistenceException Exception
-     */
-/*
-    public static void leaveService(HttpServletRequest request) throws UAPersistenceException
-    {
-        //        if(request.getAttribute(_MYOWN) != null && ((String) request.getAttribute(_MYOWN)).length() != 0)
-        //        {
-        request.removeAttribute(_MYOWN);
-        //        }
-        if (service.get() != null)
-        {
-            //            System.out.println("%%%%%%%%%%%%%leaving service setting null "+service.get());
-            service.set(null); //just null
-        } else
-        {
-            //            System.out.println("@@@@@@@@@@@@@@@@@@@@ holds no lock throwing exception");
-            //            throw new IllegalStateException("Thread holds no service lock.");
-        }
-
-        // check if seesion exists and close
-        //            System.out.println("HibernateFilter.doFilter: post-chain, trying to close hibernate session if exists");
-        if (HibernateUtil.sessionExists())
-        {
-            HibernateUtil.closeSession();
-        }
-    }
-*/
 
 
     /**
@@ -233,7 +181,19 @@ public class HibernateUtil
         try
         {
 //            System.out.println("**************************** Getting session from factory : " + sessionFactory + "*************************************");
+            // Thread.dumpStack();
             Session session = sessionFactory.getCurrentSession();
+            _logger.debug("got current session : " + session.hashCode());
+            TransactionStatus transactionStatus = session.getTransaction().getStatus();
+            _logger.debug("transaction status : " + transactionStatus);
+            if (transactionStatus==TransactionStatus.NOT_ACTIVE) {
+                _logger.debug("no transaction ? starting new unit of work with a transaction");
+                _logger.debug("transaction status OLD : " + session.getTransaction().getStatus());
+
+                session.beginTransaction(); // when to start transaction? here?
+                _logger.debug("transaction status NEW : " + session.getTransaction().getStatus());
+                _logger.debug("^^^^^^^^^^^ new Transaction started ^^^^^^^^^^^");
+            }
 
             // start a transaction. We will always need a transaction. If beginTransaction will be called again for the same unit of work, it should do nothing (??)
             // not sure here : always start a transaction? will also be started with filter on every request ... causes an exception in Hibernate 5
@@ -255,7 +215,8 @@ public class HibernateUtil
     public static void beginTransaction() throws UAPersistenceException
     {
         final Session session = currentSession();
-        session.beginTransaction();
+        // Session should be opened with every call to "currentSession()"
+        // session.beginTransaction();
     }
 
     /**
@@ -273,6 +234,7 @@ public class HibernateUtil
             try
             {
                 tx.commit();
+                _logger.debug("******************** TRANSACTION COMMITED *************************");
                 // session commited and closed. New session will be spawned upon calling currentSession on factory.
             } catch (HibernateException e)
             {
@@ -294,24 +256,24 @@ public class HibernateUtil
      */
     public static void rollbackTransaction() throws UAPersistenceException
     {
-        System.out.println("INFO: starting rollback ... check stacktrace for source");
-        System.out.println("Stacktrace = " + Thread.currentThread().getStackTrace());
-        Thread.currentThread().getStackTrace();
-        Thread.dumpStack();
+        _logger.info("INFO: starting rollback ... check stacktrace for source");
+        _logger.info("Stacktrace = ", new Throwable());
         Transaction tx = currentSession().getTransaction();
         if (tx != null)
         {
             try
             {
                 tx.rollback();
+                _logger.info("******************** TRANSACTION ROLLBACK *************************");
+
             } catch (HibernateException e)
             {
-                System.out.println("exception in rollback : " + e.getMessage());
+                _logger.warn("exception in rollback : ",e);
                 throw new UAPersistenceException("cannot rollback transaction, see stack trace", e);
             }
         } else
         {
-            System.out.println("transaction is null in rollback");
+            _logger.info("transaction is null in rollback");
             throw new IllegalStateException("Cannot rollback transaction, no open transaction available!");
         }
     }
@@ -326,13 +288,12 @@ public class HibernateUtil
         {
             try
             {
-                System.out.println("INFO: Transaction not null in Finish Transaction");
-                Thread.dumpStack();
+                _logger.info("INFO: Transaction not null in Finish Transaction");
                 rollbackTransaction();
 //                throw new UAPersistenceException("Incorrect Transaction handling! While finishing transaction, transaction still open. Rolling Back.");
             } catch (UAPersistenceException e)
             {
-                System.out.println("Finish Transaction threw an exception. Don't know what to do here. TODO find solution for handling this situation");
+                _logger.info("Finish Transaction threw an exception. Don't know what to do here. TODO find solution for handling this situation",e);
             }
         }
     }

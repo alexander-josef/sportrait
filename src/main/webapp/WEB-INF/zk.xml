@@ -9,12 +9,14 @@
     </system-config>
 -->
 
+ <!-- still a need for a listener to have a hibernate session during zk - the old listener from the zkplus package doesn't work anymore after the hibernate 5 migration -->
+
     <listener>
         <description>
             Hibernate Thread session context handler
         </description>
         <listener-class>
-            org.zkoss.zkplus.hibernate.HibernateSessionContextListener
+            ch.unartig.studioserver.persistence.util.OpenSessionInViewListener
         </listener-class>
     </listener>
 

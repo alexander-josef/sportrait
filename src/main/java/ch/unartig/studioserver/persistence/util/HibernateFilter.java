@@ -65,8 +65,10 @@ public class HibernateFilter implements Filter
                 return;
             }
 
+            _logger.debug("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             _logger.debug("Beginning transaction ......... ");
-            HibernateUtil.currentSession().beginTransaction();
+            // need to check for transaction already open? still necessary since currentSession() always open a transaction?
+            // HibernateUtil.currentSession().beginTransaction();
 //            _logger.debug("Open Transaction in current session : " + HibernateUtil.currentSession().hashCode());
 
 //            _logger.debug("HibernateFilter.doFilter: processing additional filters or request");
@@ -75,6 +77,7 @@ public class HibernateFilter implements Filter
             HibernateUtil.currentSession().getTransaction().commit();
             HibernateUtil.currentSession().close();
             _logger.debug("..... Hibernate Session commited and closed!");
+            _logger.debug("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
         }
         catch (Throwable t)
         // Rollback
