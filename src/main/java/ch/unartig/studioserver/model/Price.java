@@ -41,7 +41,7 @@ import java.text.NumberFormat;
 @Entity
 @Table(name = "prices")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY) // at least until prices can't be configured in the UI
 public class Price implements java.io.Serializable {
 
 

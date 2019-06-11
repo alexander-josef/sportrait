@@ -182,22 +182,16 @@ public class GenericLevelDAO
     public List listGenericLevel(Class levelClass)
     {
 
-        // todo: check for active transaction !
         Session session = HibernateUtil.currentSession();
-        _logger.debug("session is joined to transaction ? " + session.isJoinedToTransaction());
-        _logger.debug("session status " + session.getTransaction().getStatus());
-        // session.beginTransaction();
-
         CriteriaBuilder cb = session.getCriteriaBuilder();
-
         CriteriaQuery<Object> criteriaQuery = cb.createQuery(levelClass);
-
         Root<Object> root = criteriaQuery.from( levelClass);
 
         criteriaQuery.select(root).orderBy(cb.desc(root.get("genericLevelId")));
 
         List resultList = session.createQuery(criteriaQuery).getResultList();
 
+        // hbm3: clean up
         List listHbm3Old = session
                 .createCriteria(levelClass)
                 // highest id first (latest entry first)
@@ -351,6 +345,14 @@ public class GenericLevelDAO
      */
     public List listEventsWithAlbums(EventGroup eventGroup, Photographer photographer) throws UAPersistenceException
     {
+
+        List<Event> newEventList = HibernateUtil.currentSession().createQuery(
+                "select distinct e " +
+                "from Event e " +
+                "inner join e.albums a " +
+                "where e.eventGroup = :eventGroup and a.photographer = :photographer").list();
+
+
        // Alias on album causes  events to appear more than once .... hence the result tranformer with DISTINCT_ROOT_ENTITY
         List eventList = HibernateUtil.currentSession().createCriteria(Event.class)
                 .createAlias("albums", "album")
@@ -376,6 +378,17 @@ public class GenericLevelDAO
         _logger.debug("eventGroup = " + eventGroup);
         List eventList = null;
 
+
+        List newEventList = HibernateUtil.currentSession().createQuery(
+                "select distinct e " +
+                        "from Event e " +
+                        "where e.eventGroup = :eventGroup " +
+                        "order by e.eventDate desc, e.navTitle desc ")
+                .setParameter("eventGroup",eventGroup)
+                .list();
+
+
+        //hbm3: clean up
         try
         {
             _logger.debug("Creating query no album alias not reloading album in zAlbum render routine....");
@@ -409,6 +422,16 @@ public class GenericLevelDAO
      */
     public List listAlbumsForPhotographer(Event event, Photographer photographer) throws UAPersistenceException
     {
+        List albumList = HibernateUtil.currentSession().createQuery(
+                "from Album a " +
+                        "where a.event = :event " +
+                        "and a.photographer = :photographer " +
+                        "order by navTitle desc")
+                .setParameter("event", event)
+                .setParameter("photographer", photographer)
+                .list();
+
+        // hbm3: cleanup
         return HibernateUtil.currentSession().createCriteria(Album.class)
                 .add(Expression.eq("photographer", photographer))
                 .add(Expression.eq("event", event))
@@ -424,10 +447,21 @@ public class GenericLevelDAO
      */
     public List listAlbumsForPhotographer(Event event) throws UAPersistenceException
     {
-        return HibernateUtil.currentSession().createCriteria(Album.class)
+
+        List albumList = HibernateUtil.currentSession().createQuery(
+                "from Album a " +
+                        "where a.event = :event " +
+                        "order by navTitle desc")
+                .setParameter("event", event)
+                .list();
+
+
+        // hbm3:cleanup
+        List oldAlbumList = HibernateUtil.currentSession().createCriteria(Album.class)
                 .add(Expression.eq("event", event))
                 .addOrder(Order.desc("navTitle"))
                 .list();
+        return albumList;
     }
 
     /**

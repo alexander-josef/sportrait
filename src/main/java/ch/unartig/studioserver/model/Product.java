@@ -99,7 +99,7 @@ import java.util.Map;
 @Entity
 @Table(name = "products")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE) // changed to Read_Write after Hibernate 5 upgrade
 public class Product implements java.io.Serializable {
 
     public static final double _SHIPPING_HANDLING_CHE_CHF = 4.90; // 4.90 SFr.
@@ -125,9 +125,11 @@ public class Product implements java.io.Serializable {
     private ProductType productType;
 
 
+
+
     // added after migrating to hibernate annotations - not used before, but now necessary because existing db schema needs it (there would be an additional table necessary, otherwise))
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "albumid",nullable = false)
+    @JoinColumn(name = "albumid",nullable = false) // nullable = false should work - but not sure
     private Album album;
 
     public Product()
@@ -135,7 +137,8 @@ public class Product implements java.io.Serializable {
     }
 
     /**
-     * 
+     * instantiate a new product
+     * // todo : why was album not set here before hibernate 5 migration ? --> there was no mapping - but why?
      * @param productTypeId
      * @param priceId
      * @throws UAPersistenceException
@@ -146,6 +149,7 @@ public class Product implements java.io.Serializable {
         setProductType(ptDao.load(productTypeId));
         PriceDAO priceDao = new PriceDAO();
         setPrice(priceDao.load(priceId));
+        setAlbum(album);
     }
 
 
@@ -230,6 +234,14 @@ public class Product implements java.io.Serializable {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 
     /**

@@ -43,7 +43,7 @@ import java.util.Set;
 @Entity
 @Table(name = "producttypes")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY) // at least until products can be configured in UI
 public class ProductType implements java.io.Serializable {
 
     @Id
@@ -59,8 +59,8 @@ public class ProductType implements java.io.Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinTable(name = "prices2producttypes",
-            joinColumns = { @JoinColumn(name = "priceid") },
-            inverseJoinColumns = { @JoinColumn(name = "producttypeid") }
+            joinColumns = { @JoinColumn(name = "producttypeid") },
+            inverseJoinColumns = { @JoinColumn(name = "priceid") }
     )
     private Set<Price> prices = new HashSet<>(0);
 

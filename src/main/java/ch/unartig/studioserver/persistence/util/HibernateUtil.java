@@ -238,7 +238,7 @@ public class HibernateUtil
                 // session commited and closed. New session will be spawned upon calling currentSession on factory.
             } catch (HibernateException e)
             {
-                System.out.println("commitTransaction: Throwing Exception e = " + e);
+                _logger.warn("commitTransaction: Throwing Exception e = " + e);
                 throw new UAPersistenceException("cannot commit transaction, see stack trace", e);
             }
         } else

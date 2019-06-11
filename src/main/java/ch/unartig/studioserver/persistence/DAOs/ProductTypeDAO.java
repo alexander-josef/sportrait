@@ -53,13 +53,27 @@ public class ProductTypeDAO {
     }
 
 
-    
+    /**
+     * List all productTypes there are - return ordered (by ID) list
+     * @return
+     * @throws UAPersistenceException
+     */
     public List listProductTypes() throws UAPersistenceException
     {
+        List newProductList = HibernateUtil.currentSession().createQuery(
+                "select pt from ProductType pt " +
+                        "order by productTypeId asc ")
+                .list();
+
+
+        //hbm3: clean up
         Criteria c = HibernateUtil.currentSession()
                 .createCriteria(ProductType.class)
                 .addOrder(Order.asc("productTypeId"));
-        return c.list();
+        List oldProductList = c.list();
+
+
+        return newProductList;
 
     }
 

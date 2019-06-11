@@ -45,18 +45,16 @@ import java.util.List;
  * @author <a href=mailto:alexander.josef@unartig.ch>Alexander Josef</a>, (c) 2007 unartig AG
  */
 @SuppressWarnings({"unchecked"})
-public class ZAlbumComponent extends Div
-{
+public class ZAlbumComponent extends Div {
 
-    final Logger _logger = Logger.getLogger(this.getClass());
+    private final Logger _logger = Logger.getLogger(this.getClass());
     private Album album;
     private Client client;
     private Grid albumInfoGrid;
     private Grid albumProductGrid;
     private Label productTitleLabel;
 
-    public void onCreate()
-    {
+    public void onCreate() {
         _logger.debug("ZAlbumComponent.onCreate");
     }
 
@@ -67,10 +65,8 @@ public class ZAlbumComponent extends Div
      *
      * @param albumId albumid
      */
-    public void renderAlbumConfiguration(Long albumId)
-    {
-        try
-        {
+    public void renderAlbumConfiguration(Long albumId) {
+        try {
             GenericLevelDAO glDao = new GenericLevelDAO();
 
             this.album = (Album) glDao.load(albumId, Album.class);
@@ -90,16 +86,14 @@ public class ZAlbumComponent extends Div
             this.appendChild(albumInfoGrid);
 
             renderProducts();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             _logger.error("error rendering album", e);
-            throw new RuntimeException("Error rendering album!",e);
+            throw new RuntimeException("Error rendering album!", e);
         }
 
     }
 
-    private void renderProducts()
-    {
+    private void renderProducts() {
         productTitleLabel = new Label("Produkte zu diesem Album");
         productTitleLabel.setSclass("sportraitTitle");
         this.appendChild(productTitleLabel);
@@ -115,8 +109,7 @@ public class ZAlbumComponent extends Div
      *
      * @param productRows rows object ot attach the row s
      */
-    private void appendProductChildren(Rows productRows)
-    {
+    private void appendProductChildren(Rows productRows) {
 
         ProductTypeDAO ptDao = new ProductTypeDAO();
         List productTypeList = ptDao.listProductTypes();
@@ -124,8 +117,7 @@ public class ZAlbumComponent extends Div
         Row row;
 
 
-        for (Object aProductType : productTypeList)
-        {
+        for (Object aProductType : productTypeList) {
             final ProductType productType = (ProductType) aProductType;
             row = new Row();
             productRows.appendChild(row);
@@ -135,57 +127,46 @@ public class ZAlbumComponent extends Div
 
     }
 
-    private void renderPricesListbox(Row row, final ProductType productType)
-    {
+    private void renderPricesListbox(Row row, final ProductType productType) {
         final Listbox pricesListbox = new Listbox();
         pricesListbox.setMold("select");
         pricesListbox.setWidth("300px");
         // sort pricelist by price chf : done in mapping
         ArrayList priceList = new ArrayList(productType.getPrices());
-        priceList.add(0, "Nicht verfügbar");
+        priceList.add(0, "Nicht verfügbar"); // todo : move to text resources list
         final SimpleListModel simpleListModel = new SimpleListModel(priceList);
         pricesListbox.setModel(simpleListModel);
-        // select the first entry, "not available"
+        // select the first entry, "not available":
         pricesListbox.setSelectedIndex(0);
 
         renderItem(productType, pricesListbox);
-        pricesListbox.addEventListener(Events.ON_SELECT,new EventListener()
-        {
+        pricesListbox.addEventListener(Events.ON_SELECT, new EventListener() {
             /**
-             * Update album acording to selection
+             * Update album according to selection
              * @param event fired zk event
              * @throws Exception
              */
-            @SuppressWarnings({"unchecked"})
-            public void onEvent(Event event) throws Exception
-            {
+            public void onEvent(Event event) throws Exception {
                 Listbox listbox = (Listbox) event.getTarget();
                 Object price = listbox.getSelectedItem().getValue();
                 Product product = album.getProductFor(productType.getProductTypeId());
-                if (product == null )
-                {
+                if (product == null) {
                     // create new product (if a price has been selected)
-                    if (price instanceof Price)
-                    {
-                        Product newProduct = new Product(productType.getProductTypeId(),((Price)price).getPriceId(),album);
-                        album.getProducts().add(newProduct);
-                    }
-                    else
-                    {
+                    if (price instanceof Price) {
+                        Product newProduct = new Product(productType.getProductTypeId(), ((Price) price).getPriceId(), album);
+                        // todo : album is not stored for product in previous line ... but then here the inverse way - why?
+                       album.getProducts().add(newProduct);
+                    } else {
                         // price has been set to not available and the product is null ... should not happen
+                        _logger.info("unexpected state for updating products ...");
                         throw new RuntimeException("unexpected state for updating products ...");
                     }
-                }
-                else
-                {
+                } else {
                     // product exists
-                    if (price instanceof Price)
-                    {
+                    if (price instanceof Price) {
                         // adjust price
                         product.setPrice((Price) price);
-                    }
-                    else
-                    {
+                    } else {
                         // price has been set to not available. Delete product
                         album.getProducts().remove(product);
                     }
@@ -200,30 +181,25 @@ public class ZAlbumComponent extends Div
 
     /**
      * Render a list box item, attach a listener
-     * @param productType ProductType
+     *
+     * @param productType   ProductType
      * @param pricesListbox Listbox containing the Price objects
      */
-    private void renderItem(final ProductType productType, Listbox pricesListbox)
-    {
-        pricesListbox.setItemRenderer(new ListitemRenderer()
-        {
-            public void render(Listitem item, Object data) throws Exception
-            {
-                if (data instanceof Price)
-                {
+    private void renderItem(final ProductType productType, Listbox pricesListbox) {
+        pricesListbox.setItemRenderer(new ListitemRenderer() {
+            public void render(Listitem item, Object data) throws Exception {
+                if (data instanceof Price) {
                     final Price price = (Price) data;
                     item.setLabel(price.getPriceLabel());
                     // set the price as value (it's not set just because the listmodel is of elements 'price')
                     item.setValue(price);
                     // check if price is selected:
                     final Product albumProduct = album.getProductFor(productType.getProductTypeId());
-                    if (albumProduct != null && price.equals(albumProduct.getPrice()))
-                    {
+                    if (albumProduct != null && price.equals(albumProduct.getPrice())) {
                         item.getListbox().clearSelection();
                         item.setSelected(true);
                     }
-                } else
-                {
+                } else {
                     item.setLabel("Nicht verfügbar");
                 }
 
@@ -234,64 +210,52 @@ public class ZAlbumComponent extends Div
     /**
      * Detach all components that are possibly on this page
      */
-    private void cleanUp()
-    {
-        if (albumInfoGrid != null)
-        {
+    private void cleanUp() {
+        if (albumInfoGrid != null) {
             albumInfoGrid.detach();
         }
-        if (albumProductGrid != null)
-        {
+        if (albumProductGrid != null) {
             albumProductGrid.detach();
         }
 
-        if (productTitleLabel!=null)
-        {
+        if (productTitleLabel != null) {
             productTitleLabel.detach();
         }
     }
 
-    private void renderPublishStatus(Rows rows)
-    {
+    private void renderPublishStatus(Rows rows) {
         Hbox hbox = new Hbox();
         Label statusValue = new Label();
         hbox.appendChild(statusValue);
         Button button = new Button();
         hbox.appendChild(button);
-        if (album.getPublish())
-        {
+        if (album.getPublish()) {
             statusValue.setValue("online");
             statusValue.setStyle("background-color:green");
             button.setLabel("Offline schalten");
-        } else
-        {
+        } else {
             statusValue.setValue("offline");
             statusValue.setStyle("background-color:red");
             button.setLabel("Online schalten");
         }
 
         // ANONYMOUS INNER FOR EVENT HANDLING
-        button.addEventListener(Events.ON_CLICK, new EventListener()
-        {
+        button.addEventListener(Events.ON_CLICK, new EventListener() {
             // the change publish status button has been pushed; change and update page
-            public void onEvent(Event event) throws Exception
-            {
+            public void onEvent(Event event) throws Exception {
                 // todo notification about saved changes
                 GenericLevelDAO glDao = new GenericLevelDAO();
                 HibernateUtil.beginTransaction();
                 Album innerAlbum = null;
-                try
-                {
+                try {
                     innerAlbum = (Album) glDao.load(album.getGenericLevelId(), Album.class);
                     innerAlbum.toggleLevelPublishStatus(client);
                     glDao.saveOrUpdate(innerAlbum);
                     HibernateUtil.commitTransaction();
-                } catch (NotAuthorizedException e)
-                {
+                } catch (NotAuthorizedException e) {
                     Messagebox.show("Not Authorized!!");
                     HibernateUtil.rollbackTransaction();
-                } catch (UAPersistenceException e)
-                {
+                } catch (UAPersistenceException e) {
                     HibernateUtil.rollbackTransaction();
                     Messagebox.show("Server Error, can not save album.");
                 }
@@ -303,8 +267,7 @@ public class ZAlbumComponent extends Div
         appendLabelRow(rows, "Status", hbox);
     }
 
-    private void appendLabelRow(Rows rows, String labelString, Component component)
-    {
+    private void appendLabelRow(Rows rows, String labelString, Component component) {
         Row row = new Row();
         Label labelLabel = new Label(labelString);
         labelLabel.setSclass("sportraitLabel");
@@ -317,12 +280,11 @@ public class ZAlbumComponent extends Div
     /**
      * Helper for appending a label/value row
      *
-     * @param rows zk-rows
+     * @param rows        zk-rows
      * @param labelString label
      * @param valueString value
      */
-    private void appendLabelRow(Rows rows, String labelString, String valueString)
-    {
+    private void appendLabelRow(Rows rows, String labelString, String valueString) {
         Row row = new Row();
         Label labelLabel = new Label(labelString);
         labelLabel.setSclass("sportraitLabel");
@@ -335,8 +297,7 @@ public class ZAlbumComponent extends Div
     }
 
 
-    public void setClient(Client client)
-    {
+    public void setClient(Client client) {
         this.client = client;
     }
 }

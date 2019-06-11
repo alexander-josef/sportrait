@@ -111,8 +111,8 @@ public class Photo implements java.io.Serializable {
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JoinTable(name = "photosubjects2photos",
-            joinColumns = { @JoinColumn(name = "photosubjectid") },
-            inverseJoinColumns = { @JoinColumn(name = "photoid") }
+            joinColumns = { @JoinColumn(name = "photoid") },
+            inverseJoinColumns = { @JoinColumn(name = "photosubjectid") }
             )
     private Set<PhotoSubject> photoSubjects = new HashSet<>(0);
 
