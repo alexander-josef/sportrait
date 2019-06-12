@@ -38,7 +38,11 @@ public class UserProfileDAO
     public UserProfile load(String userName)
     {
         // caution: make sure that the rolename exists in the UserRoles table - foreign key is linked to the rolename column. The query otherwise fails with a not-so-clear null pointer exception.
-        return (UserProfile)HibernateUtil.currentSession().createQuery("from ch.unartig.studioserver.model.UserProfile as up where up.userName = '"+userName+"'").uniqueResult();
+        UserProfile userProfile = (UserProfile) HibernateUtil.currentSession().createQuery("select up from UserProfile as up " +
+                "where up.userName = :userName")
+                .setParameter("userName", userName)
+                .uniqueResult();
+        return userProfile;
     }
 
 

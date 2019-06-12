@@ -15,13 +15,13 @@ import ch.unartig.controller.Client;
 
 
 public class PhotographerWindow extends Window {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
 
     /**
      * The Photographer object to edit or create
      */
-    Photographer eachPhotographer;
+    private Photographer eachPhotographer;
     private Client client;
 
     /**
@@ -43,19 +43,21 @@ public class PhotographerWindow extends Window {
     }
 
     /**
-     * Since the photographer is part of the userprofile, the userprofile is saved and the photographer is saved cascaded
+     * Since the photographer is part of the userprofile, the userprofile is saved and the photographer is saved cascaded  // <- this changed after hibernate 5 migration
      * @param photographer
      */
     public void savePhotographer(Photographer photographer) {
         _logger.debug("Saving photographer ....");
 //        checkPasswordsMatch();
         try {
-            UserProfileDAO userProfileDao = new UserProfileDAO();
+            // UserProfileDAO userProfileDao = new UserProfileDAO();
             // photographer is part of the userprofile
-            userProfileDao.saveOrUpdate(photographer.getUserProfile());
+            // userProfileDao.saveOrUpdate(photographer.getUserProfile());
 
-//            PhotographerDAO photographerDao = new PhotographerDAO();
-//            photographerDao.saveOrUpdate(photographer);
+            // todo: load photographer againn by ID?
+
+           PhotographerDAO photographerDao = new PhotographerDAO();
+           photographerDao.saveOrUpdate(photographer);
 
             HibernateUtil.commitTransaction();
         } catch (Exception e) {

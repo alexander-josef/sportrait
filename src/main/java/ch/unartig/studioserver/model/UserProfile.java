@@ -69,8 +69,8 @@ public class UserProfile implements java.io.Serializable {
     private String country;
     private String gender;
 
-    @OneToOne(mappedBy = "userProfile",fetch = FetchType.EAGER)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @OneToOne(mappedBy = "userProfile",fetch = FetchType.LAZY)
+    // @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE) // don't cascade on the inverse mapping? leads to "a different object with the same identifier .." problem !!
     private Photographer photographer;
 
     @ManyToMany(fetch = FetchType.EAGER)

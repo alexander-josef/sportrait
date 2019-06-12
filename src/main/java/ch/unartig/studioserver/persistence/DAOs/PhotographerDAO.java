@@ -63,7 +63,7 @@ public class PhotographerDAO
     {
         try
         {
-            return (Photographer) HibernateUtil.currentSession().load(Photographer.class, photographerId);
+            return HibernateUtil.currentSession().load(Photographer.class, photographerId);
         } catch (HibernateException e)
         {
             throw new UAPersistenceException("Could not load Customer, see stack trace", e);
@@ -73,7 +73,15 @@ public class PhotographerDAO
 
     public void saveOrUpdate(Photographer photographer) throws UAPersistenceException
     {
-        HibernateUtil.currentSession().saveOrUpdate(photographer);
+        try {
+            HibernateUtil.currentSession().clear();
+            HibernateUtil.currentSession().saveOrUpdate(photographer);
+        } catch (Exception e) {
+            // todo : this seems to work - but still check why there are multiple instances of photographer and why merge is needed !
+            e.printStackTrace();
+            HibernateUtil.currentSession().merge(photographer);
+            _logger.debug("merged photographer ...");
+        }
 
     }
 }

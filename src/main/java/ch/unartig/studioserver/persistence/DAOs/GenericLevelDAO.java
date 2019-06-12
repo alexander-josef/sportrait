@@ -466,20 +466,34 @@ public class GenericLevelDAO
 
     /**
      * Query for retrieving Albums when a photographer is logged in
-     * Todo check if still used
-     * @param photographerId Id of the photographre
+     * @param photographerId Id of the photographer
      * @return list of albums
      * @throws UAPersistenceException
      */
     public List listAlbumsForPhotographer(Long photographerId) throws UAPersistenceException
     {
+        List albumList = HibernateUtil.currentSession().createQuery("select a from Album a " +
+                "where a.photographer.photographerId = :photographerId " +
+                "order by navTitle desc ")
+                .setParameter("photographerId", photographerId)
+                .getResultList();
+
+
+        //hbm3: clean up
         // introduce phphotographerAdminBean
+
+        /*
+        // new photographer is loaded
         PhotographerDAO photographerDao = new PhotographerDAO();
         Photographer photographer = photographerDao.load(photographerId);
-        return HibernateUtil.currentSession().createCriteria(Album.class)
+        List oldAlbumList = HibernateUtil.currentSession().createCriteria(Album.class)
                 .add(Expression.eq("photographer", photographer))
                 .addOrder(Order.desc("navTitle"))
                 .list();
+        */
+
+        return albumList;
+
     }
 
     /**

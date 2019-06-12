@@ -46,6 +46,7 @@ public class Photographer implements java.io.Serializable {
 
     @OneToOne
     @PrimaryKeyJoinColumn
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private UserProfile userProfile;
 
     @OneToMany(mappedBy = "photographer", fetch = FetchType.LAZY)
