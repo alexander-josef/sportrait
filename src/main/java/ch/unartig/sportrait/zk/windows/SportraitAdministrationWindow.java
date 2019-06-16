@@ -307,6 +307,8 @@ public class SportraitAdministrationWindow extends Window
         newEvent.setEventLocation(eventZipCode, eventCity, eventCategory);
         _logger.debug("going to persist new SportsEvent from admin screen:" + newEvent.toString());
         glDao.saveOrUpdate(newEvent);
+        HibernateUtil.currentSession().getTransaction().commit();
+        _logger.info("Commmited new event to DB");
     }
 
 
