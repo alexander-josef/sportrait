@@ -84,9 +84,12 @@ public class SportsEvent extends Event implements java.io.Serializable {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<EventCategory> eventCategories = new ArrayList<>(0);
 
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    /**
+     * eventRunners will be cascade deleted with an event (cascaded update needed?)
+     */
+    @OneToMany(mappedBy = "event",cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<EventRunner> eventRunners = new HashSet<EventRunner>(0);
+    private Set<EventRunner> eventRunners = new HashSet<>(0);
 
     /**
      * this is called via introspection from the admin action when a new SportsEvent is created.

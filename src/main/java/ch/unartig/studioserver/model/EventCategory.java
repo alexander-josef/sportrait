@@ -65,7 +65,10 @@ public class EventCategory implements java.io.Serializable {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    /**
+     * cascade is on SportsEvent side - do not cascade here
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eventid",updatable = false, insertable = false,nullable = false)
     @OrderColumn(name = "category_position")
     private SportsEvent event;

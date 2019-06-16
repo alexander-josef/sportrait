@@ -13,6 +13,7 @@
 
         <c:forEach var="eventGroup" items="${photographerAdminBean.eventGroups}" >
             <!-- loop event start: get events with albums for the photographer-->
+            <!-- todo: think about getting rid of this outer loop -  do we need the eventGroup grouping for this table? -->
             <logic:iterate id="event" name="eventGroup" property="eventsWithAlbums(${clientInSession.photographer.photographerId})" indexId="eventIndex">
                 <li class="albumAdmin">
                         <!--only for admins:-->

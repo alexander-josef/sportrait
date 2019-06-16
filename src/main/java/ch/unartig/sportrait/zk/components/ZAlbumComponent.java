@@ -62,12 +62,15 @@ public class ZAlbumComponent extends Div {
     /**
      * Upon selection of an album, show the album edit div in the view
      * This method sets up the div to edit the album (Publish status, Products)
+     * Will be called again with each status change
      *
      * @param albumId albumid
      */
     public void renderAlbumConfiguration(Long albumId) {
         try {
             GenericLevelDAO glDao = new GenericLevelDAO();
+
+            // album is reloaded - here we have a new reference to event!
 
             this.album = (Album) glDao.load(albumId, Album.class);
             // make sure there's nothing on the page:
@@ -155,7 +158,7 @@ public class ZAlbumComponent extends Div {
                     if (price instanceof Price) {
                         Product newProduct = new Product(productType.getProductTypeId(), ((Price) price).getPriceId(), album);
                         // todo : album is not stored for product in previous line ... but then here the inverse way - why?
-                       album.getProducts().add(newProduct);
+                        //album.getProducts().add(newProduct);
                     } else {
                         // price has been set to not available and the product is null ... should not happen
                         _logger.info("unexpected state for updating products ...");
@@ -248,6 +251,8 @@ public class ZAlbumComponent extends Div {
                 HibernateUtil.beginTransaction();
                 Album innerAlbum = null;
                 try {
+
+                    // album is reloaded ! new reference to event
                     innerAlbum = (Album) glDao.load(album.getGenericLevelId(), Album.class);
                     innerAlbum.toggleLevelPublishStatus(client);
                     glDao.saveOrUpdate(innerAlbum);
@@ -259,8 +264,6 @@ public class ZAlbumComponent extends Div {
                     HibernateUtil.rollbackTransaction();
                     Messagebox.show("Server Error, can not save album.");
                 }
-                // and then start a new transaction:
-//                HibernateUtil.beginTransaction();
                 renderAlbumConfiguration(innerAlbum.getGenericLevelId());
             }
         });

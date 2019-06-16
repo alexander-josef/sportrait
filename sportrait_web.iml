@@ -24,11 +24,11 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="992b10cd-954e-4db5-9376-1428749e078a" />
+          <unit-entry name="hibernate.cfg.xml" value="5ee9cae3-8f22-4427-ac23-e14a7bb1c429" />
           <unit-entry name="sportraitSessionFactory" value="992b10cd-954e-4db5-9376-1428749e078a" />
         </datasource-map>
         <naming-strategy-map>
-          <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="hibernate.cfg.xml" value="org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl" />
           <unit-entry name="sportraitSessionFactory" value="org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl" />
         </naming-strategy-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/resources/hibernate.cfg.xml" />

@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * Writing a custom listener after hibernate 5.4 migration
- * todo : this uses the same session factory - how to deal with multiple threads and multiple sessions? --> should be OK with thread local session
  */
 public class OpenSessionInViewListener implements ExecutionInit, ExecutionCleanup {
     private final Logger _logger = Logger.getLogger(this.getClass());
@@ -20,6 +19,8 @@ public class OpenSessionInViewListener implements ExecutionInit, ExecutionCleanu
             // transaction should be open with every call to currentSession()
             // HibernateUtil.currentSession().beginTransaction();
         }
+        // todo: does this make sense?
+        // HibernateUtil.currentSession().clear();
     }
 
     public void cleanup(Execution exec, Execution parent, List errs) {

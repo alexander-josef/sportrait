@@ -113,7 +113,7 @@ public class EventGroup extends GenericLevel implements java.io.Serializable {
 
     @OneToMany(mappedBy = "eventGroup", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @OrderBy("eventDate desc ")
-    private Set<Event> events = new HashSet<Event>(0);
+    private Set<Event> events = new HashSet<>(0);
 
 
     public EventGroup()
@@ -207,7 +207,9 @@ public class EventGroup extends GenericLevel implements java.io.Serializable {
 
 
     /**
-     * 
+     * Called also by the createAlbumListbox() zk method ...
+     * in case of an admin user, return *all* events that have albums
+     * in case of a regular photographer, only return events that have his albums
      * @param photographer
      * @return
      */
@@ -239,6 +241,7 @@ public class EventGroup extends GenericLevel implements java.io.Serializable {
      *
      * @param photographerId Photographer Id as String
      * @return a list of Event objects for this photographer
+     * @deprecated only used by the legacy JSP page for the album overview
      */
     public List getEventsWithAlbums(String photographerId) throws UAPersistenceException
     {

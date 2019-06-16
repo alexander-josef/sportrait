@@ -1,5 +1,6 @@
 package ch.unartig.sportrait.zk.windows;
 
+import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.model.SportsEvent;
@@ -7,6 +8,7 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
+import org.hibernate.NonUniqueObjectException;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zul.Window;
 import org.zkoss.zul.Messagebox;
@@ -17,7 +19,7 @@ public class EventWindow extends Window {
 
 
     /**
-     * The Photographer object to edit or create
+     * The Event object to edit or create
      */
     SportsEvent eachEvent;
 
@@ -25,7 +27,7 @@ public class EventWindow extends Window {
      * Constructor checks for available eachEvent reference. If null, a new event needs to be created.
      */
     public EventWindow() {
-        _logger.debug("Constructing PhotographerWindow");
+        _logger.debug("Constructing EventWindow");
         eachEvent = (SportsEvent) Executions.getCurrent().getDesktop().getAttribute("event");
         // check for edit or creation of new photographer
         if (eachEvent==null) {
@@ -38,7 +40,14 @@ public class EventWindow extends Window {
         _logger.debug("Event = " + event);
         try {
             GenericLevelDAO genericLevelDao = new GenericLevelDAO();
-            genericLevelDao.saveOrUpdate(event);
+            try {
+                genericLevelDao.saveOrUpdate(event);
+            } catch (NonUniqueObjectException e) {
+                // can we avoid all possibilities where multiple objects of persistent entities with the same identifier are associated with the session? Probably not
+                // use this strategy to react to a this specific exception with a merge
+                _logger.info("saving an event cause NonUniqueObjectException - trying to merge instead");
+                genericLevelDao.merge(event);
+            }
             HibernateUtil.commitTransaction();
         } catch (Exception e) {
             _logger.error("Can not save event", e);

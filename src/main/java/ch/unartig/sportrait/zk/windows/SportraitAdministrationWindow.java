@@ -48,7 +48,7 @@ import java.util.ArrayList;
  */
 public class SportraitAdministrationWindow extends Window
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     private Client client;
     private Listbox albumListbox;
@@ -61,19 +61,33 @@ public class SportraitAdministrationWindow extends Window
     private Photographer photographer; // the logged in photographer
     private Photographer newPhotographer; // used to create a new photographer profile by the admin
 
-    private SportsEvent newEvent;
+    private SportsEvent newEvent; // the empty, new event on this admin window. will be persisted to the db
     private String eventZipCode;
     private String eventCity;
     private String eventCategory;
     private Tabbox tabbox;
+    private List<Event> events; // events relevant for this administration window - all events in case of a global admin, or only the photographer's events
 
     public SportraitAdministrationWindow()
     {
         this.client = (Client) Executions.getCurrent().getDesktop().getSession().getAttribute(Registry._SESSION_CLIENT_NAME);
         photographer = client.getPhotographer();
         userProfile = photographer.getUserProfile();
-//        create an instance for a new userprofile
+//        create an instance for a new sportsEvent
         newEvent = new SportsEvent();
+
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        _logger.debug("Loading events : " + events);
+        // store events as a field - to be reused by the event administration window. re-load in every case
+        if (photographer.isAdmin()) {
+            //noinspection unchecked
+            setEvents(glDao.listGenericLevel(Event.class));
+        } else {
+            setEvents(glDao.listEventsWithAlbums(photographer));
+        }
+
+
+
     }
 
     /**
@@ -103,7 +117,7 @@ public class SportraitAdministrationWindow extends Window
 
     /**
      * create the grid and the entries with all applicable albums
-     *
+     * <h3>check history of this method on case grouping by event groups is necessary again</h3>
      * @throws UAPersistenceException
      */
     private void createAlbumListbox()
@@ -111,34 +125,25 @@ public class SportraitAdministrationWindow extends Window
         // first clear the listbox:
         albumListbox.getItems().clear();
 
+        List<Event> localEvents = new ArrayList<>();
+        localEvents = events;
+
         _logger.debug("photographer = " + photographer);
-        GenericLevelDAO levelDao = new GenericLevelDAO();
-        List eventGroups;
-        _logger.debug("Loading event groups");
-        eventGroups = levelDao.listGenericLevel(EventGroup.class);
-        for (Object eventGroup1 : eventGroups)
+        if (localEvents != null)
         {
-            EventGroup eventGroup = (EventGroup) eventGroup1;
-            List events = eventGroup.getEventsWithAlbums(photographer);
-            _logger.debug("Loading events : " + events);
-            if (events != null)
+            _logger.debug("number of events : " + localEvents.size());
+            for (Event eachEvent : localEvents)
             {
-                _logger.debug("number of events : " + events.size());
-                for (Object event1 : events)
-                {
+                if (eachEvent.getAlbums().size()>0) { // performance?
                     try
                     {
-                        Event event = (Event) event1;
-                        _logger.debug("Loading albums for event");
-                        List albums = event.getPhotographerAlbums(photographer);
+                        _logger.debug("adding event row for event["+eachEvent.getGenericLevelId()+"]");
+                        appendEventRow(eachEvent);
 
-                        _logger.debug("Loading albums for event");
-                        appendEventRow(event);
-
-                        for (Object album1 : albums)
+                        _logger.debug("Loading albums for event (in case of admin user, all albums will be loaded)");
+                        List<Album> albums = eachEvent.getPhotographerAlbums(photographer);
+                        for (Album album : albums)
                         {
-
-                            Album album = (Album) album1;
                             _logger.debug("Loading album [" + album.getGenericLevelId().toString() + "]");
                             appendAlbumRow(album);
                         }
@@ -148,11 +153,14 @@ public class SportraitAdministrationWindow extends Window
                         _logger.info("Unknown problem that occurs with loading albums for an event .... ", e);
                     }
                 }
-            } else
-            {
-                _logger.info("null events for eventGroup : [" + eventGroup + "]");
+
             }
+        } else
+        {
+            _logger.info("no evens retrieved for photographer [" + photographer.getPhotographerId()+ "]");
+            // _logger.info("null events for eventGroup : [" + eventGroup + "]");
         }
+        // }
 
     }
 
@@ -179,6 +187,7 @@ public class SportraitAdministrationWindow extends Window
             public void onEvent(org.zkoss.zk.ui.event.Event event) throws Exception
             {
                 // adjust the visible divs, hide the list, show the edit screen:
+                // todo : why hand over id here? will lead to re-load of album and event and cause non-unique object exception when saving events
                 zAlbum.renderAlbumConfiguration(album.getGenericLevelId());
                 albumListDiv.setVisible(false);
                 albumEditDiv.setVisible(true);
@@ -300,20 +309,6 @@ public class SportraitAdministrationWindow extends Window
         glDao.saveOrUpdate(newEvent);
     }
 
-    /**
-     * Used by the admin form for editing events
-     * @return List of all Event s
-     */
-    public List getAllEvents() {
-        GenericLevelDAO genericLevelDao = new GenericLevelDAO();
-        if (client.isValid() && client.isAdmin()) {
-            return genericLevelDao.listGenericLevel(Event.class);
-        } else
-        {
-            _logger.info("User without admin rights wants to use user administration!");
-            throw new RuntimeException("Current User has no admin rights!");
-        }
-    }
 
 
     /**
@@ -353,7 +348,7 @@ public class SportraitAdministrationWindow extends Window
     {
         final List<Album> albums;
         GenericLevelDAO glDao = new GenericLevelDAO();
-        albums = (List<Album>)glDao.listAlbumsForPhotographer(photographer.getPhotographerId());
+        albums = glDao.listAlbumsForPhotographer(photographer.getPhotographerId());
         return albums;
     }
 
@@ -457,5 +452,14 @@ public class SportraitAdministrationWindow extends Window
     public Tabbox getTabbox()
     {
         return tabbox;
+    }
+
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }

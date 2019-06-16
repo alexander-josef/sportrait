@@ -130,14 +130,17 @@ public class Event extends GenericLevel implements java.io.Serializable {
 
     private String weblink;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    /**
+     * no cascade for event group here anymore after hibernate 5 migration - but exists in older mapping
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "eventgroupid")
     private EventGroup eventGroup;
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @OrderBy("genericLevelId")
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Album> albums = new HashSet<Album>(0);
+    private Set<Album> albums = new HashSet<>(0);
 
 
     public Event()
@@ -313,18 +316,18 @@ public class Event extends GenericLevel implements java.io.Serializable {
         return getPhotographerAlbums(photographer);
    }
 
-    public List getPhotographerAlbums(Photographer photographer)
+    public List<Album> getPhotographerAlbums(Photographer photographer)
     {
         GenericLevelDAO glDao = new GenericLevelDAO();
         try
         {
             if (!photographer.isAdmin())
             {
-                _logger.debug("loading albums for admin");
+                _logger.debug("loading albums only for photographer["+photographer.getPhotographerId()+"]");
                 return glDao.listAlbumsForPhotographer(this, photographer);
             } else
             {
-                _logger.debug("loading albums for admin");
+                _logger.debug("loading all albums for admin");
                 return glDao.listAlbumsForPhotographer(this);
             }
         } catch (UAPersistenceException e)
