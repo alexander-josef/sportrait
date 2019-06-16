@@ -64,15 +64,16 @@ public class ZAlbumComponent extends Div {
      * This method sets up the div to edit the album (Publish status, Products)
      * Will be called again with each status change
      *
-     * @param albumId albumid
+     * @param album albumid
      */
-    public void renderAlbumConfiguration(Long albumId) {
+    public void renderAlbumConfiguration(Album album) {
         try {
-            GenericLevelDAO glDao = new GenericLevelDAO();
+            // GenericLevelDAO glDao = new GenericLevelDAO();
 
             // album is reloaded - here we have a new reference to event!
 
-            this.album = (Album) glDao.load(albumId, Album.class);
+            this.album = album;
+            // this.album = (Album) glDao.load(album, Album.class);
             // make sure there's nothing on the page:
             cleanUp();
 
@@ -81,8 +82,8 @@ public class ZAlbumComponent extends Div {
             albumInfoGrid.appendChild(rows);
 
             // Album Details Info
-            appendLabelRow(rows, "Anlass", album.getEvent().getLongTitle());
-            appendLabelRow(rows, "Album", album.getLongTitle());
+            appendLabelRow(rows, "Anlass", this.album.getEvent().getLongTitle());
+            appendLabelRow(rows, "Album", this.album.getLongTitle());
 
             // publish status
             renderPublishStatus(rows);
@@ -137,12 +138,18 @@ public class ZAlbumComponent extends Div {
         // sort pricelist by price chf : done in mapping
         ArrayList priceList = new ArrayList(productType.getPrices());
         priceList.add(0, "Nicht verfügbar"); // todo : move to text resources list
+
+        // create a model with attached data (priceList of a product type) - and set it as the model for the listbox
         final SimpleListModel simpleListModel = new SimpleListModel(priceList);
         pricesListbox.setModel(simpleListModel);
-        // select the first entry, "not available":
+
+        // select the first entry, "not available" (outside of the model)
         pricesListbox.setSelectedIndex(0);
 
+        // set a renderer for the elements of the model:
         renderItem(productType, pricesListbox);
+
+        // add an event listener:
         pricesListbox.addEventListener(Events.ON_SELECT, new EventListener() {
             /**
              * Update album according to selection
@@ -157,8 +164,8 @@ public class ZAlbumComponent extends Div {
                     // create new product (if a price has been selected)
                     if (price instanceof Price) {
                         Product newProduct = new Product(productType.getProductTypeId(), ((Price) price).getPriceId(), album);
-                        // todo : album is not stored for product in previous line ... but then here the inverse way - why?
-                        //album.getProducts().add(newProduct);
+                        // two-way mapping for album and product - need to manually make sure both sides are updated:
+                        album.getProducts().add(newProduct);
                     } else {
                         // price has been set to not available and the product is null ... should not happen
                         _logger.info("unexpected state for updating products ...");
@@ -175,6 +182,7 @@ public class ZAlbumComponent extends Div {
                     }
                 }
                 GenericLevelDAO glDao = new GenericLevelDAO();
+                // saving album is okay - new product is cascaded down (only saving or updating the product would be OK too - but how about deleting a product?)
                 glDao.saveOrUpdate(album);
                 HibernateUtil.commitTransaction();
             }
@@ -183,14 +191,17 @@ public class ZAlbumComponent extends Div {
     }
 
     /**
-     * Render a list box item, attach a listener
+     * Render a list box item according to the model
      *
      * @param productType   ProductType
      * @param pricesListbox Listbox containing the Price objects
      */
     private void renderItem(final ProductType productType, Listbox pricesListbox) {
+
         pricesListbox.setItemRenderer(new ListitemRenderer() {
             public void render(Listitem item, Object data) throws Exception {
+                // data comes from the model - renderer called for each entry in the model
+
                 if (data instanceof Price) {
                     final Price price = (Price) data;
                     item.setLabel(price.getPriceLabel());
@@ -198,6 +209,7 @@ public class ZAlbumComponent extends Div {
                     item.setValue(price);
                     // check if price is selected:
                     final Product albumProduct = album.getProductFor(productType.getProductTypeId());
+                    // todo : for this to work the "equals" operation needs to compare Ids of the entities, not object equality!!
                     if (albumProduct != null && price.equals(albumProduct.getPrice())) {
                         item.getListbox().clearSelection();
                         item.setSelected(true);
@@ -249,13 +261,14 @@ public class ZAlbumComponent extends Div {
                 // todo notification about saved changes
                 GenericLevelDAO glDao = new GenericLevelDAO();
                 HibernateUtil.beginTransaction();
-                Album innerAlbum = null;
+                // Album innerAlbum = null;
                 try {
 
                     // album is reloaded ! new reference to event
-                    innerAlbum = (Album) glDao.load(album.getGenericLevelId(), Album.class);
-                    innerAlbum.toggleLevelPublishStatus(client);
-                    glDao.saveOrUpdate(innerAlbum);
+                    // innerAlbum = (Album) glDao.load(album.getGenericLevelId(), Album.class);
+                    // innerAlbum = album; // not reloaded - will it work?
+                    album.toggleLevelPublishStatus(client);
+                    glDao.saveOrUpdate(album);
                     HibernateUtil.commitTransaction();
                 } catch (NotAuthorizedException e) {
                     Messagebox.show("Not Authorized!!");
@@ -264,7 +277,7 @@ public class ZAlbumComponent extends Div {
                     HibernateUtil.rollbackTransaction();
                     Messagebox.show("Server Error, can not save album.");
                 }
-                renderAlbumConfiguration(innerAlbum.getGenericLevelId());
+                renderAlbumConfiguration(album);
             }
         });
         appendLabelRow(rows, "Status", hbox);

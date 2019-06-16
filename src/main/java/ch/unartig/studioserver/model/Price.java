@@ -126,6 +126,22 @@ public class Price implements java.io.Serializable {
         this.comment = comment;
     }
 
+
+    /**
+     * Overriding equals after problems with the product administration in the album administration window
+     * @param obj
+     * @return
+     */
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Price) {
+            return this.getPriceId().equals(((Price) obj).getPriceId());
+        } else {
+            throw new RuntimeException("wrong object when using equals() on Price");
+        }
+
+    }
+
     /**
      * toString
      * @return String

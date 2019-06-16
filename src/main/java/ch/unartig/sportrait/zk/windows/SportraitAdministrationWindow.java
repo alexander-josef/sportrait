@@ -188,7 +188,7 @@ public class SportraitAdministrationWindow extends Window
             {
                 // adjust the visible divs, hide the list, show the edit screen:
                 // todo : why hand over id here? will lead to re-load of album and event and cause non-unique object exception when saving events
-                zAlbum.renderAlbumConfiguration(album.getGenericLevelId());
+                zAlbum.renderAlbumConfiguration(album);
                 albumListDiv.setVisible(false);
                 albumEditDiv.setVisible(true);
             }
