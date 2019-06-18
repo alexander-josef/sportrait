@@ -73,11 +73,6 @@ public class HibernateUtil
 
     private static SessionFactory sessionFactory;
 
-//    private static final ThreadLocal service = new ThreadLocal();
-//    private static final ThreadLocal session = new ThreadLocal();
-//    private static final ThreadLocal transaction = new ThreadLocal();
-//    private static final String _MYOWN = "sKmArKeR";
-//    private static final long _SESSION_FACTORY_WAIT_TIME = 2000; // 10 seconds
 
     /**
      * Tries to create SessionFactory and logs success or failure.

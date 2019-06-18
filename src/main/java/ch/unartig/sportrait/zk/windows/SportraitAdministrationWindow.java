@@ -299,7 +299,7 @@ public class SportraitAdministrationWindow extends Window
     }
 
     /**
-     * User filled in the new Event screen and pressed save
+     * User filled in the new Event screen and pressed save - eventcategories will be saved as well
      */
     public void createNewSportsEvent()
     {

@@ -82,6 +82,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @OrderColumn(name = "category_position")
     private List<EventCategory> eventCategories = new ArrayList<>(0);
 
     /**

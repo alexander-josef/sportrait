@@ -422,7 +422,7 @@ public class GenericLevelDAO
     }
 
     /**
-     * 'Admin'-routine: return all events with an album - (used for zk admin album window?)
+     * 'Admin'-routine: return all events with an album - used for web album admin page only?
      * @param eventGroup The EventGroup
      * @return List of Events
      * @throws UAPersistenceException
@@ -469,8 +469,7 @@ public class GenericLevelDAO
         // this should result in an empty album list
         // (and therefore not lead to multiple objects referring to the same DB row
         // - which in turn leads to an error when saving the sportsEvent)
-        return new ArrayList(0);
-        // return newEventList;
+        return newEventList;
 
 
     }
