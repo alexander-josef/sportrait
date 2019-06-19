@@ -128,15 +128,13 @@ public class Uploader extends Thread
         Album album;
         try
         {
-            // create a transaction around the import:
-            HibernateUtil.currentSession().beginTransaction();
             album = doImport();
             HibernateUtil.commitTransaction();
             HibernateUtil.currentSession().refresh(album.getEventCategory());
         } catch (IOException e)
         {
             _logger.error("IO-error in uploader thread. stopping thread", e);
-        } catch (UnartigException e)
+        } catch (Exception e)
         {
             e.printStackTrace();
             throw new RuntimeException("Error in Uploader Thread");
@@ -157,11 +155,11 @@ public class Uploader extends Thread
 
 
 
-        if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImageFile ==null || "".equals(tempSingleImageFile)) )
+        if ((tempImageDirectory != null && !"".equals(tempImageDirectory)) && (tempSingleImageFile ==null || "".equals(tempSingleImageFile.getAbsolutePath())) )
         {
             // temp image path is not empty and is not a single image import: register all photos from a tempSourceDir
             album.registerPhotosFromTempLocation(tempImageDirectory, createThumbnailDisplay,applyLogoOnFineImages);
-        } else if ((tempSingleImageFile ==null || "".equals(tempSingleImageFile)) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
+        } else if ((tempSingleImageFile ==null || "".equals(tempSingleImageFile.getAbsolutePath())) && (tempImageDirectory == null || "".equals(tempImageDirectory))) {
             // not a single image import, photos are already at file storage provider location (Uploaded via ZIP file). no temporary file path
             album.registerPhotos(createThumbnailDisplay,applyLogoOnFineImages);
         } else if (tempSingleImageFile != null)

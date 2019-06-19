@@ -609,10 +609,6 @@ public class Album extends GenericLevel implements Serializable {
             HibernateUtil.rollbackTransaction();
             _logger.error("error while saving photo", e);
         }
-        // make sure a new session is opened for a transaction:
-
-        HibernateUtil.currentSession().beginTransaction();
-
     }
 
 

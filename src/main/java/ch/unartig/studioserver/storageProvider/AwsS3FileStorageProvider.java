@@ -19,6 +19,7 @@ import com.amazonaws.services.s3.model.*;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.zip.ZipEntry;
@@ -344,7 +345,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withBucketName(bucketName).
                 withPrefix(key).
                 withDelimiter("/");
-        _logger.debug("going to coung from upload folder : " + key);
+        _logger.debug("going to count from upload folder : " + key+ " - starting at "+ Instant.now());
         do {
             _logger.debug("iterating over objectListings ....");
             objectListing = s3DefaultClient.listObjects(listObjectRequest);
@@ -352,7 +353,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             fileCount += objectListing.getObjectSummaries().size();
         } while (objectListing.isTruncated());
 
-        _logger.debug("returning file count : " + fileCount);
+        _logger.debug("returning file count : " + fileCount +" - completing at "+Instant.now());
         return fileCount;
     }
 
