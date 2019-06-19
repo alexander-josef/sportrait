@@ -135,6 +135,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -1183,12 +1184,15 @@ Note: if you list each property explicitly, you must include all properties of t
 
         photoQuery
                 .setFirstResult(firstResult-1) // starts with 0
-                .setMaxResults(maxResults+1); // starts with 0
+                .setMaxResults(maxResults+1)
+                .setCacheable(true); // starts with 0
 
         List<Photo> criteriaQueryResult = photoQuery.getResultList();
 
 
         // hbm3: old
+/*
+
         Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber); // needed
 
         criteria.setMaxResults(maxResults+1) // starts with 0
@@ -1210,6 +1214,7 @@ Note: if you list each property explicitly, you must include all properties of t
             DebugUtils.debugPhotos(photos);
             DebugUtils.debugPhotos(criteriaQueryResult);
         }
+*/
 
         return criteriaQueryResult;
 
@@ -1223,7 +1228,7 @@ Note: if you list each property explicitly, you must include all properties of t
     private Query<Photo> getPublishedPhotosForEventCategoryQuery(EventCategory eventCategory) {
         CriteriaBuilder cb = HibernateUtil.currentSession().getCriteriaBuilder();
 
-        javax.persistence.criteria.CriteriaQuery<Photo> criteriaQuery = cb.createQuery(Photo.class);
+        CriteriaQuery<Photo> criteriaQuery = cb.createQuery(Photo.class);
         Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
 
         Predicate publishedForEventCategoryPredicate = getPublishedForEventCategoryPredicate(eventCategory, cb, photoRoot);
