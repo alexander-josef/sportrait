@@ -133,7 +133,7 @@ public class Event extends GenericLevel implements java.io.Serializable {
     /**
      * no cascade for event group here anymore after hibernate 5 migration - but exists in older mapping
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eventgroupid")
     private EventGroup eventGroup;
 

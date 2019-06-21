@@ -80,7 +80,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
     @Transient
     Logger _logger = Logger.getLogger(getClass().getName());
 
-    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OrderColumn(name = "category_position")
     private List<EventCategory> eventCategories = new ArrayList<>(0);
@@ -88,7 +88,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
     /**
      * eventRunners will be cascade deleted with an event (cascaded update needed?)
      */
-    @OneToMany(mappedBy = "event",cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "event",cascade = CascadeType.REMOVE, orphanRemoval = true,fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<EventRunner> eventRunners = new HashSet<>(0);
 
@@ -406,15 +406,13 @@ public class SportsEvent extends Event implements java.io.Serializable {
      */
     public List getEventCategoriesWithPhotos()
     {
-        List retVal = new ArrayList(); // todo debug: cached results? probably not, many sql statements issued
-        for (Object o : getEventCategories()) // --> eventcategories on event are cached
+        List<EventCategory> retVal = new ArrayList<>(); // todo debug: cached results? probably not, many sql statements issued
+        for (EventCategory eventCategory : getEventCategories()) // --> eventcategories on event are cached
         {
-            EventCategory eventCategory = (EventCategory) o;
             try
             {
                 if (eventCategory.hasPublishedPhotos())
                 {
-                    //noinspection unchecked
                     retVal.add(eventCategory);
                 }
             } catch (UnartigException e)

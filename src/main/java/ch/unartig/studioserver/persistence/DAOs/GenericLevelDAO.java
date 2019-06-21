@@ -327,10 +327,11 @@ public class GenericLevelDAO
 
         List<SportsEvent> retValCriteria = HibernateUtil.currentSession()
                 .createQuery(criteria)
-                .setCacheable(true)
+                .setCacheable(true) // todo : verify if 2nd level query cache works!
                 .getResultList();
 
 // example with HQL query
+/*
 
         List retvalHql = HibernateUtil.currentSession().createQuery("from SportsEvent " +
                 "where eventDate <= :date " +
@@ -348,6 +349,7 @@ public class GenericLevelDAO
                 .addOrder(Order.desc("navTitle"))
                 .list();
 
+*/
 
         return retValCriteria;
 

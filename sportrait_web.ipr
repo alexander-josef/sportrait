@@ -165,11 +165,12 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5431/sportrait</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
+    <data-source source="LOCAL" name="PostgreSQL - postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
+      <remarks>use this for persistence tool to make hql queries</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5431/postgres</jdbc-url>
     </data-source>
   </component>
   <component name="DependencyValidationManager">
@@ -618,14 +619,14 @@
       <resolve-scope>sportrait:pg_catalog,public</resolve-scope>
       <unqualified-resolve-schemas>sportrait:pg_catalog,public</unqualified-resolve-schemas>
     </data-source>
-    <data-source name="postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
-      <database-info product="PostgreSQL" version="10.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.2" dbms="POSTGRES" exact-version="10.4" exact-driver-version="42.2">
+    <data-source name="PostgreSQL - postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
+      <database-info product="PostgreSQL" version="11.1 (Debian 11.1-1.pgdg90+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
         <identifier-quote-string>&quot;</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>sportrait</user-name>
-      <introspection-schemas>postgres:public|sportrait:*</introspection-schemas>
+      <introspection-schemas>sportrait:*</introspection-schemas>
     </data-source>
   </component>
   <component name="libraryTable">

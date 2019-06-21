@@ -382,6 +382,9 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
         // hbm3: old - deprecated -- use for comparison
+
+/*
+
         Number resultValue2 = (Number) HibernateUtil.currentSession()
                 .createCriteria(Photo.class)
                 .createAlias("album", "album")
@@ -390,6 +393,7 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setProjection(Projections.rowCount())
                 .setCacheable(true)
                 .uniqueResult();
+*/
 
 
 //        return resultValue1;
@@ -420,7 +424,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
     public Photo load(Long photoId) throws UAPersistenceException {
         try {
-            return (Photo) HibernateUtil.currentSession().load(Photo.class, photoId);
+            return HibernateUtil.currentSession().load(Photo.class, photoId);
         } catch (HibernateException e) {
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
         }
@@ -626,9 +630,10 @@ Note: if you list each property explicitly, you must include all properties of t
         criteriaQuery.select(criteriaBuilder.count(photoRoot))
                 .where(finalPredicate);
 
+        Long criteriaResult;
 
         try {
-            Long criteriaResult = HibernateUtil.currentSession()
+            criteriaResult = HibernateUtil.currentSession()
                     .createQuery(criteriaQuery)
                     .setCacheable(true)
                     .getSingleResult();
@@ -653,12 +658,15 @@ Note: if you list each property explicitly, you must include all properties of t
             criteriaQuery.select(criteriaBuilder.count(photoRoot))
                     .where(exceptionalPredicate);
 
-            Long criteriaResult = HibernateUtil.currentSession()
+            criteriaResult = HibernateUtil.currentSession()
                     .createQuery(criteriaQuery)
                     .setCacheable(true)
                     .getSingleResult();
 
         }
+
+
+        //hbm3: clean up
 
 
         // check if there is not a unique result for the time of the given photo:
@@ -685,8 +693,9 @@ Note: if you list each property explicitly, you must include all properties of t
                     .uniqueResult();
         }
 
+        _logger.debug("old query result : "+queryResult);
 
-        position = ((Long) queryResult).intValue();
+        position = criteriaResult.intValue();
         _logger.debug("position : " + position);
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
         _logger.debug("page : " + page);
@@ -759,7 +768,6 @@ Note: if you list each property explicitly, you must include all properties of t
      */
     public List listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException {
         _logger.debug("extended get sport photos for page");
-        List photos;
         if (page < 1) {
             page = 1;
         }
@@ -801,17 +809,21 @@ Note: if you list each property explicitly, you must include all properties of t
             // ---
         }
         List<Photo> criteriaQueryResult;
+        List<Photo> oldPhotos; // hbm3: old result
         try {
             criteriaQueryResult = photoQuery.getResultList();
 
-            photos = criteria.list(); // hbm3: old result
+            oldPhotos = criteria.list();
         } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
         }
+
         if (_logger.isDebugEnabled()) {
-            DebugUtils.debugPhotos(photos); // hbm3:
+            DebugUtils.debugPhotos(oldPhotos); // hbm3:
             DebugUtils.debugPhotos(criteriaQueryResult);
+            // identical results! -> can be cleaned up
         }
+
         return criteriaQueryResult; // used to be "photos" from old hibernate 3.x criteria
     }
 
@@ -877,6 +889,8 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
     /**
+     * hbm3: migrate - still needed! - when/why was it deprecated?
+     *
      * construct a criteria for a passed eventCategory and startNumber
      *
      * @param eventCategory An event has photos one or more categories, i.e. "junioren", "elite", "etappe1", "impressionen" etc.
@@ -918,13 +932,53 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws UAPersistenceException
      */
     public int countPhotosFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException {
-        Long count; // Long vs int
-        count = (Long)createSportsPhotoCriteria(eventCategory, startNumber)
+        // hbm3: cleanup
+
+        Long oldCount; // Long vs int
+        Long newCount; // Long vs int
+
+
+        String startnumberQuery = "select count(*) " +
+                "from Photo p " +
+                "inner join p.album a " +
+                "inner join p.photoSubjects ps " +
+                "inner join ps.eventRunners er " +
+                "where a.eventCategory = :eventCategory  " +
+                "and a.publish = true " +
+                "and er.startnumber = :startNumber";
+
+        String noStartnumberQuery = "select count(*) " +
+                "from Photo p " +
+                "inner join p.album a " +
+                "where a.eventCategory = :eventCategory  " +
+                "and a.publish = true ";
+
+        if (startNumber != null && !"".equals(startNumber)) {
+            newCount = HibernateUtil.currentSession().createQuery(
+                    startnumberQuery, Long.class)
+                    .setParameter("eventCategory", eventCategory)
+                    .setParameter("startNumber", startNumber)
+                    .setCacheable(true)
+                    .uniqueResult();
+        } else {
+            newCount = HibernateUtil.currentSession().createQuery(
+                    noStartnumberQuery,Long.class)
+                    .setParameter("eventCategory", eventCategory)
+                    .setCacheable(true)
+                    .uniqueResult();
+        }
+
+
+        oldCount = (Long)createSportsPhotoCriteria(eventCategory, startNumber)
                 .setProjection(Projections.rowCount())
                 .setCacheable(true)
                 .uniqueResult();
-        _logger.debug("Photo count = " + count); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
-        return count.intValue();
+
+
+        _logger.debug("Photo count = " + newCount); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
+        _logger.debug("old count = " + oldCount); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
+        // now identical, old and new count. todo hbm3: clean up
+        return newCount.intValue();
     }
 
 
@@ -1138,7 +1192,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
         // todo : this does not work for photos with identical picturetakendates - it should be a row_number() query, ordered by picturetakendate and filename (or photoId)
 
-        // hbm3: migrate!!
+        // hbm3: migrate!! (not deprecated yet, though)
         // subquery for photo position
         DetachedCriteria subquery = DetachedCriteria.forClass(Photo.class, "p");
         subquery.createAlias("album", "a")
@@ -1156,7 +1210,6 @@ Note: if you list each property explicitly, you must include all properties of t
         }
 
 
-        // todo: remove, only debug ? can this be integrated as a subquery?
         int position = 0;
         try {
             position = ((Long)subquery.getExecutableCriteria(HibernateUtil.currentSession()).uniqueResult()).intValue(); // used to be an Integer - changed after Hibernate 5 migration

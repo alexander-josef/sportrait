@@ -187,7 +187,6 @@
             <forward name="success" path=".recentEventsFrame" redirect="false"/>
         </action>
 
-        <!--todo: remove the <p> to make selenium work-->
         <action path="/event" type="ch.unartig.studioserver.actions.SportEventsAction"
                 parameter="event">
             <forward name="success" path=".sportraitEvent" redirect="false"/>

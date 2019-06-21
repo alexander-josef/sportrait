@@ -248,15 +248,15 @@ public class Album extends GenericLevel implements Serializable {
     private String albumTypeString;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photographerid")
     private Photographer photographer;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eventid")
     private Event event;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eventcategoryid")
     private EventCategory eventCategory;
 
@@ -264,7 +264,7 @@ public class Album extends GenericLevel implements Serializable {
     @OrderBy("pictureTakenDate")
     private Set<Photo> photos = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OrderBy("productType")
     private Set<Product> products = new HashSet<>(0);
