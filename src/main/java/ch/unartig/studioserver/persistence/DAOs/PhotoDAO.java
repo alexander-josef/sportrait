@@ -363,7 +363,6 @@ Note: if you list each property explicitly, you must include all properties of t
     public int countPhotos(Album album) {
         // todo check performance of both calculations!
         // todo : How many times is this called?
-  // hbm3:
 
         // new with Criteria hibernate 5.4
         CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
@@ -379,24 +378,6 @@ Note: if you list each property explicitly, you must include all properties of t
                 .setCacheable(true)
                 .getSingleResult();
 
-
-
-        // hbm3: old - deprecated -- use for comparison
-
-/*
-
-        Number resultValue2 = (Number) HibernateUtil.currentSession()
-                .createCriteria(Photo.class)
-                .createAlias("album", "album")
-                // .add(Expression.eq("album.publish", Boolean.TRUE))
-                .add(Expression.eq("album", album))
-                .setProjection(Projections.rowCount())
-                .setCacheable(true)
-                .uniqueResult();
-*/
-
-
-//        return resultValue1;
         return retValCriteria.intValue();
 
     }
@@ -666,35 +647,6 @@ Note: if you list each property explicitly, you must include all properties of t
         }
 
 
-        //hbm3: clean up
-
-
-        // check if there is not a unique result for the time of the given photo:
-        Object queryResult;
-        try {
-            // also include filename for check?
-
-            // this would fail for pictures without a date (i.e. with all the same entries for date)
-            queryResult = createSportsPhotoCriteria(eventCategory, startNumber)
-                    .add(Expression.le("pictureTakenDate", photo.getPictureTakenDate()))
-                    .setProjection(Projections.rowCount())
-                    .setCacheable(true)
-                    .uniqueResult();
-
-        } catch (HibernateException e) {
-            // exceptional case: not a single result: we now calcualte the page according to the photoid:
-            _logger.info("not a unique result for this timestamp : " + photo.getPictureTakenDate());
-            _logger.info("calculating page for this photo according to photoid");
-
-            queryResult = createSportsPhotoCriteria(eventCategory, startNumber)
-                    .add(Expression.le("photoId", photo.getPhotoId()))
-                    .setProjection(Projections.rowCount())
-                    .setCacheable(true)
-                    .uniqueResult();
-        }
-
-        _logger.debug("old query result : "+queryResult);
-
         position = criteriaResult.intValue();
         _logger.debug("position : " + position);
         page = ((position - 1) / Registry.getItemsOnPage()) + 1;
@@ -777,20 +729,10 @@ Note: if you list each property explicitly, you must include all properties of t
         // --
 
 
-        Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
+        // Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
 
 
-        if (itemsOnPage == 0) { // don't limit result for pagination
-            // new hibernate 5.4: nothing here - see above photoQuery
-            // nothing ...
-            //--- old
-            criteria.addOrder(Order.asc("pictureTakenDate"))
-                    .addOrder(Order.asc("photoId"))
-                    .setCacheable(true) // also enable query caching
-            ;
-            // ---
-
-        } else {//if page=1 do not extend selection at the beginning:
+        if (itemsOnPage != 0) {//if page=1 do not extend selection at the beginning:
             int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
             int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
             // new Hibernate 5.4
@@ -798,28 +740,20 @@ Note: if you list each property explicitly, you must include all properties of t
                     .setFirstResult(firstResult)
                     .setMaxResults(maxResults);
 
+        } else { // don't limit result for pagination
+            // new hibernate 5.4: nothing here - see above photoQuery
+            // nothing ...
 
-            // hbm3: -- old
-            criteria.setMaxResults(maxResults)
-                    .setFirstResult(firstResult)
-                    .addOrder(Order.asc("pictureTakenDate"))
-                    .addOrder(Order.asc("photoId"))
-                    .setCacheable(true) // also enable query caching
-            ;
-            // ---
         }
         List<Photo> criteriaQueryResult;
-        List<Photo> oldPhotos; // hbm3: old result
         try {
             criteriaQueryResult = photoQuery.getResultList();
 
-            oldPhotos = criteria.list();
         } catch (HibernateException e) {
             throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
         }
 
         if (_logger.isDebugEnabled()) {
-            DebugUtils.debugPhotos(oldPhotos); // hbm3:
             DebugUtils.debugPhotos(criteriaQueryResult);
             // identical results! -> can be cleaned up
         }
@@ -932,9 +866,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws UAPersistenceException
      */
     public int countPhotosFor(String startNumber, EventCategory eventCategory) throws UAPersistenceException {
-        // hbm3: cleanup
 
-        Long oldCount; // Long vs int
         Long newCount; // Long vs int
 
 
@@ -969,15 +901,7 @@ Note: if you list each property explicitly, you must include all properties of t
         }
 
 
-        oldCount = (Long)createSportsPhotoCriteria(eventCategory, startNumber)
-                .setProjection(Projections.rowCount())
-                .setCacheable(true)
-                .uniqueResult();
-
-
         _logger.debug("Photo count = " + newCount); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
-        _logger.debug("old count = " + oldCount); // used to be int before migration to hibernate 5.4 (change seem to be introduced with hibernate 3.5)
-        // now identical, old and new count. todo hbm3: clean up
         return newCount.intValue();
     }
 
@@ -1219,16 +1143,6 @@ Note: if you list each property explicitly, you must include all properties of t
         _logger.debug("Photo ["+photoId+"] at position : " + position);
 
 
-
-
-
-//        Criteria criteria = session.createCriteria(User.class, "u")
-//                .add( Subqueries.lt(10, subquery) );
-//
-//        Criteria photoCriteria  = createSportsPhotoCriteria(eventCategory,startNumber);
-//        photoCriteria.add(Expression)
-//
-//
         int firstResult = (position - backward)>0?(position-backward):1; // position of first photo to show, or 1 in case 1st result would be smaller 1
         int maxResults = backward + forward;
 
@@ -1243,31 +1157,6 @@ Note: if you list each property explicitly, you must include all properties of t
         List<Photo> criteriaQueryResult = photoQuery.getResultList();
 
 
-        // hbm3: old
-/*
-
-        Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber); // needed
-
-        criteria.setMaxResults(maxResults+1) // starts with 0
-                .setFirstResult(firstResult-1) // starts with 0
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setCacheable(true) // also enable query caching
-        ;
-
-        try
-        {
-            photos = criteria.list();
-        } catch (HibernateException e)
-        {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
-        }
-        if (_logger.isDebugEnabled())
-        {
-            DebugUtils.debugPhotos(photos);
-            DebugUtils.debugPhotos(criteriaQueryResult);
-        }
-*/
 
         return criteriaQueryResult;
 
