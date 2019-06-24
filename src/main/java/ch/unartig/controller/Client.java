@@ -39,7 +39,7 @@ import java.util.ArrayList;
  */
 public class Client
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = Logger.getLogger(getClass().getName());
 
     private String serverUrl;
     private String username;

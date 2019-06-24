@@ -41,6 +41,7 @@ public class UserProfileDAO
         UserProfile userProfile = (UserProfile) HibernateUtil.currentSession().createQuery("select up from UserProfile as up " +
                 "where up.userName = :userName")
                 .setParameter("userName", userName)
+                .setCacheable(true)
                 .uniqueResult();
         return userProfile;
     }
