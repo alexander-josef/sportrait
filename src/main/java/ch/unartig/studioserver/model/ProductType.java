@@ -43,7 +43,7 @@ import java.util.Set;
 @Entity
 @Table(name = "producttypes")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_ONLY) // at least until products can be configured in UI
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ProductType implements java.io.Serializable {
 
     @Id

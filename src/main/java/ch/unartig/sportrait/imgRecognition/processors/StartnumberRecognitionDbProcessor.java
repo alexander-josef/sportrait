@@ -246,37 +246,42 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
         _logger.debug("Detected lines and words for " + path);
         _logger.debug("*************************************");
         // process all text detections and add found startnumbers to a local collection
-        for (TextDetection text : textDetections) {
+        if (textDetections!=null) {
+            for (TextDetection text : textDetections) {
 
-            // check for startnumber: (is a line, confidence > 80, parentID = null, previous LINE ID starts with SOLA AND/OR todo: next line ID similar ASVZ)
-            // check for LINE with 1 to 3 digits (very simple - is that enough?)
-            BoundingBox boundingBox = text.getGeometry().getBoundingBox();
-            if (
-                    text.getType().equals("LINE")
-                            && text.getConfidence() > TEXT_CONFIDENCE
-                            && text.getParentId() == null
-//                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))
-                            // regex : matches if there's 1 2, or 3 digits, that can be have characters - deviced by a space - either before or after the number
-                            && text.getDetectedText().matches(REG_EXP_STARTNUMBER_RECOGNITION)
-                            // improve search and exclude bounding boxes that start or end outside the photo (left < 0 || left + width > 1)
-                            && (boundingBox.getLeft() > 0 && (boundingBox.getLeft() + boundingBox.getWidth()) < 1)
-            ) { // got a startnumber:
-                Startnumber startnumber = new Startnumber(text, path);
-                startnumbersForFile.add(startnumber);
-                lastLine = text; // not needed with regex for 1 to 3 digits
-            } else if (text.getType().equals("LINE")) { // not needed with regex
-                lastLine = text;
+                // check for startnumber: (is a line, confidence > 80, parentID = null, previous LINE ID starts with SOLA AND/OR todo: next line ID similar ASVZ)
+                // check for LINE with 1 to 3 digits (very simple - is that enough?)
+                BoundingBox boundingBox = text.getGeometry().getBoundingBox();
+                if (
+                        text.getType().equals("LINE")
+                                && text.getConfidence() > TEXT_CONFIDENCE
+                                && text.getParentId() == null
+    //                    && (lastLine != null && (lastLine.getDetectedText().startsWith("SOL") || lastLine.getDetectedText().startsWith("S0L") ))
+                                // regex : matches if there's 1 2, or 3 digits, that can be have characters - deviced by a space - either before or after the number
+                                && text.getDetectedText().matches(REG_EXP_STARTNUMBER_RECOGNITION)
+                                // improve search and exclude bounding boxes that start or end outside the photo (left < 0 || left + width > 1)
+                                && (boundingBox.getLeft() > 0 && (boundingBox.getLeft() + boundingBox.getWidth()) < 1)
+                ) { // got a startnumber:
+                    Startnumber startnumber = new Startnumber(text, path);
+                    startnumbersForFile.add(startnumber);
+                    lastLine = text; // not needed with regex for 1 to 3 digits
+                } else if (text.getType().equals("LINE")) { // not needed with regex
+                    lastLine = text;
+                }
+
+
+                _logger.debug("Detected: " + text.getDetectedText());
+                _logger.debug("Confidence: " + text.getConfidence().toString());
+                _logger.debug("Id : " + text.getId());
+                _logger.debug("Parent Id: " + text.getParentId());
+                _logger.debug("Type: " + text.getType());
+                _logger.debug("Geometry: " + boundingBox);
+                _logger.debug("");
             }
-
-
-            _logger.debug("Detected: " + text.getDetectedText());
-            _logger.debug("Confidence: " + text.getConfidence().toString());
-            _logger.debug("Id : " + text.getId());
-            _logger.debug("Parent Id: " + text.getParentId());
-            _logger.debug("Type: " + text.getType());
-            _logger.debug("Geometry: " + boundingBox);
-            _logger.debug("");
+        } else {
+            _logger.info("no text detected");
         }
+
         return startnumbersForFile;
     }
 

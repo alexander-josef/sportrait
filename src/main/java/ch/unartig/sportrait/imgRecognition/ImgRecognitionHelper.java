@@ -70,7 +70,7 @@ public class ImgRecognitionHelper {
             return textResult.getTextDetections();
         } catch (InvalidS3ObjectException e) {
             _logger.warn("S3 Object does not exist or ist invalid - see stack trace",e);
-            e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
     }

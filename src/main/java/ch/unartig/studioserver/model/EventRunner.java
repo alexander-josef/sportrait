@@ -43,12 +43,12 @@ import javax.persistence.*;
 public class EventRunner implements java.io.Serializable {
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eventid")
     private Event event;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photosubjectid")
     private PhotoSubject photoSubject;
 

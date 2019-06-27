@@ -224,9 +224,10 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         long base = System.currentTimeMillis();
 
         // loop through jpeg files on S3
-        String bucketName = getS3BucketNameFor(album);
+        String targetBucketName = getS3BucketNameFor(album); // only target bucket name - source bucket name is current bucket location
+
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
+                withBucketName(getCurrenctS3Bucket()).
                 withPrefix(tempSourceDir).
                 withDelimiter("/");
 
@@ -244,36 +245,36 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 S3ObjectInputStream objectContent = null;
                 try {
                     S3ObjectSummary s3ObjectSummary = objects.getObjectSummaries().get(i);
-                    String key = s3ObjectSummary.getKey();
-                    if (key != null && !key.substring(key.lastIndexOf("/")+1).isEmpty()) { // filename not null or empty
-                        filename = key.substring(key.lastIndexOf("/") + 1);
+                    String importImageKey = s3ObjectSummary.getKey();
+                    if (importImageKey != null && !importImageKey.substring(importImageKey.lastIndexOf("/")+1).isEmpty()) { // filename not null or empty
+                        filename = importImageKey.substring(importImageKey.lastIndexOf("/") + 1);
                         _logger.debug("Reading file :" + filename);
 
                         // todo : check if photo is already registered for album in DB?
 
-                        objectContent = s3DefaultClient.getObject(new GetObjectRequest(bucketName, key)).getObjectContent();
+                        objectContent = s3DefaultClient.getObject(new GetObjectRequest(getCurrenctS3Bucket(), importImageKey)).getObjectContent();
                         Photo newPhoto = album.registerSinglePhoto(album.getProblemFiles(), objectContent, filename, createThumbDisp, applyLogoOnFineImages);
                         objectContent.abort(); // since the rest of the image data is not read (only the EXIF data) we need to abort the http connection (see also the warnings from the AWS SDK currently I don't know how to avoid them)
                         String fineImageKey = getFineImageKey(album, filename);
 
                         _logger.debug("applyLogoOnFineImages " + applyLogoOnFineImages);
                         _logger.debug("applyNumberRecognition " + applyNumberRecognition);
-                        _logger.debug("key temp file : "+ key);
+                        _logger.debug("key temp file : "+ importImageKey);
                         _logger.debug("key fine file : "+ fineImageKey);
-                        if (!applyLogoOnFineImages && !key.equals(fineImageKey)) { // if no logo has been copied on the fine image and the file is not yet stored in the right location, move the file now:
-                            moveObject(bucketName, key, fineImageKey);
+                        if (!applyLogoOnFineImages && !importImageKey.equals(fineImageKey)) { // if no logo has been copied on the fine image and the file is not yet stored in the right location, move the file now:
+                            moveObject(targetBucketName, importImageKey, fineImageKey);
                             _logger.debug("moved master image to correct S3 directory");
-                        } else if (!key.equals(fineImageKey)) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
-                            deleteFile(key, album); // delete key / album needed for bucket
+                        } else if (!importImageKey.equals(fineImageKey)) { // or delete after a copy has already been placed in the right location (and make sure the temp key does not equal the final key)
+                            deleteFile(importImageKey, album); // delete key / album needed for bucket
                             _logger.debug("master image deleted from temp location");
                         }
                         if (applyNumberRecognition && newPhoto!=null) { // add logic in case there should be a switch in the UI
                             // add fine Image to queue for number recognition
-                            String path = s3ObjectSummary.getBucketName() + "/" + fineImageKey;
+                            String path = targetBucketName + "/" + fineImageKey;
                             queueHandler.addMessage(album,newPhoto.getPhotoId(),path); // newPhoto could be null for unknown file
                         }
                     } else {
-                        _logger.info("s3 object is not a file, skipping entry for key : " + key);
+                        _logger.info("s3 object is not a file, skipping entry for key : " + importImageKey);
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
@@ -305,17 +306,17 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * First copy to destination, then delete source - EXCEPT for Dev env as a convenience for testing
      * Assumption: s3objects are closed after operations
      *
-     * @param bucketName
+     * @param destinationBucketName depending on album location (Frankfurt / Ireland)
      * @param sourceKey
      * @param destinationKey
      * @return True if copy was successful, false otherwise
      */
-    private boolean moveObject(String bucketName, String sourceKey, String destinationKey) {
+    private boolean moveObject(String destinationBucketName, String sourceKey, String destinationKey) {
         try {
-            CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucketName,sourceKey,bucketName,destinationKey);
+            CopyObjectRequest copyObjectRequest = new CopyObjectRequest(getCurrenctS3Bucket(),sourceKey,destinationBucketName,destinationKey);
             s3DefaultClient.copyObject(copyObjectRequest);
             if (!Registry.isDevEnv()) {
-                DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName,sourceKey);
+                DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(destinationBucketName,sourceKey);
                 s3DefaultClient.deleteObject(deleteObjectRequest);
             }
         } catch (AmazonServiceException ase) {
@@ -400,7 +401,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     public List<String> getUploadPaths() {
 
         _logger.debug("preparing ArrayList with upload paths");
-        ArrayList<String> retVal = new ArrayList();
+        ArrayList<String> retVal = new ArrayList<>();
 
         List<String> objectListing = null;
         try {
