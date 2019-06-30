@@ -125,7 +125,7 @@ public class UploadBean
 
 
     public void setUploadPaths(List<String> uploadPaths) {
-        this.uploadPaths = new ArrayList<UploadPath>();
+        this.uploadPaths = new ArrayList<>();
 
         for (String uploadPathKey : uploadPaths) {
             this.uploadPaths.add(new UploadPath(uploadPathKey));

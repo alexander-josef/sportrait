@@ -34,7 +34,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonS3 s3DefaultClient; // according to .aws directory on server
-    private AmazonS3 s3FrankfurtClient; // secific for older albums on frankfurt bucket
+    private AmazonS3 s3FrankfurtClient; // specific for older albums on frankfurt bucket
     // final private String bucketName = Registry.getS3BucketName();
     final private String preImageServiceBucketName = Registry.getS3BucketName();
     final static private Region awsRegionFrankfurt = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
@@ -334,6 +334,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
      * Use for showing number of photos when importing from temp location.
      * (implementation checks for truncated object lists and works also for object size > 1'000)
      * todo : works only with one level of folder hierarchy ? make it more robust
+     * todo : works only with the default s3 client - only used for the upload folder so far. refactor if generic solution needed
      * @param key the aws s3 prefix-key (or "folder")
      * @return
      */
@@ -348,6 +349,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
         _logger.debug("going to count from upload folder : " + key+ " - starting at "+ Instant.now());
         do {
+            // todo : this is slow!
             _logger.debug("iterating over objectListings ....");
             objectListing = s3DefaultClient.listObjects(listObjectRequest);
             listObjectRequest.setMarker(objectListing.getNextMarker());

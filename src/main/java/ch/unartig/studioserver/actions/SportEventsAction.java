@@ -157,6 +157,7 @@ public class SportEventsAction extends MappingDispatchAction
 
     /**
      * Photographer calls page where he has the possibility to upload an album
+     * Event Categrories and Upload paths will be populated
      *
      * @param mapping
      * @param form
@@ -177,6 +178,7 @@ public class SportEventsAction extends MappingDispatchAction
             uploadBean.setSportsEventById(eventId);
             // set temporary upload paths on S3: (only after event has been chosen -> performance)
             _logger.debug("eventId present, populating upload paths ...");
+            // todo : check performance of retrieving the number of files information
             uploadBean.setUploadPaths(Registry.getFileStorageProvider().getUploadPaths());
         }
 

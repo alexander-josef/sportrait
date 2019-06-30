@@ -5,9 +5,8 @@
 <jsp:useBean id="uploadBean" type="ch.unartig.studioserver.beans.UploadBean" scope="request"/>
 <jsp:useBean id="clientInSession" type="ch.unartig.controller.Client" scope="session"/>
 
-<html:xhtml/>
 <li class="contentCenter">
-    <h2>Bilder Upload f�r:</h2><br/>
+    <h2>Bilder Upload für:</h2><br/>
 
     <html:form action="/photographer/createUpload" enctype="multipart/form-data">
         <html:hidden property="photographerId" value="${clientInSession.photographer.photographerId}"/>
