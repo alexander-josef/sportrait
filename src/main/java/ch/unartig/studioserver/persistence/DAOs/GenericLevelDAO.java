@@ -285,9 +285,6 @@ public class GenericLevelDAO
      */
     public EventGroup loadEventGroupByZipCode(String zipCode) throws UAPersistenceException
     {
-        // hbm3: update
-
-
         return HibernateUtil.currentSession().createQuery(
                 "select eg " +
                         "from EventGroup eg " +
@@ -318,35 +315,14 @@ public class GenericLevelDAO
         Root<SportsEvent> root = criteria.from( SportsEvent.class );
         criteria.select( root )
                 .where(builder.lessThanOrEqualTo(root.get("eventDate"),date))
-                .orderBy(builder.desc(root.get("eventDate")))
-                // .orderBy(builder.desc(root.get("navTitle")))
+                .orderBy(builder.desc(root.get("eventDate")),builder.desc(root.get("navTitle")))
         ;
 
         List<SportsEvent> retValCriteria = HibernateUtil.currentSession()
                 .createQuery(criteria)
-                .setCacheable(true) // todo : verify if 2nd level query cache works!
-                .getResultList();
-
-// example with HQL query
-/*
-
-        List retvalHql = HibernateUtil.currentSession().createQuery("from SportsEvent " +
-                "where eventDate <= :date " +
-                "order by eventDate,navTitle")
-                .setParameter("date",date)
                 .setCacheable(true)
                 .getResultList();
 
-
-//  hibernate 3.2 legacy code:
-
-        List retValLegacy = HibernateUtil.currentSession().createCriteria(SportsEvent.class)
-                .add(Expression.le("eventDate", date))
-                .addOrder(Order.desc("eventDate"))
-                .addOrder(Order.desc("navTitle"))
-                .list();
-
-*/
 
         return retValCriteria;
 
@@ -378,21 +354,6 @@ public class GenericLevelDAO
                 .getResultList();
 
         _logger.debug("found [" + newEventList.size() + "] events for photographer with id [" + photographer + "]");
-
-        // hbm3: clean up
-       // Alias on album causes  events to appear more than once .... hence the result tranformer with DISTINCT_ROOT_ENTITY
-
-/*
-        List eventList = HibernateUtil.currentSession().createCriteria(Event.class)
-                .createAlias("albums", "album")
-                .add(Expression.eq("eventGroup", eventGroup))
-                .add(Expression.eq("album.photographer", photographer))
-                .addOrder(Order.desc("eventDate"))
-                .addOrder(Order.desc("navTitle"))
-                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                .list();
-        _logger.debug("found [" + eventList.size() + "] events for photographer with id [" + photographer + "]");
-*/
 
         return newEventList;
     }
@@ -440,34 +401,6 @@ public class GenericLevelDAO
                         "order by e.eventDate desc, e.navTitle desc ")
                 .setParameter("eventGroup",eventGroup)
                 .list();
-
-
-        //hbm3: clean up
-        try
-        {
-/*
-            _logger.debug("Creating query no album alias not reloading album in zAlbum render routine....");
-            eventList = HibernateUtil.currentSession().createCriteria(Event.class)
-                    .createAlias("albums", "album")
-                    .add(Expression.eq("eventGroup", eventGroup))
-                    .addOrder(Order.desc("eventDate"))
-                    .addOrder(Order.desc("navTitle"))
-                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                    .list();
-
-            _logger.debug("found [" + eventList.size() + "] events for admin user");
-
-            */
-        } catch (Exception e)
-        {
-            _logger.error("Exception : ",e);
-            e.printStackTrace();
-//            throw new RuntimeException("Can not load events with albums .... check stacktrace",e);
-        }
-
-        // this should result in an empty album list
-        // (and therefore not lead to multiple objects referring to the same DB row
-        // - which in turn leads to an error when saving the sportsEvent)
         return newEventList;
 
 
@@ -491,16 +424,6 @@ public class GenericLevelDAO
                 .setParameter("photographer", photographer)
                 .list();
 
-        // hbm3: cleanup
-/*
-        List oldList = HibernateUtil.currentSession().createCriteria(Album.class)
-                .add(Expression.eq("photographer", photographer))
-                .add(Expression.eq("event", event))
-                .addOrder(Order.desc("navTitle"))
-                .list();
-*/
-
-
         return albumList;
     }
 
@@ -521,14 +444,6 @@ public class GenericLevelDAO
                 .list();
 
 
-        // hbm3:cleanup
-/*
-        List oldAlbumList = HibernateUtil.currentSession().createCriteria(Album.class)
-                .add(Expression.eq("event", event))
-                .addOrder(Order.desc("navTitle"))
-                .list();
-*/
-
 
         return albumList;
     }
@@ -546,20 +461,6 @@ public class GenericLevelDAO
                 "order by navTitle desc ",Album.class)
                 .setParameter("photographerId", photographerId)
                 .getResultList();
-
-
-        //hbm3: clean up
-        // introduce phphotographerAdminBean
-
-        /*
-        // new photographer is loaded
-        PhotographerDAO photographerDao = new PhotographerDAO();
-        Photographer photographer = photographerDao.load(photographerId);
-        List oldAlbumList = HibernateUtil.currentSession().createCriteria(Album.class)
-                .add(Expression.eq("photographer", photographer))
-                .addOrder(Order.desc("navTitle"))
-                .list();
-        */
 
         return albumList;
 
