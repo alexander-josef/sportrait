@@ -1,4 +1,7 @@
-<zk>
+<zk xmlns="http://www.zkoss.org/2005/zk/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zk/config http://www.zkoss.org/2005/zk/config/zk.xsd">
+
     <desktop-config>
         <theme-uri>/css/sportrait-zk.css</theme-uri>
     </desktop-config>
@@ -12,9 +15,6 @@
  <!-- still a need for a listener to have a hibernate session during zk - the old listener from the zkplus package doesn't work anymore after the hibernate 5 migration -->
 
     <listener>
-        <description>
-            Hibernate Thread session context handler
-        </description>
         <listener-class>
             ch.unartig.studioserver.persistence.util.OpenSessionInViewListener
         </listener-class>
@@ -26,7 +26,7 @@
         <max-upload-size>10000</max-upload-size>
         <!--do we have to specify the upload charset ???-->
         <!--<upload-charset>ISO-8859-1</upload-charset>-->
-        
+
     </system-config>
 
 </zk>

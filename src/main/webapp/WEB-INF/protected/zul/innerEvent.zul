@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="sportraitAdministrationWindow" ?>
 
 <window
         xmlns="http://www.zkoss.org/2005/zul"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
-        xmlns:a="http://www.zkoss.org/2005/zk/annotation"
         id="eventWindow"
         use="ch.unartig.sportrait.zk.windows.EventWindow"
         >
@@ -46,33 +45,27 @@
         <rows>
             <row width="500px">
                 <label value="Nav-Title" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.navTitle"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachEvent.navTitle}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row width="500px">
                 <label value="Titel" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.longTitle"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachEvent.longTitle}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Beschreibung" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.description"/>
-                <textbox sclass="sportraitInputEntry" rows="10" cols="60" width="99%"/>
+                <textbox value="@{eachEvent.description}" sclass="sportraitInputEntry" rows="10" cols="60" width="99%"/>
             </row>
             <row>
                 <label value="Datum" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.eventDate"/>
-                <datebox/>
+                <datebox value="@{eachEvent.eventDate}"/>
             </row>
             <row>
                 <label value="Ort" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.eventGroup.city"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachEvent.eventGroup.city}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Postleitzahl" sclass="sportraitLabel" width="40px"/>
-                <a:bind value="eachEvent.eventGroup.zipcode"/>
-                <intbox sclass="sportraitInputEntry" width="99%"/>
+                <intbox value="@{eachEvent.eventGroup.zipcode}" sclass="sportraitInputEntry" width="99%"/>
             </row>
 
             
@@ -108,8 +101,7 @@
 
             <row>
                 <label value="Link zum Veranstalter (ohne http://)" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachEvent.weblink"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachEvent.weblink}" sclass="sportraitInputEntry" width="99%"/>
             </row>
 
         </rows>

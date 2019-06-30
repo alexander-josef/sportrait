@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" ?>
+<?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="sportraitAdministrationWindow" ?>
 
 <window
         xmlns="http://www.zkoss.org/2005/zul"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd"
-        xmlns:a="http://www.zkoss.org/2005/zk/annotation"
         id="photographerWindow"
         use="ch.unartig.sportrait.zk.windows.PhotographerWindow"
         >
+
     <zscript>
         import ch.unartig.studioserver.model.*;
 
@@ -24,8 +24,7 @@
             <rows>
                 <row>
                     <label value="User Name" sclass="sportraitLabel"  width="100px" />
-                    <a:bind value="eachPhotographer.userProfile.userName"/>
-                    <textbox sclass="sportraitInputEntry" width="99%" />
+                    <textbox value="@{eachPhotographer.userProfile.userName}" sclass="sportraitInputEntry" width="99%" />
                 </row>
                 <row>
                     <vbox width="100px">
@@ -33,8 +32,7 @@
                         <label value="(Bitte bestätigen)" sclass="sportraitLabel" width="100px"/>
                     </vbox>
                     <vbox width="99%">
-                        <a:bind value="eachPhotographer.userProfile.password"/>
-                        <textbox id="password" type="password" sclass="sportraitInputEntry" width="99%" >
+                        <textbox value="@{eachPhotographer.userProfile.password}" id="password" type="password" sclass="sportraitInputEntry" width="99%" >
                         </textbox>
                         <textbox id="passwordVerified" type="password" sclass="sportraitInputEntry" width="99%" value="${eachPhotographer.userProfile.password}" >
                             <attribute name="onChange">
@@ -68,8 +66,7 @@
                 <label value="Titel" sclass="sportraitLabel" width="100px"/>
                 <!--default selection on f ... or insert a third state and check for valid selection-->
                 <hbox>
-                    <a:bind selectedItem="eachPhotographer.userProfile.gender"/>
-                    <listbox rows="1" mold="select">
+                    <listbox selectedItem="@{eachPhotographer.userProfile.gender}" rows="1" mold="select">
                         <listitem label="Frau" value="f"/>
                         <listitem label="Herr" value="m" selected="true"/>
                     </listbox>
@@ -77,48 +74,39 @@
             </row>
             <row>
                 <label value="Nachname" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.lastName"/>
-                <textbox sclass="sportraitInputEntry" width="99%" />
+                <textbox value="@{eachPhotographer.userProfile.lastName}" sclass="sportraitInputEntry" width="99%" />
             </row>
             <row>
                 <label value="Vorname" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.firstName"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.firstName}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="E-Mail" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.emailAddress"/>
-                <textbox sclass="sportraitInputEntry" width="99%" readonly="${!photographerWindow.client.admin}"/>
+                <textbox value="@{eachPhotographer.userProfile.emailAddress}" sclass="sportraitInputEntry" width="99%" readonly="${!photographerWindow.client.admin}"/>
             </row>
             <row>
                 <label value="Strasse / Hausnr." sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.addr1"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.addr1}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Ort " sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.city"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.city}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Postleitzahl" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.zipCode"/>
-                <intbox sclass="sportraitInputEntry" width="99%"/>
+                <intbox value="@{eachPhotographer.userProfile.zipCode}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Land" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.country"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.country}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Telefon" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.phone"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.phone}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Telefon mobil" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.userProfile.phoneMobile"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.userProfile.phoneMobile}" sclass="sportraitInputEntry" width="99%"/>
             </row>
 
         </rows>
@@ -131,18 +119,15 @@
         <rows>
             <row>
                 <label value="Kamera-Modell" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.cameraModel"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.cameraModel}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Website" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.website"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.website}" sclass="sportraitInputEntry" width="99%"/>
             </row>
             <row>
                 <label value="Kontakt Informationen" sclass="sportraitLabel" width="100px"/>
-                <a:bind value="eachPhotographer.contactInformation"/>
-                <textbox sclass="sportraitInputEntry" width="99%"/>
+                <textbox value="@{eachPhotographer.contactInformation}" sclass="sportraitInputEntry" width="99%"/>
             </row>
 
         </rows>

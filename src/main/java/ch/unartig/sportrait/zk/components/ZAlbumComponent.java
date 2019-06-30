@@ -199,23 +199,24 @@ public class ZAlbumComponent extends Div {
     private void renderItem(final ProductType productType, Listbox pricesListbox) {
 
         pricesListbox.setItemRenderer(new ListitemRenderer() {
-            public void render(Listitem item, Object data) throws Exception {
+            @Override
+            public void render(Listitem listitem, Object data, int i) throws Exception {
                 // data comes from the model - renderer called for each entry in the model
 
                 if (data instanceof Price) {
                     final Price price = (Price) data;
-                    item.setLabel(price.getPriceLabel());
+                    listitem.setLabel(price.getPriceLabel());
                     // set the price as value (it's not set just because the listmodel is of elements 'price')
-                    item.setValue(price);
+                    listitem.setValue(price);
                     // check if price is selected:
                     final Product albumProduct = album.getProductFor(productType.getProductTypeId());
                     // todo : for this to work the "equals" operation needs to compare Ids of the entities, not object equality!!
                     if (albumProduct != null && price.equals(albumProduct.getPrice())) {
-                        item.getListbox().clearSelection();
-                        item.setSelected(true);
+                        listitem.getListbox().clearSelection();
+                        listitem.setSelected(true);
                     }
                 } else {
-                    item.setLabel("Nicht verfügbar");
+                    listitem.setLabel("Nicht verfügbar");
                 }
 
             }

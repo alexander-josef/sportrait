@@ -85,11 +85,8 @@ public class EventWindow extends Window {
         int numberOfAlbums = category.getAlbums().size();
         if (numberOfAlbums !=0)
         {
-            try {
-                Messagebox.show("Kategorie hat noch "+numberOfAlbums+" Album(s) angehaengt. Loeschen nicht moeglich.");
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Messagebox exception");
-            }
+            Messagebox.show("Kategorie hat noch "+numberOfAlbums+" Album(s) angehaengt. Loeschen nicht moeglich.");
+
         } else
         {
             SportsEvent event = category.getEvent();

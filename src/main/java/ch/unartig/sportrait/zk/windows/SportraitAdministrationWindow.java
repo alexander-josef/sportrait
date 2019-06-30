@@ -257,9 +257,6 @@ public class SportraitAdministrationWindow extends Window
                 bulkImportFromStream(in);
             }
 
-        } catch (InterruptedException e)
-        {
-            throw new RuntimeException("Filupload interrupted", e);
         } catch (IOException e)
         {
             _logger.error("Error parsing event line", e);
