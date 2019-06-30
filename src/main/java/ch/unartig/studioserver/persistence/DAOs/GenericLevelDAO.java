@@ -93,12 +93,10 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
-import org.hibernate.criterion.Order;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -211,15 +209,6 @@ public class GenericLevelDAO
 
         List resultList = session.createQuery(criteriaQuery).getResultList();
 
-        // hbm3: clean up
-/*
-        List listHbm3Old = session
-                .createCriteria(levelClass)
-                // highest id first (latest entry first)
-                .addOrder(Order.desc("genericLevelId"))
-                .list();
-*/
-
         return resultList;
     }
 
@@ -296,9 +285,16 @@ public class GenericLevelDAO
      */
     public EventGroup loadEventGroupByZipCode(String zipCode) throws UAPersistenceException
     {
-        return (EventGroup) HibernateUtil.currentSession().createCriteria(EventGroup.class)
-                .add(Expression.eq("zipcode", zipCode))
+        // hbm3: update
+
+
+        return HibernateUtil.currentSession().createQuery(
+                "select eg " +
+                        "from EventGroup eg " +
+                        "where eg.zipcode = :zipCode",EventGroup.class)
+                .setParameter("zipCode",zipCode)
                 .uniqueResult();
+
     }
 
     /**
@@ -323,7 +319,8 @@ public class GenericLevelDAO
         criteria.select( root )
                 .where(builder.lessThanOrEqualTo(root.get("eventDate"),date))
                 .orderBy(builder.desc(root.get("eventDate")))
-                .orderBy(builder.desc(root.get("navTitle")));
+                // .orderBy(builder.desc(root.get("navTitle")))
+        ;
 
         List<SportsEvent> retValCriteria = HibernateUtil.currentSession()
                 .createQuery(criteria)

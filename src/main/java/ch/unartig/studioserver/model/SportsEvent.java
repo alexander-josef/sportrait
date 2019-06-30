@@ -200,6 +200,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
         if (location == null)
         {
             location = EventGroup.constructByLocation(zipCode, city, category);
+            glDao.saveOrUpdate(location); // save after creation of new eventGroup to avoid transient object exception
         }
         setEventGroup(location);
         _logger.debug("set location (eventgroup) to : " + getEventGroup());

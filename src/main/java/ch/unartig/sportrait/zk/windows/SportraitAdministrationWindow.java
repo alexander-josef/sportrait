@@ -81,7 +81,7 @@ public class SportraitAdministrationWindow extends Window
         // store events as a field - to be reused by the event administration window. re-load in every case
         if (photographer.isAdmin()) {
             //noinspection unchecked
-            setEvents(glDao.listGenericLevel(Event.class));
+            setEvents(glDao.listGenericLevel(Event.class)); // events are reloaded - but problems getting albums from cache?
         } else {
             setEvents(glDao.listEventsWithAlbums(photographer));
         }
@@ -134,14 +134,14 @@ public class SportraitAdministrationWindow extends Window
             _logger.debug("number of events : " + localEvents.size());
             for (Event eachEvent : localEvents)
             {
-                if (eachEvent.getAlbums().size()>0) { // performance?
+                _logger.debug("Loading albums for event (in case of admin user, all albums will be loaded)");
+                List<Album> albums = eachEvent.getPhotographerAlbums(photographer);
+                if (albums.size()>0) {
                     try
                     {
                         _logger.debug("adding event row for event["+eachEvent.getGenericLevelId()+"]");
                         appendEventRow(eachEvent);
 
-                        _logger.debug("Loading albums for event (in case of admin user, all albums will be loaded)");
-                        List<Album> albums = eachEvent.getPhotographerAlbums(photographer);
                         for (Album album : albums)
                         {
                             _logger.debug("Loading album [" + album.getGenericLevelId().toString() + "]");
@@ -307,8 +307,11 @@ public class SportraitAdministrationWindow extends Window
         newEvent.setEventLocation(eventZipCode, eventCity, eventCategory);
         _logger.debug("going to persist new SportsEvent from admin screen:" + newEvent.toString());
         glDao.saveOrUpdate(newEvent);
-        HibernateUtil.currentSession().getTransaction().commit();
+        HibernateUtil.commitTransaction();
         _logger.info("Commmited new event to DB");
+
+        // reload the main page:
+        Executions.sendRedirect("main-zul.html?tab=tab4");
     }
 
 
