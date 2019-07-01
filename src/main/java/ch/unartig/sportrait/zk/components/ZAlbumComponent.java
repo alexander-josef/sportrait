@@ -40,7 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Component to render an album configuration
+ * Custom Component  - instead of zul page - to render an album configuration
+ *
  *
  * @author <a href=mailto:alexander.josef@unartig.ch>Alexander Josef</a>, (c) 2007 unartig AG
  */

@@ -54,7 +54,7 @@ public class SportraitAdministrationWindow extends Window
     private Listbox albumListbox;
     private Div albumListDiv;
     private Div albumEditDiv;
-    private ZAlbumComponent zAlbum;
+    private ZAlbumComponent zAlbum; // custom album component
 
 
     private UserProfile userProfile;
@@ -200,7 +200,7 @@ public class SportraitAdministrationWindow extends Window
     private void appendEventRow(Event event)
     {
         Listitem eventItem = new Listitem(event.getEventDateDisplay() + "," + event.getEventGroup().getCity() + "," + event.getLongTitle(), event);
-        // this doesn't work .... check html code to see what's wrong ...
+        // todo : this doesn't work .... check html code to see what's wrong ...
         eventItem.setStyle("font-size:1.5em;font-weight:bold");
         albumListbox.appendChild(eventItem);
     }

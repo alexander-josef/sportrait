@@ -407,7 +407,9 @@ public class GenericLevelDAO
     }
 
     /**
+     * Admin View
      * Query for retrieving Albums when a photographer is logged in
+     * join fetch products - needed in administration window in order to avoid lazy initialization exception
      *
      * @param event Event
      * @param photographer Photographer
@@ -417,9 +419,10 @@ public class GenericLevelDAO
     {
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "from Album a " +
+                        "join fetch a.products " +
                         "where a.event = :event " +
                         "and a.photographer = :photographer " +
-                        "order by navTitle desc",Album.class)
+                        "order by a.navTitle desc",Album.class)
                 .setParameter("event", event)
                 .setParameter("photographer", photographer)
                 .list();
@@ -428,7 +431,9 @@ public class GenericLevelDAO
     }
 
     /**
+     * Admin View
      * Return all albums for an event
+     * join fetch products - needed in administration window in order to avoid lazy initialization exception
      * @param event The Event
      * @return List of Album s
      */
@@ -438,8 +443,9 @@ public class GenericLevelDAO
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "from Album a " +
+                        "join fetch a.products " +
                         "where a.event = :event " +
-                        "order by navTitle desc",Album.class)
+                        "order by a.navTitle desc",Album.class)
                 .setParameter("event", event)
                 .list();
 

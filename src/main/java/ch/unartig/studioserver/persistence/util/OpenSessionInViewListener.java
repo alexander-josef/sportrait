@@ -14,10 +14,10 @@ public class OpenSessionInViewListener implements ExecutionInit, ExecutionCleanu
     private final Logger _logger = Logger.getLogger(this.getClass());
 
     public void init(Execution exec, Execution parent) {
-        if (parent == null && !HibernateUtil.currentSession().getTransaction().isActive()) { //the root execution of a servlet request
+        if (parent == null) { //the root execution of a servlet request
             _logger.debug("Started a database transaction (zk listener): "+exec);
             // transaction should be open with every call to currentSession()
-            // HibernateUtil.currentSession().beginTransaction();
+            HibernateUtil.currentSession();
         }
         // todo: does this make sense?
         // HibernateUtil.currentSession().clear();
