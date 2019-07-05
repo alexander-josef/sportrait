@@ -410,6 +410,7 @@ public class GenericLevelDAO
      * Admin View
      * Query for retrieving Albums when a photographer is logged in
      * join fetch products - needed in administration window in order to avoid lazy initialization exception
+     * see https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
      *
      * @param event Event
      * @param photographer Photographer
