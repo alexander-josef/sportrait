@@ -5,6 +5,9 @@
 User-agent: *
 Crawl-delay: 10
 
+User-agent: *
+Disallow: /
+
 User-agent: SemrushBot
 Disallow: /
 
@@ -13,6 +16,9 @@ Disallow: /
 
 User-agent: *
 Disallow: /*.jpg$
+
+User-agent: *
+Disallow: /*.JPG$
 
 
 
