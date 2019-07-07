@@ -14,6 +14,7 @@ Disallow: /
 User-agent: SemrushBot-SA
 Disallow: /
 
+# robots.txt is case sensitive - this should solve the issue for all image files
 User-agent: *
 Disallow: /*.jpg$
 
