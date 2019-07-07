@@ -2,9 +2,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.zkoss.org/2005/zk/config http://www.zkoss.org/2005/zk/config/zk.xsd">
 
+<!--
     <desktop-config>
         <theme-uri>/css/sportrait-zk.css</theme-uri>
     </desktop-config>
+-->
 
 <!--
     <system-config>

@@ -855,7 +855,7 @@ public class Album extends GenericLevel implements Serializable {
     protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
         _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");
         _logger.debug("client is admin? " + client.isAdmin());
-        _logger.debug("Photographer : " + getPhotographer());
+        // _logger.debug("Photographer : " + getPhotographer()); // don't use this - can cause lazy initialization exception
         // special case no photographer:
         if (getPhotographer() == null && client.isAdmin()) {
             // album without an album ...

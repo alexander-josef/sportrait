@@ -419,8 +419,9 @@ public class GenericLevelDAO
     public List<Album> listAlbumsForPhotographer(Event event, Photographer photographer) throws UAPersistenceException
     {
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
-                "from Album a " +
-                        "join fetch a.products " +
+                "select distinct a from Album a " +
+                        "join fetch a.products,a.event " +
+                        "join fetch a.event " +
                         "where a.event = :event " +
                         "and a.photographer = :photographer " +
                         "order by a.navTitle desc",Album.class)
@@ -435,6 +436,7 @@ public class GenericLevelDAO
      * Admin View
      * Return all albums for an event
      * join fetch products - needed in administration window in order to avoid lazy initialization exception
+     * see https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
      * @param event The Event
      * @return List of Album s
      */
@@ -443,8 +445,9 @@ public class GenericLevelDAO
 
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
-                "from Album a " +
+                "select distinct a from Album a " +
                         "join fetch a.products " +
+                        "join fetch a.event " +
                         "where a.event = :event " +
                         "order by a.navTitle desc",Album.class)
                 .setParameter("event", event)

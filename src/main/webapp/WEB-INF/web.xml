@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>Sportrait Server</display-name>
     <description>
-        SPORTRAIT web app. (c) Alexander Josef 2005-2017
+        SPORTRAIT web app. (c) Alexander Josef 2005-2019
     </description>
     <context-param>
         <param-name>webmaster</param-name>
@@ -155,6 +155,11 @@
         <!--default session time-out 30 minutes. enter time-out in minutes-->
         <session-timeout>30</session-timeout>
     </session-config>
+    
+    
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 
  <!--
  use this configuration instead of specifying utf-8 as encoding on all jsp's:

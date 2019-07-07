@@ -136,6 +136,7 @@ public class SportraitAdministrationWindow extends Window
             {
                 _logger.debug("Loading albums for event (in case of admin user, all albums will be loaded)");
                 List<Album> albums = eachEvent.getPhotographerAlbums(photographer);
+                _logger.debug("number of albums: " + albums.size());
                 if (albums.size()>0) {
                     try
                     {
