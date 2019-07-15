@@ -20,7 +20,7 @@
                         <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
                                    onclick="return confirm('Permanently delete Event? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="event" paramProperty="genericLevelId">
-                            <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
+                            <img src="${pageContext.request.contextPath}/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
 
                         <span class="green">${event.eventDateDisplay}, ${eventGroup.city}, ${event.navTitle}</span>
@@ -32,7 +32,7 @@
                         <html:link action="/admin/deleteLevel" styleClass="right padd-rl-5"
                                    onclick="return confirm('Permanently delete Album? All Photos under this Album will be deleted as well!');"
                                    paramId="genericLevelId" paramName="album" paramProperty="genericLevelId">
-                            <img src="/images/admin_trash.gif" alt="trash" title="delete"/>
+                            <img src="${pageContext.request.contextPath}/images/admin_trash.gif" alt="trash" title="delete"/>
                         </html:link>
 
                         <html:link action="/photographer/admin/edit?genericLevelId=${album.genericLevelId}" styleClass="listLink">

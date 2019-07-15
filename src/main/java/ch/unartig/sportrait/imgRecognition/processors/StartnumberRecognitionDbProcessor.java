@@ -279,7 +279,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
                 _logger.debug("");
             }
         } else {
-            _logger.info("no text detected");
+            _logger.info("no text detected for " + path);
         }
 
         return startnumbersForFile;

@@ -33,6 +33,7 @@ public class ImgRecognitionHelper {
         if (_instance==null) {
             _instance = new ImgRecognitionHelper();
             // build a rekognition client with the default region (Ireland as of 2019) set in the registry - needs to be the same as the region of the bucket with the images
+            // todo : check if it works for albums < 2019
             _instance.rekognitionClient = AmazonRekognitionClientBuilder.standard().withRegion(Registry.AWS_DEFAULT_REGION).build();
         }
         return _instance;
@@ -73,7 +74,7 @@ public class ImgRecognitionHelper {
             return textResult.getTextDetections();
         } catch (InvalidS3ObjectException e) {
             _logger.warn("S3 Object with key ["+key+"] in bucket ["+bucket+"] does not exist or ist invalid - see stack trace",e);
-            // e.printStackTrace();
+            _logger.warn("Continuing without detection",e);
             return null;
         }
     }
@@ -156,8 +157,7 @@ public class ImgRecognitionHelper {
         try {
             indexFacesResult = rekognitionClient.indexFaces(indexFacesRequest);
         } catch (AmazonRekognitionException e) {
-            _logger.warn("Cannot index faces, see stacktrace - continuing");
-            e.printStackTrace();
+            _logger.warn("Cannot index faces, see stacktrace - continuing",e);
         }
 
         _logger.debug("Done adding faces to collection for : " + key);

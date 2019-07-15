@@ -207,7 +207,6 @@ public class PhotographerAdminAction extends MappingDispatchAction
         photographerAdminBean.setLevel(null);
 
         request.setAttribute("photographerAdminBean",photographerAdminBean);
-//        request.setAttribute("eventGroups", eventGroups);
         request.setAttribute("level", null);
         if (adminForm.getGenericLevelId()!=null && !"".equals(adminForm.getGenericLevelId().toString().trim()))
         {
@@ -219,6 +218,7 @@ public class PhotographerAdminAction extends MappingDispatchAction
 
     /**
      * load level and prepare form to edit level
+     * todo : find out if needed only for deprecated HTML admin album overview (use zk view instead)
      *
      * @param mapping
      * @param form

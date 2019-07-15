@@ -31,12 +31,21 @@ import org.hibernate.criterion.Restrictions;
 public class UserRoleDAO
 {
 
-    public UserRole loadRoleByName(String adminRoleName) throws UAPersistenceException
+    /**
+     * query to return a role by name
+     * @param roleName
+     * @return
+     * @throws UAPersistenceException
+     */
+    public UserRole loadRoleByName(String roleName) throws UAPersistenceException
     {
-        Criteria c = HibernateUtil.currentSession()
-                .createCriteria(UserRole.class)
-                .add(Restrictions.eq("roleName", adminRoleName));
-        return (UserRole)c.uniqueResult();
+        return HibernateUtil.currentSession().createQuery("select ur " +
+                "from UserRole ur " +
+                "where roleName = :roleName",UserRole.class)
+                .setParameter("roleName",roleName)
+                .setCacheable(true)
+                .uniqueResult();
+
     }
 
     
