@@ -407,7 +407,8 @@ Note: if you list each property explicitly, you must include all properties of t
         try {
             return HibernateUtil.currentSession().load(Photo.class, photoId);
         } catch (HibernateException e) {
-            throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
+            _logger.warn("Could not load photo with ID ["+photoId+"], see stack trace", e);
+            throw new UAPersistenceException("Could not load photo with ID ["+photoId+"], see stack trace", e);
         }
     }
 
