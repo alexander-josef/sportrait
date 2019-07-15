@@ -193,6 +193,8 @@
 package ch.unartig.studioserver;
 
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.util.Utils;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -219,6 +221,9 @@ public final class Registry
     public static  boolean _ProdEnv = false; // constant variable to indicate if we're in prod environment - initializes to false, will be set to true for dev env / used in JSPa
 
     // todo: move to appSettings
+    public static final Regions AWS_FRANKFURT_REGION = Regions.EU_CENTRAL_1;
+    public final static Region awsRegionFrankfurt = Region.getRegion(AWS_FRANKFURT_REGION); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
+    public static final Regions AWS_DEFAULT_REGION = Regions.EU_WEST_1; // Ireland - used for bucket URLs after image recognition
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";

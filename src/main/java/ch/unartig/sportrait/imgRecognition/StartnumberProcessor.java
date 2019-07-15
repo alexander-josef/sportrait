@@ -55,8 +55,9 @@ public class StartnumberProcessor implements Runnable {
     public StartnumberProcessor() {
         _logger.info("**** Starting up Startnumber Processor");
         maxImagesToProcess = -1;
+        // todo : set the default region programmatically instead of relying on the system defaults
+        // but for the queue it doesn't really matter where it is, or does it? At least if all client's are initialized the same
         sqs = AmazonSQSClientBuilder.defaultClient();
-
 
         // Executor Service
         executor = new ThreadPoolExecutor(

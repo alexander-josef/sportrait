@@ -1,6 +1,8 @@
 package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.studioserver.Registry;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
@@ -30,7 +32,8 @@ public class ImgRecognitionHelper {
 
         if (_instance==null) {
             _instance = new ImgRecognitionHelper();
-            _instance.rekognitionClient = AmazonRekognitionClientBuilder.defaultClient();
+            // build a rekognition client with the default region (Ireland as of 2019) set in the registry - needs to be the same as the region of the bucket with the images
+            _instance.rekognitionClient = AmazonRekognitionClientBuilder.standard().withRegion(Registry.AWS_DEFAULT_REGION).build();
         }
         return _instance;
     }
@@ -69,7 +72,7 @@ public class ImgRecognitionHelper {
             textResult = rekognitionClient.detectText(textRequest);
             return textResult.getTextDetections();
         } catch (InvalidS3ObjectException e) {
-            _logger.warn("S3 Object does not exist or ist invalid - see stack trace",e);
+            _logger.warn("S3 Object with key ["+key+"] in bucket ["+bucket+"] does not exist or ist invalid - see stack trace",e);
             // e.printStackTrace();
             return null;
         }

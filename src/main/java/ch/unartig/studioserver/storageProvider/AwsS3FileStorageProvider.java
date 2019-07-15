@@ -33,14 +33,12 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
     private Logger _logger = Logger.getLogger(getClass().getName());
 
-    private AmazonS3 s3DefaultClient; // according to .aws directory on server
+    private AmazonS3 s3DefaultClient; //
     private AmazonS3 s3FrankfurtClient; // specific for older albums on frankfurt bucket
     // final private String bucketName = Registry.getS3BucketName();
     final private String preImageServiceBucketName = Registry.getS3BucketName();
-    final static private Region awsRegionFrankfurt = Region.getRegion(Regions.EU_CENTRAL_1); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
-    final static private Region awsRegionIreland = Region.getRegion(Regions.EU_WEST_1); // Ireland - used for bucket URLs after image recognition
-//    private final static String awsS3Url = "s3.amazonaws.com";
-    private final static String awsS3RegionUrlFrankfurt = "s3-"+ awsRegionFrankfurt +".amazonaws.com";
+    //    private final static String awsS3Url = "s3.amazonaws.com";
+    private final static String awsS3RegionUrlFrankfurt = "s3-"+ Registry.awsRegionFrankfurt +".amazonaws.com";
     // todo: http or https
     // see for example: http://stackoverflow.com/questions/3048236/amazon-s3-https-ssl-is-it-possible
 //    private String bucketUrlWithoutRegion = "http://" + bucketName + "." + awsS3RegionUrlFrankfurt;
@@ -73,9 +71,9 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
          // creating different clients per region, see also https://aws.amazon.com/blogs/developer/working-with-different-aws-regions/
-        s3DefaultClient = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).withForceGlobalBucketAccessEnabled(true).build();
+        s3DefaultClient = AmazonS3ClientBuilder.standard().withRegion(Registry.AWS_DEFAULT_REGION).withForceGlobalBucketAccessEnabled(true).build();
         // not used yet:
-        s3FrankfurtClient = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1).withForceGlobalBucketAccessEnabled(true).build();
+        s3FrankfurtClient = AmazonS3ClientBuilder.standard().withRegion(Registry.AWS_FRANKFURT_REGION).withForceGlobalBucketAccessEnabled(true).build();
 
 
         _logger.debug("======================================================");
@@ -159,21 +157,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         return objectContent;
     }
 
-    /**
-     * Helper method to return the correct S3 bucket location depending on the year of the event
-     * after 2019  : Ireland (EU_WEST_1) ist used to support image rekognition
-     * @param album album to determine the event date
-     * @return the constant for the aws location
-     */
-    private Region getBucketRegion(Album album) {
-        if (album.getEvent().getEventDateYear() < 2019) {
-            _logger.debug("before 2019 - returning aws region Frankfurt");
-            return awsRegionFrankfurt;
-        } else {
-            _logger.debug("after 2019 - returning aws region Ireland");
-            return awsRegionIreland;
-        }
-    }
+
 
     /**
      * Static helper method for fine image key
