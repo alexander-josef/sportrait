@@ -70,7 +70,7 @@ public class EventCategoryAction extends MappingDispatchAction {
         int page;
         ActionMessages msgs;
         msgs = new ActionMessages();
-        String photoId = request.getParameter("photoId");
+        String photoId = request.getParameter("photoId"); // photoId in case overview will be shown when returning from a display view
 
 
 

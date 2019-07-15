@@ -1,6 +1,5 @@
 package ch.unartig.sportrait.imgRecognition;
 
-import ch.unartig.sportrait.imgRecognition.processors.SportraitImageProcessorIF;
 import ch.unartig.studioserver.model.EventRunner;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;

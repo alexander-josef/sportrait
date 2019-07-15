@@ -584,6 +584,7 @@ Note: if you list each property explicitly, you must include all properties of t
         // new : hibernate 5.4 with criteria API
         CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
         javax.persistence.criteria.CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
         Predicate startNumberPredicate = null;
         Predicate photoIdPredicate;
 
@@ -622,7 +623,7 @@ Note: if you list each property explicitly, you must include all properties of t
 
 
         } catch (NonUniqueObjectException e) {
-            // exceptional case: not a single result: we now calcualte the page according to the photoid:
+            // exceptional case: not a single result: we now calculate the page according to the photoid:
             _logger.info("not a unique result for this timestamp : " + photo.getPictureTakenDate());
             _logger.info("calculating page for this photo according to photoid");
 
@@ -683,7 +684,9 @@ Note: if you list each property explicitly, you must include all properties of t
      * @deprecated probably shouldn't be used - album not a valid criterion
      */
     public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException {
-        _logger.debug("extended get sport photos for page");
+        throw new RuntimeException("method needs migration -> listSportsPhotosOnPagePlusPreview");
+
+/*        _logger.debug("extended get sport photos for page");
         List photos;
         if (page < 1) {
             page = 1;
@@ -705,10 +708,11 @@ Note: if you list each property explicitly, you must include all properties of t
             DebugUtils.debugPhotos(photos);
         }
         return photos;
+ */
     }
 
     /**
-     * Retrieve all photos of an EventCategory that match the given parameter
+     * Retrieve all photos of an EventCategory that match the given parameter, incl. startnumber
      * first order is picturetakendate
      * set order if no time is available to photoid
      *
@@ -726,14 +730,14 @@ Note: if you list each property explicitly, you must include all properties of t
         }
 
         // new hibernate 5.4
-        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory);
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
         // --
 
 
         // Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
 
 
-        if (itemsOnPage != 0) {//if page=1 do not extend selection at the beginning:
+        if (itemsOnPage != 0) {//if page=1 do not extend selection at the beginning: (check : page==1 -> result always 0, no?)
             int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
             int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
             // new Hibernate 5.4
@@ -751,7 +755,7 @@ Note: if you list each property explicitly, you must include all properties of t
             criteriaQueryResult = photoQuery.getResultList();
 
         } catch (HibernateException e) {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + eventCategory.getTitle() + " ; see stack trace", e);
+            throw new UAPersistenceException("Problem while retrieving Photos for Event [" + eventCategory.getTitle() + "] and startnumber ["+startNumber+"] ; see stack trace", e);
         }
 
         if (_logger.isDebugEnabled()) {
@@ -1148,7 +1152,7 @@ Note: if you list each property explicitly, you must include all properties of t
         int maxResults = backward + forward;
 
         // new hibernate 5.4
-        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory);
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
 
         photoQuery
                 .setFirstResult(firstResult-1) // starts with 0
@@ -1164,22 +1168,37 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
     /**
-     * private helper for constructing a cached JPA query that return photos for an eventcategory, ordered 1st by picturetakendate, then photoId
+     * private helper for constructing a cached JPA query that return photos for an eventcategory and startnumber, ordered 1st by picturetakendate, then photoId
      * @param eventCategory eventCategory with the photos
      * @return a Query that can be further processed
      */
-    private Query<Photo> getPublishedPhotosForEventCategoryQuery(EventCategory eventCategory) {
-        CriteriaBuilder cb = HibernateUtil.currentSession().getCriteriaBuilder();
+    private Query<Photo> getPublishedPhotosForEventCategoryQuery(EventCategory eventCategory, String startNumber) {
+        CriteriaBuilder criteriaBuilder = HibernateUtil.currentSession().getCriteriaBuilder();
+        Predicate startNumberPredicate;
 
-        CriteriaQuery<Photo> criteriaQuery = cb.createQuery(Photo.class);
+
+        CriteriaQuery<Photo> criteriaQuery = criteriaBuilder.createQuery(Photo.class);
         Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
 
-        Predicate publishedForEventCategoryPredicate = getPublishedForEventCategoryPredicate(eventCategory, cb, photoRoot);
+
+        Predicate finalPredicate = getPublishedForEventCategoryPredicate(eventCategory, criteriaBuilder, photoRoot);
+
+        if (startNumber != null && !"".equals(startNumber)) { // combine the final predicate with the startnumber predicate if one is given
+            Join<Photo,Album> photoPhotoSubjectsJoin = photoRoot.join("photoSubjects");
+            Join<Photo,Album> photoSubjectsEventRunnerJoin = photoPhotoSubjectsJoin.join("eventRunners");
+
+            // create combined predicate
+            startNumberPredicate = criteriaBuilder
+                    .equal(photoSubjectsEventRunnerJoin.get("startnumber"),startNumber);
+            finalPredicate = criteriaBuilder.and(finalPredicate, startNumberPredicate);
+        }
+
         criteriaQuery
                 .select(photoRoot)
-                .where(publishedForEventCategoryPredicate)
-                .orderBy(cb.asc(photoRoot.get("pictureTakenDate")))
-                .orderBy(cb.asc(photoRoot.get("photoId")));
+                .where(finalPredicate)
+                .orderBy(criteriaBuilder.asc(photoRoot.get("pictureTakenDate")))
+                .orderBy(criteriaBuilder.asc(photoRoot.get("photoId")));
+
 
         return HibernateUtil.currentSession()
                 .createQuery(criteriaQuery)
