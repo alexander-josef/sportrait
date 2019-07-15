@@ -100,9 +100,9 @@ public class HibernateUtil
                         .build();
 
                 try {
-                    _logger.debug("Going to create SessionFactory ");
+                    _logger.trace("Going to create SessionFactory ");
                     sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-                    _logger.debug("Hibernate could create SessionFactory");
+                    _logger.trace("Hibernate could create SessionFactory");
                 }
 
                 catch (Exception e) {
@@ -175,19 +175,18 @@ public class HibernateUtil
         lazyinit();
         try
         {
-//            System.out.println("**************************** Getting session from factory : " + sessionFactory + "*************************************");
-            // Thread.dumpStack();
+
             Session session = sessionFactory.getCurrentSession();
-            _logger.debug("got current session : " + session.hashCode());
+            _logger.trace("got current session : " + session.hashCode());
             TransactionStatus transactionStatus = session.getTransaction().getStatus();
-            _logger.debug("transaction status : " + transactionStatus);
+            _logger.trace("transaction status : " + transactionStatus);
             if (transactionStatus==TransactionStatus.NOT_ACTIVE) {
-                _logger.debug("no transaction ? starting new unit of work with a transaction");
-                _logger.debug("transaction status OLD : " + session.getTransaction().getStatus());
+                _logger.trace("no transaction ? starting new unit of work with a transaction");
+                _logger.trace("transaction status OLD : " + session.getTransaction().getStatus());
 
                 session.beginTransaction(); // when to start transaction? here?
-                _logger.debug("transaction status NEW : " + session.getTransaction().getStatus());
-                _logger.debug("^^^^^^^^^^^ new Transaction started ^^^^^^^^^^^");
+                _logger.trace("transaction status NEW : " + session.getTransaction().getStatus());
+                _logger.trace("^^^^^^^^^^^ new Transaction started ^^^^^^^^^^^");
             }
 
             // start a transaction. We will always need a transaction. If beginTransaction will be called again for the same unit of work, it should do nothing (??)
