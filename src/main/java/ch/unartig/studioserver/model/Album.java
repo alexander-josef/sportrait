@@ -248,7 +248,7 @@ public class Album extends GenericLevel implements Serializable {
     private String albumTypeString;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "photographerid")
     private Photographer photographer;
 
