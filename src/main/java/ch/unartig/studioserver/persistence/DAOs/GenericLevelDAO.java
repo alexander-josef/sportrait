@@ -420,8 +420,8 @@ public class GenericLevelDAO
     {
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "select distinct a from Album a " +
-                        "join fetch a.products,a.event " +
-                        "join fetch a.event " +
+                        "left join fetch a.products " +
+                        "left join fetch a.event " +
                         "where a.event = :event " +
                         "and a.photographer = :photographer " +
                         "order by a.navTitle desc",Album.class)
@@ -446,12 +446,12 @@ public class GenericLevelDAO
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "select distinct a from Album a " +
-                        "join fetch a.products " +
-                        "join fetch a.event " +
+                        "left join fetch a.products " +
+                        "left join fetch a.event " +
                         "where a.event = :event " +
                         "order by a.navTitle desc",Album.class)
                 .setParameter("event", event)
-                .list();
+                .getResultList();
 
 
 
@@ -466,7 +466,8 @@ public class GenericLevelDAO
      */
     public List<Album> listAlbumsForPhotographer(Long photographerId) throws UAPersistenceException
     {
-        List<Album> albumList = HibernateUtil.currentSession().createQuery("select a from Album a " +
+        List<Album> albumList = HibernateUtil.currentSession().createQuery(
+                "select a from Album a " +
                 "where a.photographer.photographerId = :photographerId " +
                 "order by navTitle desc ",Album.class)
                 .setParameter("photographerId", photographerId)
