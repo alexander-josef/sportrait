@@ -110,7 +110,7 @@ public class StartnumberProcessor implements Runnable {
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
                 messages = sqs.receiveMessage(poll).getMessages();
             } catch (SdkClientException e) {
-                _logger.warn("ignoring unknown exception : "); // todo : shut down after repeated connection fails?
+                _logger.warn("ignoring unknown exception : ",e); // todo : shut down after repeated connection fails?
                 messages = new ArrayList<>();
             }
             _logger.debug("Got " + messages.size() + " messages from queue. Processed " + numSeenProcessor + " so far. maxImagesToProcess = " + maxImagesToProcess);
