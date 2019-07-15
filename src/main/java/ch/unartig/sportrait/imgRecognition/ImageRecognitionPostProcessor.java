@@ -9,8 +9,6 @@ import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.model.FaceMatch;
 import com.amazonaws.services.rekognition.model.InvalidParameterException;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.*;
 import org.apache.log4j.Logger;
 
@@ -34,7 +32,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
     private final ThreadPoolExecutor executor;
-    private final AmazonSQS sqs;
     private AtomicInteger numSeenProcessor = new AtomicInteger();
 
     /**
@@ -45,8 +42,6 @@ public class ImageRecognitionPostProcessor implements Runnable{
         this.albumId = genericLevelId;
         _logger.info("**** Starting up Startnumber Post Processor");
         maxImagesToProcess = -1;
-        sqs = AmazonSQSClientBuilder.defaultClient();
-
         int maxWorkers = MAX_WORKERS;
         executor = new ThreadPoolExecutor(
                 1, maxWorkers, EXECUTOR_KEEP_ALIVE_TIME, TimeUnit.SECONDS,
@@ -60,7 +55,8 @@ public class ImageRecognitionPostProcessor implements Runnable{
     @Override
     public void run() {
         int idleCounter=0; // idle counter - if idle counter reaches QUEUE_MAX_IDLE, shutdown the polling server
-        String queueUrl = MessageQueueHandler.getInstance().getUnknownFacesQueueName(albumId);
+        MessageQueueHandler messageQueueHandler = MessageQueueHandler.getInstance();
+        String queueUrl = messageQueueHandler.getUnknownFacesQueueName(albumId);
 
         while (!executor.isShutdown()) {
             // poll for messages on the queue.
@@ -71,7 +67,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
                     .withMessageAttributeNames("All");
             List<Message> messages;
             try {
-                messages = sqs.receiveMessage(poll).getMessages();
+                messages = messageQueueHandler.getAmazonSQSclient().receiveMessage(poll).getMessages();
             } catch (QueueDoesNotExistException e) {
                 _logger.error("Queue does not exist - initializing messages list, continue polling queue");
 /*
@@ -99,7 +95,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
                 });
 
                 // remove the job from the queue when completed successfully (or skipped)
-                DeleteMessageResult result = sqs.deleteMessage(queueUrl, message.getReceiptHandle());
+                DeleteMessageResult result = messageQueueHandler.getAmazonSQSclient().deleteMessage(queueUrl, message.getReceiptHandle());
                 _logger.debug("message processed - deleted message from queue with result : "+result.toString());
                 idleCounter=0; // reset idle counter after successfully processing a message
             }
@@ -116,7 +112,7 @@ public class ImageRecognitionPostProcessor implements Runnable{
             } else if (idleCounter > QUEUE_MAX_IDLE) {
                 _logger.info("idle counter reached QUEUE_MAX_IDLE - shutting down");
                 shutdown();
-                DeleteQueueResult result = sqs.deleteQueue(new DeleteQueueRequest(queueUrl));
+                DeleteQueueResult result = messageQueueHandler.getAmazonSQSclient().deleteQueue(new DeleteQueueRequest(queueUrl));
                 _logger.info("shut down polling and deleted queue : " +queueUrl + " -- result : " + result);
                 // todo : delete faces collection after album has been post processed?
                 // ImgRecognitionHelper.getInstance().deleteFacesCollection(albumId);

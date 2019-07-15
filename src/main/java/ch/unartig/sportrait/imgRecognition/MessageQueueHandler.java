@@ -24,7 +24,17 @@ public class MessageQueueHandler {
     static final String PHOTO_ID = "photoId"; // used as message attribute
     private static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
     private String sportraitQueueName;
-    private AmazonSQS sqs;
+
+    public AmazonSQS getAmazonSQSclient() {
+        return amazonSQSclient;
+    }
+
+    /**
+     * Amazon SQS client to be reused throughout the application (via this singleton class)
+     */
+    private AmazonSQS amazonSQSclient;
+
+
     /**
      * Single instance of class to be retrieved via the static getter
      */
@@ -35,7 +45,7 @@ public class MessageQueueHandler {
     }
 
     private MessageQueueHandler() {
-        sqs = AmazonSQSClientBuilder.defaultClient();
+        amazonSQSclient = AmazonSQSClientBuilder.standard().withRegion(Registry.SPORTRAIT_AWS_DEFAULT_REGION).build();
         sportraitQueueName = SPORTRAIT_QUEUE_NAME_PREFIX + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
     }
 
@@ -47,7 +57,7 @@ public class MessageQueueHandler {
     private CreateQueueResult getImageRecognitionQueue(Album album) {
         // todo later : create a queue per album - start with queue
         // CreateQueueResult queueResult = sqs.createQueue(album.getGenericLevelId().toString());
-        CreateQueueResult queueResult = sqs.createQueue(sportraitQueueName);
+        CreateQueueResult queueResult = amazonSQSclient.createQueue(sportraitQueueName);
         // if necessary, add parameters to the queue, like the visibility timeout, see also here :
         // https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/sqs/model/CreateQueueRequest.html#addAttributesEntry-java.lang.String-java.lang.String-
 
@@ -98,7 +108,7 @@ public class MessageQueueHandler {
                 .withMessageBody(path)
                 .withMessageAttributes(messageAttributes);
 
-        SendMessageResult result = sqs.sendMessage(msg);
+        SendMessageResult result = amazonSQSclient.sendMessage(msg);
 
         return result;
     }
@@ -125,7 +135,7 @@ public class MessageQueueHandler {
         String path = runnerFace.getPath();
         String faceId = runnerFace.getFaceRecord().getFace().getFaceId();
 
-        CreateQueueResult queueResult = sqs.createQueue(getUnknownFacesQueueName(albumId));
+        CreateQueueResult queueResult = amazonSQSclient.createQueue(getUnknownFacesQueueName(albumId));
 
         String queueUrl = queueResult.getQueueUrl();
         _logger.info("Posting message for unknown face [ID : "+faceId+"] in  : " + path + " to queue ["+ queueUrl +"]");
@@ -144,7 +154,7 @@ public class MessageQueueHandler {
                 .withMessageBody(faceId)
                 .withMessageAttributes(messageAttributes);
 
-        SendMessageResult result = sqs.sendMessage(msg);
+        SendMessageResult result = amazonSQSclient.sendMessage(msg);
 
         return result;
 

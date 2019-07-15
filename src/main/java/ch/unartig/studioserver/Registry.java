@@ -223,7 +223,7 @@ public final class Registry
     // todo: move to appSettings
     public static final Regions AWS_FRANKFURT_REGION = Regions.EU_CENTRAL_1;
     public final static Region awsRegionFrankfurt = Region.getRegion(AWS_FRANKFURT_REGION); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
-    public static final Regions AWS_DEFAULT_REGION = Regions.EU_WEST_1; // Ireland - used for bucket URLs after image recognition
+    public static final Regions SPORTRAIT_AWS_DEFAULT_REGION = Regions.EU_WEST_1; // Ireland - used for bucket URLs after image recognition, used for queues
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";

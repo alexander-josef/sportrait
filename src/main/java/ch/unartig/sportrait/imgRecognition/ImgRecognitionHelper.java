@@ -1,8 +1,6 @@
 package ch.unartig.sportrait.imgRecognition;
 
 import ch.unartig.studioserver.Registry;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
@@ -34,7 +32,7 @@ public class ImgRecognitionHelper {
             _instance = new ImgRecognitionHelper();
             // build a rekognition client with the default region (Ireland as of 2019) set in the registry - needs to be the same as the region of the bucket with the images
             // todo : check if it works for albums < 2019
-            _instance.rekognitionClient = AmazonRekognitionClientBuilder.standard().withRegion(Registry.AWS_DEFAULT_REGION).build();
+            _instance.rekognitionClient = AmazonRekognitionClientBuilder.standard().withRegion(Registry.SPORTRAIT_AWS_DEFAULT_REGION).build();
         }
         return _instance;
     }

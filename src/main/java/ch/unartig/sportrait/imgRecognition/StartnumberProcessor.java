@@ -5,8 +5,6 @@ import ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbPr
 import ch.unartig.studioserver.Registry;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.rekognition.model.*;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.*;
 import org.apache.log4j.Logger;
 
@@ -30,7 +28,6 @@ public class StartnumberProcessor implements Runnable {
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
     private final ThreadPoolExecutor executor;
-    private final AmazonSQS sqs;
     private List<SportraitImageProcessorIF> processors = new ArrayList<>();
     private AtomicInteger numSeenProcessor = new AtomicInteger();
     private int maxImagesToProcess;
@@ -55,10 +52,6 @@ public class StartnumberProcessor implements Runnable {
     public StartnumberProcessor() {
         _logger.info("**** Starting up Startnumber Processor");
         maxImagesToProcess = -1;
-        // todo : set the default region programmatically instead of relying on the system defaults
-        // but for the queue it doesn't really matter where it is, or does it? At least if all client's are initialized the same
-        sqs = AmazonSQSClientBuilder.defaultClient();
-
         // Executor Service
         executor = new ThreadPoolExecutor(
                 CORE_POOL_SIZE, MAX_WORKERS, EXECUTOR_KEEP_ALIVE_TIME, TimeUnit.SECONDS,
@@ -70,8 +63,8 @@ public class StartnumberProcessor implements Runnable {
         // todo : parameters ?
         // todo : startnumbers to be stored to db?
         processors.add(new StartnumberRecognitionDbProcessor());
-        /**
-         * just one faces collection ? Deleted after post-processing an album?
+        /*
+          just one faces collection ? Deleted after post-processing an album?
          */
         ImgRecognitionHelper.getInstance().createFacesCollection();
     }
@@ -80,7 +73,8 @@ public class StartnumberProcessor implements Runnable {
      * overridden run method to start up the thread
      */
     public void run() {
-        String queueUrl = MessageQueueHandler.getInstance().getSportraitQueueName();
+        MessageQueueHandler messageQueueHandler = MessageQueueHandler.getInstance();
+        String queueUrl = messageQueueHandler.getSportraitQueueName();
         _logger.info("Start Polling the SQS queue - environment  : ["+ Registry.getApplicationEnvironment() +"] for incoming images to recognize ....");
         if (processors.isEmpty()) {
             _logger.warn("No processors defined, will not start up.");
@@ -103,13 +97,13 @@ public class StartnumberProcessor implements Runnable {
                     .withMessageAttributeNames("All");
             List<Message> messages;
             try {
-                messages = sqs.receiveMessage(poll).getMessages();
+                messages = messageQueueHandler.getAmazonSQSclient().receiveMessage(poll).getMessages();
             } catch (QueueDoesNotExistException e) {
                 _logger.error("Queue does not exist");
                 // todo : don't create directly - use MessageQueueHandler:
-                CreateQueueResult queueResult = sqs.createQueue(MessageQueueHandler.getInstance().getSportraitQueueName());
+                CreateQueueResult queueResult = messageQueueHandler.getAmazonSQSclient().createQueue(messageQueueHandler.getSportraitQueueName());
                 _logger.info("Created new queue with URL : " + queueResult.getQueueUrl());
-                messages = sqs.receiveMessage(poll).getMessages();
+                messages = messageQueueHandler.getAmazonSQSclient().receiveMessage(poll).getMessages();
             } catch (SdkClientException e) {
                 _logger.warn("ignoring unknown exception : ",e); // todo : shut down after repeated connection fails?
                 messages = new ArrayList<>();
@@ -130,7 +124,7 @@ public class StartnumberProcessor implements Runnable {
                 });
 
                 // remove the job from the queue when completed successfully (or skipped)
-                sqs.deleteMessage(queueUrl, message.getReceiptHandle());
+                messageQueueHandler.getAmazonSQSclient().deleteMessage(queueUrl, message.getReceiptHandle());
             }
             // todo  : check exit clause - how many images? forever?
             if (maxImagesToProcess > -1 && numSeenProcessor.get() > maxImagesToProcess) {

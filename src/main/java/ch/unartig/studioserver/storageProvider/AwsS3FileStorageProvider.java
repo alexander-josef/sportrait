@@ -11,8 +11,6 @@ import ch.unartig.util.FileUtils;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
@@ -71,7 +69,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
 
          // creating different clients per region, see also https://aws.amazon.com/blogs/developer/working-with-different-aws-regions/
-        s3DefaultClient = AmazonS3ClientBuilder.standard().withRegion(Registry.AWS_DEFAULT_REGION).withForceGlobalBucketAccessEnabled(true).build();
+        s3DefaultClient = AmazonS3ClientBuilder.standard().withRegion(Registry.SPORTRAIT_AWS_DEFAULT_REGION).withForceGlobalBucketAccessEnabled(true).build();
         // not used yet:
         s3FrankfurtClient = AmazonS3ClientBuilder.standard().withRegion(Registry.AWS_FRANKFURT_REGION).withForceGlobalBucketAccessEnabled(true).build();
 
