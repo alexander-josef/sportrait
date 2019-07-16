@@ -134,8 +134,7 @@ public class SportsAlbumBean extends AbstractAlbumBean
         setPhotos(photosOnPagePlusPreview);
     }
 
-    public Photo getLastPhotoInAlbumAndSelection() throws UnartigException
-    {
+    public Photo getLastPhotoInAlbumAndSelection() {
         _logger.debug("getting last photo of album and selection for :"+this);
         PhotoDAO phDao = new PhotoDAO();
         return phDao.getLastPhotoInCategoryAndSelection(eventCategory,startNumber);

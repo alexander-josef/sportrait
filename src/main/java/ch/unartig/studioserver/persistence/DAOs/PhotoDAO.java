@@ -144,6 +144,16 @@ public class PhotoDAO {
 
     Logger _logger = Logger.getLogger(getClass().getName());
 
+
+    public Photo load(Long photoId) throws UAPersistenceException {
+        try {
+            return HibernateUtil.currentSession().load(Photo.class, photoId);
+        } catch (HibernateException e) {
+            _logger.warn("Could not load photo with ID ["+photoId+"], see stack trace", e);
+            throw new UAPersistenceException("Could not load photo with ID ["+photoId+"], see stack trace", e);
+        }
+    }
+
     public void saveOrUpdate(Photo photo) throws UAPersistenceException {
         try {
             HibernateUtil.currentSession().saveOrUpdate(photo);
@@ -152,6 +162,21 @@ public class PhotoDAO {
             throw new UAPersistenceException("Cannot save or update a Photo, see stack trace", e);
         }
 
+    }
+
+    /**
+     * DAO method to delete single photo
+     *
+     * @param photoId
+     */
+    public void delete(Long photoId) throws UAPersistenceException {
+
+        try {
+            HibernateUtil.currentSession().delete(HibernateUtil.currentSession().load(Photo.class, photoId));
+
+        } catch (HibernateException h) {
+            throw new UAPersistenceException("Could not load and delete Photo by ID, see stack trace", h);
+        }
     }
 
     /**
@@ -313,46 +338,9 @@ Note: if you list each property explicitly, you must include all properties of t
         return photos;
     }
 
-    /**
-     * list photos for a page ... list all photos of page and add one at the end and one at the beginning for the previews<br>
-     * if page=1 do not extend selection at the beginning<br>
-     * if page=1 extend maxresults only by 1 not by 2
-     * todo: wrong result if album has exactly 16 photos
-     *
-     * @param page
-     * @param album       the album is used as filter criterium
-     * @param itemsOnPage
-     * @return
-     * @throws UAPersistenceException
-     */
-    public List listPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage) throws UAPersistenceException {
-        _logger.debug("extended get photos for page");
-        List photos;
-        if (page < 1) {
-            page = 1;
-        }
-        //if page=1 do not extend selection at the beginning:
-        int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
-        int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
-        Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
-                .createAlias("album", "album")
-                .add(Expression.eq("album.publish", Boolean.TRUE))
-                .add(Expression.eq("album", album))
-                .addOrder(Order.asc("pictureTakenDate"))
-                .setMaxResults(maxResults)
-                .setFirstResult(firstResult);
-
-        try {
-            photos = criteria.list();
-        } catch (HibernateException e) {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
-        }
-        DebugUtils.debugPhotos(photos);
-        return photos;
-    }
 
     /**
-     * Performant count on photos
+     * Performant count on number of photos in an album
      *
      * @param album
      * @return
@@ -401,14 +389,6 @@ Note: if you list each property explicitly, you must include all properties of t
         return firstPhoto;
     }
 
-    public Photo load(Long photoId) throws UAPersistenceException {
-        try {
-            return HibernateUtil.currentSession().load(Photo.class, photoId);
-        } catch (HibernateException e) {
-            _logger.warn("Could not load photo with ID ["+photoId+"], see stack trace", e);
-            throw new UAPersistenceException("Could not load photo with ID ["+photoId+"], see stack trace", e);
-        }
-    }
 
     /**
      * user has chosen a time for a certain album. find out page nr where this time starts in the album
@@ -423,44 +403,7 @@ Note: if you list each property explicitly, you must include all properties of t
         return (getAlbumPageNrFor(firstPhoto));
     }
 
-    /**
-     * user has chosen a time for a certain album. find out page nr where this time starts in the album
-     *
-     * @param album   the album to chose the photos from
-     * @param hour    0 - 23
-     * @param minutes 0 - 59
-     * @return page number (starting at 1)
-     */
-/*
-    public int getAlbumPageNrFor(Album album, int hour, int minutes) throws UAPersistenceException
-    {
-        int page;
-        //count = count how many are BEFORE the chosen time ; position of first photo after chosen time = count + 1
-        int count = 0;
-        // counting without initializing the collection
-//        ( (Integer) session.iterate("select count(*) from ....").next() ).intValue();
-        try
-        {
-            Photo firstPhoto = getFirstPhotoForTime(hour, minutes, album);
-            String query = "select count(*) " + "from ch.unartig.studioserver.model.Photo as photo " + "where photo.album = :album " + "and photo.pictureTakenDate < :firstPhotoDate";
-            Map map = new HashMap();
-            map.put("album", album);
-            map.put("firstPhotoDate", firstPhoto.getPictureTakenDate());
-            count = ((Integer) HibernateUtil.getUnique(query, map)).intValue();
-        } catch (UAPersistenceException e)
-        {
-            _logger.error("error getting page nr.", e);
-            throw new UAPersistenceException("getting page nr error", e);
-        } catch (Exception e2)
-        {
-            _logger.error("unknown exception", e2);
-        }
-        // count = pos -1
-        // page = (count / itemsOnPage) +1;
-        page = (count / Registry.getItemsOnPage()) + 1;
-        return page;
-    }
-*/
+
 
     /**
      * query for the position of the photo within the album ????<br>
@@ -508,61 +451,9 @@ Note: if you list each property explicitly, you must include all properties of t
         return getAlbumPageNrFor(load(displayPhotoId));
     }
 
-    /**
-     * given the photoId , startnumber (if any), calculate the pagenumber for the passed EVENT album (i.e. among all photo in the event of the album)
-     *
-     * @param displayPhotoId
-     * @param eventAlbum
-     * @param startNumber
-     * @return
-     * @throws UAPersistenceException
-     */
-    public int getAlbumPageNrFor(Long displayPhotoId, EventAlbum eventAlbum, String startNumber) throws UAPersistenceException {
-        _logger.debug("getting page number for eventAlbum ....");
-        Photo photo = load(displayPhotoId);
-        int page = 1;
-        int position;
-        Criteria c = createEventAlbumStartNumberCriteria(eventAlbum, startNumber);
 
-        Object queryResult = c
-                .add(Expression.le("pictureTakenDate", photo.getPictureTakenDate()))
-                .setProjection(Projections.rowCount())
-                .uniqueResult();
 
-        position = ((Integer) queryResult).intValue();
-        _logger.debug("position : " + position);
-        page = ((position - 1) / Registry.getItemsOnPage()) + 1;
-        _logger.debug("page : " + page);
-        return page;
-    }
 
-    /**
-     * given the photoId , startnumber (if any), calculate the pagenumber for the passed album
-     *
-     * @param displayPhotoId
-     * @param sportsAlbum
-     * @param startNumber
-     * @return
-     * @throws UAPersistenceException
-     */
-    public int getAlbumPageNrFor(Long displayPhotoId, SportsAlbum sportsAlbum, String startNumber) throws UAPersistenceException {
-        _logger.debug("getting page number for sportsalbum ....");
-        Photo photo = load(displayPhotoId);
-        int page = 1;
-        int position;
-        Criteria c = createStartnumberCriteria(sportsAlbum, startNumber);
-
-        Object queryResult = c
-                .add(Expression.le("pictureTakenDate", photo.getPictureTakenDate()))
-                .setProjection(Projections.rowCount())
-                .uniqueResult();
-
-        position = ((Integer) queryResult).intValue();
-        _logger.debug("position : " + position);
-        page = ((position - 1) / Registry.getItemsOnPage()) + 1;
-        _logger.debug("page : " + page);
-        return page;
-    }
 
     /**
      * Given the photoId , startnumber (if any, use null or empty value if no startnumber shall be used in the query) and an EventCategory, calculate the pagenumber
@@ -608,7 +499,7 @@ Note: if you list each property explicitly, you must include all properties of t
             finalPredicate = criteriaBuilder.and(finalPredicate,startNumberPredicate);
         }
 
-        criteriaQuery.distinct(true).select(criteriaBuilder.count(photoRoot)) // todo : needs to be distinct if we join the photosubjects and eventrunners?
+        criteriaQuery.distinct(true).select(criteriaBuilder.count(photoRoot))
                 .where(finalPredicate);
 
         Long criteriaResult;
@@ -670,46 +561,10 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
 
-    /**
-     * dao method to list photos for a given startnumber
-     *
-     * @param page
-     * @param album
-     * @param itemsOnPage
-     * @param startnumber
-     * @return a list of photos
-     * @throws ch.unartig.exceptions.UAPersistenceException
-     * @deprecated probably shouldn't be used - album not a valid criterion
-     */
-    public List listSportsPhotosOnPagePlusPreview(int page, Album album, int itemsOnPage, String startnumber) throws UAPersistenceException {
-        throw new RuntimeException("method needs migration -> listSportsPhotosOnPagePlusPreview");
 
-/*        _logger.debug("extended get sport photos for page");
-        List photos;
-        if (page < 1) {
-            page = 1;
-        }
-        //if page=1 do not extend selection at the beginning:
-        int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
-        int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
-        Criteria criteria = createStartnumberCriteria(album, startnumber);
-        criteria.setMaxResults(maxResults)
-                .setFirstResult(firstResult)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"));
-        try {
-            photos = criteria.list();
-        } catch (HibernateException e) {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
-        }
-        if (_logger.isDebugEnabled()) {
-            DebugUtils.debugPhotos(photos);
-        }
-        return photos;
- */
-    }
 
     /**
+     * Hibernate 5
      * Retrieve all photos of an EventCategory that match the given parameter, incl. startnumber
      * first order is picturetakendate
      * set order if no time is available to photoid
@@ -721,7 +576,7 @@ Note: if you list each property explicitly, you must include all properties of t
      * @return a list of Photo s
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public List listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException {
+    public List<Photo> listSportsPhotosOnPagePlusPreview(int page, EventCategory eventCategory, int itemsOnPage, String startNumber) throws UAPersistenceException {
         _logger.debug("extended get sport photos for page");
         if (page < 1) {
             page = 1;
@@ -729,11 +584,6 @@ Note: if you list each property explicitly, you must include all properties of t
 
         // new hibernate 5.4
         Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
-        // --
-
-
-        // Criteria criteria = createSportsPhotoCriteria(eventCategory, startNumber);
-
 
         if (itemsOnPage != 0) {//if page=1 do not extend selection at the beginning: (check : page==1 -> result always 0, no?)
             int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
@@ -764,101 +614,6 @@ Note: if you list each property explicitly, you must include all properties of t
         return criteriaQueryResult; // used to be "photos" from old hibernate 3.x criteria
     }
 
-
-    /**
-     * for EventAlbum
-     * todo is this still needed?
-     *
-     * @param page
-     * @param album
-     * @param itemsOnPage
-     * @param startnumber
-     * @return
-     * @throws UAPersistenceException
-     * @deprecated still used ? see other signatures of same method that uses eventcategory - eventalbum probably not used this way
-     */
-    public List listSportsPhotosOnPagePlusPreview(int page, EventAlbum album, int itemsOnPage, String startnumber) throws UAPersistenceException {
-        _logger.debug("sport photos for EVENT ALBUM!!");
-
-        List photos;
-        if (page < 1) {
-            page = 1;
-        }
-        //if page=1 do not extend selection at the beginning:
-        int firstResult = page == 1 ? ((page - 1) * itemsOnPage) : ((page - 1) * itemsOnPage) - 1;
-        int maxResults = page == 1 ? itemsOnPage + 1 : itemsOnPage + 2;
-
-
-        Criteria criteria = createEventAlbumStartNumberCriteria(album, startnumber);
-
-
-        criteria.setMaxResults(maxResults)
-                .setFirstResult(firstResult)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"));
-        try {
-            photos = criteria.list();
-        } catch (HibernateException e) {
-            throw new UAPersistenceException("Problem while retrieving Photos for Event : " + album.getLongTitle() + " ; see stack trace", e);
-        }
-        if (_logger.isDebugEnabled()) {
-            DebugUtils.debugPhotos(photos);
-        }
-        return photos;
-    }
-
-
-    /**
-     * construct a criteria for a passed album and startNumber
-     *
-     * @param album
-     * @param startnumber
-     * @return
-     * @throws UAPersistenceException
-     * @deprecated should not be used anymore
-     */
-    private Criteria createStartnumberCriteria(Album album, String startnumber) throws UAPersistenceException {
-        Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
-                .add(Restrictions.eq("album", album));
-
-        addStartNumberCriteria(startnumber, criteria);
-        return criteria;
-    }
-
-    /**
-     * hbm3: migrate - still needed! - when/why was it deprecated?
-     *
-     * construct a criteria for a passed eventCategory and startNumber
-     *
-     * @param eventCategory An event has photos one or more categories, i.e. "junioren", "elite", "etappe1", "impressionen" etc.
-     * @param startnumber can be null or empty if it should not be used in criteria
-     * @return
-     * @throws UAPersistenceException
-     * @deprecated
-     */
-    private Criteria createSportsPhotoCriteria(EventCategory eventCategory, String startnumber) throws UAPersistenceException {
-        Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
-                .createAlias("album", "a")
-                .add(Restrictions.eq("a.eventCategory", eventCategory))
-                .add(Restrictions.eq("a.publish", Boolean.TRUE))
-                .setCacheable(true);
-
-        addStartNumberCriteria(startnumber, criteria);
-        return criteria;
-    }
-
-    /**
-     * helper method to create startnumber criteria (if given)
-     * @param startnumber can be null or empty
-     * @param criteria will only be added a startnumber if one is given
-     */
-    private void addStartNumberCriteria(String startnumber, Criteria criteria) {
-        if (startnumber != null && !"".equals(startnumber)) {
-            criteria.createAlias("photoSubjects", "sub")
-                    .createAlias("sub.eventRunners", "eventRunner")
-                    .add(Restrictions.eq("eventRunner.startnumber", startnumber));
-        }
-    }
 
     /**
      * Count all photos for a passed startNumber and Event Category
@@ -926,7 +681,7 @@ Note: if you list each property explicitly, you must include all properties of t
     }
 
     /**
-     * find the last photo in an album filtered by start number
+     * find the last photo in an album filtered by start number - needed for preview-image logic (last photo in album has no next-preview)
      *
      * @param eventCategory
      * @param startNumber
@@ -934,59 +689,16 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getLastPhotoInCategoryAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException {
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory, startNumber);
 
-        Photo lastPhoto = (Photo) createSportsPhotoCriteria(eventCategory, startNumber)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setMaxResults(1)
+        photoQuery
                 .setFirstResult(lastIndexFor(startNumber, eventCategory))
-                .uniqueResult();
-        _logger.debug("returning last lastPhoto : " + lastPhoto);
-        return lastPhoto;
+                .setMaxResults(1);
+
+        return executePhotoQuery(photoQuery);
+
     }
 
-    /**
-     * find the last photo in an event-album filtered by start number
-     *
-     * @param album
-     * @param startNumber
-     * @return the last photo in an album filtered by startnumber
-     * @throws ch.unartig.exceptions.UAPersistenceException
-     */
-    public Photo getLastPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException {
-
-
-        Integer count = (Integer) createEventAlbumStartNumberCriteria(album, startNumber)
-                .setProjection(Projections.rowCount())
-                .uniqueResult();
-        _logger.debug("Photo count = " + count);
-
-        Photo lastPhoto = (Photo) createEventAlbumStartNumberCriteria(album, startNumber)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setMaxResults(1)
-                .setFirstResult(count - 1)
-                .uniqueResult();
-        _logger.debug("returning last lastPhoto : " + lastPhoto);
-        return lastPhoto;
-    }
-
-    /**
-     * construct a criteria for a passed EventAlbum and startNumber
-     *
-     * @param album
-     * @param startNumber
-     * @return criteria
-     * @throws UAPersistenceException
-     */
-    private Criteria createEventAlbumStartNumberCriteria(EventAlbum album, String startNumber) throws UAPersistenceException {
-        Criteria criteria = HibernateUtil.currentSession().createCriteria(Photo.class)
-                .createAlias("album", "etappe")
-                .add(Restrictions.eq("etappe.event", album.getEvent()));
-
-        addStartNumberCriteria(startNumber, criteria);
-        return criteria;
-    }
 
 
     /**
@@ -999,39 +711,16 @@ Note: if you list each property explicitly, you must include all properties of t
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
     public Photo getFirstPhotoInAlbumAndSelection(EventCategory eventCategory, String startNumber) throws UAPersistenceException {
-        Photo firstPhoto = (Photo) createSportsPhotoCriteria(eventCategory, startNumber)
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setMaxResults(1)
-                .uniqueResult();
-        _logger.debug("returning  firstPhoto : " + firstPhoto);
-        return firstPhoto;
-    }
-
-    /**
-     * return the first photo for a given event-album and selection
-     * <br> used to calculate the settings for the preview photo
-     *
-     * @param album
-     * @param startNumber
-     * @return first Photo
-     * @throws ch.unartig.exceptions.UAPersistenceException
-     */
-    public Photo getFirstPhotoInAlbumAndSelection(EventAlbum album, String startNumber) throws UAPersistenceException {
-        Criteria criteria = createEventAlbumStartNumberCriteria(album, startNumber);
-
-        Photo firstPhoto = (Photo) criteria
-                .addOrder(Order.asc("pictureTakenDate"))
-                .addOrder(Order.asc("photoId"))
-                .setMaxResults(1)
-                .uniqueResult();
-        _logger.debug("returning  firstPhoto : " + firstPhoto);
-        return firstPhoto;
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory, startNumber);
+        photoQuery
+                .setMaxResults(1);
+        return executePhotoQuery(photoQuery);
     }
 
 
+
     /**
-     * calculates the index of the last photo for the given album and startnumber
+     * calculates the index of the last photo for the given album and startnumber (deducts '1' from the count on photos)
      *
      * @param startNumber
      * @param eventCategory
@@ -1058,6 +747,8 @@ Note: if you list each property explicitly, you must include all properties of t
     public List findFinishTimePhotos(Album album, Date minMatchTime, Date maxMatchTime) throws UAPersistenceException {
         List retVal;
 
+        // hbm3: migrate
+
         // todo: Only time, not dates!, are compared.
         // todo : quick and dirty solution ignoring the dates: get first photo of etappe and replace the time information, assuming the date information is invariable
         // todo: replace for any sports event that crosses a date border. I.E. 24h races or so ....
@@ -1072,30 +763,8 @@ Note: if you list each property explicitly, you must include all properties of t
         return retVal;
     }
 
-    /**
-     * DAO method to delete single photo
-     *
-     * @param photoId
-     */
-    public void delete(Long photoId) throws UAPersistenceException {
 
-        try {
-            HibernateUtil.currentSession().delete(HibernateUtil.currentSession().load(Photo.class, photoId));
 
-        } catch (HibernateException h) {
-            throw new UAPersistenceException("Could not load and delete Photo by ID, see stack trace", h);
-        }
-    }
-
-    /**
-     * added after having problem with laziliy initializing photosubject with the new image recognition import
-     *
-     * @param photo
-     */
-    public void initializePhotoSubjects(Photo photo) {
-        Set photoSubjects = photo.getPhotoSubjects();
-        Hibernate.initialize(photoSubjects);
-    }
 
     /**
      * Used for REST Service in order to return a list of photos that contains neighboring photos to the given photoId
@@ -1109,9 +778,27 @@ Note: if you list each property explicitly, you must include all properties of t
      * @param forward
      * @return
      */
-    public List listNearbySportsPhotosFor(Long photoId, EventCategory eventCategory, String startNumber, int backward, int forward) {
-        List photos; // result value
+    public List<Photo> listNearbySportsPhotosFor(Long photoId, EventCategory eventCategory, String startNumber, int backward, int forward) {
+        int position = getPositionOfPhoto(photoId, eventCategory, startNumber);
 
+
+        int firstResult = (position - backward)>0?(position-backward):1; // position of first photo to show, or 1 in case 1st result would be smaller 1
+        int maxResults = backward + forward;
+
+        // new hibernate 5.4
+        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
+
+        photoQuery
+                .setFirstResult(firstResult-1) // starts with 0
+                .setMaxResults(maxResults+1)
+                .setCacheable(true); // starts with 0
+
+
+        return photoQuery.getResultList();
+
+    }
+
+    private int getPositionOfPhoto(Long photoId, EventCategory eventCategory, String startNumber) {
         _logger.debug("loading photoId : " + photoId);
 
         Photo photo = load(photoId);
@@ -1144,28 +831,11 @@ Note: if you list each property explicitly, you must include all properties of t
             _logger.error("Error retrieving photos",e);
         }
         _logger.debug("Photo ["+photoId+"] at position : " + position);
-
-
-        int firstResult = (position - backward)>0?(position-backward):1; // position of first photo to show, or 1 in case 1st result would be smaller 1
-        int maxResults = backward + forward;
-
-        // new hibernate 5.4
-        Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
-
-        photoQuery
-                .setFirstResult(firstResult-1) // starts with 0
-                .setMaxResults(maxResults+1)
-                .setCacheable(true); // starts with 0
-
-        List<Photo> criteriaQueryResult = photoQuery.getResultList();
-
-
-
-        return criteriaQueryResult;
-
+        return position;
     }
 
     /**
+     * Hibernate 5
      * private helper for constructing a cached JPA query that return photos for an eventcategory and startnumber, ordered 1st by picturetakendate, then photoId
      * @param eventCategory eventCategory with the photos
      * @return a Query that can be further processed
@@ -1201,6 +871,23 @@ Note: if you list each property explicitly, you must include all properties of t
         return HibernateUtil.currentSession()
                 .createQuery(criteriaQuery)
                 .setCacheable(true);
+    }
+
+
+    private Photo executePhotoQuery(Query<Photo> photoQuery) {
+        Photo criteriaQueryResult;
+        try {
+            criteriaQueryResult = photoQuery.uniqueResult();
+
+        } catch (HibernateException e) {
+            throw new UAPersistenceException("Problem while executing query ; see stack trace", e);
+        }
+
+        if (_logger.isDebugEnabled()) {
+            _logger.debug(criteriaQueryResult);
+        }
+
+        return criteriaQueryResult;
     }
 
 

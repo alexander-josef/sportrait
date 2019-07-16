@@ -132,24 +132,7 @@ public class SportsAlbum extends Album implements java.io.Serializable {
         Registry.getFileStorageProvider().putFilesFromArchive(this,fileInputStream);
     }
 
-/*
-    public Photo getLastPhotoInCategoryAndSelection() throws UnartigException
-    {
-        _logger.debug("getting last photo of album and selection for :"+this);
-        PhotoDAO phDao = new PhotoDAO();
-        return phDao.getLastPhotoInCategoryAndSelection(this,startNumber);
-    }
-*/
 
-
-
-
-/*
-    public Photo getFirstPhotoInAlbumAndSelection() throws UnartigException
-    {
-        return super.getFirstPhotoInAlbumAndSelection();
-    }
-*/
 
 
 }

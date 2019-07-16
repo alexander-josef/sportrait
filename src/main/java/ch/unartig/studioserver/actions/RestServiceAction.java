@@ -87,7 +87,7 @@ public class RestServiceAction extends Action {
 
         PhotoDAO photoDAO = new PhotoDAO();
         EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
-        List photosForEventCategoryAndStartnumber = new ArrayList();
+        List<Photo> photosForEventCategoryAndStartnumber = new ArrayList<>();
 
         EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
         // in case photoId is given, find 1st result criteria parameter - separate query?
@@ -107,6 +107,7 @@ public class RestServiceAction extends Action {
 
         StringBuilder jsonResponse= new StringBuilder();
         jsonResponse.append("[ ");
+
 
         for (Iterator iterator = photosForEventCategoryAndStartnumber.iterator(); iterator.hasNext(); ) {
             Object aPhotosForEventCategoryAndStartnumber = iterator.next();
