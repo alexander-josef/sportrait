@@ -130,15 +130,13 @@ import ch.unartig.util.DebugUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
+import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.*;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import java.util.*;
 
@@ -589,8 +587,6 @@ Note: if you list each property explicitly, you must include all properties of t
         Predicate photoIdPredicate;
 
         Root<Photo> photoRoot = criteriaQuery.from(Photo.class);
-        Join<Photo,Album> photoPhotoSubjectsJoin = photoRoot.join("photoSubjects");
-        Join<Photo,Album> photoSubjectsEventRunnerJoin = photoPhotoSubjectsJoin.join("eventRunners");
 
 
         Predicate publishedForEventCategoryPredicate = getPublishedForEventCategoryPredicate(eventCategory, criteriaBuilder, photoRoot);
@@ -605,12 +601,14 @@ Note: if you list each property explicitly, you must include all properties of t
 
         if (startNumber != null && !"".equals(startNumber)) {
             // create combined predicate
+            Join<Photo,Album> photoPhotoSubjectsJoin = photoRoot.join("photoSubjects",JoinType.INNER); // define join type -  needs to be a left or inner join ? -> inner, since we limit on startnumber
+            Join<Photo,Album> photoSubjectsEventRunnerJoin = photoPhotoSubjectsJoin.join("eventRunners");
             startNumberPredicate = criteriaBuilder
                     .equal(photoSubjectsEventRunnerJoin.get("startnumber"),startNumber);
             finalPredicate = criteriaBuilder.and(finalPredicate,startNumberPredicate);
         }
 
-        criteriaQuery.select(criteriaBuilder.count(photoRoot))
+        criteriaQuery.distinct(true).select(criteriaBuilder.count(photoRoot)) // todo : needs to be distinct if we join the photosubjects and eventrunners?
                 .where(finalPredicate);
 
         Long criteriaResult;
