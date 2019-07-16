@@ -144,8 +144,6 @@ public class EventCategoryAction extends MappingDispatchAction {
 
         request.getSession().setAttribute(Registry._NAME_ALBUM_BEAN_ATTR, sportsAlbumBean);
         request.setAttribute("sportsEvent", event);
-//        request.getSession().setAttribute("eventCategories",((SportsEvent)eventCategory.getEvent()).getEventCategories());
-//        }
 
         return mapping.findForward("success");
     }

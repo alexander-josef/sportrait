@@ -582,6 +582,8 @@ Note: if you list each property explicitly, you must include all properties of t
             page = 1;
         }
 
+        // todo fixme: it seems that the list of photos is ordered by filename instead of picturetakendate
+
         // new hibernate 5.4
         Query<Photo> photoQuery = getPublishedPhotosForEventCategoryQuery(eventCategory,startNumber);
 
@@ -798,6 +800,14 @@ Note: if you list each property explicitly, you must include all properties of t
 
     }
 
+    /**
+     * used for calculating JSON response
+     *
+     * @param photoId
+     * @param eventCategory
+     * @param startNumber
+     * @return
+     */
     private int getPositionOfPhoto(Long photoId, EventCategory eventCategory, String startNumber) {
         _logger.debug("loading photoId : " + photoId);
 
@@ -831,6 +841,8 @@ Note: if you list each property explicitly, you must include all properties of t
             _logger.error("Error retrieving photos",e);
         }
         _logger.debug("Photo ["+photoId+"] at position : " + position);
+
+
         return position;
     }
 
@@ -864,8 +876,10 @@ Note: if you list each property explicitly, you must include all properties of t
         criteriaQuery
                 .select(photoRoot)
                 .where(finalPredicate)
-                .orderBy(criteriaBuilder.asc(photoRoot.get("pictureTakenDate")))
-                .orderBy(criteriaBuilder.asc(photoRoot.get("photoId")));
+                .orderBy(
+                        criteriaBuilder.asc(photoRoot.get("pictureTakenDate")),
+                        criteriaBuilder.asc(photoRoot.get("photoId"))
+                );
 
 
         return HibernateUtil.currentSession()
