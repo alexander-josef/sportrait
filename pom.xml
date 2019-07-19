@@ -105,6 +105,20 @@
             <version>8.6.0.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.zkoss.theme/breeze -->
+        <dependency>
+            <groupId>org.zkoss.theme</groupId>
+            <artifactId>breeze</artifactId>
+            <version>8.6.0.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.zkoss.theme/iceblue_c -->
+        <dependency>
+            <groupId>org.zkoss.theme</groupId>
+            <artifactId>iceblue_c</artifactId>
+            <version>8.6.0.1</version>
+        </dependency>
+
         <!--ZK END  -->
 
         <!--removing apache xmlrpc-->

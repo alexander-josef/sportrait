@@ -92,6 +92,8 @@
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.jsinterop:jsinterop-annotations:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.zkoss.zk:zkwebfragment:8.6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.zkoss.theme:breeze:8.6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.zkoss.theme:iceblue_c:8.6.0.1" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: sslext:sslext:1.2-0" level="project" />

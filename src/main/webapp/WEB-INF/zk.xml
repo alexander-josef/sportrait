@@ -8,6 +8,11 @@
     </desktop-config>
 -->
 
+    <library-property>
+        <name>org.zkoss.theme.preferred</name>
+        <value>breeze</value> <!-- or silvertail, atlantic, deepsea, gardensalad etc. -->
+    </library-property>
+
 <!--
     <system-config>
       <disable-event-thread/>
