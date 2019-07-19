@@ -449,7 +449,7 @@ public class GenericLevelDAO
                         "left join fetch a.products " +
                         "left join fetch a.event " +
                         "where a.event = :event " +
-                        "order by a.navTitle desc",Album.class)
+                        "order by a.eventCategory.eventCategoryId asc",Album.class)
                 .setParameter("event", event)
                 .getResultList();
 
