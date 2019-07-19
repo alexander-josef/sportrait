@@ -62,6 +62,7 @@ public class ProductType implements java.io.Serializable {
             joinColumns = { @JoinColumn(name = "producttypeid") },
             inverseJoinColumns = { @JoinColumn(name = "priceid") }
     )
+    @OrderBy("priceCHF")
     private Set<Price> prices = new HashSet<>(0);
 
     public Long getProductTypeId() {

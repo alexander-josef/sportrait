@@ -155,9 +155,8 @@ public class ZAlbumComponent extends Div {
             /**
              * Update album according to selection
              * @param event fired zk event
-             * @throws Exception
              */
-            public void onEvent(Event event) throws Exception {
+            public void onEvent(Event event) {
                 Listbox listbox = (Listbox) event.getTarget();
                 Object price = listbox.getSelectedItem().getValue();
                 Product product = album.getProductFor(productType.getProductTypeId());
