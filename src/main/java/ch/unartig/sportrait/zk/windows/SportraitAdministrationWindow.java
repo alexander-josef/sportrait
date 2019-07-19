@@ -125,7 +125,7 @@ public class SportraitAdministrationWindow extends Window
         // first clear the listbox:
         albumListbox.getItems().clear();
 
-        List<Event> localEvents = new ArrayList<>();
+        List<Event> localEvents;
         localEvents = events;
 
         _logger.debug("photographer = " + photographer);
@@ -134,6 +134,9 @@ public class SportraitAdministrationWindow extends Window
             _logger.debug("number of events : " + localEvents.size());
             for (Event eachEvent : localEvents)
             {
+                // this can be problematic - shouldn't we list the event categories?
+                // Or at least indicate which categegory is associated with an album
+                // having albums here might be a good and flexible option - it's the photographer's view, not the consumer's view
                 _logger.debug("Loading albums for event (in case of admin user, all albums will be loaded)");
                 List<Album> albums = eachEvent.getPhotographerAlbums(photographer);
                 _logger.debug("number of albums: " + albums.size());

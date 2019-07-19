@@ -424,7 +424,7 @@ public class GenericLevelDAO
                         "left join fetch a.event " +
                         "where a.event = :event " +
                         "and a.photographer = :photographer " +
-                        "order by a.navTitle desc",Album.class)
+                        "order by a.eventCategory.eventCategoryId asc",Album.class) // ordering by the eventcategory
                 .setParameter("event", event)
                 .setParameter("photographer", photographer)
                 .list();
