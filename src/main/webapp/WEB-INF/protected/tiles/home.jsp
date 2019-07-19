@@ -69,7 +69,7 @@
 
                     <html:link styleClass="listLink" action="/event?sportsEventId=${event.genericLevelId}"
                                target="_parent">
-                        ${event.eventDate}, ${event.location}, ${event.navTitle}
+                        ${event.eventDateDisplay}, ${event.location}, ${event.navTitle}
                     </html:link>
                     <c:if test="${clientInSession!=null}">
                         <html:link styleClass="uploadLink" href="#" title="Fotos hochladen zu diesem Anlass">
