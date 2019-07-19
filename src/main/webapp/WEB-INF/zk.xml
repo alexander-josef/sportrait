@@ -2,15 +2,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.zkoss.org/2005/zk/config http://www.zkoss.org/2005/zk/config/zk.xsd">
 
-<!--
     <desktop-config>
         <theme-uri>/css/sportrait-zk.css</theme-uri>
     </desktop-config>
--->
 
     <library-property>
         <name>org.zkoss.theme.preferred</name>
-        <value>breeze</value> <!-- or silvertail, atlantic, deepsea, gardensalad etc. -->
+        <value>iceblue_c</value> <!-- or breeze, silvertail, atlantic, deepsea, gardensalad etc. -->
     </library-property>
 
 <!--

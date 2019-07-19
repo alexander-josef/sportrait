@@ -174,10 +174,10 @@ public class SportraitAdministrationWindow extends Window
         albumItem = new Listitem("-  " + album.getLongTitle() + " (Fotos:" + album.getNumberOfPhotos() + ")", album);
         if (album.getPublish())
         {
-            albumItem.setStyle("color:green");
+            albumItem.setSclass("published");
         } else
         {
-            albumItem.setStyle("color:red");
+            albumItem.setSclass("unpublished");
         }
         // add anonymous inner for event listening
         albumItem.addEventListener(Events.ON_CLICK, new EventListener()
