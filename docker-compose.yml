@@ -1,10 +1,10 @@
 version: '3'
 services:
   sportrait-tomcat:
-    image: "cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest"
+    image: cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest
     ports:
-     - "8888:8080"
+      - "8888:8080"
     depends_on:
       - "sportrait-db"
   sportrait-db:
-    image: "sportrait-tomcat:latest cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest"
+    image: cloud.canister.io:5000/alexanderjosef/sportrait-postgres-testdb:latest
