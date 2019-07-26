@@ -8,3 +8,9 @@ services:
       - "sportrait-db"
   sportrait-db:
     image: cloud.canister.io:5000/alexanderjosef/sportrait-postgres-testdb:latest
+
+# Todos:
+#   - create own AWS user
+#   - add environment variables for the AWS credentials
+#   - add reverse proxy to secure both, teamcity and sportrait with HTTPS - access to the right port according do the subdomain
+#   - nginx or apache ??
