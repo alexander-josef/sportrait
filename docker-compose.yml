@@ -13,4 +13,4 @@ services:
 #   - create own AWS user
 #   - add environment variables for the AWS credentials
 #   - add reverse proxy to secure both, teamcity and sportrait with HTTPS - access to the right port according do the subdomain
-#   - nginx or apache ??
+#   - nginx or apache or traefik as reverse proxy??

@@ -20,8 +20,8 @@ ADD ./target/*.war /usr/local/tomcat/sportrait/ROOT.war
 # postgresql JDBC driver to TOMCAT_HOME/lib
 ADD ./infrastructure/postgresql-42.2.2.jar /usr/local/tomcat/lib/postgresql-42.2.2.jar
 
-# Add AWS credentials (??)
-ADD ./infrastructure/.aws /root/.aws
+# Add AWS credentials (??) --> better use environment variables with container startup (docker run command)
+# ADD ./infrastructure/.aws /root/.aws
 
 
 # expose port 8080 to host (needed? probably not. see also docker-compose.yml file)
