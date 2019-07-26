@@ -454,6 +454,27 @@
             </properties>
         </profile>
 
+        <!-- Use this profile for testing on digital ocean docker host -->
+        <profile>
+            <id>docker-do</id>
+            <build>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_Test</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>docker-do.properties</appConfigFilterFile>
+            </properties>
+        </profile>
+
 
 
 

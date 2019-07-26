@@ -2,6 +2,10 @@ version: '3'
 services:
   sportrait-tomcat:
     image: cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest
+    environment:
+      - AWS_ACCESS_KEY_ID # env variable will be passed from docker host
+      - AWS_SECRET_ACCESS_KEY # env variable will be passed from docker host
+      # - AWS_DEFAULT_REGION # env variable will be passed from docker host
     ports:
       - "8888:8080"
     depends_on:
