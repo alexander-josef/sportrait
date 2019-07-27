@@ -16,9 +16,6 @@ services:
     environment:
       - AWS_ACCESS_KEY
       - AWS_SECRET_KEY
-        # - AWS_ACCESS_KEY_ID=AKIAIEHBRDQPEPXOGE7Q
-        # - AWS_SECRET_ACCESS_KEY=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
-      # - AWS_DEFAULT_REGION=eu-west-1
 
     # ports:
     #  - "8888:8080"
