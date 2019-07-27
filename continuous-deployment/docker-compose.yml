@@ -1,4 +1,11 @@
 version: '3'
+
+networks:
+    web:
+        external: true
+    internal:
+        external: false
+
 services:
 
     teamcity-server:
@@ -6,13 +13,17 @@ services:
         volumes:
             - "/opt/Docker/TeamCityData/data:/data/teamcity_server/datadir"
             - "/opt/Docker/TeamCityData/logs:/opt/teamcity/logs"
-        ports:
-            - "8111:8111"
+        #  ports:
+        #      - "8111:8111"
         labels:
-            - traefik.backend=teamcity
+            - traefik.backend=teamcity-server
             - traefik.frontend.rule=Host:teamcity.sportrait.com
             - traefik.docker.network=web
-            - traefik.port=80
+            - traefik.port=8111
+
+        networks:
+            - internal
+            - web
 
     teamcity-agent:
         image: "jetbrains/teamcity-agent"
@@ -30,5 +41,7 @@ services:
         labels:
             - traefik.enable=false
 
+        networks:
+            - internal
         depends_on:
             - teamcity-server
