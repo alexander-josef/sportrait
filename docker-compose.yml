@@ -1,20 +1,47 @@
 version: '3'
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
+
 services:
+
   sportrait-tomcat:
+
     image: cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest
+
     environment:
-      - AWS_ACCESS_KEY_ID # env variable will be passed from docker host
-      - AWS_SECRET_ACCESS_KEY # env variable will be passed from docker host
-      # - AWS_DEFAULT_REGION # env variable will be passed from docker host
-    ports:
-      - "8888:8080"
+      - AWS_ACCESS_KEY
+      - AWS_SECRET_KEY
+        # - AWS_ACCESS_KEY_ID=AKIAIEHBRDQPEPXOGE7Q
+        # - AWS_SECRET_ACCESS_KEY=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
+      # - AWS_DEFAULT_REGION=eu-west-1
+
+    # ports:
+    #  - "8888:8080"
+
+    labels:
+      - traefik.backend=sportrait-tomcat
+      - traefik.frontend.rule=Host:do1.sportrait.com
+      - traefik.docker.network=web
+      - traefik.port=8080
+
+    networks:
+      - internal
+      - web
+
     depends_on:
       - "sportrait-db"
+
   sportrait-db:
+
     image: cloud.canister.io:5000/alexanderjosef/sportrait-postgres-testdb:latest
 
-# Todos:
-#   - create own AWS user
-#   - add environment variables for the AWS credentials
-#   - add reverse proxy to secure both, teamcity and sportrait with HTTPS - access to the right port according do the subdomain
-#   - nginx or apache or traefik as reverse proxy??
+    labels:
+      - traefik.enable=false
+
+    networks:
+      - internal
