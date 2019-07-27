@@ -1,0 +1,33 @@
+defaultEntryPoints = ["http", "https"]
+[entryPoints]
+
+  [entryPoints.http]
+    address = ":80"
+      [entryPoints.http.redirect]
+        entryPoint = "https"
+
+  [entryPoints.https]
+    address = ":443"
+      [entryPoints.https.tls]
+
+  [entryPoints.dashboard]
+    address = ":8080"
+    [entryPoints.dashboard.auth]
+      [entryPoints.dashboard.auth.basic]
+        users = ["admin:$apr1$CEG2eCYt$m7sW9lIjHo86e4xy1TQL.."]
+
+[api]
+entrypoint="dashboard"
+
+[acme]
+email = "info@sportrait.com"
+storage = "acme.json"
+entryPoint = "https"
+onHostRule = true
+  [acme.httpChallenge]
+  entryPoint = "http"
+
+[docker]
+domain = "sportrait.com"
+watch = true
+network = "web"
