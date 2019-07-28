@@ -59,7 +59,7 @@
         <h2>AKTUELLE FOTOS</h2>
     </c:if>
 --%>
-        <h2>AKTUELLE ANLÄSSE</h2>
+        <h2>AKTUELLE ANLÄSSE ....</h2>
 
    
     <div class="eventlist">
