@@ -18,7 +18,7 @@ RUN mkdir -p /usr/local/tomcat/sportrait
 #ADD ./target/*.war /usr/local/tomcat/sportrait/ROOT.war
 
 #this should be the location where the teamcity build pipeline puts the .war file on the build agent
-ADD ROOT.war /usr/local/tomcat/sportrait/ROOT.war
+ADD ./ROOT.war /usr/local/tomcat/sportrait/ROOT.war
 
 # postgresql JDBC driver to TOMCAT_HOME/lib
 ADD ./infrastructure/postgresql-42.2.2.jar /usr/local/tomcat/lib/postgresql-42.2.2.jar
