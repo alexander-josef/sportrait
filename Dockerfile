@@ -15,8 +15,10 @@ ADD ./infrastructure/server.xml /usr/local/tomcat/conf/server.xml
 RUN mkdir -p /usr/local/tomcat/sportrait
 
 # copy available war file (created from mvn / build script ) from maven target folder  to sportrait/ROOT
-#ADD ./target/*.war /usr/local/tomcat/sportrait/ROOT.war
-ADD ROOT.war /usr/local/tomcat/sportrait/ROOT.war
+ADD ./target/*.war /usr/local/tomcat/sportrait/ROOT.war
+
+#this should be the location where the teamcity build pipeline puts the .war file on the build agent
+#ADD ROOT.war /usr/local/tomcat/sportrait/ROOT.war
 
 # postgresql JDBC driver to TOMCAT_HOME/lib
 ADD ./infrastructure/postgresql-42.2.2.jar /usr/local/tomcat/lib/postgresql-42.2.2.jar
