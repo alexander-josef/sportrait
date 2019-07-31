@@ -11,7 +11,7 @@ services:
 
   sportrait-tomcat:
 
-    image: cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:latest
+    image: cloud.canister.io:5000/alexanderjosef/sportrait-tomcat:${TAG}
 
     environment:
       - AWS_ACCESS_KEY
