@@ -454,9 +454,9 @@
             </properties>
         </profile>
 
-        <!-- Use this profile for testing on digital ocean docker host -->
+        <!-- Use this profile for testing the DEV environment on digital ocean docker host - app AND db container will be built and freshly set up-->
         <profile>
-            <id>docker-do</id>
+            <id>docker-do-dev</id>
             <build>
 
                 <plugins>
@@ -471,11 +471,30 @@
                 </plugins>
             </build>
             <properties>
-                <appConfigFilterFile>docker-do.properties</appConfigFilterFile>
+                <appConfigFilterFile>docker-do-dev.properties</appConfigFilterFile>
             </properties>
         </profile>
 
+        <!-- Use this profile for INT environment on digital ocean docker host - only app will be deployed, db is locally installed on docker host-->
+        <profile>
+            <id>docker-do-int</id>
+            <build>
 
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_Test</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>docker-do-int.properties</appConfigFilterFile>
+            </properties>
+        </profile>
 
 
 
