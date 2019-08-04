@@ -1,0 +1,10 @@
+  docker run -d \
+  -e AWS_ACCESS_KEY \
+  -e AWS_SECRET_KEY \
+  -l traefik.frontend.rule=Host:int2.do1.sportrait.com \
+  -l traefik.port=8080 \
+  -l traefik.backend=int2-sportrait \
+  -l traefik.docker.network=web \
+  --network web \
+  --name int2-sportrait \
+  cloud.canister.io:5000/alexanderjosef/sportrait-tomcat-int:%build.counter%
