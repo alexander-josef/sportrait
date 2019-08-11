@@ -628,9 +628,16 @@
       </database-info>
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <user-name>sportrait</user-name>
-      <introspection-schemas>sportrait:pg_catalog,public</introspection-schemas>
-      <resolve-scope>sportrait:pg_catalog,public</resolve-scope>
-      <unqualified-resolve-schemas>sportrait:pg_catalog,public</unqualified-resolve-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="sportrait">
+            <node kind="schema">
+              <name qname="pg_catalog" />
+              <name qname="public" />
+            </node>
+          </node>
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
     <data-source name="PostgreSQL - postgres@localhost" uuid="5ee9cae3-8f22-4427-ac23-e14a7bb1c429">
       <database-info product="PostgreSQL" version="11.1 (Debian 11.1-1.pgdg90+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
@@ -639,7 +646,13 @@
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>sportrait</user-name>
-      <introspection-schemas>sportrait:*</introspection-schemas>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="sportrait">
+            <node kind="schema" negative="1" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
   <component name="libraryTable">
