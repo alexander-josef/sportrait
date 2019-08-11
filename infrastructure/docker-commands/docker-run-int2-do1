@@ -5,6 +5,7 @@
   -l traefik.port=8080 \
   -l traefik.backend=int2-sportrait \
   -l traefik.docker.network=web \
+  --restart unless-stopped \
   --network web \
   --name int2-sportrait \
   cloud.canister.io:5000/alexanderjosef/sportrait-tomcat-int:%build.counter%

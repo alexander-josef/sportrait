@@ -25,6 +25,8 @@ services:
             - internal
             - web
 
+        restart: "always"
+
     teamcity-agent:
         image: "jetbrains/teamcity-agent"
         environment:
@@ -45,3 +47,5 @@ services:
             - internal
         depends_on:
             - teamcity-server
+
+        restart: "always"

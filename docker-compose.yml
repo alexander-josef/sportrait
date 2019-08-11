@@ -30,6 +30,8 @@ services:
       - internal
       - web
 
+    restart: "always"
+
     depends_on:
       - "sportrait-db"
 
