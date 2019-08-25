@@ -75,6 +75,7 @@
     <tiles:insert attribute="cssOverrule" ignore="true"/>
     <%-- Google Analytics snippet not inserted in template anymore - comes with Google Tag Manager --%>
     <tiles:insert attribute="twitterCard" ignore="true"/>
+    <tiles:insert attribute="additionalMetaTags" ignore="true"/>
 
     <%-- Google Sign-In js functions
          Function called by Google Sign-In button on success

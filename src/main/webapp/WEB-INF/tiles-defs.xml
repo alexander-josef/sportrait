@@ -98,6 +98,7 @@
     </definition>
 
     <definition name=".sportraitcontact" extends=".eventCategory">
+        <put name="additionalMetaTags" value=""/>
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleContact.jsp"/>
         <put name="content1" value="/WEB-INF/protected/tiles/contact.jsp"/>
         <put name="head" value=".headNeutral"/>
@@ -148,6 +149,8 @@
     <definition name=".eventCategory" extends=".baseTemplateDefinition">
 
         <put name="pageTitle" value="Sportrait Event Category Overview"/>
+
+        <put name="additionalMetaTags" value="/WEB-INF/protected/tiles/addMetaTags.jsp"/>
 
         <put name="cssOverrule" value="/WEB-INF/protected/tiles/Empty.jsp"/>
         <put name="htmlTitle" value="/WEB-INF/protected/tiles/titleCategory.jsp"/>
