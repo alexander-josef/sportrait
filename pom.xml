@@ -496,6 +496,27 @@
             </properties>
         </profile>
 
+        <!-- Use this profile for PROD environment on digital ocean docker host - only app container will be deployed, db is locally installed on docker host-->
+        <profile>
+            <id>docker-do-prod</id>
+            <build>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_PROD</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>docker-do-prod.properties</appConfigFilterFile>
+            </properties>
+        </profile>
+
 
 
 
