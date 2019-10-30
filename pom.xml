@@ -526,15 +526,6 @@
     <repositories>
 
 
-        <!-- TODO change this to an https repository; see google bookmarks 'maven'-->
-        <repository>
-            <id>http-repo</id>
-            <name>unArtig maven2 repo</name>
-            <url>http://maven.unartig.ch/maven2</url>
-            <releases>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-        </repository>
 
 <!-- adding jcenter repository for imgix dependencies -->
         <repository>
