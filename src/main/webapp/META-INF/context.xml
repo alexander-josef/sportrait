@@ -6,7 +6,7 @@
               url="${server.dbConnectionString}"
               username="sportrait"
               password="unartig"
-              maxTotal="100"
+              maxTotal="200"
               maxIdle="10"
               maxWaitMillis="-1"
             />
