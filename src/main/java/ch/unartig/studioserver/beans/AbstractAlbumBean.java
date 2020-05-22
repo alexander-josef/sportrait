@@ -386,6 +386,7 @@ public abstract class AbstractAlbumBean
         {
             retVal = 1;
         }
+        _logger.debug("************************ : "+retVal);
         return retVal;
     }
 

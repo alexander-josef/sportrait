@@ -1,0 +1,1 @@
+docker run —-name postgres-sportrait -e POSTGRES_PASSWORD=postgres -p5431:5432 -d sportrait-postgres-testdb:latest
