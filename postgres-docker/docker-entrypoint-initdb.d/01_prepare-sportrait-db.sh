@@ -6,5 +6,5 @@ createuser -e -P sportrait
 # using the created user, create DB:
 createdb --owner sportrait -E UTF8 -e sportrait
 
-# set the password for the use sportrait
+# set the password for the use sportrait - TODO: not good here :)
 psql -c "ALTER USER sportrait PASSWORD 'unartig';"
