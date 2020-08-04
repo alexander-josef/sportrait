@@ -15,8 +15,9 @@ kind: Service
 metadata:
   name: sportrait-testdb
 spec:
-  type: LoadBalancer
-  # exposes external IP for service - alternatively use NodePort to use static port (30000 +)
+  type: ClusterIP
+  # default - service exposed only internally
+  # type LoadBalancer exposes external IP for service - alternatively use NodePort to use static port (30000 +)
   ports:
     - port: 5432
       protocol: TCP
