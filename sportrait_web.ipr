@@ -74,7 +74,8 @@
             <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.2" />
             <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.3.3" />
             <element id="library" level="project" name="Maven: commons-io:commons-io:1.3" />
-            <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.7.0" />
+            <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.4" />
+            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Maven: log4j:log4j:1.2.14" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.4.2.Final" />
             <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.2.Final" />
@@ -94,23 +95,22 @@
             <element id="library" level="project" name="Maven: org.jvnet.staxex:stax-ex:1.8" />
             <element id="library" level="project" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-tools:5.4.2.Final" />
-            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
             <element id="library" level="project" name="Maven: jaxen:jaxen:1.1.6" />
             <element id="library" level="project" name="Maven: org.apache.ant:ant:1.10.5" />
             <element id="library" level="project" name="Maven: org.apache.ant:ant-launcher:1.10.5" />
             <element id="library" level="project" name="Maven: org.eclipse.jdt:org.eclipse.jdt.core:3.16.0" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.resources:3.13.700" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.expressions:3.6.800" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.runtime:3.18.0" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.osgi:3.15.300" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.common:3.12.0" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.resources:3.13.800" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.expressions:3.7.0" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.runtime:3.19.0" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.osgi:3.16.0" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.common:3.13.0" />
             <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.jobs:3.10.800" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.registry:3.8.800" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.registry:3.9.0" />
             <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.preferences:3.8.0" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.contenttype:3.7.700" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.app:1.4.500" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.contenttype:3.7.800" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.equinox.app:1.5.0" />
             <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.filesystem:1.7.700" />
-            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.text:3.10.200" />
+            <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.text:3.10.300" />
             <element id="library" level="project" name="Maven: org.eclipse.platform:org.eclipse.core.commands:3.9.700" />
             <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.28" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-jcache:5.4.2.Final" />
@@ -191,6 +191,14 @@
       <remarks>test local test db on std port 5432</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/sportrait</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="sportrait_web/Hibernate" uuid="b6a8cad1-e947-4f39-95c6-57ae4f9c916e">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5431/sportrait</jdbc-url>
     </data-source>
   </component>
   <component name="DependencyValidationManager">
@@ -355,6 +363,9 @@
         <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
       </item>
     </group>
+  </component>
+  <component name="ProjectCodeStyleConfiguration">
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
   </component>
   <component name="ProjectDictionaryState">
     <dictionary name="ajosef">
@@ -699,6 +710,11 @@
           </node>
         </introspection-scope>
       </schema-mapping>
+    </data-source>
+    <data-source name="sportrait_web/Hibernate" uuid="b6a8cad1-e947-4f39-95c6-57ae4f9c916e">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
+      <user-name>sportrait</user-name>
+      <schema-mapping />
     </data-source>
   </component>
   <component name="libraryTable">
@@ -1069,15 +1085,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/sun/xml/fastinfoset/FastInfoset/1.2.15/FastInfoset-1.2.15-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: commons-beanutils:commons-beanutils:1.7.0">
+    <library name="Maven: commons-beanutils:commons-beanutils:1.9.4">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.7.0/commons-beanutils-1.7.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.4/commons-beanutils-1.9.4-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: commons-codec:commons-codec:1.2">
@@ -1399,26 +1415,26 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.commands/3.9.700/org.eclipse.core.commands-3.9.700-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.core.contenttype:3.7.700">
+    <library name="Maven: org.eclipse.platform:org.eclipse.core.contenttype:3.7.800">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.700/org.eclipse.core.contenttype-3.7.700.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.800/org.eclipse.core.contenttype-3.7.800.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.700/org.eclipse.core.contenttype-3.7.700-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.800/org.eclipse.core.contenttype-3.7.800-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.700/org.eclipse.core.contenttype-3.7.700-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.contenttype/3.7.800/org.eclipse.core.contenttype-3.7.800-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.core.expressions:3.6.800">
+    <library name="Maven: org.eclipse.platform:org.eclipse.core.expressions:3.7.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.6.800/org.eclipse.core.expressions-3.6.800.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.7.0/org.eclipse.core.expressions-3.7.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.6.800/org.eclipse.core.expressions-3.6.800-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.7.0/org.eclipse.core.expressions-3.7.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.6.800/org.eclipse.core.expressions-3.6.800-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.expressions/3.7.0/org.eclipse.core.expressions-3.7.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.eclipse.platform:org.eclipse.core.filesystem:1.7.700">
@@ -1443,48 +1459,48 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.jobs/3.10.800/org.eclipse.core.jobs-3.10.800-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.core.resources:3.13.700">
+    <library name="Maven: org.eclipse.platform:org.eclipse.core.resources:3.13.800">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.700/org.eclipse.core.resources-3.13.700.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.800/org.eclipse.core.resources-3.13.800.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.700/org.eclipse.core.resources-3.13.700-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.800/org.eclipse.core.resources-3.13.800-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.700/org.eclipse.core.resources-3.13.700-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.resources/3.13.800/org.eclipse.core.resources-3.13.800-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.core.runtime:3.18.0">
+    <library name="Maven: org.eclipse.platform:org.eclipse.core.runtime:3.19.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.18.0/org.eclipse.core.runtime-3.18.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.19.0/org.eclipse.core.runtime-3.19.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.18.0/org.eclipse.core.runtime-3.18.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.19.0/org.eclipse.core.runtime-3.19.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.18.0/org.eclipse.core.runtime-3.18.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.core.runtime/3.19.0/org.eclipse.core.runtime-3.19.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.app:1.4.500">
+    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.app:1.5.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.4.500/org.eclipse.equinox.app-1.4.500.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.5.0/org.eclipse.equinox.app-1.5.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.4.500/org.eclipse.equinox.app-1.4.500-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.5.0/org.eclipse.equinox.app-1.5.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.4.500/org.eclipse.equinox.app-1.4.500-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.app/1.5.0/org.eclipse.equinox.app-1.5.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.common:3.12.0">
+    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.common:3.13.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.12.0/org.eclipse.equinox.common-3.12.0.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.13.0/org.eclipse.equinox.common-3.13.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.12.0/org.eclipse.equinox.common-3.12.0-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.13.0/org.eclipse.equinox.common-3.13.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.12.0/org.eclipse.equinox.common-3.12.0-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.common/3.13.0/org.eclipse.equinox.common-3.13.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.eclipse.platform:org.eclipse.equinox.preferences:3.8.0">
@@ -1498,37 +1514,37 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.preferences/3.8.0/org.eclipse.equinox.preferences-3.8.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.registry:3.8.800">
+    <library name="Maven: org.eclipse.platform:org.eclipse.equinox.registry:3.9.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.8.800/org.eclipse.equinox.registry-3.8.800.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.9.0/org.eclipse.equinox.registry-3.9.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.8.800/org.eclipse.equinox.registry-3.8.800-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.9.0/org.eclipse.equinox.registry-3.9.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.8.800/org.eclipse.equinox.registry-3.8.800-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.equinox.registry/3.9.0/org.eclipse.equinox.registry-3.9.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.osgi:3.15.300">
+    <library name="Maven: org.eclipse.platform:org.eclipse.osgi:3.16.0">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.15.300/org.eclipse.osgi-3.15.300.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.16.0/org.eclipse.osgi-3.16.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.15.300/org.eclipse.osgi-3.15.300-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.16.0/org.eclipse.osgi-3.16.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.15.300/org.eclipse.osgi-3.15.300-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.osgi/3.16.0/org.eclipse.osgi-3.16.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.eclipse.platform:org.eclipse.text:3.10.200">
+    <library name="Maven: org.eclipse.platform:org.eclipse.text:3.10.300">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.200/org.eclipse.text-3.10.200.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.300/org.eclipse.text-3.10.300.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.200/org.eclipse.text-3.10.200-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.300/org.eclipse.text-3.10.300-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.200/org.eclipse.text-3.10.200-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/platform/org.eclipse.text/3.10.300/org.eclipse.text-3.10.300-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.ehcache:ehcache:3.3.1">

@@ -64,3 +64,5 @@ spec:
           # value: env
           ports:
             - containerPort: 5432
+      imagePullSecrets:
+        - name: regcred
