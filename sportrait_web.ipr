@@ -622,6 +622,7 @@
   <component name="SqlDialectMappings">
     <file url="file://$USER_HOME$/DEV/sportrait-infrastructure/postgres-docker/docker-entrypoint-initdb.d/02_create-schema-from-hibernate.sql" dialect="PostgreSQL" />
     <file url="file://$USER_HOME$/DEV/sportrait-infrastructure/postgres-docker/docker-entrypoint-initdb.d/03_add-initial-setup-data.sql" dialect="PostgreSQL" />
+    <file url="file://$USER_HOME$/DEV/sportrait-infrastructure/postgres-docker/docker-entrypoint-initdb.d/04_add-test-data.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/db-update-scripts/update-userprofiles-for-google-sign-in.sql" dialect="PostgreSQL" />
   </component>
   <component name="SvnBranchConfigurationManager">
