@@ -517,6 +517,48 @@
             </properties>
         </profile>
 
+        <!-- Use this profile for k8s-java-PROD environment on (digital ocean) k8s host - db is hosted as another pod on k8s cluster-->
+        <profile>
+            <id>k8s-java-prod</id>
+            <build>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_PROD</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>k8s-java-prod.properties</appConfigFilterFile>
+            </properties>
+        </profile>
+
+        <!-- Use this profile for k8s-java-INT environment on (digital ocean) k8s host - db is hosted as another pod on k8s cluster-->
+        <profile>
+            <id>k8s-java-int</id>
+            <build>
+
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <warName>ROOT_TEST</warName>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+            <properties>
+                <appConfigFilterFile>k8s-java-int.properties</appConfigFilterFile>
+            </properties>
+        </profile>
+
 
 
 
