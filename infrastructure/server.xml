@@ -37,8 +37,13 @@
     -->
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <!-- ***************     CHANGED 2020-10-25   *******************-->
+    <!-- ***************   Disabled due to error messages for unsecured AJP connection   *******************-->
+    <!-- ***************   Enable again if behind Apache that connects to AJP   *******************-->
+    <!-- ***************     CHANGED 2020-10-25   *******************-->
+    <!--
     <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" maxPostSize="-1"/>
-
+    -->
 
     <!-- An Engine represents the entry point (within Catalina) that processes
          every request.  The Engine implementation for Tomcat stand alone
