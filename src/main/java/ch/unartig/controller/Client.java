@@ -72,9 +72,11 @@ public class Client
         UserProfile userProfile = userprofileDao.load(username);
         if (userProfile!=null) {
             this.username = username;
+            _logger.info("found userprofile for username : " + username);
             for (Object o : userProfile.getRoles()) {
                 UserRole userRole = (UserRole) o;
                 this.authorizedRoleNames.add(userRole.getRoleName());
+                _logger.info("adding role as authorizedRole : " + userRole.getRoleName());
             }
             _logger.debug("found userprofile for user : " + userProfile.getFirstName() + " " + userProfile.getLastName());
             return true;
