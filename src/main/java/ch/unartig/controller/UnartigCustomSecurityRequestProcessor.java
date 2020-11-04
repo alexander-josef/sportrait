@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Created by alexanderjosef on 07.03.17.
@@ -43,7 +44,7 @@ public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestPro
                 return (true);
             }
         }
-        logger.info("No user found with role \"" + roles.toString() +"\" - Returning Not Authorized (403) Code");
+        logger.info("No user found with role \"" + Arrays.toString(roles) +"\" - Returning Not Authorized (403) Code");
         response.sendError(403,"Please log in");
 //        response.sendError(HttpServletResponse.SC_BAD_REQUEST,getInternal().getMessage("notAuthorized",mapping.getPath()));
         return (false);
