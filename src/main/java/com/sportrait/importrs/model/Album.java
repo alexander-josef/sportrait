@@ -46,7 +46,7 @@ import javax.validation.constraints.*;
 
     PUBLISHED("published"),
 
-    MAPPED("mapped");
+    IMPORTING("importing");
 
     private String value;
 

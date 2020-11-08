@@ -60,9 +60,7 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.InputStream;
@@ -262,19 +260,19 @@ public class SportsEvent extends Event implements java.io.Serializable {
      *
      * @param eventCategoryId Sports Category Id as String as passed from view
      * @param tempFineImageServerPath temp path with high-res images local on the server
-     * @param client Client object, containing photographer object
+     * @param photographer Client object, containing photographer object
      * @param createThumbDisplay
      * @param applyLogoOnFineImages
-     * @return true for success
+     * @return SportsAlbum
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
+    public SportsAlbum createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Photographer photographer, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
     {
-        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
         // giving control to new thread and return.
         Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
         uploader.start();
-        return true;
+        return sportsAlbum;
     }
 
     /**

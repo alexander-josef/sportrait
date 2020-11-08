@@ -1,6 +1,12 @@
 package com.sportrait.importrs.service;
 
+import ch.unartig.studioserver.model.*;
+import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
+import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
 import com.sportrait.importrs.model.Album;
+import com.sportrait.importrs.model.Event;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -16,22 +22,42 @@ public class EventCategoriesApi {
      * This API method will create / update an album for an eventCategory.
      * NOTE: the current implementation only uses 1 album per eventCategory!
      * @param eventCategoryId
-     * @param album
+     * @param albumDto
      * @return
      */
     @Path("/{eventCategoryId}/albums")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAlbum(@PathParam("eventCategoryId") long eventCategoryId, Album album){
+    public Response createAlbum(@PathParam("eventCategoryId") long eventCategoryId, Album albumDto) {
         _logger.info("POST /api/import/eventCategories/{eventCategoryId}/albums");
         _logger.info("for eventCategoryId : " + eventCategoryId);
-        _logger.debug(album);
+        _logger.debug(albumDto);
+        SportsAlbum sportsAlbum;
+        try {
+            EventCategoryDAO dao = new EventCategoryDAO();
+            EventCategory eventCategory = dao.load(eventCategoryId);
+            SportsEvent event = eventCategory.getEvent();
+            PhotographerDAO photographerDAO = new PhotographerDAO();
+            photographerDAO.load((long) 1);
+            // Todo: authenticated user! - hardcoded user with id 1 -> admin user
+            Photographer photographer = photographerDAO.load((long) 1);
+            String photosS3Uri = albumDto.getPhotosS3Uri();
+            // todo : use full s3 path in future - no logic on server side, just take the full s3 uri
+            // remove everything at the beginning including 'upload/'
+            String s3Path = photosS3Uri.substring(photosS3Uri.lastIndexOf("upload/"));
+            _logger.info("s3 path : " + s3Path);
+            sportsAlbum = event.createSportsAlbumFromTempPath(eventCategoryId, s3Path, photographer, false, albumDto.isApplyLogoOnFineImages());
+        } catch (Throwable e) {
+            _logger.error(e);
+            return Response.serverError().entity("Error while creating album on the server").build();
+        }
 
-        event.createSportsAlbumFromTempPath(eventCategoryId, storageProviderUploadPath, client, false, album.applyLogoOnFineImages);
+        albumDto.setId(sportsAlbum.getGenericLevelId());
+        albumDto.setTitle(sportsAlbum.getLongTitle());
+        albumDto.setStatus(Album.StatusEnum.IMPORTING);
 
-        album.setId((long) 99);
-
-        return  Response.ok().entity(album).build();
+        // todo : return ID - think about REST endpoint that delivers status information of album (importing, published, ...)
+        return Response.ok().entity(albumDto).build();
     }
 
     @Path("/{eventCategoryId}/albums")

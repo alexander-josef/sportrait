@@ -24,7 +24,7 @@ public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestPro
             throws IOException, ServletException
     {
         // Is this action protected by role requirements?
-        logger.debug("calling custom request processor. Request: " + request.getRequestURL());
+        logger.debug("Custom security request processor called. Request: " + request.getRequestURL());
         String[] roles = mapping.getRoleNames();
         if ((roles == null) || (roles.length < 1)) {
             // no role necessary for processing this action / request - return true always
@@ -38,6 +38,9 @@ public class UnartigCustomSecurityRequestProcessor extends SecureTilesRequestPro
             response.sendError(403,"Please log in");
             return false;
         }
+        logger.info("logged in client username : ["+ client.getUsername() + "]");
+        logger.info("logged in client userprofileid : ["+ client.getUserProfile().getUserProfileId() + "]");
+        logger.info("logged in client (userprofile) contains roles : ["+ client.getAuthorizedRoleNames()+ "]");
         for (String role : roles) {
             if (client.getAuthorizedRoleNames().contains(role)) {
                 logger.info("found logged in user with role \""+role+"\"");

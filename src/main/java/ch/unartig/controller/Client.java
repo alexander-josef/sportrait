@@ -135,6 +135,7 @@ public class Client
     }
 
     public List<String> getAuthorizedRoleNames() {
+        init(username);
         return authorizedRoleNames;
     }
 }
