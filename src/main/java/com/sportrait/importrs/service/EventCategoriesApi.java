@@ -22,10 +22,12 @@ public class EventCategoriesApi {
     @Path("/{eventCategoryId}/albums")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createAlbum(@PathParam("eventCategoryId") int eventCategoryId, Album album){
+    public Response createAlbum(@PathParam("eventCategoryId") long eventCategoryId, Album album){
         _logger.info("POST /api/import/eventCategories/{eventCategoryId}/albums");
         _logger.info("for eventCategoryId : " + eventCategoryId);
         _logger.debug(album);
+
+        event.createSportsAlbumFromTempPath(eventCategoryId, storageProviderUploadPath, client, false, album.applyLogoOnFineImages);
 
         album.setId((long) 99);
 

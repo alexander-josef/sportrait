@@ -18,15 +18,13 @@
         <!-- Sane default when no revision property is passed in from the commandline -->
         <revision>0-SNAPSHOT</revision>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-
+        <swagger-core-version>2.0.0</swagger-core-version>
     </properties>
 
     <!--<version>1.8.0-SNAPSHOT</version>-->
 
     <name>sportrait Server</name>
     <url>https://sportrait.com</url>
-
-
 
     <!-- new section to manage AWS dependencies (ensure right version of aws dependencies for each module) -->
 
@@ -301,6 +299,13 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>2.32</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <scope>compile</scope>
+            <version>${swagger-core-version}</version>
         </dependency>
 
     </dependencies>

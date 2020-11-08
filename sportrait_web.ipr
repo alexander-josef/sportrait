@@ -55,7 +55,6 @@
             <element id="library" level="project" name="Maven: com.google.javascript:closure-compiler-externs:v20170626" />
             <element id="library" level="project" name="Maven: args4j:args4j:2.33" />
             <element id="library" level="project" name="Maven: com.google.errorprone:error_prone_annotations:2.0.18" />
-            <element id="library" level="project" name="Maven: com.google.guava:guava:20.0" />
             <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.0.2" />
             <element id="library" level="project" name="Maven: com.google.jsinterop:jsinterop-annotations:1.0.0" />
             <element id="library" level="project" name="Maven: org.zkoss.zk:zkwebfragment:8.6.0.1" />
@@ -157,6 +156,19 @@
             <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" />
             <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.10.1" />
             <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" />
+            <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-jaxrs2:2.0.0" />
+            <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.11" />
+            <element id="library" level="project" name="Maven: com.google.guava:guava:20.0" />
+            <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-models:2.0.0" />
+            <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-annotations:2.0.0" />
+            <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-integration:2.0.0" />
+            <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-core:2.0.0" />
+            <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.7" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4" />
+            <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.18" />
+            <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.1" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.9.1" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -931,6 +943,39 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-cbor/2.6.7/jackson-dataformat-cbor-2.6.7-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.9.4/jackson-dataformat-yaml-2.9.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.9.4/jackson-dataformat-yaml-2.9.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.9.4/jackson-dataformat-yaml-2.9.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.9.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.9.1/jackson-jaxrs-base-2.9.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.9.1/jackson-jaxrs-base-2.9.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.9.1/jackson-jaxrs-base-2.9.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.9.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.9.1/jackson-jaxrs-json-provider-2.9.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.9.1/jackson-jaxrs-json-provider-2.9.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.9.1/jackson-jaxrs-json-provider-2.9.1-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.10.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.10.1/jackson-module-jaxb-annotations-2.10.1.jar!/" />
@@ -1250,6 +1295,61 @@
         <root url="jar://$MAVEN_REPOSITORY$/commons-validator/commons-validator/1.1.4/commons-validator-1.1.4-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: io.swagger.core.v3:swagger-annotations:2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-annotations/2.0.0/swagger-annotations-2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-annotations/2.0.0/swagger-annotations-2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-annotations/2.0.0/swagger-annotations-2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: io.swagger.core.v3:swagger-core:2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-core/2.0.0/swagger-core-2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-core/2.0.0/swagger-core-2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-core/2.0.0/swagger-core-2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: io.swagger.core.v3:swagger-integration:2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-integration/2.0.0/swagger-integration-2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-integration/2.0.0/swagger-integration-2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-integration/2.0.0/swagger-integration-2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: io.swagger.core.v3:swagger-jaxrs2:2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-jaxrs2/2.0.0/swagger-jaxrs2-2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-jaxrs2/2.0.0/swagger-jaxrs2-2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-jaxrs2/2.0.0/swagger-jaxrs2-2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: io.swagger.core.v3:swagger-models:2.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-models/2.0.0/swagger-models-2.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-models/2.0.0/swagger-models-2.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/io/swagger/core/v3/swagger-models/2.0.0/swagger-models-2.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: jakarta.activation:jakarta.activation-api:1.2.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/jakarta/activation/jakarta.activation-api/1.2.1/jakarta.activation-api-1.2.1.jar!/" />
@@ -1382,6 +1482,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: javax.validation:validation-api:1.1.0.Final">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: javax.xml.bind:jaxb-api:2.3.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar!/" />
@@ -1479,6 +1590,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/ant/ant/1.10.5/ant-1.10.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.commons:commons-lang3:3.7">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.7/commons-lang3-3.7-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.apache.httpcomponents:httpclient:4.5.5">
@@ -1987,6 +2109,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/staxex/stax-ex/1.8/stax-ex-1.8-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.reflections:reflections:0.9.11">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/reflections/reflections/0.9.11/reflections-0.9.11.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/reflections/reflections/0.9.11/reflections-0.9.11-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/reflections/reflections/0.9.11/reflections-0.9.11-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.slf4j:slf4j-api:1.7.7">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar!/" />
@@ -2018,6 +2151,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.yaml:snakeyaml:1.18">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.18/snakeyaml-1.18.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.18/snakeyaml-1.18-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.18/snakeyaml-1.18-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.zkoss.common:zcommon:8.6.0.1">
