@@ -3,18 +3,16 @@ package com.sportrait.importrs.service;
 import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import com.sportrait.importrs.model.Album;
 import org.apache.log4j.Logger;
 
 import javax.print.attribute.standard.Media;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("")
-public class Hello {
+public class Ping {
     private final Logger _logger = Logger.getLogger(getClass().getName());
     GenericLevelDAO glDao = new GenericLevelDAO();
 
@@ -22,7 +20,7 @@ public class Hello {
     @GET
     public Response getPing(){
         _logger.info("get /api/import/ping");
-        return  Response.ok().entity("Service Online").build();
+        return  Response.ok().entity("Service Online. Version: xyz").build();
     }
 
     @Path("/events/{id}")
