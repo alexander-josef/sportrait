@@ -365,6 +365,7 @@
           },
           "applyLogoOnFineImages" : {
             "type" : "boolean",
+            "description" : "whether to process the fine images with a logo or watermark. Default to false with the newer imgix based import.",
             "example" : true,
             "default" : false
           },
