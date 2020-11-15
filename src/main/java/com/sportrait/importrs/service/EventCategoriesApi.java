@@ -5,6 +5,7 @@ import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
+import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.Event;
 import org.apache.log4j.Logger;
@@ -78,10 +79,11 @@ public class EventCategoriesApi {
 
     @Path("/{eventCategoryId}")
     @GET
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbums(@PathParam("eventCategoryId") int eventCategoryId){
 
-
+        _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
         // load event category
         return  Response.ok().entity("not implemented").build();
     }

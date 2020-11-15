@@ -16,6 +16,11 @@ import static org.glassfish.jersey.server.monitoring.ApplicationEvent.Type.INITI
 @ApplicationPath("/api/import")
 public class ImportRestApplication extends Application implements ApplicationEventListener {
 
+    /**
+     * check for events and initialize the REST API application
+     *
+     * @param applicationEvent
+     */
     @Override
     public void onEvent(ApplicationEvent applicationEvent) {
 
