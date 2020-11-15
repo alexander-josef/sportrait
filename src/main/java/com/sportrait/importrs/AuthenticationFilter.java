@@ -1,6 +1,12 @@
 package com.sportrait.importrs;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.util.Utils;
+import com.google.api.client.http.javanet.NetHttpTransport;
+
 import javax.annotation.Priority;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -8,11 +14,14 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Secured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+    // Google Client ID:
+    private static final String CLIENT_ID = "780630173968-29smq37pmuihjn34mgpflbi7393k3dgh.apps.googleusercontent.com";
 
     private static final String REALM = "example";
     private static final String AUTHENTICATION_SCHEME = "Bearer";
@@ -67,5 +76,19 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String token) throws Exception {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
+        // todo google sign in check here?
+
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
+                .Builder(new NetHttpTransport(), Utils.getDefaultJsonFactory())
+                .setAudience(Arrays.asList(CLIENT_ID))
+                .build();
+
+        GoogleIdToken idToken = verifier.verify(token);
+        if (idToken != null) {
+            GoogleIdToken.Payload payload = idToken.getPayload();
+            System.out.println("User ID: " + payload.getSubject());
+        } else {
+            throw new NotAuthorizedException("Invalid token.");
+        }
     }
 }
