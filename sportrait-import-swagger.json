@@ -1,0 +1,422 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "Initial Sportrait Import API description - an API to process events and\nphoto imports on the Sportrait Server\n",
+    "version" : "0.0.1",
+    "title" : "Sportrait Import API",
+    "termsOfService" : "https://sportrait.com/terms/",
+    "contact" : {
+      "email" : "info@sportrait.com",
+      "name" : "Alexander Josef"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags" : [ {
+    "name" : "event",
+    "description" : "Everything about a sports event",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
+    "name" : "eventCategory",
+    "description" : "Everything about an EventCategory (Etappe)",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
+    "name" : "album",
+    "description" : "an album contains a group of photos. belongs to an eventCategory and an event"
+  } ],
+  "paths" : {
+    "/events" : {
+      "get" : {
+        "tags" : [ "event" ],
+        "summary" : "Get all events (visibility only for logged in user?)",
+        "operationId" : "listEvents",
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "event" ],
+        "summary" : "Add (create) a new event to the server",
+        "operationId" : "addEvent",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Event"
+        },
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/events/{eventId}" : {
+      "put" : {
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "event" ],
+        "summary" : "Update an existing event",
+        "operationId" : "updateEvent",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Event"
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Event not found"
+          },
+          "405" : {
+            "description" : "Validation exception"
+          }
+        }
+      }
+    },
+    "/eventCategories/{eventCategoryId}/albums" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used (photos will be added) if one exist.",
+        "operationId" : "addAlbum",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Album"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "get" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Get all albums for given eventCategory.",
+        "operationId" : "listAlbumsForEventCategory",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/" : {
+      "put" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Update an album. No photo import takes place. adding an album with photos must happen via eventCategory ressource",
+        "operationId" : "updateAlbum",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Album"
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "delete an album incl. all of its photos. Associated eventCategory won't be touched. TODO add security",
+        "operationId" : "deleteAlbum",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums" : {
+      "get" : {
+        "tags" : [ "album" ],
+        "summary" : "list all albums (that are visible for the authenticated requestor)",
+        "operationId" : "listAllAlbums",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Sportrait",
+    "url" : "https://docs.sportrait.com"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080/api/import/"
+  }, {
+    "url" : "https://sportrait.com/api/import/1.0.0/"
+  }, {
+    "url" : "https://int2.sportrait.com/api/import/1.0.0/"
+  } ],
+  "components" : {
+    "requestBodies" : {
+      "Event" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Event"
+            }
+          },
+          "application/xml" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Event"
+            }
+          }
+        },
+        "description" : "Event object that needs to be added to the server",
+        "required" : true
+      },
+      "EventCategory" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/EventCategory"
+            }
+          }
+        },
+        "required" : true
+      },
+      "Album" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Album"
+            }
+          }
+        },
+        "required" : true
+      }
+    },
+    "schemas" : {
+      "Event" : {
+        "type" : "object",
+        "required" : [ "title", "navTitle", "organizerUrl" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "sola 2020"
+          },
+          "navTitle" : {
+            "type" : "string",
+            "example" : "sola 2020"
+          },
+          "organizerUrl" : {
+            "type" : "string",
+            "format" : "uri",
+            "example" : "https://asvz.ch/sola"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "zipCode" : {
+            "type" : "string",
+            "example" : "8000"
+          },
+          "city" : {
+            "type" : "string",
+            "example" : "Zurich"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Die 20182-te Durchführung der Sola führt rund um Zürich"
+          },
+          "eventCategories" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "eventCategories",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/EventCategory"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "event status",
+            "enum" : [ "new", "mapped", "online" ]
+          }
+        }
+      },
+      "Album" : {
+        "type" : "object",
+        "required" : [ "title", "event", "photosS3Uri" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "sola 2020 - etappe 12"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "die 12. etappe der sola 2030"
+          },
+          "applyLogoOnFineImages" : {
+            "type" : "boolean",
+            "description" : "whether to process the fine images with a logo or watermark. Default to false with the newer imgix based import.",
+            "example" : true,
+            "default" : false
+          },
+          "photosS3Uri" : {
+            "type" : "string",
+            "description" : "location to find the images to be processed",
+            "example" : "s3://dev.ireland.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/"
+          },
+          "sponsorBarRelativeUrl" : {
+            "type" : "string",
+            "description" : "relative URL (without bucket) to sponsor bar",
+            "example" : "logo/2020/asvz-logo-2020.png"
+          },
+          "asvzLogoRelativeUrl" : {
+            "type" : "string",
+            "description" : "relative URL (without bucket) to logo",
+            "example" : "logo/2020/asvz-logo-2020.png"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "album publication status",
+            "enum" : [ "hidden", "published", "importing" ]
+          }
+        }
+      },
+      "EventCategory" : {
+        "type" : "object",
+        "required" : [ "title", "event", "status" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "event" : {
+            "$ref" : "#/components/schemas/Event"
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "sola 2020 - etappe 12"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "die 12. etappe der sola 2030"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "event status",
+            "enum" : [ "new", "mapped", "online" ]
+          }
+        }
+      }
+    }
+  }
+}
