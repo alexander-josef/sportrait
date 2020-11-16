@@ -39,11 +39,11 @@ import java.util.ArrayList;
  */
 public class Client
 {
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
 
     private String serverUrl;
     private String username;
-    private List<String> authorizedRoleNames;
+    private List<String> authorizedRoleNames = new ArrayList<String>();
 
     /**
      * Default Constructor; sets server URL and initializes the authorized roles list object
@@ -53,9 +53,16 @@ public class Client
     public Client(HttpServletRequest request)
     {
         serverUrl = HttpUtil.getWebApplicationUrl(request);
-        authorizedRoleNames = new ArrayList<String>();
     }
 
+    /**
+     * Construct the client object with a passed username (NEW for Jersey API)
+     * @param username
+     */
+    public Client(String username) {
+        this.username = username;
+        init(username);
+    }
 
     /**
      * Set the username as field to this session object, set the role names as list of strings

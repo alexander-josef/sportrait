@@ -1,5 +1,6 @@
 package com.sportrait.importrs.service;
 
+import ch.unartig.controller.Client;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -11,12 +12,17 @@ import com.sportrait.importrs.model.Event;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 // class for the eventCategories API - all verbs implemented below
 @Path("/eventCategories/")
 public class EventCategoriesApi {
+    // inject request context to read out client - client to be put to request context in auth filter
+    @Context
+    ContainerRequestContext requestContext;
     private final Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
@@ -85,7 +91,9 @@ public class EventCategoriesApi {
 
         _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
         // load event category
-        return  Response.ok().entity("not implemented").build();
+        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+
+        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
     }
 
 }

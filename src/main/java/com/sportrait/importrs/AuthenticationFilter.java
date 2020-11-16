@@ -1,5 +1,6 @@
 package com.sportrait.importrs;
 
+import ch.unartig.controller.Client;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.util.Utils;
@@ -46,7 +47,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-            validateToken(token);
+            // return a user identifier here?
+            String subject = validateToken(token);
+            requestContext.setProperty("client",new Client(subject));
 
         } catch (Exception e) {
             abortWithUnauthorized(requestContext);
@@ -73,22 +76,22 @@ public class AuthenticationFilter implements ContainerRequestFilter {
                         .build());
     }
 
-    private void validateToken(String token) throws Exception {
+    private String validateToken(String token) throws Exception {
         // Check if the token was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        // todo google sign in check here?
-
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier
                 .Builder(new NetHttpTransport(), Utils.getDefaultJsonFactory())
                 .setAudience(Arrays.asList(CLIENT_ID))
                 .build();
-
+        String subject;
         GoogleIdToken idToken = verifier.verify(token);
         if (idToken != null) {
             GoogleIdToken.Payload payload = idToken.getPayload();
-            System.out.println("User ID: " + payload.getSubject());
+            System.out.println("User ID (Subject): " + payload.getSubject());
+            subject = payload.getSubject();
         } else {
             throw new NotAuthorizedException("Invalid token.");
         }
+        return subject;
     }
 }
