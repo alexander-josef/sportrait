@@ -15,6 +15,20 @@
     }
   },
   "tags" : [ {
+    "name" : "photographer",
+    "description" : "Everything about a Photographer / User",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
+    "name" : "eventGroup",
+    "description" : "Everything about a sports eventGroup",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
     "name" : "event",
     "description" : "Everything about a sports event",
     "externalDocs" : {
@@ -85,6 +99,29 @@
           },
           "405" : {
             "description" : "Validation exception"
+          }
+        }
+      },
+      "get" : {
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "event" ],
+        "summary" : "Update an existing event",
+        "operationId" : "getEvent",
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Event not found"
           }
         }
       }
@@ -416,9 +453,6 @@
             "enum" : [ "new", "mapped", "online" ]
           }
         }
-      },
-      "Schema" : {
-        "description" : "R"
       },
       "EventGroup" : {
         "description" : "Represents an EventGroup in Sportrait"
