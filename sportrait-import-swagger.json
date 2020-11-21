@@ -216,6 +216,102 @@
         }
       }
     },
+    "/eventCategories/" : {
+      "post" : {
+        "tags" : [ "eventCategory" ],
+        "summary" : "Update an eventCategory",
+        "operationId" : "addEventCategory",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EventCategory"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - added",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EventCategory"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/eventCategories/{eventCategoryId}" : {
+      "put" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Update an eventCategory",
+        "operationId" : "updateEventCategory",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EventCategory"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EventCategory"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "get" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Return an eventCategory identified by eventCategoryId",
+        "operationId" : "getEventCategory",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EventCategory"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "403" : {
+            "description" : "forbidden"
+          }
+        }
+      }
+    },
     "/albums/{albumId}/" : {
       "put" : {
         "parameters" : [ {
