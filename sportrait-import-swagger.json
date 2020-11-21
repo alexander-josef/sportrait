@@ -503,6 +503,56 @@
         }
       }
     },
+    "/albums/{albumId}/addProduct/{productTypeId}/{priceId}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "productTypeId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "priceId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Delete all startnumber mappings of an album.",
+        "operationId" : "addAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
     "/albums" : {
       "get" : {
         "tags" : [ "album" ],
