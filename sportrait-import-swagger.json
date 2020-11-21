@@ -416,6 +416,12 @@
             "enum" : [ "new", "mapped", "online" ]
           }
         }
+      },
+      "Schema" : {
+        "description" : "R"
+      },
+      "EventGroup" : {
+        "description" : "Represents an EventGroup in Sportrait"
       }
     }
   }
