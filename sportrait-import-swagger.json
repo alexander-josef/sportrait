@@ -45,6 +45,9 @@
   }, {
     "name" : "album",
     "description" : "an album contains a group of photos. belongs to an eventCategory and an event"
+  }, {
+    "name" : "productType",
+    "description" : "product types can be mapped with prices and added as products to albums"
   } ],
   "paths" : {
     "/events" : {
@@ -559,6 +562,28 @@
           }
         }
       }
+    },
+    "/productTypes" : {
+      "get" : {
+        "tags" : [ "productType" ],
+        "summary" : "list all product types (incl. prices that can be mapped for a product)",
+        "operationId" : "listproductTypes",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductType"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
     }
   },
   "externalDocs" : {
@@ -808,6 +833,35 @@
           "priceId" : {
             "type" : "integer",
             "format" : "int64"
+          }
+        }
+      },
+      "ProductType" : {
+        "description" : "Represents a product type that can be combined with a price and added as a product for an album",
+        "type" : "object",
+        "required" : [ "name", "description", "digitalProduct" ],
+        "properties" : {
+          "productTypeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "10x15cm or \\\"digital master\\\""
+          },
+          "digitalProduct" : {
+            "type" : "boolean",
+            "description" : "true for digital (not physical) product"
+          },
+          "prices" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "prices",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Price"
+            }
           }
         }
       }
