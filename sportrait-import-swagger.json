@@ -167,14 +167,14 @@
           }
         } ],
         "tags" : [ "eventCategory" ],
-        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used (photos will be added) if one exist.",
+        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used on the backend (photos will be added) if one exist.",
         "operationId" : "addAlbum",
         "requestBody" : {
           "$ref" : "#/components/requestBodies/Album"
         },
         "responses" : {
-          "200" : {
-            "description" : "successful operation",
+          "201" : {
+            "description" : "successful operation - album created",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -222,7 +222,7 @@
     "/eventCategories/" : {
       "post" : {
         "tags" : [ "eventCategory" ],
-        "summary" : "Update an eventCategory",
+        "summary" : "Add an eventCategory",
         "operationId" : "addEventCategory",
         "requestBody" : {
           "$ref" : "#/components/requestBodies/EventCategory"
@@ -423,7 +423,7 @@
           }
         } ],
         "tags" : [ "album" ],
-        "summary" : "Un-publish an album.",
+        "summary" : "Un-publish an existing album.",
         "operationId" : "unpublishAlbum",
         "responses" : {
           "200" : {
@@ -455,7 +455,7 @@
           }
         } ],
         "tags" : [ "album" ],
-        "summary" : "Publish an album.",
+        "summary" : "Publish an existing album.",
         "operationId" : "publishAlbum",
         "responses" : {
           "200" : {
@@ -489,6 +489,38 @@
         "tags" : [ "album" ],
         "summary" : "Delete all startnumber mappings of an album.",
         "operationId" : "deleteAlbumMappings",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/startPostProcessing" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Start the post processing - recognition of additional startnumbers based on face recognition - of an album.",
+        "operationId" : "startAlbumPostProcessing",
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -817,12 +849,12 @@
           },
           "sponsorBarRelativeUrl" : {
             "type" : "string",
-            "description" : "relative URL (without bucket) to sponsor bar",
+            "description" : "relative URL (without bucket) to sponsor bar - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
           },
           "asvzLogoRelativeUrl" : {
             "type" : "string",
-            "description" : "relative URL (without bucket) to logo",
+            "description" : "relative URL (without bucket) to logo - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
           },
           "status" : {
