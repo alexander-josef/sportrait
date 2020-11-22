@@ -839,7 +839,7 @@
       "ProductType" : {
         "description" : "Represents a product type that can be combined with a price and added as a product for an album",
         "type" : "object",
-        "required" : [ "name", "description", "digitalProduct" ],
+        "required" : [ "name", "description", "digitalProduct", "prices" ],
         "properties" : {
           "productTypeId" : {
             "type" : "integer",
@@ -848,6 +848,10 @@
           "name" : {
             "type" : "string",
             "example" : "10x15cm or \\\"digital master\\\""
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "10x15cm Print"
           },
           "digitalProduct" : {
             "type" : "boolean",
@@ -862,6 +866,34 @@
             "items" : {
               "$ref" : "#/components/schemas/Price"
             }
+          }
+        }
+      },
+      "Price" : {
+        "description" : "Represents a price for a product",
+        "type" : "object",
+        "required" : [ "priceCHF", "priceEUR", "comment", "status" ],
+        "properties" : {
+          "priceId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "priceCHF" : {
+            "type" : "number",
+            "example" : 10.55
+          },
+          "priceEUR" : {
+            "type" : "number",
+            "example" : 9.99
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : "default price for 10x15"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of this price object (not used yet)",
+            "enum" : [ "active", "archived", "deprecated" ]
           }
         }
       }
