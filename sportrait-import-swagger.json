@@ -543,7 +543,7 @@
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
-          "description" : "ID of the album to add a product",
+          "description" : "ID of the album to add a timing mapping",
           "required" : true,
           "schema" : {
             "type" : "integer",
@@ -1056,12 +1056,12 @@
           "differencePhotoTiming" : {
             "type" : "integer",
             "example" : 20,
-            "description" : "it took an average runner 20 seconds from photo point to timing"
+            "description" : "Example 20s. It took an average runner 20 seconds from photo point to timing\n"
           },
           "toleranceSlowFast" : {
             "type" : "integer",
             "example" : 10,
-            "description" : "10 seconds are added as tolerance on both sides. I.e. a slow runner with 29 seconds still is mapped, as well as a fast runner with 11 seconds (check if this is true or if it's toleranceSlowFast/2 )"
+            "description" : "Example 10s. 10 seconds are added as tolerance on both sides. I.e. a slow runner with 29 seconds still is mapped, as well as a fast runner with 11 seconds (check if this is true or if it's toleranceSlowFast/2 )\n"
           },
           "photoPointAfterTiming" : {
             "type" : "boolean",
