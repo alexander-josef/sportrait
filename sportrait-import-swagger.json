@@ -440,7 +440,7 @@
       }
     },
     "/albums/{albumId}/publish" : {
-      "get" : {
+      "post" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -472,7 +472,7 @@
       }
     },
     "/albums/{albumId}/deleteMappings" : {
-      "get" : {
+      "post" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -503,30 +503,12 @@
         }
       }
     },
-    "/albums/{albumId}/addProduct/{productTypeId}/{priceId}" : {
-      "get" : {
+    "/albums/{albumId}/products" : {
+      "post" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
-          "description" : "ID of the album to update",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }, {
-          "name" : "productTypeId",
-          "in" : "path",
-          "description" : "ID of the album to update",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }, {
-          "name" : "priceId",
-          "in" : "path",
-          "description" : "ID of the album to update",
+          "description" : "ID of the album to add a product",
           "required" : true,
           "schema" : {
             "type" : "integer",
@@ -534,11 +516,14 @@
           }
         } ],
         "tags" : [ "album" ],
-        "summary" : "Delete all startnumber mappings of an album.",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Product"
+        },
+        "summary" : "Add a new product to an album.",
         "operationId" : "addAlbumProduct",
         "responses" : {
-          "200" : {
-            "description" : "successful operation",
+          "201" : {
+            "description" : "successful operation - product added",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -636,6 +621,16 @@
           "application/json" : {
             "schema" : {
               "$ref" : "#/components/schemas/Album"
+            }
+          }
+        },
+        "required" : true
+      },
+      "Product" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Product"
             }
           }
         },
@@ -798,6 +793,21 @@
             "type" : "string",
             "description" : "eventGroup status",
             "enum" : [ "new", "published", "archived" ]
+          }
+        }
+      },
+      "Product" : {
+        "description" : "Represents a product for an albuem",
+        "type" : "object",
+        "required" : [ "productTypeId", "priceId" ],
+        "properties" : {
+          "productTypeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "priceId" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         }
       }
