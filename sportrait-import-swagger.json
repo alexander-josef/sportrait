@@ -538,6 +538,41 @@
         }
       }
     },
+    "/albums/{albumId}/timingMapping" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/TimingMapping"
+        },
+        "summary" : "Post a new timing mapping for an album. Will start the mapping process",
+        "operationId" : "addAlbumTimingMapping",
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - mapping started",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
     "/albums/{albumId}/products" : {
       "post" : {
         "parameters" : [ {
@@ -997,6 +1032,36 @@
             "type" : "string",
             "description" : "status of this price object (not used yet)",
             "enum" : [ "active", "archived", "deprecated" ]
+          }
+        }
+      },
+      "TimingMapping" : {
+        "description" : "Represents the data for a timing mapping of an album",
+        "type" : "object",
+        "required" : [ "timingFile", "differencePhotoTiming", "toleranceSlowFast" ],
+        "properties" : {
+          "timingFile" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "differencePhotoTiming" : {
+            "type" : "integer",
+            "example" : 20,
+            "description" : "it took an average runner 20 seconds from photo point to timing"
+          },
+          "toleranceSlowFast" : {
+            "type" : "integer",
+            "example" : 10,
+            "description" : "10 seconds are added as tolerance on both sides. I.e. a slow runner with 29 seconds still is mapped, as well as a fast runner with 11 seconds"
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : "default price for 10x15"
+          },
+          "photoPointAfterTiming" : {
+            "type" : "boolean",
+            "description" : "Was the photo point located after the timing? (can be left out, defaults to false)",
+            "default" : false
           }
         }
       }
