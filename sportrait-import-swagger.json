@@ -182,15 +182,15 @@
         "parameters" : [ {
           "name" : "eventId",
           "in" : "path",
-          "description" : "ID of the eventGroup to delete",
+          "description" : "ID of the event to delete",
           "required" : true,
           "schema" : {
             "type" : "integer",
             "format" : "int64"
           }
         } ],
-        "tags" : [ "eventGroup" ],
-        "summary" : "delete an eventGroup incl. all of its events, albums & photos - TODO add security",
+        "tags" : [ "event" ],
+        "summary" : "delete an event incl. all of its eventCategories, albums & photos - TODO add security",
         "operationId" : "deleteEvent",
         "responses" : {
           "200" : {
