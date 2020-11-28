@@ -100,6 +100,31 @@
         }
       }
     },
+    "/eventGroups/{eventGroupId}" : {
+      "delete" : {
+        "parameters" : [ {
+          "name" : "eventGroupId",
+          "in" : "path",
+          "description" : "ID of the eventGroup to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "delete an eventGroup incl. all of its events, albums & photos - TODO add security",
+        "operationId" : "deleteEventGroup",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      }
+    },
     "/events/{eventId}" : {
       "put" : {
         "parameters" : [ {
