@@ -315,7 +315,59 @@
         }
       }
     },
+    "/albums" : {
+      "get" : {
+        "tags" : [ "album" ],
+        "summary" : "list all albums (that are visible for the authenticated requestor)",
+        "operationId" : "listAllAlbums",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
     "/albums/{albumId}/" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "delete an album incl. all of its photos. Associated eventCategory won't be touched. TODO add security",
+        "operationId" : "getAlbum",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "put" : {
         "parameters" : [ {
           "name" : "albumId",
@@ -363,36 +415,6 @@
         "tags" : [ "album" ],
         "summary" : "delete an album incl. all of its photos. Associated eventCategory won't be touched. TODO add security",
         "operationId" : "deleteAlbum",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Album"
-                }
-              }
-            }
-          },
-          "405" : {
-            "description" : "Invalid input"
-          }
-        }
-      },
-      "get" : {
-        "parameters" : [ {
-          "name" : "albumId",
-          "in" : "path",
-          "description" : "ID of the album to delete",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        } ],
-        "tags" : [ "album" ],
-        "summary" : "delete an album incl. all of its photos. Associated eventCategory won't be touched. TODO add security",
-        "operationId" : "getAlbum",
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -665,28 +687,6 @@
         "responses" : {
           "200" : {
             "description" : "successful operation - product deleted",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Album"
-                }
-              }
-            }
-          },
-          "405" : {
-            "description" : "Invalid input"
-          }
-        }
-      }
-    },
-    "/albums" : {
-      "get" : {
-        "tags" : [ "album" ],
-        "summary" : "list all albums (that are visible for the authenticated requestor)",
-        "operationId" : "listAllAlbums",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
