@@ -1,14 +1,14 @@
 package com.sportrait.importrs.service;
 
 import ch.unartig.controller.Client;
-import ch.unartig.studioserver.model.*;
+import ch.unartig.studioserver.model.Photographer;
+import ch.unartig.studioserver.model.SportsAlbum;
+import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
-import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
-import ch.unartig.studioserver.persistence.DAOs.UserProfileDAO;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
-import com.sportrait.importrs.model.Event;
+import com.sportrait.importrs.model.EventCategory;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -24,6 +24,72 @@ public class EventCategoriesApi {
     @Context
     ContainerRequestContext requestContext;
     private final Logger _logger = Logger.getLogger(getClass().getName());
+
+
+
+    @Path("")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addEventCategory(EventCategory eventCategoryDto){
+        if (eventCategoryDto.getId()!=null) {
+            _logger.info("POST /api/import/eventCategories");
+            _logger.info("creating new eventCategory from eventCategoryDto ");
+        } else {
+            _logger.info("POST /api/import/eventCategories");
+            _logger.info("no eventCategoryDto");
+        }
+
+        return  Response.ok().entity("not implemented").build();
+    }
+
+    @Path("/{eventCategoryId}")
+    @GET
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
+
+        _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
+        // load event category
+        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+
+        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+    }
+
+    @Path("/{eventCategoryId}")
+    @PUT
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateEventCategory(@PathParam("eventCategoryId") int eventCategoryId, EventCategory eventCategoryDto){
+
+        _logger.info("PUT /eventCategories/"+eventCategoryId);
+        // load event category
+        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+
+        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+    }
+
+    @Path("/{eventCategoryId}")
+    @DELETE
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
+
+        _logger.info("DELETE /eventCategories/"+eventCategoryId);
+        // load event category
+        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+
+        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+    }
+
+    @Path("/{eventCategoryId}/albums")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listAlbumsForEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
+
+        // TODO implement
+
+        return  Response.ok().entity("not implemented").build();
+    }
 
     /**
      * This API method will create / update an album for an eventCategory.
@@ -42,7 +108,7 @@ public class EventCategoriesApi {
         SportsAlbum sportsAlbum;
         try {
             EventCategoryDAO dao = new EventCategoryDAO();
-            EventCategory eventCategory = dao.load(eventCategoryId);
+            ch.unartig.studioserver.model.EventCategory eventCategory = dao.load(eventCategoryId);
             SportsEvent event = eventCategory.getEvent();
             PhotographerDAO photographerDAO = new PhotographerDAO();
             photographerDAO.load((long) 1);
@@ -65,35 +131,6 @@ public class EventCategoriesApi {
 
         // todo : return ID - think about REST endpoint that delivers status information of album (importing, published, ...)
         return Response.ok().entity(albumDto).build();
-    }
-
-    @Path("/{eventCategoryId}/albums")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateAlbum(@PathParam("eventCategoryId") int eventCategoryId, Album album){
-
-        if (album.getId()==null) {
-            _logger.info("PUT /api/import/eventCategories/{eventCategoryId}/albums");
-            _logger.info("album ID is null -> create new album");
-        } else {
-            _logger.info("POST /api/import/eventCategories/{eventCategoryId}/albums");
-            _logger.info("album ID = :"+album.getId() +" -> update album / import for given album");
-        }
-
-        return  Response.ok().entity("not implemented").build();
-    }
-
-    @Path("/{eventCategoryId}")
-    @GET
-    @Secured
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAlbums(@PathParam("eventCategoryId") int eventCategoryId){
-
-        _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
-        // load event category
-        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
-
-        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
     }
 
 }
