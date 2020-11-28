@@ -15,6 +15,20 @@
     }
   },
   "tags" : [ {
+    "name" : "photographer",
+    "description" : "Everything about a Photographer / User",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
+    "name" : "eventGroup",
+    "description" : "Everything about a sports eventGroup",
+    "externalDocs" : {
+      "description" : "Find out more",
+      "url" : "https://sportrait.com"
+    }
+  }, {
     "name" : "event",
     "description" : "Everything about a sports event",
     "externalDocs" : {
@@ -31,6 +45,9 @@
   }, {
     "name" : "album",
     "description" : "an album contains a group of photos. belongs to an eventCategory and an event"
+  }, {
+    "name" : "productType",
+    "description" : "product types can be mapped with prices and added as products to albums"
   } ],
   "paths" : {
     "/events" : {
@@ -58,7 +75,80 @@
         }
       }
     },
+    "/eventGroups" : {
+      "get" : {
+        "tags" : [ "eventGroup" ],
+        "summary" : "Get all eventGroups (visibility only for logged in user?)",
+        "operationId" : "listEventGroups",
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "eventGroup" ],
+        "summary" : "Add (create) a new event to the server",
+        "operationId" : "addEventGroup",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EventGroup"
+        },
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/eventGroups/{eventGroupId}" : {
+      "delete" : {
+        "parameters" : [ {
+          "name" : "eventGroupId",
+          "in" : "path",
+          "description" : "ID of the eventGroup to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventGroup" ],
+        "summary" : "delete an eventGroup incl. all of its events, albums & photos - TODO add security",
+        "operationId" : "deleteEventGroup",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      }
+    },
     "/events/{eventId}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "event" ],
+        "summary" : "return an existing event",
+        "operationId" : "getEvent",
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Event not found"
+          }
+        }
+      },
       "put" : {
         "parameters" : [ {
           "name" : "eventId",
@@ -87,10 +177,58 @@
             "description" : "Validation exception"
           }
         }
+      },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of the event to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "event" ],
+        "summary" : "delete an event incl. all of its eventCategories, albums & photos - TODO add security",
+        "operationId" : "deleteEvent",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
       }
     },
-    "/eventCategories/{eventCategoryId}/albums" : {
+    "/eventCategories/" : {
       "post" : {
+        "tags" : [ "eventCategory" ],
+        "summary" : "Add an eventCategory",
+        "operationId" : "addEventCategory",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EventCategory"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - added",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EventCategory"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/eventCategories/{eventCategoryId}" : {
+      "get" : {
         "parameters" : [ {
           "name" : "eventCategoryId",
           "in" : "path",
@@ -102,18 +240,54 @@
           }
         } ],
         "tags" : [ "eventCategory" ],
-        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used (photos will be added) if one exist.",
-        "operationId" : "addAlbum",
-        "requestBody" : {
-          "$ref" : "#/components/requestBodies/Album"
-        },
+        "summary" : "Return an eventCategory identified by eventCategoryId",
+        "operationId" : "getEventCategory",
         "responses" : {
           "200" : {
             "description" : "successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Album"
+                  "$ref" : "#/components/schemas/EventCategory"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          },
+          "404" : {
+            "description" : "Not found"
+          },
+          "403" : {
+            "description" : "forbidden"
+          }
+        }
+      },
+      "put" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Update an eventCategory",
+        "operationId" : "updateEventCategory",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EventCategory"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EventCategory"
                 }
               }
             }
@@ -123,6 +297,31 @@
           }
         }
       },
+      "delete" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "delete an eventCategory incl. all of its albums & photos - TODO add security",
+        "operationId" : "deleteEventCategory",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation"
+          },
+          "404" : {
+            "description" : "Not found"
+          }
+        }
+      }
+    },
+    "/eventCategories/{eventCategoryId}/albums" : {
       "get" : {
         "parameters" : [ {
           "name" : "eventCategoryId",
@@ -152,9 +351,94 @@
             "description" : "Invalid input"
           }
         }
+      },
+      "post" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used on the backend (photos will be added) if one exist.",
+        "operationId" : "addAlbum",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Album"
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - album created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums" : {
+      "get" : {
+        "tags" : [ "album" ],
+        "summary" : "list all albums (that are visible for the authenticated requestor)",
+        "operationId" : "listAllAlbums",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
       }
     },
     "/albums/{albumId}/" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "get an album identified by albumId. TODO add security",
+        "operationId" : "getAlbum",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "put" : {
         "parameters" : [ {
           "name" : "albumId",
@@ -219,11 +503,21 @@
         }
       }
     },
-    "/albums" : {
-      "get" : {
+    "/albums/{albumId}/unpublish" : {
+      "patch" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
         "tags" : [ "album" ],
-        "summary" : "list all albums (that are visible for the authenticated requestor)",
-        "operationId" : "listAllAlbums",
+        "summary" : "Un-publish an existing album.",
+        "operationId" : "unpublishAlbum",
         "responses" : {
           "200" : {
             "description" : "successful operation",
@@ -231,6 +525,265 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/publish" : {
+      "patch" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Publish an existing album.",
+        "operationId" : "publishAlbum",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/deleteMappings" : {
+      "patch" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Delete all startnumber mappings of an album.",
+        "operationId" : "deleteAlbumMappings",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/startPostProcessing" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to update",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Start the post processing - recognition of additional startnumbers based on face recognition - of an album.",
+        "operationId" : "startAlbumPostProcessing",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/timingMapping" : {
+      "post" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a timing mapping",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/TimingMapping"
+        },
+        "summary" : "Post a new timing mapping for an album. Will start the mapping process",
+        "operationId" : "addAlbumTimingMapping",
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - mapping started",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/products" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "List all products of an album.",
+        "operationId" : "getAlbumProducts",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "post" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Product"
+        },
+        "summary" : "Add a new product to an album.",
+        "operationId" : "addAlbumProduct",
+        "responses" : {
+          "201" : {
+            "description" : "successful operation - product added",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/{albumId}/products/{productId}" : {
+      "delete" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "ID of the product to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "Delete a product of an album.",
+        "operationId" : "deleteAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation - product deleted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/productTypes" : {
+      "get" : {
+        "tags" : [ "productType" ],
+        "summary" : "list all product types (incl. prices that can be mapped for a product)",
+        "operationId" : "listproductTypes",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductType"
                 }
               }
             }
@@ -271,6 +824,22 @@
         "description" : "Event object that needs to be added to the server",
         "required" : true
       },
+      "EventGroup" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/EventGroup"
+            }
+          },
+          "application/xml" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/EventGroup"
+            }
+          }
+        },
+        "description" : "Event object that needs to be added to the server",
+        "required" : true
+      },
       "EventCategory" : {
         "content" : {
           "application/json" : {
@@ -290,6 +859,25 @@
           }
         },
         "required" : true
+      },
+      "Product" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Product"
+            }
+          }
+        },
+        "required" : true
+      },
+      "TimingMapping" : {
+        "content" : {
+          "multipart/form-data" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/TimingMapping"
+            }
+          }
+        }
       }
     },
     "schemas" : {
@@ -376,12 +964,12 @@
           },
           "sponsorBarRelativeUrl" : {
             "type" : "string",
-            "description" : "relative URL (without bucket) to sponsor bar",
+            "description" : "relative URL (without bucket) to sponsor bar - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
           },
           "asvzLogoRelativeUrl" : {
             "type" : "string",
-            "description" : "relative URL (without bucket) to logo",
+            "description" : "relative URL (without bucket) to logo - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
           },
           "status" : {
@@ -414,6 +1002,142 @@
             "type" : "string",
             "description" : "event status",
             "enum" : [ "new", "mapped", "online" ]
+          }
+        }
+      },
+      "EventGroup" : {
+        "description" : "Represents an EventGroup in Sportrait",
+        "type" : "object",
+        "required" : [ "title", "event", "status" ],
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "events" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "events",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Event"
+            }
+          },
+          "title" : {
+            "type" : "string",
+            "example" : "ASVZ SOLA"
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Bilder der ASVZ SOLA Stafetten seit 2005"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "eventGroup status",
+            "enum" : [ "new", "published", "archived" ]
+          }
+        }
+      },
+      "Product" : {
+        "description" : "Represents a product for an albuem",
+        "type" : "object",
+        "required" : [ "productTypeId", "priceId" ],
+        "properties" : {
+          "productTypeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "priceId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "ProductType" : {
+        "description" : "Represents a product type that can be combined with a price and added as a product for an album",
+        "type" : "object",
+        "required" : [ "name", "description", "digitalProduct", "prices" ],
+        "properties" : {
+          "productTypeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "10x15cm or \\\"digital master\\\""
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "10x15cm Print"
+          },
+          "digitalProduct" : {
+            "type" : "boolean",
+            "description" : "true for digital (not physical) product"
+          },
+          "prices" : {
+            "type" : "array",
+            "xml" : {
+              "name" : "prices",
+              "wrapped" : true
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Price"
+            }
+          }
+        }
+      },
+      "Price" : {
+        "description" : "Represents a price for a product",
+        "type" : "object",
+        "required" : [ "priceCHF", "priceEUR", "comment", "status" ],
+        "properties" : {
+          "priceId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "priceCHF" : {
+            "type" : "number",
+            "example" : 10.55
+          },
+          "priceEUR" : {
+            "type" : "number",
+            "example" : 9.99
+          },
+          "comment" : {
+            "type" : "string",
+            "example" : "default price for 10x15"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of this price object (not used yet)",
+            "enum" : [ "active", "archived", "deprecated" ]
+          }
+        }
+      },
+      "TimingMapping" : {
+        "description" : "Represents the data for a timing mapping of an album",
+        "type" : "object",
+        "required" : [ "timingFile", "differencePhotoTiming", "toleranceSlowFast" ],
+        "properties" : {
+          "timingFile" : {
+            "type" : "string",
+            "format" : "binary"
+          },
+          "differencePhotoTiming" : {
+            "type" : "integer",
+            "example" : 20,
+            "description" : "Example 20s. It took an average runner 20 seconds from photo point to timing\n"
+          },
+          "toleranceSlowFast" : {
+            "type" : "integer",
+            "example" : 10,
+            "description" : "Example 10s. 10 seconds are added as tolerance on both sides. I.e. a slow runner with 29 seconds still is mapped, as well as a fast runner with 11 seconds (check if this is true or if it's toleranceSlowFast/2 )\n"
+          },
+          "photoPointAfterTiming" : {
+            "type" : "boolean",
+            "description" : "Was the photo point located after the timing? (can be left out, defaults to false)",
+            "default" : false
           }
         }
       }
