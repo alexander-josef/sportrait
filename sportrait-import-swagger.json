@@ -251,6 +251,36 @@
       }
     },
     "/eventCategories/{eventCategoryId}/albums" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "eventCategoryId",
+          "in" : "path",
+          "description" : "ID of the eventCategory where the album will be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "eventCategory" ],
+        "summary" : "Get all albums for given eventCategory.",
+        "operationId" : "listAlbumsForEventCategory",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "post" : {
         "parameters" : [ {
           "name" : "eventCategoryId",
@@ -271,36 +301,6 @@
         "responses" : {
           "201" : {
             "description" : "successful operation - album created",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Album"
-                }
-              }
-            }
-          },
-          "405" : {
-            "description" : "Invalid input"
-          }
-        }
-      },
-      "get" : {
-        "parameters" : [ {
-          "name" : "eventCategoryId",
-          "in" : "path",
-          "description" : "ID of the eventCategory where the album will be added",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        } ],
-        "tags" : [ "eventCategory" ],
-        "summary" : "Get all albums for given eventCategory.",
-        "operationId" : "listAlbumsForEventCategory",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
             "content" : {
               "application/json" : {
                 "schema" : {
