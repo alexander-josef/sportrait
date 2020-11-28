@@ -1,6 +1,6 @@
 /*
  * Sportrait Import API
- * Initial Sportrait Import API description - an API to process events and photo imports on the Sportrait Server
+ * Initial Sportrait Import API description - an API to process events and photo imports on the Sportrait Server 
  *
  * OpenAPI spec version: 0.0.1
  * Contact: info@sportrait.com
@@ -18,11 +18,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 /**
  * Album
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-08T14:00:58.248Z[GMT]")public class Album   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class Album   {
   @JsonProperty("id")
   private Long id = null;
 
@@ -33,19 +34,25 @@ import javax.validation.constraints.*;
   private String description = null;
 
   @JsonProperty("applyLogoOnFineImages")
-  private Boolean applyLogoOnFineImages = null;
+  private Boolean applyLogoOnFineImages = false;
 
   @JsonProperty("photosS3Uri")
   private String photosS3Uri = null;
+
+  @JsonProperty("sponsorBarRelativeUrl")
+  private String sponsorBarRelativeUrl = null;
+
+  @JsonProperty("asvzLogoRelativeUrl")
+  private String asvzLogoRelativeUrl = null;
 
   /**
    * album publication status
    */
   public enum StatusEnum {
     HIDDEN("hidden"),
-
+    
     PUBLISHED("published"),
-
+    
     IMPORTING("importing");
 
     private String value;
@@ -137,11 +144,11 @@ import javax.validation.constraints.*;
   }
 
   /**
-   * Get applyLogoOnFineImages
+   * whether to process the fine images with a logo or watermark. Default to false with the newer imgix based import.
    * @return applyLogoOnFineImages
    **/
   @JsonProperty("applyLogoOnFineImages")
-  @Schema(example = "true", description = "")
+  @Schema(example = "true", description = "whether to process the fine images with a logo or watermark. Default to false with the newer imgix based import.")
   public Boolean isApplyLogoOnFineImages() {
     return applyLogoOnFineImages;
   }
@@ -156,17 +163,56 @@ import javax.validation.constraints.*;
   }
 
   /**
-   * Get photosS3Uri
+   * location to find the images to be processed
    * @return photosS3Uri
    **/
   @JsonProperty("photosS3Uri")
-  @Schema(example = "s3://dev.ireland.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/", description = "")
+  @Schema(example = "s3://dev.ireland.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/", required = true, description = "location to find the images to be processed")
+  @NotNull
   public String getPhotosS3Uri() {
     return photosS3Uri;
   }
 
   public void setPhotosS3Uri(String photosS3Uri) {
     this.photosS3Uri = photosS3Uri;
+  }
+
+  public Album sponsorBarRelativeUrl(String sponsorBarRelativeUrl) {
+    this.sponsorBarRelativeUrl = sponsorBarRelativeUrl;
+    return this;
+  }
+
+  /**
+   * relative URL (without bucket) to sponsor bar - not used yet
+   * @return sponsorBarRelativeUrl
+   **/
+  @JsonProperty("sponsorBarRelativeUrl")
+  @Schema(example = "logo/2020/asvz-logo-2020.png", description = "relative URL (without bucket) to sponsor bar - not used yet")
+  public String getSponsorBarRelativeUrl() {
+    return sponsorBarRelativeUrl;
+  }
+
+  public void setSponsorBarRelativeUrl(String sponsorBarRelativeUrl) {
+    this.sponsorBarRelativeUrl = sponsorBarRelativeUrl;
+  }
+
+  public Album asvzLogoRelativeUrl(String asvzLogoRelativeUrl) {
+    this.asvzLogoRelativeUrl = asvzLogoRelativeUrl;
+    return this;
+  }
+
+  /**
+   * relative URL (without bucket) to logo - not used yet
+   * @return asvzLogoRelativeUrl
+   **/
+  @JsonProperty("asvzLogoRelativeUrl")
+  @Schema(example = "logo/2020/asvz-logo-2020.png", description = "relative URL (without bucket) to logo - not used yet")
+  public String getAsvzLogoRelativeUrl() {
+    return asvzLogoRelativeUrl;
+  }
+
+  public void setAsvzLogoRelativeUrl(String asvzLogoRelativeUrl) {
+    this.asvzLogoRelativeUrl = asvzLogoRelativeUrl;
   }
 
   public Album status(StatusEnum status) {
@@ -179,8 +225,7 @@ import javax.validation.constraints.*;
    * @return status
    **/
   @JsonProperty("status")
-  @Schema(required = true, description = "album publication status")
-  @NotNull
+  @Schema(description = "album publication status")
   public StatusEnum getStatus() {
     return status;
   }
@@ -200,16 +245,18 @@ import javax.validation.constraints.*;
     }
     Album album = (Album) o;
     return Objects.equals(this.id, album.id) &&
-            Objects.equals(this.title, album.title) &&
-            Objects.equals(this.description, album.description) &&
-            Objects.equals(this.applyLogoOnFineImages, album.applyLogoOnFineImages) &&
-            Objects.equals(this.photosS3Uri, album.photosS3Uri) &&
-            Objects.equals(this.status, album.status);
+        Objects.equals(this.title, album.title) &&
+        Objects.equals(this.description, album.description) &&
+        Objects.equals(this.applyLogoOnFineImages, album.applyLogoOnFineImages) &&
+        Objects.equals(this.photosS3Uri, album.photosS3Uri) &&
+        Objects.equals(this.sponsorBarRelativeUrl, album.sponsorBarRelativeUrl) &&
+        Objects.equals(this.asvzLogoRelativeUrl, album.asvzLogoRelativeUrl) &&
+        Objects.equals(this.status, album.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, applyLogoOnFineImages, photosS3Uri, status);
+    return Objects.hash(id, title, description, applyLogoOnFineImages, photosS3Uri, sponsorBarRelativeUrl, asvzLogoRelativeUrl, status);
   }
 
 
@@ -217,12 +264,14 @@ import javax.validation.constraints.*;
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Album {\n");
-
+    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    applyLogoOnFineImages: ").append(toIndentedString(applyLogoOnFineImages)).append("\n");
     sb.append("    photosS3Uri: ").append(toIndentedString(photosS3Uri)).append("\n");
+    sb.append("    sponsorBarRelativeUrl: ").append(toIndentedString(sponsorBarRelativeUrl)).append("\n");
+    sb.append("    asvzLogoRelativeUrl: ").append(toIndentedString(asvzLogoRelativeUrl)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -17,18 +17,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.ArrayList;
+import java.util.List;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 /**
- * EventCategory
+ * Represents an EventGroup in Sportrait
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class EventCategory   {
+@Schema(description = "Represents an EventGroup in Sportrait")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class EventGroup   {
   @JsonProperty("id")
   private Long id = null;
 
-  @JsonProperty("event")
-  private Event event = null;
+  @JsonProperty("events")
+  private List<Event> events = null;
 
   @JsonProperty("title")
   private String title = null;
@@ -37,14 +40,14 @@ import javax.validation.Valid;
   private String description = null;
 
   /**
-   * event status
+   * eventGroup status
    */
   public enum StatusEnum {
     NEW("new"),
     
-    MAPPED("mapped"),
+    PUBLISHED("published"),
     
-    ONLINE("online");
+    ARCHIVED("archived");
 
     private String value;
 
@@ -71,7 +74,7 @@ import javax.validation.Valid;
   @JsonProperty("status")
   private StatusEnum status = null;
 
-  public EventCategory id(Long id) {
+  public EventGroup id(Long id) {
     this.id = id;
     return this;
   }
@@ -90,28 +93,35 @@ import javax.validation.Valid;
     this.id = id;
   }
 
-  public EventCategory event(Event event) {
-    this.event = event;
+  public EventGroup events(List<Event> events) {
+    this.events = events;
+    return this;
+  }
+
+  public EventGroup addEventsItem(Event eventsItem) {
+    if (this.events == null) {
+      this.events = new ArrayList<Event>();
+    }
+    this.events.add(eventsItem);
     return this;
   }
 
   /**
-   * Get event
-   * @return event
+   * Get events
+   * @return events
    **/
-  @JsonProperty("event")
-  @Schema(required = true, description = "")
-  @NotNull
+  @JsonProperty("events")
+  @Schema(description = "")
   @Valid
-  public Event getEvent() {
-    return event;
+  public List<Event> getEvents() {
+    return events;
   }
 
-  public void setEvent(Event event) {
-    this.event = event;
+  public void setEvents(List<Event> events) {
+    this.events = events;
   }
 
-  public EventCategory title(String title) {
+  public EventGroup title(String title) {
     this.title = title;
     return this;
   }
@@ -121,7 +131,7 @@ import javax.validation.Valid;
    * @return title
    **/
   @JsonProperty("title")
-  @Schema(example = "sola 2020 - etappe 12", required = true, description = "")
+  @Schema(example = "ASVZ SOLA", required = true, description = "")
   @NotNull
   public String getTitle() {
     return title;
@@ -131,7 +141,7 @@ import javax.validation.Valid;
     this.title = title;
   }
 
-  public EventCategory description(String description) {
+  public EventGroup description(String description) {
     this.description = description;
     return this;
   }
@@ -141,7 +151,7 @@ import javax.validation.Valid;
    * @return description
    **/
   @JsonProperty("description")
-  @Schema(example = "die 12. etappe der sola 2030", description = "")
+  @Schema(example = "Bilder der ASVZ SOLA Stafetten seit 2005", description = "")
   public String getDescription() {
     return description;
   }
@@ -150,17 +160,17 @@ import javax.validation.Valid;
     this.description = description;
   }
 
-  public EventCategory status(StatusEnum status) {
+  public EventGroup status(StatusEnum status) {
     this.status = status;
     return this;
   }
 
   /**
-   * event status
+   * eventGroup status
    * @return status
    **/
   @JsonProperty("status")
-  @Schema(required = true, description = "event status")
+  @Schema(required = true, description = "eventGroup status")
   @NotNull
   public StatusEnum getStatus() {
     return status;
@@ -179,27 +189,27 @@ import javax.validation.Valid;
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    EventCategory eventCategory = (EventCategory) o;
-    return Objects.equals(this.id, eventCategory.id) &&
-        Objects.equals(this.event, eventCategory.event) &&
-        Objects.equals(this.title, eventCategory.title) &&
-        Objects.equals(this.description, eventCategory.description) &&
-        Objects.equals(this.status, eventCategory.status);
+    EventGroup eventGroup = (EventGroup) o;
+    return Objects.equals(this.id, eventGroup.id) &&
+        Objects.equals(this.events, eventGroup.events) &&
+        Objects.equals(this.title, eventGroup.title) &&
+        Objects.equals(this.description, eventGroup.description) &&
+        Objects.equals(this.status, eventGroup.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, event, title, description, status);
+    return Objects.hash(id, events, title, description, status);
   }
 
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class EventCategory {\n");
+    sb.append("class EventGroup {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    event: ").append(toIndentedString(event)).append("\n");
+    sb.append("    events: ").append(toIndentedString(events)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
