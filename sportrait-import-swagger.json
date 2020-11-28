@@ -112,7 +112,7 @@
             "format" : "int64"
           }
         } ],
-        "tags" : [ "eventCategory" ],
+        "tags" : [ "eventGroup" ],
         "summary" : "delete an eventGroup incl. all of its events, albums & photos - TODO add security",
         "operationId" : "deleteEventGroup",
         "responses" : {
