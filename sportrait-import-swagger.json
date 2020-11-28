@@ -265,17 +265,10 @@
         "operationId" : "deleteEventCategory",
         "responses" : {
           "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EventCategory"
-                }
-              }
-            }
+            "description" : "successful operation"
           },
-          "405" : {
-            "description" : "Invalid input"
+          "404" : {
+            "description" : "Not found"
           }
         }
       }
