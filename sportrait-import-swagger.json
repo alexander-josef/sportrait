@@ -138,7 +138,7 @@
           }
         } ],
         "tags" : [ "event" ],
-        "summary" : "Update an existing event",
+        "summary" : "return an existing event",
         "operationId" : "getEvent",
         "responses" : {
           "400" : {
@@ -421,7 +421,7 @@
           }
         } ],
         "tags" : [ "album" ],
-        "summary" : "delete an album incl. all of its photos. Associated eventCategory won't be touched. TODO add security",
+        "summary" : "get an album identified by albumId. TODO add security",
         "operationId" : "getAlbum",
         "responses" : {
           "200" : {
@@ -504,7 +504,7 @@
       }
     },
     "/albums/{albumId}/unpublish" : {
-      "get" : {
+      "patch" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -536,7 +536,7 @@
       }
     },
     "/albums/{albumId}/publish" : {
-      "post" : {
+      "patch" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -568,7 +568,7 @@
       }
     },
     "/albums/{albumId}/deleteMappings" : {
-      "post" : {
+      "patch" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -667,6 +667,36 @@
       }
     },
     "/albums/{albumId}/products" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "album" ],
+        "summary" : "List all products of an album.",
+        "operationId" : "getAlbumProducts",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Album"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "post" : {
         "parameters" : [ {
           "name" : "albumId",
@@ -690,37 +720,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Album"
-                }
-              }
-            }
-          },
-          "405" : {
-            "description" : "Invalid input"
-          }
-        }
-      },
-      "get" : {
-        "parameters" : [ {
-          "name" : "albumId",
-          "in" : "path",
-          "description" : "ID of the album to add a product",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        } ],
-        "tags" : [ "album" ],
-        "summary" : "Add a new product to an album.",
-        "operationId" : "getAlbumProduct",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Album"
+                  "$ref" : "#/components/schemas/Product"
                 }
               }
             }
