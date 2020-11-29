@@ -800,11 +800,11 @@
     "url" : "https://docs.sportrait.com"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080/api/import/"
+    "url" : "http://localhost:8080/api/import"
   }, {
-    "url" : "https://sportrait.com/api/import/1.0.0/"
+    "url" : "https://sportrait.com/api/import/1.0.0"
   }, {
-    "url" : "https://int2.sportrait.com/api/import/1.0.0/"
+    "url" : "https://int2.sportrait.com/api/import/1.0.0"
   } ],
   "components" : {
     "requestBodies" : {
