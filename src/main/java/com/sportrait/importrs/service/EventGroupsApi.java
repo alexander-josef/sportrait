@@ -22,7 +22,6 @@ public class EventGroupsApi {
     private final Logger _logger = Logger.getLogger(getClass().getName());
 
 
-    @Path("")
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,7 +32,6 @@ public class EventGroupsApi {
 
     }
 
-    @Path("")
     @POST
     @Secured
     @Produces(MediaType.APPLICATION_JSON)

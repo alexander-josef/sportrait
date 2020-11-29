@@ -197,7 +197,7 @@ public class GenericLevelDAO
      * @param levelClass The type of generic level to list
      * @return List of GenericLevel s
      */
-    public List listGenericLevel(Class levelClass)
+    public List<SportsEvent> listGenericLevel(Class levelClass)
     {
 
         Session session = HibernateUtil.currentSession();
@@ -366,21 +366,20 @@ public class GenericLevelDAO
      * @param photographer The Photographer object to get events for.
      * @return Events that have albums for the passed photographer id
      */
-    public List<Event> listEventsWithAlbums(Photographer photographer) throws UAPersistenceException {
+    public List<SportsEvent> listEventsWithAlbums(Photographer photographer) throws UAPersistenceException {
 
-        List<Event> newEventList = HibernateUtil.currentSession().createQuery(
+        List<SportsEvent> newEventList = HibernateUtil.currentSession().createQuery(
                 "select distinct e " +
                         "from Event e " +
                         "inner join e.albums a " +
                         "where e.eventGroup = :eventGroup " +
-                        "and a.photographer = :photographer",Event.class)
+                        "and a.photographer = :photographer",SportsEvent.class)
                 .setParameter("photographer", photographer)
                 .getResultList();
 
         _logger.debug("found [" + newEventList.size() + "] events for photographer with id [" + photographer + "]");
         return newEventList;
     }
-
     /**
      * 'Admin'-routine: return all events with an album - used for web album admin page only?
      * @param eventGroup The EventGroup

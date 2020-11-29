@@ -27,7 +27,6 @@ public class EventCategoriesApi {
 
 
 
-    @Path("")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response addEventCategory(EventCategory eventCategoryDto){
