@@ -987,9 +987,6 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "event" : {
-            "$ref" : "#/components/schemas/Event"
-          },
           "title" : {
             "type" : "string",
             "example" : "sola 2020 - etappe 12"
