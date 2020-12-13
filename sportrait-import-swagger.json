@@ -208,9 +208,19 @@
         }
       }
     },
-    "/eventCategories/" : {
+    "/events/{eventId}/eventCategories/" : {
       "post" : {
-        "tags" : [ "eventCategory" ],
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of the event for the eventCategory to be added",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "event" ],
         "summary" : "Add an eventCategory",
         "operationId" : "addEventCategory",
         "requestBody" : {
