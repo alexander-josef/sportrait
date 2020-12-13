@@ -800,11 +800,11 @@
     "url" : "https://docs.sportrait.com"
   },
   "servers" : [ {
-    "url" : "http://localhost:8080/api/import/"
+    "url" : "http://localhost:8080/api/import"
   }, {
-    "url" : "https://sportrait.com/api/import/1.0.0/"
+    "url" : "https://sportrait.com/api/import/1.0.0"
   }, {
-    "url" : "https://int2.sportrait.com/api/import/1.0.0/"
+    "url" : "https://int2.sportrait.com/api/import/1.0.0"
   } ],
   "components" : {
     "requestBodies" : {
@@ -904,7 +904,9 @@
           },
           "date" : {
             "type" : "string",
-            "format" : "date"
+            "format" : "date",
+            "example" : "2020-12-13",
+            "description" : "The date the event takes, or took, place."
           },
           "zipCode" : {
             "type" : "string",
@@ -981,14 +983,11 @@
       },
       "EventCategory" : {
         "type" : "object",
-        "required" : [ "title", "event", "status" ],
+        "required" : [ "title", "description", "status" ],
         "properties" : {
           "id" : {
             "type" : "integer",
             "format" : "int64"
-          },
-          "event" : {
-            "$ref" : "#/components/schemas/Event"
           },
           "title" : {
             "type" : "string",
