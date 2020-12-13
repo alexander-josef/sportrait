@@ -23,12 +23,9 @@ import javax.validation.Valid;
 /**
  * EventCategory
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class EventCategory   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-13T12:59:21.040Z[GMT]")public class EventCategory   {
   @JsonProperty("id")
   private Long id = null;
-
-  @JsonProperty("event")
-  private Event event = null;
 
   @JsonProperty("title")
   private String title = null;
@@ -90,27 +87,6 @@ import javax.validation.Valid;
     this.id = id;
   }
 
-  public EventCategory event(Event event) {
-    this.event = event;
-    return this;
-  }
-
-  /**
-   * Get event
-   * @return event
-   **/
-  @JsonProperty("event")
-  @Schema(required = true, description = "")
-  @NotNull
-  @Valid
-  public Event getEvent() {
-    return event;
-  }
-
-  public void setEvent(Event event) {
-    this.event = event;
-  }
-
   public EventCategory title(String title) {
     this.title = title;
     return this;
@@ -141,7 +117,8 @@ import javax.validation.Valid;
    * @return description
    **/
   @JsonProperty("description")
-  @Schema(example = "die 12. etappe der sola 2030", description = "")
+  @Schema(example = "die 12. etappe der sola 2030", required = true, description = "")
+  @NotNull
   public String getDescription() {
     return description;
   }
@@ -181,7 +158,6 @@ import javax.validation.Valid;
     }
     EventCategory eventCategory = (EventCategory) o;
     return Objects.equals(this.id, eventCategory.id) &&
-        Objects.equals(this.event, eventCategory.event) &&
         Objects.equals(this.title, eventCategory.title) &&
         Objects.equals(this.description, eventCategory.description) &&
         Objects.equals(this.status, eventCategory.status);
@@ -189,7 +165,7 @@ import javax.validation.Valid;
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, event, title, description, status);
+    return Objects.hash(id, title, description, status);
   }
 
 
@@ -199,7 +175,6 @@ import javax.validation.Valid;
     sb.append("class EventCategory {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    event: ").append(toIndentedString(event)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");

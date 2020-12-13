@@ -26,7 +26,7 @@ import javax.validation.Valid;
 /**
  * Event
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class Event   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-13T12:59:21.040Z[GMT]")public class Event   {
   @JsonProperty("id")
   private Long id = null;
 
@@ -174,11 +174,11 @@ import javax.validation.Valid;
   }
 
   /**
-   * Get date
+   * The date the event takes, or took, place.
    * @return date
    **/
   @JsonProperty("date")
-  @Schema(description = "")
+  @Schema(description = "The date the event takes, or took, place.")
   @Valid
   public Date getDate() {
     return date;

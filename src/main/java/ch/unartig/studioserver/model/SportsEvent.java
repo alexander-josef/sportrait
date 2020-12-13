@@ -160,7 +160,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
     }
 
     /**
-     * given the eventcategories as string with a colon semicolon separted list of categories, add the categories to the event
+     * given the eventcategories as string with a colon semicolon separated list of categories, add the categories to the event
      * @param categoriesString a semicolon separated string of categories
      */
     public void setEventCategoriesAsString(String categoriesString)

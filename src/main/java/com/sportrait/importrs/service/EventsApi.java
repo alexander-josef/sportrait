@@ -1,8 +1,12 @@
 package com.sportrait.importrs.service;
 
 import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UAPersistenceException;
+import ch.unartig.studioserver.model.GenericLevel;
 import ch.unartig.studioserver.model.Photographer;
+import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Event;
 import com.sportrait.importrs.model.EventCategory;
@@ -44,7 +48,7 @@ public class EventsApi {
             _logger.debug("Loading events for admin");
             events = glDao.listGenericLevel(ch.unartig.studioserver.model.SportsEvent.class); // events are reloaded - but problems getting albums from cache?
         } else {
-            _logger.debug("Loading events for : [" + photographer.getFullName()+"]");
+            _logger.debug("Loading events for : [" + photographer.getFullName() + "]");
             events = glDao.listEventsWithAlbums(photographer); // why only with albums? --> photographer / user is only connected with album. event no connected with user
         }
         return Response.ok()
@@ -68,7 +72,7 @@ public class EventsApi {
         eventDTO.setOrganizerUrl(event.getWeblink());
         eventDTO.setEventCategories(event.getEventCategories()
                 .stream()
-                .map(this::convertToEventCategoriesDTO)
+                .map(eventCategory -> convertToEventCategoriesDTO(eventCategory, eventDTO))
                 .collect(Collectors.toList())
         );
         eventDTO.setStatus(Event.StatusEnum.ONLINE); // what to do here?
@@ -76,7 +80,7 @@ public class EventsApi {
         return eventDTO;
     }
 
-    private EventCategory convertToEventCategoriesDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
+    private EventCategory convertToEventCategoriesDTO(ch.unartig.studioserver.model.EventCategory eventCategory, Event eventDTO) {
         EventCategory eventCategoryDTO = new EventCategory();
         eventCategoryDTO.setId(eventCategory.getEventCategoryId());
         eventCategoryDTO.setTitle(eventCategory.getTitle());
@@ -94,7 +98,48 @@ public class EventsApi {
             _logger.info("creating new event from eventDto ");
         }
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        // todo : administrator of an event?? = creating Photographer?
+        SportsEvent sportsEvent = convertFromSportsEventDTO(eventDto);
+        _logger.debug("going to persist new SportsEvent ");
+        glDao.saveOrUpdate(sportsEvent);
+        // commit explicitly?
+        HibernateUtil.commitTransaction(); // needed! do not deprecate commits ...
+        _logger.info("Commmited new event to DB");
+        // converting model event to DTO as return value (to get newly created IDs included for response):
+        return Response.ok().entity(convertToEventsDTO(sportsEvent)).build();
+    }
+
+    /**
+     * DTO -> Model Transformer
+     * @param eventDTO
+     * @return
+     */
+    private ch.unartig.studioserver.model.SportsEvent convertFromSportsEventDTO(Event eventDTO) {
+        ch.unartig.studioserver.model.SportsEvent event = new ch.unartig.studioserver.model.SportsEvent(eventDTO.getNavTitle(), eventDTO.getTitle(), eventDTO.getDescription());
+
+        event.setEventDate(eventDTO.getDate());
+        event.setWeblink(eventDTO.getOrganizerUrl());
+        event.setEventCategories(eventDTO.getEventCategories()
+                .stream()
+                .map(eventCategoryDTO -> convertFromEventCategoryDTO(eventCategoryDTO,event))
+                .collect(Collectors.toList()));
+        event.setEventLocation(eventDTO.getZipCode(), eventDTO.getCity(), ""); // category (this is not eventCategory!) not needed
+
+        return event;
+    }
+
+    /**
+     * DTO -> Model Transformer
+     * @param eventCategoryDTO
+     * @param event
+     * @return
+     */
+    private ch.unartig.studioserver.model.EventCategory convertFromEventCategoryDTO(EventCategory eventCategoryDTO, SportsEvent event) {
+        ch.unartig.studioserver.model.EventCategory eventCategory =
+                new ch.unartig.studioserver.model.EventCategory(eventCategoryDTO.getTitle(),event);
+        eventCategory.setDescription(eventCategoryDTO.getDescription());
+        return eventCategory;
     }
 
     @Path("/{eventId}")
@@ -102,12 +147,13 @@ public class EventsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEvent(@PathParam("eventId") int eventId) {
-
         _logger.info("GET /events/" + eventId);
-        // load event category
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        _logger.info("authenticated user : [" + client.getUsername() + "]");
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        return Response.ok()
+                .entity(convertToEventsDTO((SportsEvent) glDao.load((long) eventId, SportsEvent.class)))
+                .build();
     }
 
 
@@ -130,13 +176,23 @@ public class EventsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteEvent(@PathParam("eventId") int eventId) {
-
         _logger.info("DELETE /events/" + eventId);
-        // load event category
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        _logger.info("authenticated user : [" + client.getUsername() + "]");
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        GenericLevel level = glDao.load((long) eventId);
+        _logger.info("... of type :" + level.getLevelType());
+        // HibernateUtil.beginTransaction();
+        try {
+            level.deleteLevel(); // call specific implementation of delete method for this level
+            glDao.delete(level.getGenericLevelId());
+        } catch (UAPersistenceException e) {
+            HibernateUtil.rollbackTransaction();
+            throw new UAPersistenceException("rolling back, cannot delete Level");
+        } finally {
+//            HibernateUtil.finishTransaction();
+        }
+        _logger.info("done deleting level : " + eventId);
+        return Response.ok().entity("event deleted - authenticated user : [" + client.getUsername() + "]").build();
     }
 }
-
-
