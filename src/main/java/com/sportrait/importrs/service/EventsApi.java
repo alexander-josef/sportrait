@@ -180,19 +180,34 @@ public class EventsApi {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("authenticated user : [" + client.getUsername() + "]");
         GenericLevelDAO glDao = new GenericLevelDAO();
-        GenericLevel level = glDao.load((long) eventId);
-        _logger.info("... of type :" + level.getLevelType());
-        // HibernateUtil.beginTransaction();
+        GenericLevel level = null;
         try {
-            level.deleteLevel(); // call specific implementation of delete method for this level
-            glDao.delete(level.getGenericLevelId());
-        } catch (UAPersistenceException e) {
-            HibernateUtil.rollbackTransaction();
-            throw new UAPersistenceException("rolling back, cannot delete Level");
-        } finally {
-//            HibernateUtil.finishTransaction();
+            level = glDao.get((long) eventId);
+            if (level==null) {
+                return Response.status(404,"Ressource not found").build();
+            }
+        } catch (Exception e) {
+            return Response.status(500,"Something went wrong ...").build();
         }
-        _logger.info("done deleting level : " + eventId);
-        return Response.ok().entity("event deleted - authenticated user : [" + client.getUsername() + "]").build();
+
+        _logger.info("... of type :" + level.getLevelType());
+        if (level.isSportsEventLevel()) {
+            HibernateUtil.beginTransaction();
+            try {
+                level.deleteLevel(); // call specific implementation of delete method for this level
+                glDao.delete(level.getGenericLevelId());
+                HibernateUtil.commitTransaction();
+            } catch (UAPersistenceException e) {
+                HibernateUtil.rollbackTransaction();
+                throw new UAPersistenceException("rolling back, cannot delete Level");
+            } finally {
+                HibernateUtil.finishTransaction();
+            }
+            _logger.info("done deleting level : " + eventId);
+            return Response.ok().entity("event deleted - authenticated user : [" + client.getUsername() + "]").build();
+        }
+        else {
+            return Response.status(405,"no event ressource identified by given ID").build();
+        }
     }
 }

@@ -255,6 +255,13 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
+  <component name="GithubSharedProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="master" />
+      </list>
+    </option>
+  </component>
   <component name="IdProvider" IDEtalkID="6500DF6484F42D12AACBABB61D73517E" />
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
