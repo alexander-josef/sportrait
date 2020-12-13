@@ -221,6 +221,18 @@ public class GenericLevelDAO {
     }
 
     /**
+     * Get a hierachy level. must be casted by calling method to appropriate concrete class.
+     *
+     * @param genericLevelId Level ID
+     * @param levelClass     the concrete class
+     * @return a generic Level ; needs to be casted to appropriate class
+     * @throws UAPersistenceException
+     */
+    public GenericLevel get(Long genericLevelId, Class levelClass) {
+            return (GenericLevel) HibernateUtil.currentSession().get(levelClass, genericLevelId);
+    }
+
+    /**
      * Load a concrete instance of a GenericLevel (it's assumed that the ressource existis!)
      *
      * @param genericLevelId Level Id

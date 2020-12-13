@@ -151,9 +151,14 @@ public class EventsApi {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("authenticated user : [" + client.getUsername() + "]");
         GenericLevelDAO glDao = new GenericLevelDAO();
-        return Response.ok()
-                .entity(convertToEventsDTO((SportsEvent) glDao.load((long) eventId, SportsEvent.class)))
-                .build();
+        SportsEvent event = (SportsEvent)glDao.get((long) eventId, SportsEvent.class);
+        if (event != null) {
+            return Response.ok()
+                    .entity(convertToEventsDTO(event))
+                    .build();
+        } else {
+            return Response.status(404,"Event not found").build();
+        }
     }
 
 
