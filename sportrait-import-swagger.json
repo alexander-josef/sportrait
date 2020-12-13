@@ -196,8 +196,14 @@
           "200" : {
             "description" : "successful operation"
           },
+          "403" : {
+            "description" : "Forbidden - Not authorized to delete ressource"
+          },
           "404" : {
             "description" : "Not found"
+          },
+          "405" : {
+            "description" : "Given eventId doesn't identify an event ressource"
           }
         }
       }
