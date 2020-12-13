@@ -139,6 +139,7 @@ public class EventsApi {
         ch.unartig.studioserver.model.EventCategory eventCategory =
                 new ch.unartig.studioserver.model.EventCategory(eventCategoryDTO.getTitle(),event);
         eventCategory.setDescription(eventCategoryDTO.getDescription());
+        // eventCategoryDTO.getStatus(); // ??
         return eventCategory;
     }
 
@@ -212,7 +213,34 @@ public class EventsApi {
             return Response.ok().entity("event deleted - authenticated user : [" + client.getUsername() + "]").build();
         }
         else {
-            return Response.status(405,"no event ressource identified by given ID").build();
+            return Response.status(405,"given eventId does not identify an event - method not allowed").build();
         }
+    }
+
+
+    @Path("/{eventId}/eventCategories")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addEventCategory(EventCategory eventCategoryDto, @PathParam("eventId") long eventId){
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        if (eventCategoryDto.getId()!=null) {
+            _logger.info("POST /api/import/events/{eventId}/eventCategories");
+            _logger.info("creating new eventCategory from eventCategoryDto ");
+        } else {
+            _logger.info("POST /api/import/events/{eventId}/eventCategories");
+            _logger.info("no eventCategoryDto");
+        }
+
+        SportsEvent event = glDao.get(eventId,SportsEvent.class);
+        if (event != null) {
+            event.getEventCategories().add(convertFromEventCategoryDTO(eventCategoryDto,event));
+            glDao.saveOrUpdate(event);
+            HibernateUtil.commitTransaction();
+            _logger.info("committed new eventCategory for event ["+eventId+"] to DB");
+        } else {
+            return Response.status(404,"no event ressource identified by given eventId").build();
+        }
+
+        return  Response.ok().entity(convertToEventsDTO(event)).build();
     }
 }

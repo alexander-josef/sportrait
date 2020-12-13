@@ -27,19 +27,7 @@ public class EventCategoriesApi {
 
 
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addEventCategory(EventCategory eventCategoryDto){
-        if (eventCategoryDto.getId()!=null) {
-            _logger.info("POST /api/import/eventCategories");
-            _logger.info("creating new eventCategory from eventCategoryDto ");
-        } else {
-            _logger.info("POST /api/import/eventCategories");
-            _logger.info("no eventCategoryDto");
-        }
 
-        return  Response.ok().entity("not implemented").build();
-    }
 
     @Path("/{eventCategoryId}")
     @GET

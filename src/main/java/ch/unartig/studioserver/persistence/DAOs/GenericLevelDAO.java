@@ -228,8 +228,8 @@ public class GenericLevelDAO {
      * @return a generic Level ; needs to be casted to appropriate class
      * @throws UAPersistenceException
      */
-    public GenericLevel get(Long genericLevelId, Class levelClass) {
-            return (GenericLevel) HibernateUtil.currentSession().get(levelClass, genericLevelId);
+    public <T extends GenericLevel> T get(Long genericLevelId, Class<T> levelClass) {
+            return HibernateUtil.currentSession().get(levelClass, genericLevelId);
     }
 
     /**
