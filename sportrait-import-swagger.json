@@ -981,7 +981,7 @@
       },
       "EventCategory" : {
         "type" : "object",
-        "required" : [ "title", "event", "status" ],
+        "required" : [ "title", "description", "status" ],
         "properties" : {
           "id" : {
             "type" : "integer",
