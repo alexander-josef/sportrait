@@ -904,7 +904,9 @@
           },
           "date" : {
             "type" : "string",
-            "format" : "date"
+            "format" : "date",
+            "example" : "2020-12-13",
+            "description" : "The date the event takes, or took, place."
           },
           "zipCode" : {
             "type" : "string",
