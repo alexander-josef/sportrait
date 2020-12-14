@@ -408,15 +408,9 @@ public class SportsEvent extends Event implements java.io.Serializable {
         List<EventCategory> retVal = new ArrayList<>(); // todo debug: cached results? probably not, many sql statements issued
         for (EventCategory eventCategory : getEventCategories()) // --> eventcategories on event are cached
         {
-            try
+            if (eventCategory.hasPublishedPhotos())
             {
-                if (eventCategory.hasPublishedPhotos())
-                {
-                    retVal.add(eventCategory);
-                }
-            } catch (UnartigException e)
-            {
-                _logger.error("Cannot count photos of eventcategory",e);
+                retVal.add(eventCategory);
             }
         }
         return retVal;

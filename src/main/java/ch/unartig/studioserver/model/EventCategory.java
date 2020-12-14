@@ -94,9 +94,8 @@ public class EventCategory implements java.io.Serializable {
     /**
      * Return true if this eventcategory has uploaded, published photos.
      * @return true if category has photos
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean hasPublishedPhotos() throws UnartigException {
+    public boolean hasPublishedPhotos() {
 
         _logger.debug("EventCategory "+ getTitle() +" - EventCategory.getAlbums().size() = " + getAlbums().size());
         for (Object o : getAlbums()) {

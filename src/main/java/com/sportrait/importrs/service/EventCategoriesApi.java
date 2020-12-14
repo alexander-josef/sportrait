@@ -1,11 +1,13 @@
 package com.sportrait.importrs.service;
 
 import ch.unartig.controller.Client;
+import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.EventCategory;
@@ -34,12 +36,25 @@ public class EventCategoriesApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
-
         _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
         // load event category
         Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
 
-        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+        ch.unartig.studioserver.model.EventCategory eventCategory = HibernateUtil.currentSession().get(ch.unartig.studioserver.model.EventCategory.class, (long)eventCategoryId);
+        if (eventCategory != null) {
+            return Response.ok().entity(convertToEventCategoryDTO(eventCategory)).build();
+        } else {
+            return Response.status(403,"eventCategory not found").build();
+        }
+    }
+
+    private static EventCategory convertToEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
+        EventCategory eventCategoryDTO = new EventCategory();
+        eventCategoryDTO.setId(eventCategory.getEventCategoryId());
+        eventCategoryDTO.setTitle(eventCategory.getTitle());
+        eventCategoryDTO.setDescription(eventCategory.getTitle());
+        eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos()? EventCategory.StatusEnum.NEW : EventCategory.StatusEnum.ONLINE);
+        return eventCategoryDTO;
     }
 
     @Path("/{eventCategoryId}")
