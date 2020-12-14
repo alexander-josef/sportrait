@@ -1016,7 +1016,7 @@
           "status" : {
             "type" : "string",
             "description" : "event status",
-            "enum" : [ "new", "mapped", "online" ]
+            "enum" : [ "mapped", "published", "emtpy" ]
           }
         }
       },
