@@ -965,6 +965,11 @@
             "type" : "string",
             "example" : "sola 2020 - etappe 12"
           },
+          "navTitle" : {
+            "type" : "string",
+            "description" : "the slug of the album",
+            "example" : "sola-2020-etappe-12"
+          },
           "description" : {
             "type" : "string",
             "example" : "die 12. etappe der sola 2030"
