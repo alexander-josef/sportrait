@@ -1013,6 +1013,12 @@
             "type" : "string",
             "example" : "die 12. etappe der sola 2030"
           },
+          "position" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "the relative position / order of this eventCategory within the event",
+            "example" : 0
+          },
           "status" : {
             "type" : "string",
             "description" : "event status",
