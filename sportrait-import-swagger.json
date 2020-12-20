@@ -1147,6 +1147,30 @@
           }
         }
       },
+      "Photographer" : {
+        "description" : "Represents a photographer",
+        "type" : "object",
+        "required" : [ "firstname", "lastname" ],
+        "properties" : {
+          "photographerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "firstname" : {
+            "type" : "string",
+            "example" : "Ansel"
+          },
+          "lastname" : {
+            "type" : "string",
+            "example" : "Adams"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of this price object (not used yet)",
+            "enum" : [ "active", "archived" ]
+          }
+        }
+      },
       "TimingMapping" : {
         "description" : "Represents the data for a timing mapping of an album",
         "type" : "object",
