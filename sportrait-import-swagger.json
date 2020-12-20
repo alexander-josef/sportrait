@@ -1166,7 +1166,7 @@
           },
           "status" : {
             "type" : "string",
-            "description" : "status of this price object (not used yet)",
+            "description" : "status of the photographer (not used yet)",
             "enum" : [ "active", "archived" ]
           }
         }
