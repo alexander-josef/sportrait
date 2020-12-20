@@ -1072,7 +1072,7 @@
         }
       },
       "Product" : {
-        "description" : "Represents a product for an albuem",
+        "description" : "Represents a product for an album",
         "type" : "object",
         "required" : [ "productTypeId", "priceId" ],
         "properties" : {
