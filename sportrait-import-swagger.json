@@ -995,6 +995,12 @@
             "description" : "relative URL (without bucket) to logo - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
           },
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z",
+            "example" : "2017-07-21T17:32:28Z"
+          },
           "status" : {
             "type" : "string",
             "description" : "album publication status",
