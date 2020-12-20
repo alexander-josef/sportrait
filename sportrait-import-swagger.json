@@ -974,6 +974,12 @@
             "type" : "string",
             "example" : "die 12. etappe der sola 2030"
           },
+          "freeHighresDownload" : {
+            "type" : "boolean",
+            "description" : "whether this album allows a free high resulation download of the digital image.",
+            "example" : true,
+            "default" : false
+          },
           "applyLogoOnFineImages" : {
             "type" : "boolean",
             "description" : "whether to process the fine images with a logo or watermark. Default to false with the newer imgix based import.",
