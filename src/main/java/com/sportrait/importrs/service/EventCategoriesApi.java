@@ -6,12 +6,14 @@ import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.EventCategoryDAO;
+import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.EventCategory;
 import org.apache.log4j.Logger;
+import org.zkoss.zul.Messagebox;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -37,16 +39,19 @@ public class EventCategoriesApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
         _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
+        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
         // load event category
         Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
 
-        ch.unartig.studioserver.model.EventCategory eventCategory = HibernateUtil.currentSession().get(ch.unartig.studioserver.model.EventCategory.class, (long)eventCategoryId);
+        ch.unartig.studioserver.model.EventCategory eventCategory = eventCategoryDAO.getEventCategory(eventCategoryId);
         if (eventCategory != null) {
             return Response.ok().entity(convertToEventCategoryDTO(eventCategory)).build();
         } else {
             return Response.status(403,"eventCategory not found").build();
         }
     }
+
+
 
     private static EventCategory convertToEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
         EventCategory eventCategoryDTO = new EventCategory();
@@ -74,13 +79,36 @@ public class EventCategoriesApi {
     @DELETE
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
-
+    public Response deleteEventCategory(@PathParam("eventCategoryId") long eventCategoryId){
+        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
+        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
         _logger.info("DELETE /eventCategories/"+eventCategoryId);
-        // load event category
         Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+        // load event category - check for albums
+        ch.unartig.studioserver.model.EventCategory category = eventCategoryDAO.load(eventCategoryId);
+        if (category==null) {
+            return Response.status(403,"eventCategory not found").build();
+        }
+        int numberOfAlbums = category.getAlbums().size();
+        if (numberOfAlbums !=0)
+        {
+            return Response.status(404,"EventCategory still contains ["+numberOfAlbums+"] Album(s). Delete albums first.").build();
+            // todo : extend with a parameter "force=true" to also delete albums
+        } else
+        {
+            // event must also be updated and saved since it has the eventCategories as an indexed collection
+            // (think about the overhead in case this operation needs to be more efficient)
+            // eventCategory will be deleted as a cascaded operation from saving the event:
+            // eventCategoryDAO.delete(category);
+            SportsEvent event = category.getEvent();
+            event.getEventCategories().remove(category);
+            genericLevelDAO.saveOrUpdate(event);
+            HibernateUtil.commitTransaction();
 
-        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+            return  Response.noContent().build();
+        }
+
+
     }
 
     @Path("/{eventCategoryId}/albums")

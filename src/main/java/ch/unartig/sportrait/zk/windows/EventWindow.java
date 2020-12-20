@@ -35,6 +35,10 @@ public class EventWindow extends Window {
         }
     }
 
+    /**
+     * Persist (save or update) an event object to the database
+     * @param event event instance to be saved or updated
+     */
     public void saveEvent(Event event) {
         _logger.debug("Saving event ....");
         _logger.debug("Event = " + event);

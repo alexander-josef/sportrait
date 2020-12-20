@@ -80,7 +80,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) // using eager to make admin window work
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @OrderColumn(name = "category_position")
+    @OrderColumn(name = "category_position") // CAUTION : think of the overhead that this ordering occurs!!
     private List<EventCategory> eventCategories = new ArrayList<>(0);
 
     /**
