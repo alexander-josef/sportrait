@@ -1,7 +1,6 @@
 package com.sportrait.importrs.service;
 
 import ch.unartig.controller.Client;
-import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.model.SportsEvent;
@@ -13,7 +12,6 @@ import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.EventCategory;
 import org.apache.log4j.Logger;
-import org.zkoss.zul.Messagebox;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
