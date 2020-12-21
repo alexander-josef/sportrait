@@ -139,7 +139,7 @@ public class EventCategory implements java.io.Serializable {
         this.event = event;
     }
 
-    public Set getAlbums() {
+    public Set<Album> getAlbums() {
         return this.albums;
     }
 

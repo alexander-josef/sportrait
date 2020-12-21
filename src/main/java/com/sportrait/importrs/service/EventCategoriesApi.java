@@ -18,6 +18,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.stream.Collectors;
 
 // class for the eventCategories API - all verbs implemented below
 @Path("/eventCategories/")
@@ -28,27 +29,23 @@ public class EventCategoriesApi {
     private final Logger _logger = Logger.getLogger(getClass().getName());
 
 
-
-
-
     @Path("/{eventCategoryId}")
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
-        _logger.info("got eventCategoryId : ["+eventCategoryId+"]");
+    public Response getEventCategory(@PathParam("eventCategoryId") int eventCategoryId) {
+        _logger.info("got eventCategoryId : [" + eventCategoryId + "]");
         EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
         // load event category
-        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
 
         ch.unartig.studioserver.model.EventCategory eventCategory = eventCategoryDAO.getEventCategory(eventCategoryId);
         if (eventCategory != null) {
             return Response.ok().entity(convertToEventCategoryDTO(eventCategory)).build();
         } else {
-            return Response.status(403,"eventCategory not found").build();
+            return Response.status(403, "eventCategory not found").build();
         }
     }
-
 
 
     private static EventCategory convertToEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
@@ -56,7 +53,7 @@ public class EventCategoriesApi {
         eventCategoryDTO.setId(eventCategory.getEventCategoryId());
         eventCategoryDTO.setTitle(eventCategory.getTitle());
         eventCategoryDTO.setDescription(eventCategory.getTitle());
-        eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos()? EventCategory.StatusEnum.NEW : EventCategory.StatusEnum.ONLINE);
+        eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos() ? EventCategory.StatusEnum.NEW : EventCategory.StatusEnum.ONLINE);
         return eventCategoryDTO;
     }
 
@@ -64,36 +61,34 @@ public class EventCategoriesApi {
     @PUT
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEventCategory(@PathParam("eventCategoryId") int eventCategoryId, EventCategory eventCategoryDto){
+    public Response updateEventCategory(@PathParam("eventCategoryId") int eventCategoryId, EventCategory eventCategoryDto) {
 
-        _logger.info("PUT /eventCategories/"+eventCategoryId);
+        _logger.info("PUT /eventCategories/" + eventCategoryId);
         // load event category
-        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
 
-        return  Response.ok().entity("not implemented - authenticated user : ["+client.getUsername()+"]").build();
+        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
     }
 
     @Path("/{eventCategoryId}")
     @DELETE
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEventCategory(@PathParam("eventCategoryId") long eventCategoryId){
+    public Response deleteEventCategory(@PathParam("eventCategoryId") long eventCategoryId) {
         EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
         GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
-        _logger.info("DELETE /eventCategories/"+eventCategoryId);
-        Client client = (Client)requestContext.getProperty("client"); // client from authentication filter
+        _logger.info("DELETE /eventCategories/" + eventCategoryId);
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         // load event category - check for albums
         ch.unartig.studioserver.model.EventCategory category = eventCategoryDAO.load(eventCategoryId);
-        if (category==null) {
-            return Response.status(403,"eventCategory not found").build();
+        if (category == null) {
+            return Response.status(403, "eventCategory not found").build();
         }
         int numberOfAlbums = category.getAlbums().size();
-        if (numberOfAlbums !=0)
-        {
-            return Response.status(404,"EventCategory still contains ["+numberOfAlbums+"] Album(s). Delete albums first.").build();
+        if (numberOfAlbums != 0) {
+            return Response.status(404, "EventCategory still contains [" + numberOfAlbums + "] Album(s). Delete albums first.").build();
             // todo : extend with a parameter "force=true" to also delete albums
-        } else
-        {
+        } else {
             // event must also be updated and saved since it has the eventCategories as an indexed collection
             // (think about the overhead in case this operation needs to be more efficient)
             // eventCategory will be deleted as a cascaded operation from saving the event:
@@ -103,7 +98,7 @@ public class EventCategoriesApi {
             genericLevelDAO.saveOrUpdate(event);
             HibernateUtil.commitTransaction();
 
-            return  Response.noContent().build();
+            return Response.noContent().build();
         }
 
 
@@ -111,17 +106,47 @@ public class EventCategoriesApi {
 
     @Path("/{eventCategoryId}/albums")
     @GET
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response listAlbumsForEventCategory(@PathParam("eventCategoryId") int eventCategoryId){
+    public Response listAlbumsForEventCategory(@PathParam("eventCategoryId") long eventCategoryId) {
 
-        // TODO implement
+        _logger.info("GET /eventCategories/{eventCategoryId}/albums" + eventCategoryId);
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        EventCategoryDAO dao = new EventCategoryDAO();
+        ch.unartig.studioserver.model.EventCategory eventCategory = dao.getEventCategory(eventCategoryId);
 
-        return  Response.ok().entity("not implemented").build();
+        if (eventCategory == null) {
+            return Response.status(403,"Event Category does not exist").build();
+        }
+
+        return Response.ok().entity(eventCategory.getAlbums()
+                .stream()
+                .map(album -> convertToAlbumDTO(album))
+                .collect(Collectors.toList()))
+                .build();
+    }
+
+    private Album convertToAlbumDTO(ch.unartig.studioserver.model.Album album) {
+        Album albumDTO = new Album();
+
+        albumDTO.id(album.getGenericLevelId());
+        albumDTO.description(album.getDescription());
+        albumDTO.title(album.getLongTitle());
+        albumDTO.status(album.getPublish()?Album.StatusEnum.PUBLISHED:Album.StatusEnum.HIDDEN);
+        // TODO later: ??
+        // albumDTO.asvzLogoRelativeUrl(album.getProducts()): // needs a new DB field?
+        // albumDTO.asvzLogoRelativeUrl(album.getProducts()); // needs a new DB field?
+        // albumDTO.photosS3Uri(...); // needed?
+        // albumDTO.photographer(album.getPhotographer());
+        // albumDTO.products(album.getActiveProducts())
+
+        return albumDTO;
     }
 
     /**
      * This API method will create / update an album for an eventCategory.
      * NOTE: the current implementation only uses 1 album per eventCategory!
+     *
      * @param eventCategoryId
      * @param albumDto
      * @return

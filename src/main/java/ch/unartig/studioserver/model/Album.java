@@ -966,7 +966,7 @@ public class Album extends GenericLevel implements Serializable {
 
 
     /**
-     * sorts the albums for a nice list when showning all albums sorted by event and category (sales report)
+     * sorts the albums for a nice list when showing all albums sorted by event and category (sales report)
      * Album comparator using Generics;
      */
     public static class EventCategoryComparator implements Comparator<Album> {// needs to be static
