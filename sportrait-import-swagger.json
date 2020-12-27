@@ -958,7 +958,7 @@
       },
       "Album" : {
         "type" : "object",
-        "required" : [ "title", "event", "photosS3Uri" ],
+        "required" : [ "title", "photosS3Uri" ],
         "properties" : {
           "id" : {
             "type" : "integer",
