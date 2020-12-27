@@ -15,6 +15,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.stream.Collectors;
 
 @Path("/albums")
 public class AlbumsApi {
@@ -50,9 +51,19 @@ public class AlbumsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response listAllAlbums() {
-
         _logger.info("GET /albums/");
-        return Response.ok().entity("not implemented").build();
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
+        // alternative solution : (why?)
+        // GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
+        // genericLevelDAO.listAlbumsForPhotographer(client.getPhotographer().getPhotographerId());
+        return Response
+                .ok()
+                .entity(client.getPhotographer().getAlbums()
+                        .stream()
+                        .map(AlbumsApi::convertToAlbumDTO)
+                        .collect(Collectors.toList()))
+                .build();
 
     }
 
@@ -61,8 +72,8 @@ public class AlbumsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAlbum(@PathParam("albumId") long albumId) {
-
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
         return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
     }
 
@@ -71,8 +82,8 @@ public class AlbumsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateAlbum(@PathParam("albumId") long albumId, Album albumDto) {
-
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
         return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
     }
 
@@ -81,8 +92,8 @@ public class AlbumsApi {
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAlbum(@PathParam("albumId") long albumId) {
-
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
         return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
     }
 

@@ -50,6 +50,7 @@ public class Photographer implements java.io.Serializable {
     private UserProfile userProfile;
 
     @OneToMany(mappedBy = "photographer", fetch = FetchType.LAZY)
+    @OrderBy("genericLevelId")
     private Set<Album> albums = new HashSet<>(0);
 
     private String cameraModel;
@@ -109,11 +110,11 @@ public class Photographer implements java.io.Serializable {
         this.userProfile = userProfile;
     }
 
-    public Set getAlbums() {
+    public Set<Album> getAlbums() {
         return this.albums;
     }
 
-    public void setAlbums(Set albums) {
+    public void setAlbums(Set<Album> albums) {
         this.albums = albums;
     }
 
