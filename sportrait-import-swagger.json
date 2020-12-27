@@ -358,7 +358,10 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Album"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Album"
+                  }
                 }
               }
             }
@@ -965,9 +968,20 @@
             "type" : "string",
             "example" : "sola 2020 - etappe 12"
           },
+          "navTitle" : {
+            "type" : "string",
+            "description" : "the slug of the album",
+            "example" : "sola-2020-etappe-12"
+          },
           "description" : {
             "type" : "string",
             "example" : "die 12. etappe der sola 2030"
+          },
+          "freeHighresDownload" : {
+            "type" : "boolean",
+            "description" : "whether this album allows a free high resulation download of the digital image.",
+            "example" : true,
+            "default" : false
           },
           "applyLogoOnFineImages" : {
             "type" : "boolean",
@@ -989,6 +1003,12 @@
             "type" : "string",
             "description" : "relative URL (without bucket) to logo - not used yet",
             "example" : "logo/2020/asvz-logo-2020.png"
+          },
+          "creationDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z",
+            "example" : "2017-07-21T17:32:28Z"
           },
           "status" : {
             "type" : "string",
@@ -1061,7 +1081,7 @@
         }
       },
       "Product" : {
-        "description" : "Represents a product for an albuem",
+        "description" : "Represents a product for an album",
         "type" : "object",
         "required" : [ "productTypeId", "priceId" ],
         "properties" : {
@@ -1133,6 +1153,30 @@
             "type" : "string",
             "description" : "status of this price object (not used yet)",
             "enum" : [ "active", "archived", "deprecated" ]
+          }
+        }
+      },
+      "Photographer" : {
+        "description" : "Represents a photographer",
+        "type" : "object",
+        "required" : [ "firstname", "lastname" ],
+        "properties" : {
+          "photographerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "firstname" : {
+            "type" : "string",
+            "example" : "Ansel"
+          },
+          "lastname" : {
+            "type" : "string",
+            "example" : "Adams"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of the photographer (not used yet)",
+            "enum" : [ "active", "archived" ]
           }
         }
       },
