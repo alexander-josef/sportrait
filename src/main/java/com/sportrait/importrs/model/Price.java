@@ -25,7 +25,7 @@ import javax.validation.Valid;
  * Represents a price for a product
  */
 @Schema(description = "Represents a price for a product")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class Price   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Price   {
   @JsonProperty("priceId")
   private Long priceId = null;
 

@@ -18,12 +18,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.*;
-import javax.validation.Valid;
 
 /**
  * EventCategory
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-13T12:59:21.040Z[GMT]")public class EventCategory   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class EventCategory   {
   @JsonProperty("id")
   private Long id = null;
 
@@ -33,15 +32,18 @@ import javax.validation.Valid;
   @JsonProperty("description")
   private String description = null;
 
+  @JsonProperty("position")
+  private Integer position = null;
+
   /**
    * event status
    */
   public enum StatusEnum {
-    NEW("new"),
-    
     MAPPED("mapped"),
     
-    ONLINE("online");
+    PUBLISHED("published"),
+    
+    EMTPY("emtpy");
 
     private String value;
 
@@ -127,6 +129,25 @@ import javax.validation.Valid;
     this.description = description;
   }
 
+  public EventCategory position(Integer position) {
+    this.position = position;
+    return this;
+  }
+
+  /**
+   * the relative position / order of this eventCategory within the event
+   * @return position
+   **/
+  @JsonProperty("position")
+  @Schema(example = "0", description = "the relative position / order of this eventCategory within the event")
+  public Integer getPosition() {
+    return position;
+  }
+
+  public void setPosition(Integer position) {
+    this.position = position;
+  }
+
   public EventCategory status(StatusEnum status) {
     this.status = status;
     return this;
@@ -160,12 +181,13 @@ import javax.validation.Valid;
     return Objects.equals(this.id, eventCategory.id) &&
         Objects.equals(this.title, eventCategory.title) &&
         Objects.equals(this.description, eventCategory.description) &&
+        Objects.equals(this.position, eventCategory.position) &&
         Objects.equals(this.status, eventCategory.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, status);
+    return Objects.hash(id, title, description, position, status);
   }
 
 
@@ -177,6 +199,7 @@ import javax.validation.Valid;
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    position: ").append(toIndentedString(position)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

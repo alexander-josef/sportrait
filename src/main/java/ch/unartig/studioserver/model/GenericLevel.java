@@ -313,11 +313,27 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
 
     /**
      * Default implementation - check overridden implementations for Album etc.
+     * protected, needs overwrite on implementation
      * @param client
      * @throws NotAuthorizedException
      * @return
      */
     protected boolean checkWriteAccessFor(Client client) throws NotAuthorizedException {
+        if (!client.isAdmin()) {
+            throw new NotAuthorizedException("No Administrator rights");
+        }
+        return true;
+    }
+
+    /**
+     * Default implementation - check overridden implementations for Album etc.
+     * protected, needs overwrite on implementation
+     * @param client
+     * @throws NotAuthorizedException
+     * @return
+     */
+    protected boolean checkReadAccessFor(Client client) throws NotAuthorizedException {
+        _logger.info("read access check on genericLevel");
         if (!client.isAdmin()) {
             throw new NotAuthorizedException("No Administrator rights");
         }

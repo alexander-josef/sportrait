@@ -4,6 +4,7 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.Product;
@@ -30,9 +31,9 @@ public class AlbumsApi {
         albumDTO.description(album.getDescription());
         albumDTO.title(album.getLongTitle());
         albumDTO.status(album.getPublish() ? Album.StatusEnum.PUBLISHED : Album.StatusEnum.HIDDEN);
+        albumDTO.freeHighresDownload(album.isHasFreeHighResDownload());
         // TODO later: ??
         // albumDTO.asvzLogoRelativeUrl(album.getProducts()): // needs a new DB field?
-        // albumDTO.asvzLogoRelativeUrl(album.getProducts()); // needs a new DB field?
         // albumDTO.photosS3Uri(...); // needed?
         // albumDTO.photographer(album.getPhotographer());
         // albumDTO.products(album.getActiveProducts())
@@ -42,7 +43,7 @@ public class AlbumsApi {
 
 
     /**
-     * Todo think about visibility - only logged in user probably
+     * Returns all albums of authenticated photographer
      *
      * @return
      */
@@ -74,7 +75,18 @@ public class AlbumsApi {
     public Response getAlbum(@PathParam("albumId") long albumId) {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
+        SportsAlbum album = genericLevelDAO.get(albumId, SportsAlbum.class);
+        try {
+            album.checkReadAccessFor(client);
+        } catch (NotAuthorizedException e) {
+            _logger.info(e);
+            return Response.status(403, e.getLocalizedMessage()).build();
+        }
+        return Response
+                .ok()
+                .entity(convertToAlbumDTO(album))
+                .build();
     }
 
     @Path("/{albumId}")
@@ -119,15 +131,19 @@ public class AlbumsApi {
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
         GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
         SportsAlbum album = genericLevelDAO.get(albumId, SportsAlbum.class);
+        Album albumDTO;
         try {
+            HibernateUtil.beginTransaction();
             album.setPublish(newPublishState, client);
+            albumDTO = convertToAlbumDTO(album);
+            HibernateUtil.commitTransaction();
         } catch (NotAuthorizedException e) {
             _logger.info(e);
             return Response.status(403, e.getLocalizedMessage()).build();
         }
         return Response
                 .ok()
-                .entity(convertToAlbumDTO(album))
+                .entity(albumDTO)
                 .build();
     }
 

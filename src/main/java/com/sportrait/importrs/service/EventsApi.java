@@ -72,21 +72,12 @@ public class EventsApi {
         eventDTO.setOrganizerUrl(event.getWeblink());
         eventDTO.setEventCategories(event.getEventCategories()
                 .stream()
-                .map(eventCategory -> convertToEventCategoriesDTO(eventCategory, eventDTO))
+                .map(EventCategoriesApi::convertToEventCategoryDTO)
                 .collect(Collectors.toList())
         );
         eventDTO.setStatus(Event.StatusEnum.ONLINE); // what to do here?
 
         return eventDTO;
-    }
-
-    private EventCategory convertToEventCategoriesDTO(ch.unartig.studioserver.model.EventCategory eventCategory, Event eventDTO) {
-        EventCategory eventCategoryDTO = new EventCategory();
-        eventCategoryDTO.setId(eventCategory.getEventCategoryId());
-        eventCategoryDTO.setTitle(eventCategory.getTitle());
-        eventCategoryDTO.setDescription(eventCategory.getDescription());
-        eventCategoryDTO.setStatus(EventCategory.StatusEnum.ONLINE);
-        return eventCategoryDTO;
     }
 
     @POST

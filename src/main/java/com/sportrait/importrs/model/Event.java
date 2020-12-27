@@ -26,7 +26,7 @@ import javax.validation.Valid;
 /**
  * Event
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-13T12:59:21.040Z[GMT]")public class Event   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Event   {
   @JsonProperty("id")
   private Long id = null;
 

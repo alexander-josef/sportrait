@@ -48,12 +48,12 @@ public class EventCategoriesApi {
     }
 
 
-    private static EventCategory convertToEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
+    static EventCategory convertToEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory) {
         EventCategory eventCategoryDTO = new EventCategory();
         eventCategoryDTO.setId(eventCategory.getEventCategoryId());
         eventCategoryDTO.setTitle(eventCategory.getTitle());
         eventCategoryDTO.setDescription(eventCategory.getTitle());
-        eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos() ? EventCategory.StatusEnum.NEW : EventCategory.StatusEnum.ONLINE);
+        eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos() ? EventCategory.StatusEnum.PUBLISHED : EventCategory.StatusEnum.EMTPY);
         return eventCategoryDTO;
     }
 

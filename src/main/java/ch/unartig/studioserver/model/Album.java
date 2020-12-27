@@ -259,11 +259,11 @@ public class Album extends GenericLevel implements Serializable {
     @JoinColumn(name = "eventcategoryid")
     private EventCategory eventCategory;
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("pictureTakenDate")
     private Set<Photo> photos = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OrderBy("productType")
     private Set<Product> products = new HashSet<>(0);
@@ -470,15 +470,15 @@ public class Album extends GenericLevel implements Serializable {
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the applyLogoOnFineImages argument is true
      * AJ 20180204 : applyLogoOnFineImages not used anymore with image service (imgix)
-     *
-     *
+     * <p>
+     * <p>
      * EXIF orientation deatils according to: http://sylvana.net/jpegcrop/exif_orientation.html
-     *
-     *
+     * <p>
+     * <p>
      * For convenience, here is what the letter F would look like if it were tagged correctly and displayed by a program that ignores the orientation tag (thus showing the stored image):
-     *
-     *   1        2       3      4         5            6           7          8
-     *
+     * <p>
+     * 1        2       3      4         5            6           7          8
+     * <p>
      * 888888  888888      88  88      8888888888  88                  88  8888888888
      * 88          88      88  88      88  88      88  88          88  88      88  88
      * 8888      8888    8888  8888    88          8888888888  8888888888          88
@@ -847,10 +847,11 @@ public class Album extends GenericLevel implements Serializable {
 
     /**
      * Write access check for an album; client needs to be either admin or owner of the album.
+     * Currently used for all access checks, also read (check calling methods)
      *
      * @param client
-     * @throws NotAuthorizedException
      * @return
+     * @throws NotAuthorizedException
      */
     protected boolean checkWriteAccessFor(Client client) throws NotAuthorizedException {
         _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");
@@ -869,6 +870,18 @@ public class Album extends GenericLevel implements Serializable {
             throw new NotAuthorizedException("Missing rights - need to be owning photographer or admin");
         }
         return true;
+    }
+
+    /**
+     * Read access check for an album; client needs to be either admin or owner of the album.
+     *
+     * @param client
+     * @return
+     * @throws NotAuthorizedException
+     */
+    public boolean checkReadAccessFor(Client client) throws NotAuthorizedException {
+        //todo : implement RBAC specific read access permissions - currently no permission schema for it.
+        return checkWriteAccessFor(client);
     }
 
     /**
@@ -951,19 +964,20 @@ public class Album extends GenericLevel implements Serializable {
 
     /**
      * toString
+     *
      * @return String
      */
-     public String toString() {
-	  StringBuffer buffer = new StringBuffer();
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
 
-      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
-      buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
-      buffer.append("event").append("='").append(getEvent()).append("' ");
-      buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
-      buffer.append("]");
+        buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+        buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
+        buffer.append("event").append("='").append(getEvent()).append("' ");
+        buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
+        buffer.append("]");
 
-      return buffer.toString();
-     }
+        return buffer.toString();
+    }
 
 
     /**

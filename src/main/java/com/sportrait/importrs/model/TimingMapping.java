@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * Represents the data for a timing mapping of an album
  */
 @Schema(description = "Represents the data for a timing mapping of an album")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class TimingMapping   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class TimingMapping   {
   @JsonProperty("timingFile")
   private File timingFile = null;
 

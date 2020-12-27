@@ -12,17 +12,16 @@
 
 package com.sportrait.importrs.model;
 
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.validation.constraints.NotNull;
-import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
- * Represents a product for an albuem
+ * Represents a product for an album
  */
-@Schema(description = "Represents a product for an albuem")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class Product   {
+@Schema(description = "Represents a product for an album")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Product   {
   @JsonProperty("productTypeId")
   private Long productTypeId = null;
 

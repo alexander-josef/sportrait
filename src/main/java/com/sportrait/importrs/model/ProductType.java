@@ -14,7 +14,6 @@ package com.sportrait.importrs.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ import javax.validation.Valid;
  * Represents a product type that can be combined with a price and added as a product for an album
  */
 @Schema(description = "Represents a product type that can be combined with a price and added as a product for an album")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class ProductType   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class ProductType   {
   @JsonProperty("productTypeId")
   private Long productTypeId = null;
 

@@ -17,21 +17,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Date;
 import javax.validation.constraints.*;
 import javax.validation.Valid;
 
 /**
  * Album
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class Album   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Album   {
   @JsonProperty("id")
   private Long id = null;
 
   @JsonProperty("title")
   private String title = null;
 
+  @JsonProperty("navTitle")
+  private String navTitle = null;
+
   @JsonProperty("description")
   private String description = null;
+
+  @JsonProperty("freeHighresDownload")
+  private Boolean freeHighresDownload = false;
 
   @JsonProperty("applyLogoOnFineImages")
   private Boolean applyLogoOnFineImages = false;
@@ -44,6 +51,9 @@ import javax.validation.Valid;
 
   @JsonProperty("asvzLogoRelativeUrl")
   private String asvzLogoRelativeUrl = null;
+
+  @JsonProperty("creationDate")
+  private Date creationDate = null;
 
   /**
    * album publication status
@@ -119,6 +129,25 @@ import javax.validation.Valid;
     this.title = title;
   }
 
+  public Album navTitle(String navTitle) {
+    this.navTitle = navTitle;
+    return this;
+  }
+
+  /**
+   * the slug of the album
+   * @return navTitle
+   **/
+  @JsonProperty("navTitle")
+  @Schema(example = "sola-2020-etappe-12", description = "the slug of the album")
+  public String getNavTitle() {
+    return navTitle;
+  }
+
+  public void setNavTitle(String navTitle) {
+    this.navTitle = navTitle;
+  }
+
   public Album description(String description) {
     this.description = description;
     return this;
@@ -136,6 +165,25 @@ import javax.validation.Valid;
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public Album freeHighresDownload(Boolean freeHighresDownload) {
+    this.freeHighresDownload = freeHighresDownload;
+    return this;
+  }
+
+  /**
+   * whether this album allows a free high resulation download of the digital image.
+   * @return freeHighresDownload
+   **/
+  @JsonProperty("freeHighresDownload")
+  @Schema(example = "true", description = "whether this album allows a free high resulation download of the digital image.")
+  public Boolean isFreeHighresDownload() {
+    return freeHighresDownload;
+  }
+
+  public void setFreeHighresDownload(Boolean freeHighresDownload) {
+    this.freeHighresDownload = freeHighresDownload;
   }
 
   public Album applyLogoOnFineImages(Boolean applyLogoOnFineImages) {
@@ -215,6 +263,26 @@ import javax.validation.Valid;
     this.asvzLogoRelativeUrl = asvzLogoRelativeUrl;
   }
 
+  public Album creationDate(Date creationDate) {
+    this.creationDate = creationDate;
+    return this;
+  }
+
+  /**
+   * Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z
+   * @return creationDate
+   **/
+  @JsonProperty("creationDate")
+  @Schema(example = "2017-07-21T17:32:28Z", description = "Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z")
+  @Valid
+  public Date getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Date creationDate) {
+    this.creationDate = creationDate;
+  }
+
   public Album status(StatusEnum status) {
     this.status = status;
     return this;
@@ -246,17 +314,20 @@ import javax.validation.Valid;
     Album album = (Album) o;
     return Objects.equals(this.id, album.id) &&
         Objects.equals(this.title, album.title) &&
+        Objects.equals(this.navTitle, album.navTitle) &&
         Objects.equals(this.description, album.description) &&
+        Objects.equals(this.freeHighresDownload, album.freeHighresDownload) &&
         Objects.equals(this.applyLogoOnFineImages, album.applyLogoOnFineImages) &&
         Objects.equals(this.photosS3Uri, album.photosS3Uri) &&
         Objects.equals(this.sponsorBarRelativeUrl, album.sponsorBarRelativeUrl) &&
         Objects.equals(this.asvzLogoRelativeUrl, album.asvzLogoRelativeUrl) &&
+        Objects.equals(this.creationDate, album.creationDate) &&
         Objects.equals(this.status, album.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, applyLogoOnFineImages, photosS3Uri, sponsorBarRelativeUrl, asvzLogoRelativeUrl, status);
+    return Objects.hash(id, title, navTitle, description, freeHighresDownload, applyLogoOnFineImages, photosS3Uri, sponsorBarRelativeUrl, asvzLogoRelativeUrl, creationDate, status);
   }
 
 
@@ -267,11 +338,14 @@ import javax.validation.Valid;
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    navTitle: ").append(toIndentedString(navTitle)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    freeHighresDownload: ").append(toIndentedString(freeHighresDownload)).append("\n");
     sb.append("    applyLogoOnFineImages: ").append(toIndentedString(applyLogoOnFineImages)).append("\n");
     sb.append("    photosS3Uri: ").append(toIndentedString(photosS3Uri)).append("\n");
     sb.append("    sponsorBarRelativeUrl: ").append(toIndentedString(sponsorBarRelativeUrl)).append("\n");
     sb.append("    asvzLogoRelativeUrl: ").append(toIndentedString(asvzLogoRelativeUrl)).append("\n");
+    sb.append("    creationDate: ").append(toIndentedString(creationDate)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

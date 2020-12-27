@@ -26,7 +26,7 @@ import javax.validation.Valid;
  * Represents an EventGroup in Sportrait
  */
 @Schema(description = "Represents an EventGroup in Sportrait")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-11-22T14:33:43.658Z[GMT]")public class EventGroup   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class EventGroup   {
   @JsonProperty("id")
   private Long id = null;
 
