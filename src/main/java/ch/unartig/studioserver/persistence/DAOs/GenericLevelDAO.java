@@ -221,11 +221,11 @@ public class GenericLevelDAO {
     }
 
     /**
-     * Get a hierachy level. must be casted by calling method to appropriate concrete class.
+     * Get a hierarchy level.
      *
      * @param genericLevelId Level ID
      * @param levelClass     the concrete class
-     * @return a generic Level ; needs to be casted to appropriate class
+     * @return a generic Level or null, if no record exists for given levelId
      * @throws UAPersistenceException
      */
     public <T extends GenericLevel> T get(Long genericLevelId, Class<T> levelClass) {

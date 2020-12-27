@@ -106,7 +106,24 @@ public class AlbumsApi {
     public Response deleteAlbum(@PathParam("albumId") long albumId) {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+
+        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
+        SportsAlbum album = genericLevelDAO.get(albumId, SportsAlbum.class);
+        if (album==null) {
+            return Response.status(404,"no album with given ID").build();
+        }
+        try {
+            HibernateUtil.beginTransaction();
+            album.checkReadAccessFor(client);
+            genericLevelDAO.delete(album);
+            HibernateUtil.commitTransaction();
+        } catch (NotAuthorizedException e) {
+            _logger.info(e);
+            return Response.status(403, e.getLocalizedMessage()).build();
+        }
+        return Response
+                .accepted()
+                .build();
     }
 
     @Path("/{albumId}/publish")
