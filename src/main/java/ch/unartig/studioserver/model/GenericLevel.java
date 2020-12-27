@@ -267,14 +267,15 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
     public abstract void deleteLevel() throws UAPersistenceException;
 
     /**
-     * Check write access to publish using the client object
+     * if genericlevel is unpublished, check write access to publish using the client object an set to published
      *
      * @param publish
      * @param client
      */
     public void setPublish(Boolean publish, Client client) throws NotAuthorizedException {
-        checkWriteAccessFor(client);
-        this.publish=publish;
+        if (checkWriteAccessFor(client)) {
+            this.publish=publish;
+        }
     }
 
 
@@ -310,11 +311,20 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
     }
 
 
-    protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
+    /**
+     * Default implementation - check overridden implementations for Album etc.
+     * @param client
+     * @throws NotAuthorizedException
+     * @return
+     */
+    protected boolean checkWriteAccessFor(Client client) throws NotAuthorizedException {
         if (!client.isAdmin()) {
-            throw new NotAuthorizedException("Not Administrator rights");
+            throw new NotAuthorizedException("No Administrator rights");
         }
+        return true;
     }
+
+
 
     public void toggleLevelPublishStatus(Client client) throws NotAuthorizedException {
         if (getPublish() != null && getPublish()) {

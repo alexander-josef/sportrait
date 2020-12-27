@@ -121,26 +121,9 @@ public class EventCategoriesApi {
 
         return Response.ok().entity(eventCategory.getAlbums()
                 .stream()
-                .map(album -> convertToAlbumDTO(album))
+                .map(AlbumsApi::convertToAlbumDTO)
                 .collect(Collectors.toList()))
                 .build();
-    }
-
-    private Album convertToAlbumDTO(ch.unartig.studioserver.model.Album album) {
-        Album albumDTO = new Album();
-
-        albumDTO.id(album.getGenericLevelId());
-        albumDTO.description(album.getDescription());
-        albumDTO.title(album.getLongTitle());
-        albumDTO.status(album.getPublish()?Album.StatusEnum.PUBLISHED:Album.StatusEnum.HIDDEN);
-        // TODO later: ??
-        // albumDTO.asvzLogoRelativeUrl(album.getProducts()): // needs a new DB field?
-        // albumDTO.asvzLogoRelativeUrl(album.getProducts()); // needs a new DB field?
-        // albumDTO.photosS3Uri(...); // needed?
-        // albumDTO.photographer(album.getPhotographer());
-        // albumDTO.products(album.getActiveProducts())
-
-        return albumDTO;
     }
 
     /**

@@ -147,12 +147,12 @@ public class EventsApi {
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getEvent(@PathParam("eventId") int eventId) {
+    public Response getEvent(@PathParam("eventId") long eventId) {
         _logger.info("GET /events/" + eventId);
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("authenticated user : [" + client.getUsername() + "]");
         GenericLevelDAO glDao = new GenericLevelDAO();
-        SportsEvent event = (SportsEvent)glDao.get((long) eventId, SportsEvent.class);
+        SportsEvent event = glDao.get(eventId, SportsEvent.class);
         if (event != null) {
             return Response.ok()
                     .entity(convertToEventsDTO(event))

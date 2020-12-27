@@ -213,7 +213,6 @@ import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.IndexColumn;
 
 import javax.persistence.*;
 import java.io.*;
@@ -851,23 +850,25 @@ public class Album extends GenericLevel implements Serializable {
      *
      * @param client
      * @throws NotAuthorizedException
+     * @return
      */
-    protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
+    protected boolean checkWriteAccessFor(Client client) throws NotAuthorizedException {
         _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");
         _logger.debug("client is admin? " + client.isAdmin());
         // _logger.debug("Photographer : " + getPhotographer()); // don't use this - can cause lazy initialization exception
         // special case no photographer:
         if (getPhotographer() == null && client.isAdmin()) {
-            // album without an album ...
-            return;
+            // album without a photographer ...
+            return true;
         } else if (getPhotographer() == null && !client.isAdmin()) {
-            throw new RuntimeException("Unexpected state : no photographer album shown to a non-admin!!");
+            throw new NotAuthorizedException("Unexpected state : album w/o linked photographer accessed from non-admin!!");
         }
         // regular check:
         if (!(client.isAdmin() || getPhotographer().equals(client.getPhotographer()))) {
-            throw new NotAuthorizedException("Not Administrator rights");
+            _logger.debug("client is not authorized - photographerId  :  " + client.getPhotographer().getPhotographerId());
+            throw new NotAuthorizedException("Missing rights - need to be owning photographer or admin");
         }
-
+        return true;
     }
 
     /**
