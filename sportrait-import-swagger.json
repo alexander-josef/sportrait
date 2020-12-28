@@ -1083,15 +1083,26 @@
       "Product" : {
         "description" : "Represents a product for an album",
         "type" : "object",
-        "required" : [ "productTypeId", "priceId" ],
+        "required" : [ "productId", "price", "productType" ],
         "properties" : {
-          "productTypeId" : {
+          "productId" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "priceId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "productName" : {
+            "type" : "string",
+            "example" : "Digital Master, free download"
+          },
+          "productType" : {
+            "$ref" : "#/components/schemas/ProductType"
+          },
+          "price" : {
+            "$ref" : "#/components/schemas/Price"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of the product (active or archived)",
+            "enum" : [ "active", "archived" ]
           }
         }
       },
