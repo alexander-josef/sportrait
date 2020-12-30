@@ -14,58 +14,160 @@ package com.sportrait.importrs.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 /**
  * Represents a product for an album
  */
 @Schema(description = "Represents a product for an album")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Product   {
-  @JsonProperty("productTypeId")
-  private Long productTypeId = null;
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-28T14:27:52.775Z[GMT]")public class Product   {
+  @JsonProperty("productId")
+  private Long productId = null;
 
-  @JsonProperty("priceId")
-  private Long priceId = null;
+  @JsonProperty("productName")
+  private String productName = null;
 
-  public Product productTypeId(Long productTypeId) {
-    this.productTypeId = productTypeId;
+  @JsonProperty("productType")
+  private ProductType productType = null;
+
+  @JsonProperty("price")
+  private Price price = null;
+
+  /**
+   * status of the product (active or archived)
+   */
+  public enum StatusEnum {
+    ACTIVE("active"),
+    
+    ARCHIVED("archived");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String text) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+  @JsonProperty("status")
+  private StatusEnum status = null;
+
+  public Product productId(Long productId) {
+    this.productId = productId;
     return this;
   }
 
   /**
-   * Get productTypeId
-   * @return productTypeId
+   * Get productId
+   * @return productId
    **/
-  @JsonProperty("productTypeId")
+  @JsonProperty("productId")
   @Schema(required = true, description = "")
   @NotNull
-  public Long getProductTypeId() {
-    return productTypeId;
+  public Long getProductId() {
+    return productId;
   }
 
-  public void setProductTypeId(Long productTypeId) {
-    this.productTypeId = productTypeId;
+  public void setProductId(Long productId) {
+    this.productId = productId;
   }
 
-  public Product priceId(Long priceId) {
-    this.priceId = priceId;
+  public Product productName(String productName) {
+    this.productName = productName;
     return this;
   }
 
   /**
-   * Get priceId
-   * @return priceId
+   * Get productName
+   * @return productName
    **/
-  @JsonProperty("priceId")
-  @Schema(required = true, description = "")
-  @NotNull
-  public Long getPriceId() {
-    return priceId;
+  @JsonProperty("productName")
+  @Schema(example = "Digital Master, free download", description = "")
+  public String getProductName() {
+    return productName;
   }
 
-  public void setPriceId(Long priceId) {
-    this.priceId = priceId;
+  public void setProductName(String productName) {
+    this.productName = productName;
+  }
+
+  public Product productType(ProductType productType) {
+    this.productType = productType;
+    return this;
+  }
+
+  /**
+   * Get productType
+   * @return productType
+   **/
+  @JsonProperty("productType")
+  @Schema(required = true, description = "")
+  @NotNull
+  @Valid
+  public ProductType getProductType() {
+    return productType;
+  }
+
+  public void setProductType(ProductType productType) {
+    this.productType = productType;
+  }
+
+  public Product price(Price price) {
+    this.price = price;
+    return this;
+  }
+
+  /**
+   * Get price
+   * @return price
+   **/
+  @JsonProperty("price")
+  @Schema(required = true, description = "")
+  @NotNull
+  @Valid
+  public Price getPrice() {
+    return price;
+  }
+
+  public void setPrice(Price price) {
+    this.price = price;
+  }
+
+  public Product status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * status of the product (active or archived)
+   * @return status
+   **/
+  @JsonProperty("status")
+  @Schema(description = "status of the product (active or archived)")
+  public StatusEnum getStatus() {
+    return status;
+  }
+
+  public void setStatus(StatusEnum status) {
+    this.status = status;
   }
 
 
@@ -78,13 +180,16 @@ import javax.validation.constraints.*;
       return false;
     }
     Product product = (Product) o;
-    return Objects.equals(this.productTypeId, product.productTypeId) &&
-        Objects.equals(this.priceId, product.priceId);
+    return Objects.equals(this.productId, product.productId) &&
+        Objects.equals(this.productName, product.productName) &&
+        Objects.equals(this.productType, product.productType) &&
+        Objects.equals(this.price, product.price) &&
+        Objects.equals(this.status, product.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productTypeId, priceId);
+    return Objects.hash(productId, productName, productType, price, status);
   }
 
 
@@ -93,8 +198,11 @@ import javax.validation.constraints.*;
     StringBuilder sb = new StringBuilder();
     sb.append("class Product {\n");
     
-    sb.append("    productTypeId: ").append(toIndentedString(productTypeId)).append("\n");
-    sb.append("    priceId: ").append(toIndentedString(priceId)).append("\n");
+    sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
+    sb.append("    productName: ").append(toIndentedString(productName)).append("\n");
+    sb.append("    productType: ").append(toIndentedString(productType)).append("\n");
+    sb.append("    price: ").append(toIndentedString(price)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

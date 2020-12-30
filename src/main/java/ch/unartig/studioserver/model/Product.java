@@ -90,11 +90,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * this business class represents a product that is sold to a customer<br>
  * a product consists of a format (or 'fun' article like mousemat) and a price<br>
- * there will be more than one product for the same format if this format is sold for different prices<br>
+ * there will be more than one product for the same format if this format is sold for different prices (in different albums)<br>
+ *  unclear: more than one product of same type (format) in same album? -> 2020-12-29: added equals() method to enforce
+ *  max one producttype per album
  */
 @Entity
 @Table(name = "products")
@@ -213,7 +216,7 @@ public class Product implements java.io.Serializable {
     }
 
     public Boolean getInactive() {
-        return this.inactive;
+        return (inactive != null && this.inactive);
     }
 
     public void setInactive(Boolean inactive) {
@@ -242,6 +245,36 @@ public class Product implements java.io.Serializable {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+
+    /**
+     * A product is defined equal if it is of the same productType in the same album.
+     * i.e. there shall be no more than max 1 product of the same productType in an album, since products are linked as "set" to an album
+     * (2020-12-30 - needs to be tested and observed for problems with the rest of the code base)
+     * @param other
+     * @return
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Product product = (Product) other;
+        return Objects.equals(this.productType, product.productType) &&
+                Objects.equals(this.album, product.album);
+    }
+
+    /**
+     * needed to make the equal comparison work to use products as "set" in album (only one product with identical album/productType)
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(album,productType);
     }
 
     /**

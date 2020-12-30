@@ -74,6 +74,10 @@ public class Price implements java.io.Serializable {
     {
     }
 
+    /**
+     * create a generic price label containing EUR and CHF price
+     * @return [CHF price ]//[ EUR price]
+     */
     public String getPriceLabel() {
         return getPriceCHF() + " CHF // " + getPriceEUR() + " EUR";
     }
