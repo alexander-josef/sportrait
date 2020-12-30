@@ -103,8 +103,14 @@ public class ProductsApi {
 
             ch.unartig.studioserver.model.Product product = convertFromProductDTO(productDto, album);
 
+            if (!product.getProductType().getPrices().contains(product.getPrice())) { // can this price be assigned given the productType?
+                HibernateUtil.rollbackTransaction();
+                return Response.status(403, "provided price can not be used with given productType - check available prices for chosen productType").build();
+            }
+
             if (!album.getProducts().add(product)) {
                 // product cannot be added due to set restrictions (identical element already existing)
+                HibernateUtil.rollbackTransaction();
                 return Response
                         .status(405, "Cannot create a new product - product with identical productType already exists. " +
                                 "Try updating existing product.")
@@ -120,6 +126,7 @@ public class ProductsApi {
                     .entity(newProductDto)
                     .build();
         } catch (NotAuthorizedException e) {
+            HibernateUtil.rollbackTransaction();
             return Response.status(404, e.getMessage()).build();
         }
 
