@@ -44,7 +44,7 @@ public class ProductTypeDAO {
     {
         try
         {
-            return (ProductType) HibernateUtil.currentSession().load(ProductType.class, productTypeId);
+            return HibernateUtil.currentSession().load(ProductType.class, productTypeId);
         } catch (HibernateException e)
         {
             throw new UAPersistenceException("Could not load ProductType, see stack trace", e);
@@ -52,6 +52,10 @@ public class ProductTypeDAO {
 
     }
 
+
+    public ProductType get(Long productTypeId) {
+        return HibernateUtil.currentSession().get(ProductType.class, productTypeId);
+    }
 
     /**
      * List all productTypes there are - return ordered (by ID) list

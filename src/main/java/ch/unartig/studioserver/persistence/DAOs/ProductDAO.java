@@ -59,13 +59,17 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.criterion.Order;
 
 import java.util.List;
 
 public class ProductDAO {
+    Logger _logger = Logger.getLogger(getClass().getName());
+
     /**
      * @param productId
      * @return
@@ -82,11 +86,10 @@ public class ProductDAO {
     }
 
     /**
-     *
      * @param productId
      * @return the product instance or null
      */
-    public Product get(Long productId){
+    public Product get(Long productId) {
         return HibernateUtil.currentSession().get(Product.class, productId);
     }
 
@@ -104,4 +107,8 @@ public class ProductDAO {
     }
 
 
+    public void saveOrUpdate(Product product) {
+        HibernateUtil.currentSession().saveOrUpdate(product);
+        _logger.info("successful saveOrUpdate of a product");
+    }
 }

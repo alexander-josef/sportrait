@@ -30,17 +30,18 @@ import ch.unartig.studioserver.model.Price;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.hibernate.HibernateException;
 
-public class PriceDAO
-{
+public class PriceDAO {
 
     public Price load(Long priceId) throws UAPersistenceException {
-        try
-        {
-            return (Price) HibernateUtil.currentSession().load(Price.class, priceId);
-        } catch (HibernateException e)
-        {
+        try {
+            return HibernateUtil.currentSession().load(Price.class, priceId);
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Could not load Price, see stack trace", e);
         }
 
+    }
+
+    public Price get(Long priceId) {
+        return HibernateUtil.currentSession().get(Price.class, priceId);
     }
 }
