@@ -161,9 +161,13 @@ public class ProductsApi {
             }
             ch.unartig.studioserver.model.Price price = convertFromPriceDTO(productDto.getPrice());
             if (price == null) {
-                return Response.status(400, "request contains invalid price information").build();
+                return Response.status(400, "request contains no or invalid price information").build();
             }
-            product.setPrice(productDto.getPrice() != null ? price : product.getPrice()); // use price information from dto (should be present) or leave as it is
+            if (productType.getPrices().contains(price)) { // can this price be assigned given the productType?
+                product.setPrice(price); // use price information from dto (should be present) or leave as it is
+            } else {
+                return Response.status(403, "provided price can not be used with given productType").build();
+            }
             product.setInactive(productDto.getStatus() != null ? productDto.getStatus() == Product.StatusEnum.ARCHIVED : product.getInactive());
             productDAO.saveOrUpdate(product);
 
