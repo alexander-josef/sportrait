@@ -697,7 +697,7 @@
             "format" : "int64"
           }
         } ],
-        "tags" : [ "album" ],
+        "tags" : [ "product" ],
         "summary" : "List all products of an album.",
         "operationId" : "getAlbumProducts",
         "responses" : {
@@ -706,7 +706,10 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Album"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Product"
+                  }
                 }
               }
             }
@@ -716,7 +719,7 @@
           }
         }
       },
-      "post" : {
+      "put" : {
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
@@ -727,7 +730,47 @@
             "format" : "int64"
           }
         } ],
-        "tags" : [ "album" ],
+        "tags" : [ "product" ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Product"
+        },
+        "summary" : "Update a product of an album.",
+        "operationId" : "updateAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation - product updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Not authorized - please log in"
+          },
+          "403" : {
+            "description" : "Not allowed"
+          },
+          "404" : {
+            "description" : "No Product found with given ID"
+          }
+        }
+      },
+      "post" : {
+        "description" : "Create a new product for this album. Provide the product name (productName), the product type Id and the price Id.",
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "product" ],
         "requestBody" : {
           "$ref" : "#/components/requestBodies/Product"
         },
@@ -751,6 +794,45 @@
       }
     },
     "/albums/{albumId}/products/{productId}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "ID of the product to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "product" ],
+        "summary" : "Get the product, identified by productId, of an album.",
+        "operationId" : "getAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "delete" : {
         "parameters" : [ {
           "name" : "albumId",
@@ -771,7 +853,7 @@
             "format" : "int64"
           }
         } ],
-        "tags" : [ "album" ],
+        "tags" : [ "product" ],
         "summary" : "Delete a product of an album.",
         "operationId" : "deleteAlbumProduct",
         "responses" : {
@@ -1083,15 +1165,26 @@
       "Product" : {
         "description" : "Represents a product for an album",
         "type" : "object",
-        "required" : [ "productTypeId", "priceId" ],
+        "required" : [ "productId", "price", "productType" ],
         "properties" : {
-          "productTypeId" : {
+          "productId" : {
             "type" : "integer",
             "format" : "int64"
           },
-          "priceId" : {
-            "type" : "integer",
-            "format" : "int64"
+          "productName" : {
+            "type" : "string",
+            "example" : "Digital Master, free download"
+          },
+          "productType" : {
+            "$ref" : "#/components/schemas/ProductType"
+          },
+          "price" : {
+            "$ref" : "#/components/schemas/Price"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "status of the product (active or archived)",
+            "enum" : [ "active", "archived" ]
           }
         }
       },
