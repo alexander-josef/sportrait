@@ -141,34 +141,33 @@ public class ProductsApi {
         ProductDAO productDAO = new ProductDAO();
         // GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
 
-        // check for existing product and correct album:
-        ch.unartig.studioserver.model.Product product = productDAO.get(productDto.getProductId());
-        if (product == null || !product.getAlbum().getGenericLevelId().equals(albumId)) {
-            return Response.status(404, "no product with given ID").build();
-        }
 
         try {
             HibernateUtil.beginTransaction();
+
+
+            ch.unartig.studioserver.model.Product product = convertFromProductDTO(productDto, null); // album not needed for update
+            if (product == null || !product.getAlbum().getGenericLevelId().equals(albumId)) {
+                HibernateUtil.rollbackTransaction();
+                return Response.status(404, "no product with given ID").build();
+            }
             product.getAlbum().checkReadAccessFor(client); // todo make it write/update access check
-
-            // put to converter:
-            product.setProductName(productDto.getProductName() != null ? productDto.getProductName() : product.getProductName());
-
-            ch.unartig.studioserver.model.ProductType productType = convertFromProductTypeDTO(productDto.getProductType());
-            product.setProductType(productDto.getProductType() != null ? productType : product.getProductType());
-            if (productType == null) {
+            if (product.getProductType() == null) {
+                HibernateUtil.rollbackTransaction();
                 return Response.status(400, "request contains invalid productType information").build();
             }
-            ch.unartig.studioserver.model.Price price = convertFromPriceDTO(productDto.getPrice());
-            if (price == null) {
+
+            if (product.getPrice() == null) {
+                HibernateUtil.rollbackTransaction();
                 return Response.status(400, "request contains no or invalid price information").build();
             }
-            if (productType.getPrices().contains(price)) { // can this price be assigned given the productType?
-                product.setPrice(price); // use price information from dto (should be present) or leave as it is
-            } else {
+
+
+            if (!product.getProductType().getPrices().contains(product.getPrice())) { // can this price be assigned given the productType?
+                HibernateUtil.rollbackTransaction();
                 return Response.status(403, "provided price can not be used with given productType").build();
             }
-            product.setInactive(productDto.getStatus() != null ? productDto.getStatus() == Product.StatusEnum.ARCHIVED : product.getInactive());
+
             productDAO.saveOrUpdate(product);
 
             // saving album is okay - new product is cascaded down (only saving or updating the product would be OK too - but how about deleting a product?)
@@ -181,9 +180,11 @@ public class ProductsApi {
                     .entity(newProductDto)
                     .build();
         } catch (NotAuthorizedException e) {
+            HibernateUtil.rollbackTransaction();
             return Response.status(404, e.getMessage()).build();
         } catch (RuntimeException e2) {
             _logger.error(e2);
+            HibernateUtil.rollbackTransaction();
             return Response.status(500, "internal error : " + e2).build();
         }
 
@@ -263,17 +264,33 @@ public class ProductsApi {
     }
 
 
+    /**
+     * @param productDto
+     * @param album      - optional when updating
+     * @return a product, updated or created from productDto, or null if provided id does not find a corresponding DB record
+     */
     private ch.unartig.studioserver.model.Product convertFromProductDTO(Product productDto, ch.unartig.studioserver.model.Album album) {
-        // todo : for existing product (productID passed)
-        // for new product (product ID not given ) :
-        ch.unartig.studioserver.model.Product product =
-                new ch.unartig.studioserver.model.Product(
-                        productDto.getProductType().getProductTypeId(),
-                        productDto.getPrice().getPriceId(),
-                        album
-                );
-        product.setProductName(productDto.getProductName());
-        product.setInactive(productDto.getStatus() == Product.StatusEnum.ARCHIVED);
+
+        // check for existing product and correct album:
+        ch.unartig.studioserver.model.Product product;
+        if (productDto.getProductId() != null) { // Update existing product (PUT)
+            product = new ProductDAO().get(productDto.getProductId());
+        } else { // no productId given, create a new object (POST)
+            product =
+                    new ch.unartig.studioserver.model.Product(
+                            productDto.getProductType().getProductTypeId(),
+                            productDto.getPrice().getPriceId(),
+                            album
+                    );
+        }
+
+
+        if (product != null) {
+            product.setProductName(productDto.getProductName() != null ? productDto.getProductName() : product.getProductName());
+            product.setProductType(productDto.getProductType() != null ? convertFromProductTypeDTO(productDto.getProductType()) : product.getProductType());
+            product.setPrice(productDto.getPrice() != null ? convertFromPriceDTO(productDto.getPrice()) : product.getPrice());
+            product.setInactive(productDto.getStatus() != null ? productDto.getStatus() == Product.StatusEnum.ARCHIVED : product.getInactive());
+        }
         return product;
     }
 
@@ -324,7 +341,7 @@ public class ProductsApi {
         boolean canCreateChangePrices = false;
         PriceDAO priceDAO = new PriceDAO();
         ch.unartig.studioserver.model.Price price = null;
-        if (priceDto.getPriceId() != null) { // get or update
+        if (priceDto != null && priceDto.getPriceId() != null) { // get or update
             price = priceDAO.get(priceDto.getPriceId()); // could be null
         } else { // create new price object (POST) - not planned yet!
             if (canCreateChangePrices) {
