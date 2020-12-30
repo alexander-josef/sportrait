@@ -719,6 +719,45 @@
           }
         }
       },
+      "put" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "product" ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Product"
+        },
+        "summary" : "Update a product of an album.",
+        "operationId" : "updateAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation - product updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Not authorized - please log in"
+          },
+          "403" : {
+            "description" : "Not allowed"
+          },
+          "404" : {
+            "description" : "No Product found with given ID"
+          }
+        }
+      },
       "post" : {
         "description" : "Create a new product for this album. Provide the product name (productName), the product type Id and the price Id.",
         "parameters" : [ {
@@ -830,51 +869,6 @@
           },
           "405" : {
             "description" : "Invalid input"
-          }
-        }
-      },
-      "put" : {
-        "parameters" : [ {
-          "name" : "albumId",
-          "in" : "path",
-          "description" : "ID of the album to add a product",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }, {
-          "name" : "productId",
-          "in" : "path",
-          "description" : "ID of the product to add a product",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        } ],
-        "tags" : [ "product" ],
-        "summary" : "Update a product of an album.",
-        "operationId" : "updateAlbumProduct",
-        "responses" : {
-          "200" : {
-            "description" : "successful operation - product updated",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Product"
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "Not authorized - please log in"
-          },
-          "403" : {
-            "description" : "Not allowed"
-          },
-          "404" : {
-            "description" : "No Product found with given ID"
           }
         }
       }
