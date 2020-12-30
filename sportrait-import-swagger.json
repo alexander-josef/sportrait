@@ -720,6 +720,7 @@
         }
       },
       "post" : {
+        "description" : "Create a new product for this album. Provide the product name (productName), the product type Id and the price Id.",
         "parameters" : [ {
           "name" : "albumId",
           "in" : "path",
