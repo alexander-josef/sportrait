@@ -755,6 +755,45 @@
       }
     },
     "/albums/{albumId}/products/{productId}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "albumId",
+          "in" : "path",
+          "description" : "ID of the album to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "productId",
+          "in" : "path",
+          "description" : "ID of the product to add a product",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "tags" : [ "product" ],
+        "summary" : "Get the product, identified by productId, of an album.",
+        "operationId" : "getAlbumProduct",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
       "delete" : {
         "parameters" : [ {
           "name" : "albumId",
