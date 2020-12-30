@@ -15,6 +15,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Variant;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
@@ -111,6 +112,7 @@ public class AlbumsApi {
     public Response deleteAlbum(@PathParam("albumId") long albumId) {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
+
         GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
         SportsAlbum album = genericLevelDAO.get(albumId, SportsAlbum.class);
         if (album == null) {
@@ -118,7 +120,7 @@ public class AlbumsApi {
         }
         try {
             HibernateUtil.beginTransaction();
-            album.checkReadAccessFor(client);
+            album.checkReadAccessFor(client); // todo: check write or delete access!
             genericLevelDAO.delete(album);
             HibernateUtil.commitTransaction();
         } catch (NotAuthorizedException e) {
@@ -378,18 +380,46 @@ public class AlbumsApi {
         return price;
     }
 
+    /**
+     * Todo : move to productsApi - own class, own tag in OAS definition
+     * @param albumId
+     * @return
+     */
     @Path("/{albumId}/products/{productId}")
     @DELETE
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAlbumProduct(@PathParam("productId") long albumId) {
+    public Response deleteAlbumProduct(@PathParam("albumId") long albumId,@PathParam("productId") long productId) {
         _logger.info("DELETE /albums/:albumId/products/:productId");
 
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
 
 
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
+        ProductDAO productDAO = new ProductDAO();
+        SportsAlbum album = genericLevelDAO.get(albumId, SportsAlbum.class);
+        if (album == null) {
+            return Response.status(404, "no album exists with given ID").build();
+        }
+        try {
+            HibernateUtil.beginTransaction();
+            album.checkReadAccessFor(client); // todo: check write or delete access!
+            if (album.getProducts().remove(productDAO.get(productId))) { // checks both, if product exists at all and for album
+                genericLevelDAO.saveOrUpdate(album);
+                HibernateUtil.commitTransaction();
+            } else {
+                HibernateUtil.rollbackTransaction();
+                return Response.status(404,"no product with given product Id exists").build();
+            }
+
+        } catch (NotAuthorizedException e) {
+            _logger.info(e);
+            return Response.status(403, e.getLocalizedMessage()).build();
+        }
+        return Response
+                .accepted()
+                .build();
     }
 
 
