@@ -164,6 +164,8 @@
             <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" />
             <element id="library" level="project" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.10.1" />
             <element id="library" level="project" name="Maven: jakarta.activation:jakarta.activation-api:1.2.1" />
+            <element id="library" level="project" name="Maven: org.glassfish.jersey.media:jersey-media-multipart:2.32" />
+            <element id="library" level="project" name="Maven: org.jvnet.mimepull:mimepull:1.9.13" />
             <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-jaxrs2:2.0.0" />
             <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.11" />
             <element id="library" level="project" name="Maven: io.swagger.core.v3:swagger-models:2.0.0" />
@@ -2067,6 +2069,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/media/jersey-media-json-jackson/2.32/jersey-media-json-jackson-2.32-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.glassfish.jersey.media:jersey-media-multipart:2.32">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/media/jersey-media-multipart/2.32/jersey-media-multipart-2.32.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/media/jersey-media-multipart/2.32/jersey-media-multipart-2.32-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/jersey/media/jersey-media-multipart/2.32/jersey-media-multipart-2.32-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.hibernate.common:hibernate-commons-annotations:5.1.0.Final">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/common/hibernate-commons-annotations/5.1.0.Final/hibernate-commons-annotations-5.1.0.Final.jar!/" />
@@ -2175,6 +2188,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/20.1.0/annotations-20.1.0-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jvnet.mimepull:mimepull:1.9.13">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/mimepull/1.9.13/mimepull-1.9.13.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/mimepull/1.9.13/mimepull-1.9.13-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jvnet/mimepull/mimepull/1.9.13/mimepull-1.9.13-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.jvnet.staxex:stax-ex:1.8">

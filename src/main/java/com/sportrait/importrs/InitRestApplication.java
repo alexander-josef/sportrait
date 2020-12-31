@@ -14,7 +14,7 @@ import java.security.GeneralSecurityException;
 import static org.glassfish.jersey.server.monitoring.ApplicationEvent.Type.INITIALIZATION_FINISHED;
 
 @ApplicationPath("/api/import")
-public class ImportRestApplication extends Application implements ApplicationEventListener {
+public class InitRestApplication extends Application implements ApplicationEventListener {
 
     /**
      * check for events and initialize the REST API application

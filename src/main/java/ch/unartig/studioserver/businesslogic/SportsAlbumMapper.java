@@ -67,6 +67,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -104,17 +105,11 @@ public class SportsAlbumMapper
      * @param photopointBeforeFinishtime
      * @return mapper
      */
-    public static SportsAlbumMapper createFinishTimeMapper(InputStream mappingInputStream, Album album, int photoPointDifference, String photoPointTolerance, boolean photopointBeforeFinishtime)
+    public static SportsAlbumMapper createFinishTimeMapper(InputStream mappingInputStream, Album album, int photoPointDifference, int photoPointTolerance, boolean photopointBeforeFinishtime)
     {
         SportsAlbumMapper mapper = new SportsAlbumMapper(mappingInputStream, album);
         mapper.photoPointDifference = photoPointDifference;
-        if (photoPointTolerance != null && !"".equals(photoPointTolerance))
-        {
-            mapper.photoPointTolerance = Integer.parseInt(photoPointTolerance);
-        } else
-        {
-            mapper.photoPointTolerance = Registry._DEFAULT_PHOTOPOINT_TOLERANCE_SECONDS;
-        }
+        mapper.photoPointTolerance= photoPointTolerance;
         mapper.photopointBeforeFinishTime = photopointBeforeFinishtime;
         return mapper;
     }
@@ -284,12 +279,11 @@ public class SportsAlbumMapper
         if (photopointBeforeFinishTime)
         {
             photopointStartFinishFactor = -1;
-            toleranceStartFinishFactor = +1;
         } else
         {
             photopointStartFinishFactor = +1;
-            toleranceStartFinishFactor = +1;
         }
+        toleranceStartFinishFactor = +1;
 
         c.add(Calendar.SECOND, photopointStartFinishFactor * photoPointDifference);
         c.add(Calendar.SECOND, toleranceStartFinishFactor * photoPointTolerance);
@@ -364,7 +358,7 @@ public class SportsAlbumMapper
         String [] parts;
         try
         {
-            BufferedReader bufMappingStream = new BufferedReader(new InputStreamReader(mappingInputStream, "ISO-8859-1"));
+            BufferedReader bufMappingStream = new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.ISO_8859_1));
             while (bufMappingStream.ready())
             {
                 mappingLine = bufMappingStream.readLine();

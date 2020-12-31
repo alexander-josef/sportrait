@@ -2,17 +2,24 @@ package com.sportrait.importrs.service;
 
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
+import ch.unartig.exceptions.UnartigException;
+import ch.unartig.studioserver.businesslogic.SportsAlbumMapper;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.*;
 import org.apache.log4j.Logger;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.stream.Collectors;
 
 @Path("/albums")
@@ -180,7 +187,16 @@ public class AlbumsApi {
 
         // should the mapping be a resource?
 
+/*
 
+        ch.unartig.studioserver.model.Album album = getAlbum((DynaActionForm) form);
+
+        SportsAlbumMapper mapper = SportsAlbumMapper.createMapper(album);
+        mapper.delete();
+        return mapping.findForward("success");
+
+
+*/
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
     }
@@ -205,17 +221,50 @@ public class AlbumsApi {
     @Path("/{albumId}/timingMapping")
     @POST
     @Secured
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addAlbumTimingMapping(@PathParam("albumId") long albumId, TimingMapping timingMappingDto) {
-        _logger.info("POST /albums/:albumId/timingMapping");
-
-        // must process a file here (timingFile)
+    public Response addAlbumTimingMapping(@PathParam("albumId") long albumId,
+                                          @FormDataParam("timingFile") InputStream timingFile,
+                                          @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
+                                          @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
+                                          @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming) {
 
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        _logger.info("POST /albums/:albumId/timingMapping");
+
+
+        if (timingFile == null) {
+            return Response.status(404, "timingFile missing - please provide a file containing the timing information").build();
+        } else if (differencePhotoTiming == null) {
+            return Response.status(404, "differencePhotoTiming missing").build();
+        } else if (toleranceSlowFast == null) {
+            return Response.status(404, "toleranceSlowFast missing").build();
+        } else if (photoPointAfterTiming == null) {
+            photoPointAfterTiming=false;
+        }
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
+        try {
+            album.checkReadAccessFor(client); // change to write check ?
+            // _logger.debug("mappingFile [" + fileMetaData.getFileName() + "] called for albumId [" + albumId + "]");
+            _logger.debug("mapping for albumid " + album.getGenericLevelId());
+            SportsAlbumMapper.createFinishTimeMapper(
+                    timingFile,
+                    album,
+                    differencePhotoTiming,
+                    toleranceSlowFast,
+                    !photoPointAfterTiming // inverse logic used in old code!
+            ).mapFinishOrStartTime();
+        } catch (NotAuthorizedException e2) {
+            _logger.info(e2);
+            return Response.status(403, e2.getLocalizedMessage()).build();
+        } catch (UnartigException e) {
+            _logger.error("cannot map sports album : ", e);
+            return Response.status(400, e.getLocalizedMessage()).build();
+        }
+
+        return Response.accepted().build();
     }
-
-
 
 
 }

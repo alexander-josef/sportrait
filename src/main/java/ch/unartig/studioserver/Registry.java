@@ -339,7 +339,7 @@ public final class Registry
     *constant to use when jumping forward or backward in the album using the >| or |< buttons
     */
     public static final int _JUMP_BACK_FORWARD_PAGE_VALUE = 10;
-    public static final int _DEFAULT_PHOTOPOINT_TOLERANCE_SECONDS = 5;
+    // public static final int _DEFAULT_PHOTOPOINT_TOLERANCE_SECONDS = 5;
     public static final String _SWITZERLAND_COUNTRY_CODE = "CHE";
     public static final String _GERMANY_COUNTRY_CODE = "DEU";
     public static final String _AUSTRIA_COUNTRY_CODE = "AUT";
