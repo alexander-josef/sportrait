@@ -71,6 +71,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SportsAlbumMapper
 {
@@ -354,6 +355,26 @@ public class SportsAlbumMapper
     {
         _logger.debug("@@@@@@@@@@@@@@@@@ photopointBeforeFinishtime = " + photopointBeforeFinishTime);
         _logger.debug("photopoint tolereance : " + photoPointTolerance);
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8));
+
+        try {
+            while(reader.ready()) {
+                String line = reader.readLine();
+                System.out.println("line = " + line);
+            }
+        } catch (IOException e) {
+
+            System.out.println("e = " + e);
+        }
+
+        String text = new BufferedReader(
+                new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8))
+                .lines()
+                .collect(Collectors.joining("\n"));
+
+        System.out.println("text = " + text);
+
         String mappingLine;
         String [] parts;
         try

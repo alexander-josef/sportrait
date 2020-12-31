@@ -19,7 +19,10 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 @Path("/albums")
@@ -51,7 +54,6 @@ public class AlbumsApi {
      *
      * @return
      */
-    @Path("")
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
@@ -231,7 +233,6 @@ public class AlbumsApi {
 
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("POST /albums/:albumId/timingMapping");
-
 
         if (timingFile == null) {
             return Response.status(404, "timingFile missing - please provide a file containing the timing information").build();
