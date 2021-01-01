@@ -9,6 +9,13 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.log4j.Logger;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -19,6 +26,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -220,28 +228,37 @@ public class AlbumsApi {
     }
 
 
-    @Path("/{albumId}/timingMapping")
     @POST
+    @Path("/{albumId}/timingMapping")
+    @Consumes({"multipart/form-data"})
+    @Produces({"application/json"})
     @Secured
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addAlbumTimingMapping(@PathParam("albumId") long albumId,
-                                          @FormDataParam("timingFile") InputStream timingFile,
-                                          @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
-                                          @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
-                                          @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming) {
+    @Operation(summary = "Post a new timing mapping for an album. Will start the mapping process", description = "", tags = {"album"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "successful operation - mapping started", content = @Content(schema = @Schema(implementation = Album.class))),
+            @ApiResponse(responseCode = "405", description = "Invalid input")})
+    public Response addAlbumTimingMapping(
+            @Parameter(in = ParameterIn.PATH, description = "ID of the album to add a timing mapping", required = true) @PathParam("albumId") Long albumId,
+            @FormDataParam("timingFile") InputStream timingFileInputStream,
+            @FormDataParam("timingFile") FormDataContentDisposition timingFileDetail,
+            @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
+            @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
+            @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming,
+            @Parameter(in = ParameterIn.QUERY, description = "define the delimiter used in the timing file") @QueryParam("delimiter") String delimiter,
+            @Context SecurityContext securityContext)
+            throws NotFoundException {
 
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("POST /albums/:albumId/timingMapping");
 
-        if (timingFile == null) {
+        if (timingFileInputStream == null) {
             return Response.status(404, "timingFile missing - please provide a file containing the timing information").build();
         } else if (differencePhotoTiming == null) {
             return Response.status(404, "differencePhotoTiming missing").build();
         } else if (toleranceSlowFast == null) {
             return Response.status(404, "toleranceSlowFast missing").build();
         } else if (photoPointAfterTiming == null) {
-            photoPointAfterTiming=false;
+            photoPointAfterTiming = false;
         }
         GenericLevelDAO glDao = new GenericLevelDAO();
         ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
@@ -249,8 +266,9 @@ public class AlbumsApi {
             album.checkReadAccessFor(client); // change to write check ?
             // _logger.debug("mappingFile [" + fileMetaData.getFileName() + "] called for albumId [" + albumId + "]");
             _logger.debug("mapping for albumid " + album.getGenericLevelId());
+
             SportsAlbumMapper.createFinishTimeMapper(
-                    timingFile,
+                    timingFileInputStream,
                     album,
                     differencePhotoTiming,
                     toleranceSlowFast,

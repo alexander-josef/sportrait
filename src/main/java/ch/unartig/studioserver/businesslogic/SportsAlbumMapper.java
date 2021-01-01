@@ -3,7 +3,7 @@
  * FILENAME  :
  *    $RCSfile$
  *
- *    @author alex$             
+ *    @author alex$
  *    @since 28.03.2006$
  *
  * Copyright (c) 2005 unartig AG  --  All rights reserved
@@ -73,8 +73,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SportsAlbumMapper
-{
+public class SportsAlbumMapper {
 
     private Album album;
     private InputStream mappingInputStream;
@@ -84,15 +83,13 @@ public class SportsAlbumMapper
     private boolean photopointBeforeFinishTime;
     private Logger _logger = Logger.getLogger(getClass().getName());
 
-    public SportsAlbumMapper(InputStream mappingInputStream, Album album)
-    {
+    public SportsAlbumMapper(InputStream mappingInputStream, Album album) {
 
         this.album = album;
         this.mappingInputStream = mappingInputStream;
     }
 
-    private SportsAlbumMapper()
-    {
+    private SportsAlbumMapper() {
 
     }
 
@@ -106,11 +103,10 @@ public class SportsAlbumMapper
      * @param photopointBeforeFinishtime
      * @return mapper
      */
-    public static SportsAlbumMapper createFinishTimeMapper(InputStream mappingInputStream, Album album, int photoPointDifference, int photoPointTolerance, boolean photopointBeforeFinishtime)
-    {
+    public static SportsAlbumMapper createFinishTimeMapper(InputStream mappingInputStream, Album album, int photoPointDifference, int photoPointTolerance, boolean photopointBeforeFinishtime) {
         SportsAlbumMapper mapper = new SportsAlbumMapper(mappingInputStream, album);
         mapper.photoPointDifference = photoPointDifference;
-        mapper.photoPointTolerance= photoPointTolerance;
+        mapper.photoPointTolerance = photoPointTolerance;
         mapper.photopointBeforeFinishTime = photopointBeforeFinishtime;
         return mapper;
     }
@@ -121,8 +117,7 @@ public class SportsAlbumMapper
      * @param album
      * @return a mapper
      */
-    public static SportsAlbumMapper createMapper(Album album)
-    {
+    public static SportsAlbumMapper createMapper(Album album) {
         SportsAlbumMapper mapper = new SportsAlbumMapper();
         mapper.album = album;
         return mapper;
@@ -137,26 +132,21 @@ public class SportsAlbumMapper
     public void map() throws UnartigException {
         BufferedReader bufMappingStream = new BufferedReader(new InputStreamReader(mappingInputStream));
         String mappingLine;
-        String [] parts;
-        try
-        {
-            while (bufMappingStream.ready())
-            {
+        String[] parts;
+        try {
+            while (bufMappingStream.ready()) {
                 mappingLine = bufMappingStream.readLine();
                 _logger.debug("mappingLine = " + mappingLine);
                 parts = mappingLine.split("\t");
-                if (parts.length > 1)
-                {
+                if (parts.length > 1) {
                     _logger.debug("parts[0] = " + parts[0]);
                     _logger.debug("parts[1] = " + parts[1]);
                     mapLine(parts[0].trim(), parts[1].trim());
-                } else
-                {
+                } else {
                     _logger.debug("ignoring line : " + mappingLine);
                 }
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             _logger.error("cannot read from input stream : ", e);
             throw new UnartigException(e);
         }
@@ -171,26 +161,22 @@ public class SportsAlbumMapper
      * @param startNumber
      * @throws UAPersistenceException
      */
-    private void mapLine(String photoFilename, String startNumber) throws UAPersistenceException
-    {
+    private void mapLine(String photoFilename, String startNumber) throws UAPersistenceException {
         PhotoDAO photoDao = new PhotoDAO();
         PhotoSubjectDAO photoSubjectgDao = new PhotoSubjectDAO();
 
         PhotoSubject subj = photoSubjectgDao.findOrCreateSubjectByStartNumberAndFace(startNumber, album, null);
-        try
-        {
+        try {
             HibernateUtil.beginTransaction();
             Photo photo = photoDao.findPhoto(album, photoFilename);
-            if (photo == null)
-            {
+            if (photo == null) {
                 _logger.warn("no photo found for given photoFilename!!");
                 return;
             }
             photo.addPhotoSubject(subj);
 //            photoDao.saveOrUpdate(photo);
             HibernateUtil.commitTransaction();
-        } catch (UAPersistenceException e)
-        {
+        } catch (UAPersistenceException e) {
             _logger.error("problem saving mapped photo : ", e);
             HibernateUtil.rollbackTransaction();
         }
@@ -206,8 +192,7 @@ public class SportsAlbumMapper
      * @param name
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    private void mapLine(String etappe, String startNumber, String timeString, String name) throws UAPersistenceException
-    {
+    private void mapLine(String etappe, String startNumber, String timeString, String name) throws UAPersistenceException {
         PhotoDAO photoDao = new PhotoDAO();
         PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         Date finishTime = null;
@@ -215,11 +200,9 @@ public class SportsAlbumMapper
 
         // we will ignore the year month and day information of the date and only focus on the time part
         SimpleDateFormat simpleFormater = new SimpleDateFormat("HH:mm:ss");
-        try
-        {
+        try {
             finishTime = simpleFormater.parse(timeString);
-        } catch (ParseException e)
-        {
+        } catch (ParseException e) {
             _logger.error("could not parse time format; continuing with import", e);
         }
         _logger.debug("finishTime date format (hours minutes and seconds)= " + finishTime);
@@ -239,15 +222,13 @@ public class SportsAlbumMapper
         _logger.debug("min match time : " + minMatchTime);
 
         // *** end from dao
-        try
-        {
+        try {
             HibernateUtil.beginTransaction();
             List photos;
             photos = photoDao.findFinishTimePhotos(album, minMatchTime, maxMatchTime);
 
 
-            if (photos != null)
-            {
+            if (photos != null) {
                 for (Object photo1 : photos) {
                     Photo photo = (Photo) photo1;
                     if (photo == null) {
@@ -258,30 +239,25 @@ public class SportsAlbumMapper
                 }
             }
             HibernateUtil.commitTransaction();
-        } catch (UAPersistenceException e)
-        {
+        } catch (UAPersistenceException e) {
             _logger.error("problem saving mapped photo : ", e);
             HibernateUtil.rollbackTransaction();
-        } finally
-        {
+        } finally {
 //            HibernateUtil.finishTransaction();
         }
 
     }
 
-    private Date calculateMaxMatchTime(Date finishTimeDate)
-    {
+    private Date calculateMaxMatchTime(Date finishTimeDate) {
         Calendar c = Calendar.getInstance();
         c.setTime(finishTimeDate);
 
         Date maxMatchTime;
         int photopointStartFinishFactor;
         int toleranceStartFinishFactor;
-        if (photopointBeforeFinishTime)
-        {
+        if (photopointBeforeFinishTime) {
             photopointStartFinishFactor = -1;
-        } else
-        {
+        } else {
             photopointStartFinishFactor = +1;
         }
         toleranceStartFinishFactor = +1;
@@ -298,20 +274,17 @@ public class SportsAlbumMapper
      * @param finishTimeDate
      * @return minimum time
      */
-    private Date calculateMinMatchTime(Date finishTimeDate)
-    {
+    private Date calculateMinMatchTime(Date finishTimeDate) {
         Calendar c = Calendar.getInstance();
         c.setTime(finishTimeDate);
 
         Date minMatchTime;
         int photopointStartFinishFactor;
         int toleranceStartFinishFactor;
-        if (photopointBeforeFinishTime)
-        {
+        if (photopointBeforeFinishTime) {
             photopointStartFinishFactor = -1;
             toleranceStartFinishFactor = -1;
-        } else
-        {
+        } else {
             photopointStartFinishFactor = +1;
             toleranceStartFinishFactor = -1;
         }
@@ -327,8 +300,7 @@ public class SportsAlbumMapper
      * @param finishTime
      * @return a Calendar object of the finish time
      */
-    private Calendar setFinishTimeDateCalendar(Date finishTime)
-    {
+    private Calendar setFinishTimeDateCalendar(Date finishTime) {
         Calendar finishTimeCalendar = Calendar.getInstance();
         finishTimeCalendar.setTime(finishTime);
         Calendar eventDateCalendar = Calendar.getInstance();
@@ -341,9 +313,6 @@ public class SportsAlbumMapper
     }
 
 
-
-
-
     /**
      * Reads line by line the bip-time file and maps it
      * Values need to be delimited by tab
@@ -351,70 +320,30 @@ public class SportsAlbumMapper
      *
      * @throws UnartigException
      */
-    public void mapFinishOrStartTime() throws UnartigException
-    {
+    public void mapFinishOrStartTime() throws UnartigException {
         _logger.debug("@@@@@@@@@@@@@@@@@ photopointBeforeFinishtime = " + photopointBeforeFinishTime);
         _logger.debug("photopoint tolereance : " + photoPointTolerance);
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8));
+        // todo : improve behaviour when reading problematic lines ...
 
-        try {
-            while(reader.ready()) {
-                String line = reader.readLine();
-                System.out.println("line = " + line);
-            }
-        } catch (IOException e) {
-
-            System.out.println("e = " + e);
-        }
-
-        String text = new BufferedReader(
-                new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8))
+        new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8))
                 .lines()
-                .collect(Collectors.joining("\n"));
+                .forEach(line -> {
+                    _logger.debug("mappingLine = " + line);
+                    String[] parts;
+                    parts = line.split("\t");
+                    _logger.debug("parts[0] = " + parts[0]);
+                    _logger.debug("parts[1] = " + parts[1]);
+                    _logger.debug("parts[2] = " + parts[2]);
+                    _logger.debug("parts[3] = " + parts[3]);
+                    mapLine(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim());
+                });
 
-        System.out.println("text = " + text);
-
-        String mappingLine;
-        String [] parts;
-        try
-        {
-            BufferedReader bufMappingStream = new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.ISO_8859_1));
-            while (bufMappingStream.ready())
-            {
-                mappingLine = bufMappingStream.readLine();
-                _logger.debug("mappingLine = " + mappingLine);
-                parts = mappingLine.split("\t");
-                _logger.debug("parts[0] = " + parts[0]);
-                _logger.debug("parts[1] = " + parts[1]);
-                _logger.debug("parts[2] = " + parts[2]);
-                _logger.debug("parts[3] = " + parts[3]);
-                mapLine(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim());
-            }
-        } catch (IOException e)
-        {
-            _logger.error("cannot read from input stream : ", e);
-            throw new UnartigException(e);
         }
 
-/*        get photo
-        subject or
-        create it
-        find photos
-        for
-        given time
-        and tolerence
-        make the
-        entries in
-        the photosubject
-        2
-        photos link
-*/
-    }
 
 
-    private boolean checkEtappe()
-    {
+    private boolean checkEtappe() {
         // todo implement if needed
         return true;
     }
@@ -422,14 +351,13 @@ public class SportsAlbumMapper
 
     /**
      * Iterate over all photos of an album and set their photosubject-mapping to an empty set
+     *
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
-    public void delete() throws UAPersistenceException
-    {
+    public void delete() throws UAPersistenceException {
         PhotoDAO photoDao = new PhotoDAO();
         HibernateUtil.beginTransaction();
-        try
-        {
+        try {
             Set photos = album.getPhotos();
             for (Object photo1 : photos) {
 
@@ -441,8 +369,7 @@ public class SportsAlbumMapper
 
             }
             HibernateUtil.commitTransaction();
-        } catch (UAPersistenceException e)
-        {
+        } catch (UAPersistenceException e) {
             _logger.error("problem while deleteing photosubject mapping");
             HibernateUtil.rollbackTransaction();
             throw new UAPersistenceException("problem while deleting photosubject mappiong", e);
