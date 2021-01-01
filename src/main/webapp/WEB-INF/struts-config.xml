@@ -587,12 +587,6 @@
             <forward name="showAdminPage" path=".uploadEditEvents" redirect="true"/>
         </action>
 
-        <!--##############################################################-->
-        <!--####################### JUpload Action #######################-->
-        <!--########### this action is called by the upload applet #######-->
-        <!--##############################################################-->
-        <!-- todo: protect? -->
-        <action path="/jupload/upload" type="ch.unartig.studioserver.actions.JUploadAction"/>
 
         <!--##############################################################-->
         <!--################## REST Service Action #######################-->

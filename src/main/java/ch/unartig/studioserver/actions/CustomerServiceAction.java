@@ -58,7 +58,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.*;
 import org.apache.struts.actions.MappingDispatchAction;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -109,8 +108,6 @@ public class CustomerServiceAction extends MappingDispatchAction
 
         _logger.info("Sending customer service email : \n" + "sender = " + sender + "\n" + "fromAdrress = " + fromAddress + "\n" + "contactPhone = " + contactPhone+ "\n" + "subject = " + "sportrait.com : "+ subject + "\n" + "message = " + bodyContactPhone + "\n");
 
-        try
-        {
             _logger.debug("going to send message");
             MailUtil.sendMail(subject, bodyContactPhone, Registry.getCustomerServiceAddress(), fromAddress);
             messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("contact.message.ok"));
@@ -119,11 +116,10 @@ public class CustomerServiceAction extends MappingDispatchAction
             dynaForm.set("fromAddress", null);
             dynaForm.set("contactPhone", null);
             dynaForm.set("sender", null);
-        } catch (MessagingException e)
-        {
-            _logger.error("Problem sending Mail : ", e);
+
+            _logger.error("Problem sending Mail : ");
             messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("contact.message.notok"));
-        }
+
         // save message in session because answer will be redirected
         saveMessages(request.getSession(), messages);
         return mapping.findForward("toContactPage");
