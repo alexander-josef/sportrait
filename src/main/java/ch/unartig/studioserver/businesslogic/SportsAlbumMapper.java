@@ -124,6 +124,7 @@ public class SportsAlbumMapper {
     }
 
     /**
+     * Manual mapping by list of foto-filename and startnumber!
      * called by action to map a startnumber mapping file
      * read the arguments and trim trailing or leading whitespace
      *
@@ -184,18 +185,21 @@ public class SportsAlbumMapper {
     }
 
     /**
-     * map line for finish or start time mapping
+     * map line for finish or start time mapping (according to time-keeper files)
      *
-     * @param etappe
-     * @param startNumber
-     * @param timeString
-     * @param name
+     * @param etappe - number of Sola etappe (1-14) - currently not used
+     * @param startNumber - must be present
+     * @param timeString - must be present
+     * @param name team name - can be null
      * @throws ch.unartig.exceptions.UAPersistenceException
      */
     private void mapLine(String etappe, String startNumber, String timeString, String name) throws UAPersistenceException {
         PhotoDAO photoDao = new PhotoDAO();
         PhotoSubjectDAO photoSubjectDAO = new PhotoSubjectDAO();
         Date finishTime = null;
+        // automated startnumber recognition: this might conflict with already added mappings
+        // todo : check combination of both methods!!
+        // there can be many subjects per startnumber
         PhotoSubject subj = photoSubjectDAO.findOrCreateSubjectByStartNumberAndFace(startNumber, album, null);
 
         // we will ignore the year month and day information of the date and only focus on the time part
@@ -330,17 +334,25 @@ public class SportsAlbumMapper {
                 .lines()
                 .forEach(line -> {
                     _logger.debug("mappingLine = " + line);
+                    // remove additional double-quotes:
+                    line = line.replace("\"", "");
+
+
                     String[] parts;
-                    parts = line.split("\t");
-                    _logger.debug("parts[0] = " + parts[0]);
-                    _logger.debug("parts[1] = " + parts[1]);
-                    _logger.debug("parts[2] = " + parts[2]);
-                    _logger.debug("parts[3] = " + parts[3]);
-                    mapLine(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim());
+                    parts = line.split("\t"); // todo : insert configurable delimiter (query parameter in API!)
+                    if (!parts[1].trim().isEmpty() && !parts[2].trim().isEmpty()) {
+                        _logger.debug("parts[0] = " + parts[0]);
+                        _logger.debug("parts[1] = " + parts[1]);
+                        _logger.debug("parts[2] = " + parts[2]);
+                        _logger.debug("parts[3] = " + (parts.length > 3?parts[3]:"empty")); // team name optional
+                        mapLine(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts.length>3?parts[3].trim():null);
+                    } else {
+                        _logger.info("ignored line (emtpy time or number) : " + line);
+                    }
+
                 });
 
-        }
-
+    }
 
 
     private boolean checkEtappe() {
@@ -358,10 +370,11 @@ public class SportsAlbumMapper {
         PhotoDAO photoDao = new PhotoDAO();
         HibernateUtil.beginTransaction();
         try {
-            Set photos = album.getPhotos();
-            for (Object photo1 : photos) {
+            // todo: make more efficient - use query
+            Set<Photo> photos = album.getPhotos();
+            for (Photo photo1 : photos) {
 
-                Photo photo = (Photo) photo1;
+                Photo photo = photo1;
                 _logger.debug("deleting photosubject mappings for photo with id [" + photo.getPhotoId() + "]");
                 photo.getPhotoSubjects().clear();
                 photoDao.saveOrUpdate(photo);

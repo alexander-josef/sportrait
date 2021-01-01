@@ -194,21 +194,24 @@ public class AlbumsApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteMappings(@PathParam("albumId") long albumId) {
         _logger.info("PATCH /albums/:albumId/deleteMapping");
-
-        // should the mapping be a resource?
-
-/*
-
-        ch.unartig.studioserver.model.Album album = getAlbum((DynaActionForm) form);
-
-        SportsAlbumMapper mapper = SportsAlbumMapper.createMapper(album);
-        mapper.delete();
-        return mapping.findForward("success");
-
-
-*/
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
+        if (album == null) {
+            return Response.status(404, "album id not found").build();
+        }
+        try {
+            album.checkReadAccessFor(client); // change to write check ?
+            _logger.info("deleting mapping information for albumid " + album.getGenericLevelId());
+            SportsAlbumMapper mapper = SportsAlbumMapper.createMapper(album);
+            mapper.delete();
+        } catch (NotAuthorizedException e) {
+            _logger.info(e);
+            return Response.status(403, e.getLocalizedMessage()).build();
+        }
+
+        return Response.accepted().build();
     }
 
 

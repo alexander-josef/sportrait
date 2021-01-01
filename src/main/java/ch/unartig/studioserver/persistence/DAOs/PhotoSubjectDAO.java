@@ -32,10 +32,7 @@
 package ch.unartig.studioserver.persistence.DAOs;
 
 import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.studioserver.model.EventRunner;
-import ch.unartig.studioserver.model.PhotoSubject;
-import ch.unartig.studioserver.model.Album;
-import ch.unartig.studioserver.model.SportsAlbum;
+import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.model.FaceMatch;
 import org.apache.log4j.Logger;
@@ -60,8 +57,9 @@ public class PhotoSubjectDAO
      * @return
      * @throws UAPersistenceException
      */
-    public PhotoSubject findByStartNumberAndAlbum(String startNumber, Album album, String faceId) throws UAPersistenceException
+    public PhotoSubject findFirstByStartNumberAndAlbum(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
+        // todo later hibernate 5 / JPA conform criteria query or HQL query
         Criteria criteria = HibernateUtil.currentSession().createCriteria(PhotoSubject.class)
                 .createAlias("eventRunners", "runner")
                 .add(Restrictions.eq("runner.startnumber", startNumber))
@@ -69,12 +67,11 @@ public class PhotoSubjectDAO
 
         if (faceId!=null && !faceId.isEmpty()) {
             //todo : CAUTION : used existing "name" field for faceID - change later
-            criteria
-                    .add(Restrictions.eq("name", faceId));
+            criteria.add(Restrictions.eq("name", faceId));
         }
 
 
-        return (PhotoSubject) criteria.uniqueResult();
+        return (PhotoSubject) criteria.list().stream().findFirst().orElse(null);
     }
 
     /**
@@ -165,7 +162,8 @@ public class PhotoSubjectDAO
      */
     public PhotoSubject findOrCreateSubjectByStartNumberAndFace(String startNumber, Album album, String faceId) throws UAPersistenceException
     {
-        PhotoSubject subj = findByStartNumberAndAlbum(startNumber, album, faceId);
+        // we might return the 1st of severeal photosubjects here - does it matter?
+        PhotoSubject subj = findFirstByStartNumberAndAlbum(startNumber, album, faceId);
         if (subj == null)
         {
             _logger.debug("no photo subject found, going to creating a new one - with faceId : " + faceId);
