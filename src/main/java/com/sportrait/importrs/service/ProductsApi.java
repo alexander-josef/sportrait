@@ -21,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.stream.Collectors;
 
-@Path("/albums/{albumId}/products/")
+@Path("/albums/{albumId}/products")
 public class ProductsApi {
 
     // inject request context to read out client - client to be put to request context in auth filter
@@ -55,7 +55,7 @@ public class ProductsApi {
 
     }
 
-    @Path("{productId}")
+    @Path("/{productId}")
     @GET
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
@@ -197,7 +197,7 @@ public class ProductsApi {
 
     }
 
-    @Path("{productId}")
+    @Path("/{productId}")
     @DELETE
     @Secured
     @Produces(MediaType.APPLICATION_JSON)

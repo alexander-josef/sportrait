@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.stream.Collectors;
 
-@Path("/productTypes/")
+@Path("/productTypes")
 public class ProductTypesApi {
 
     // inject request context to read out client - client to be put to request context in auth filter
