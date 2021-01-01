@@ -661,6 +661,14 @@
             "type" : "integer",
             "format" : "int64"
           }
+        }, {
+          "name" : "delimiter",
+          "in" : "query",
+          "description" : "define the delimiter used in the timing file",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
         } ],
         "tags" : [ "album" ],
         "requestBody" : {
