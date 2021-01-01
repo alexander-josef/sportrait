@@ -54,7 +54,6 @@ package ch.unartig.studioserver.businesslogic;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
-import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
@@ -71,7 +70,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SportsAlbumMapper {
 
@@ -324,11 +323,14 @@ public class SportsAlbumMapper {
      *
      * @throws UnartigException
      */
-    public void mapFinishOrStartTime() throws UnartigException {
+    public String mapFinishOrStartTime() throws UnartigException {
         _logger.debug("@@@@@@@@@@@@@@@@@ photopointBeforeFinishtime = " + photopointBeforeFinishTime);
         _logger.debug("photopoint tolereance : " + photoPointTolerance);
 
-        // todo : improve behaviour when reading problematic lines ...
+
+        String result;
+        AtomicInteger linesMapped= new AtomicInteger();
+        AtomicInteger linesIgnored= new AtomicInteger();
 
         new BufferedReader(new InputStreamReader(mappingInputStream, StandardCharsets.UTF_8))
                 .lines()
@@ -346,12 +348,16 @@ public class SportsAlbumMapper {
                         _logger.debug("parts[2] = " + parts[2]);
                         _logger.debug("parts[3] = " + (parts.length > 3?parts[3]:"empty")); // team name optional
                         mapLine(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts.length>3?parts[3].trim():null);
+                        linesMapped.getAndIncrement();
                     } else {
                         _logger.info("ignored line (emtpy time or number) : " + line);
+                        linesIgnored.getAndIncrement();
                     }
 
                 });
 
+        result = linesMapped + " lines mapped, " + linesIgnored + " lines ignored";
+        return result;
     }
 
 
@@ -365,19 +371,23 @@ public class SportsAlbumMapper {
      * Iterate over all photos of an album and set their photosubject-mapping to an empty set
      *
      * @throws ch.unartig.exceptions.UAPersistenceException
+     * @return
      */
-    public void delete() throws UAPersistenceException {
+    public String delete() throws UAPersistenceException {
+        String result;
+        int photosAffected = 0;
+        int photoSubjectsAffected = 0;
         PhotoDAO photoDao = new PhotoDAO();
         HibernateUtil.beginTransaction();
         try {
             // todo: make more efficient - use query
             Set<Photo> photos = album.getPhotos();
             for (Photo photo1 : photos) {
-
-                Photo photo = photo1;
-                _logger.debug("deleting photosubject mappings for photo with id [" + photo.getPhotoId() + "]");
-                photo.getPhotoSubjects().clear();
-                photoDao.saveOrUpdate(photo);
+                photosAffected++;
+                _logger.debug("deleting photosubject mappings for photo with id [" + photo1.getPhotoId() + "]");
+                photoSubjectsAffected=photoSubjectsAffected+photo1.getPhotoSubjects().size();
+                photo1.getPhotoSubjects().clear();
+                photoDao.saveOrUpdate(photo1);
                 _logger.debug("photo saved");
 
             }
@@ -387,6 +397,8 @@ public class SportsAlbumMapper {
             HibernateUtil.rollbackTransaction();
             throw new UAPersistenceException("problem while deleting photosubject mappiong", e);
         }
+        result = photosAffected+" photos affected, deleted "+photoSubjectsAffected+" photosubjects removed";
 
+        return result;
     }
 }

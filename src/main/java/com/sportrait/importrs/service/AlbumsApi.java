@@ -3,6 +3,7 @@ package com.sportrait.importrs.service;
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UnartigException;
+import ch.unartig.sportrait.imgRecognition.ImageRecognitionPostProcessor;
 import ch.unartig.studioserver.businesslogic.SportsAlbumMapper;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.log4j.Logger;
 
+import org.apache.struts.action.DynaActionForm;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -196,6 +198,9 @@ public class AlbumsApi {
         _logger.info("PATCH /albums/:albumId/deleteMapping");
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
 
+        String result;
+
+
         GenericLevelDAO glDao = new GenericLevelDAO();
         ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
         if (album == null) {
@@ -205,13 +210,13 @@ public class AlbumsApi {
             album.checkReadAccessFor(client); // change to write check ?
             _logger.info("deleting mapping information for albumid " + album.getGenericLevelId());
             SportsAlbumMapper mapper = SportsAlbumMapper.createMapper(album);
-            mapper.delete();
+            result = mapper.delete();
         } catch (NotAuthorizedException e) {
             _logger.info(e);
             return Response.status(403, e.getLocalizedMessage()).build();
         }
 
-        return Response.accepted().build();
+        return Response.accepted().entity(result).build();
     }
 
 
@@ -221,13 +226,22 @@ public class AlbumsApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response startAlbumPostProcessing(@PathParam("albumId") long albumId) {
         _logger.info("POST /albums/:albumId/startPostProcessing");
-
-
-        // check how it's done on current admin page
-
-
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
+        try {
+            album.checkReadAccessFor(client); // change to write check ?
+            ImageRecognitionPostProcessor postProcessor = new ImageRecognitionPostProcessor(album.getGenericLevelId());
+            Thread postProcessorServer = new Thread(postProcessor);
+            postProcessorServer.start();
+            _logger.info("Post Processor for unknown faces started up - for etappe : " + album.getEventCategory());
+
+        } catch (NotAuthorizedException e) {
+            _logger.info(e);
+            return Response.status(403, e.getLocalizedMessage()).build();        }
+
+        return Response.accepted().entity("Post-Processing for Album with ID "+albumId+" started.").build();
     }
 
 
@@ -253,6 +267,8 @@ public class AlbumsApi {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("POST /albums/:albumId/timingMapping");
 
+        String result;
+
         if (timingFileInputStream == null) {
             return Response.status(404, "timingFile missing - please provide a file containing the timing information").build();
         } else if (differencePhotoTiming == null) {
@@ -269,7 +285,7 @@ public class AlbumsApi {
             // _logger.debug("mappingFile [" + fileMetaData.getFileName() + "] called for albumId [" + albumId + "]");
             _logger.debug("mapping for albumid " + album.getGenericLevelId());
 
-            SportsAlbumMapper.createFinishTimeMapper(
+            result = SportsAlbumMapper.createFinishTimeMapper(
                     timingFileInputStream,
                     album,
                     differencePhotoTiming,
@@ -284,7 +300,7 @@ public class AlbumsApi {
             return Response.status(400, e.getLocalizedMessage()).build();
         }
 
-        return Response.accepted().build();
+        return Response.accepted().entity(result).build();
     }
 
 
