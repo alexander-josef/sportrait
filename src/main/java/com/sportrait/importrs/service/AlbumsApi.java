@@ -19,8 +19,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.log4j.Logger;
 
-import org.apache.struts.action.DynaActionForm;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
@@ -29,10 +27,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 @Path("/albums")
@@ -71,9 +66,7 @@ public class AlbumsApi {
         _logger.info("GET /albums/");
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
-        // alternative solution : (why?)
-        // GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
-        // genericLevelDAO.listAlbumsForPhotographer(client.getPhotographer().getPhotographerId());
+
         return Response
                 .ok()
                 .entity(client.getPhotographer().getAlbums()
