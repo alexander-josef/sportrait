@@ -10,13 +10,8 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.*;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.log4j.Logger;
 
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -223,6 +218,9 @@ public class AlbumsApi {
 
         GenericLevelDAO glDao = new GenericLevelDAO();
         ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
+        if (album == null) {
+            return Response.status(404, "album id not found").build();
+        }
         try {
             album.checkReadAccessFor(client); // change to write check ?
             ImageRecognitionPostProcessor postProcessor = new ImageRecognitionPostProcessor(album.getGenericLevelId());
@@ -243,10 +241,6 @@ public class AlbumsApi {
     @Consumes({"multipart/form-data"})
     @Produces({"application/json"})
     @Secured
-    @Operation(summary = "Post a new timing mapping for an album. Will start the mapping process", description = "", tags = {"album"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "successful operation - mapping started", content = @Content(schema = @Schema(implementation = Album.class))),
-            @ApiResponse(responseCode = "405", description = "Invalid input")})
     public Response addAlbumTimingMapping(
             @Parameter(in = ParameterIn.PATH, description = "ID of the album to add a timing mapping", required = true) @PathParam("albumId") Long albumId,
             @FormDataParam("timingFile") InputStream timingFileInputStream,
@@ -273,6 +267,9 @@ public class AlbumsApi {
         }
         GenericLevelDAO glDao = new GenericLevelDAO();
         ch.unartig.studioserver.model.Album album = glDao.get(albumId, ch.unartig.studioserver.model.Album.class);
+        if (album == null) {
+            return Response.status(404, "album id not found").build();
+        }
         try {
             album.checkReadAccessFor(client); // change to write check ?
             // _logger.debug("mappingFile [" + fileMetaData.getFileName() + "] called for albumId [" + albumId + "]");
