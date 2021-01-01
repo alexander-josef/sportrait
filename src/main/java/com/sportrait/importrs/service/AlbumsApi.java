@@ -240,7 +240,6 @@ public class AlbumsApi {
     public Response addAlbumTimingMapping(
             @Parameter(in = ParameterIn.PATH, description = "ID of the album to add a timing mapping", required = true) @PathParam("albumId") Long albumId,
             @FormDataParam("timingFile") InputStream timingFileInputStream,
-            @FormDataParam("timingFile") FormDataContentDisposition timingFileDetail,
             @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
             @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
             @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming,
