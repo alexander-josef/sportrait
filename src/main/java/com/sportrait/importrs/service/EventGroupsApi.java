@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 // class for the EventGroups API - all verbs implemented below
-@Path("/eventGroups/")
+@Path("/eventGroups")
 public class EventGroupsApi {
 
     // inject request context to read out client - client to be put to request context in auth filter

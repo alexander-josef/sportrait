@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 // class for the events API - all verbs implemented below
-@Path("/events/")
+@Path("/events")
 public class EventsApi {
     // inject request context to read out client - client to be put to request context in auth filter
     @Context

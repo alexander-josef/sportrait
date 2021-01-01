@@ -236,8 +236,8 @@ public class AlbumsApi {
     }
 
 
-    @POST
     @Path("/{albumId}/timingMapping")
+    @POST
     @Consumes({"multipart/form-data"})
     @Produces({"application/json"})
     @Secured

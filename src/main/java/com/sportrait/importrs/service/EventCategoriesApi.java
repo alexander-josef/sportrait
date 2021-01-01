@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 import java.util.stream.Collectors;
 
 // class for the eventCategories API - all verbs implemented below
-@Path("/eventCategories/")
+@Path("/eventCategories")
 public class EventCategoriesApi {
     // inject request context to read out client - client to be put to request context in auth filter
     @Context
