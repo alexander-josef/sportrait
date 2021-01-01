@@ -1,5 +1,6 @@
 package com.sportrait.importrs;
 
+import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -9,6 +10,7 @@ import javax.ws.rs.ApplicationPath;
 public class ApplicationConfig extends ResourceConfig {
 
     public ApplicationConfig() {
-        packages("com.sportrait.importrs").register(MultiPartFeature.class);
+        packages("com.sportrait.importrs");
+        register(MultiPartFeature.class);
     }
 }
