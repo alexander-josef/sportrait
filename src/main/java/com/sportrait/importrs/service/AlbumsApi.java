@@ -1,5 +1,6 @@
 package com.sportrait.importrs.service;
 
+
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UnartigException;
@@ -9,11 +10,8 @@ import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
-import com.sportrait.importrs.model.*;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import com.sportrait.importrs.model.Album;
 import org.apache.log4j.Logger;
-
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
@@ -232,7 +230,7 @@ public class AlbumsApi {
             _logger.info(e);
             return Response.status(403, e.getLocalizedMessage()).build();        }
 
-        return Response.accepted().entity("Post-Processing for Album with ID "+albumId+" started.").build();
+        return Response.accepted().entity("Post-Processing for Album with ID " + albumId + " started.").build();
     }
 
 
@@ -242,12 +240,12 @@ public class AlbumsApi {
     @Produces({"application/json"})
     @Secured
     public Response addAlbumTimingMapping(
-            @Parameter(in = ParameterIn.PATH, description = "ID of the album to add a timing mapping", required = true) @PathParam("albumId") Long albumId,
+            @PathParam("albumId") Long albumId,
             @FormDataParam("timingFile") InputStream timingFileInputStream,
             @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
             @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
             @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming,
-            @Parameter(in = ParameterIn.QUERY, description = "define the delimiter used in the timing file") @QueryParam("delimiter") String delimiter,
+            @QueryParam("delimiter") String delimiter,
             @Context SecurityContext securityContext)
             throws NotFoundException {
 
@@ -255,6 +253,8 @@ public class AlbumsApi {
         _logger.info("POST /albums/:albumId/timingMapping");
 
         String result;
+
+        // InputStream timingFileInputStream=null;
 
         if (timingFileInputStream == null) {
             return Response.status(404, "timingFile missing - please provide a file containing the timing information").build();
