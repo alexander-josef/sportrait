@@ -204,7 +204,6 @@ public class HibernateUtil
     /**
      * Return a transaction that is associated with the current resource
      * @throws UAPersistenceException
-     * @deprecated Ask why we manually set a transaction border. Use open session in view pattern?
      */
     public static void beginTransaction() throws UAPersistenceException
     {
@@ -216,7 +215,6 @@ public class HibernateUtil
     /**
      * Commit the open transaction that is associated with the current resource.
      * @throws UAPersistenceException
-     * @deprecated Ask why we manually set a transaction border. Use open session in view pattern?
 
      */
     public static void commitTransaction() throws UAPersistenceException

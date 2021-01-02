@@ -12,6 +12,7 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import org.apache.log4j.Logger;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
@@ -242,6 +243,7 @@ public class AlbumsApi {
     public Response addAlbumTimingMapping(
             @PathParam("albumId") Long albumId,
             @FormDataParam("timingFile") InputStream timingFileInputStream,
+            @FormDataParam("timingFile") FormDataContentDisposition fileMetaData,
             @FormDataParam("differencePhotoTiming") Integer differencePhotoTiming,
             @FormDataParam("toleranceSlowFast") Integer toleranceSlowFast,
             @FormDataParam("photoPointAfterTiming") Boolean photoPointAfterTiming,
@@ -273,7 +275,8 @@ public class AlbumsApi {
         try {
             album.checkReadAccessFor(client); // change to write check ?
             // _logger.debug("mappingFile [" + fileMetaData.getFileName() + "] called for albumId [" + albumId + "]");
-            _logger.debug("mapping for albumid " + album.getGenericLevelId());
+            _logger.info("mapping for albumid " + album.getGenericLevelId());
+            _logger.info("mapping file name : " + fileMetaData.getFileName());
 
             result = SportsAlbumMapper.createFinishTimeMapper(
                     timingFileInputStream,
@@ -289,7 +292,7 @@ public class AlbumsApi {
             _logger.error("cannot map sports album : ", e);
             return Response.status(400, e.getLocalizedMessage()).build();
         }
-
+        result = result + " - read" + fileMetaData.getSize() +" bytes";
         return Response.accepted().entity(result).build();
     }
 
