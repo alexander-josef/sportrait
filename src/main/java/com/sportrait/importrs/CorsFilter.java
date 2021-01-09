@@ -6,6 +6,12 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
+/**
+ * CORS request servlet filter to add the necessary response headers
+ * NOT A GOOD SOLUTION !!!
+ * Add here the correct Origin or make sure CORS is not an issue
+ * And read about preflight tests
+ */
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
 
