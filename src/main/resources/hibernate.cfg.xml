@@ -27,6 +27,13 @@
         <property name="hibernate.cache.use_second_level_cache">true</property>
 
         <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+<!--
+        <property name="hibernate.javax.cache.uri">file:ehcache.xml</property>
+-->
+
+<!--            NEW 2021-01-11 - after upgrading Hibernate to 5.4.27 and upgrading ehcache -->
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+
         <property name="hibernate.javax.cache.missing_cache_strategy">create</property>
 
         <!-- problem with old data when using query cache? -->

@@ -211,6 +211,7 @@ public class EventsApi {
 
     @Path("/{eventId}/eventCategories")
     @POST
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response addEventCategory(EventCategory eventCategoryDto, @PathParam("eventId") long eventId){
         GenericLevelDAO glDao = new GenericLevelDAO();
