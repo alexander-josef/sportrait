@@ -172,6 +172,8 @@
             <scope>test</scope>
         </dependency>
 
+<!--   Upgrading to 5.4.27 on 2021-01-11 caused problems : problems with 2nd level cache provider dependency (jcache) -->
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
