@@ -158,7 +158,7 @@ public class EventCategory implements java.io.Serializable {
       buffer.append("eventCategoryId").append("='").append(getEventCategoryId()).append("' ");
       buffer.append("title").append("='").append(getTitle()).append("' ");
       buffer.append("description").append("='").append(getDescription()).append("' ");
-      buffer.append("event").append("='").append(getEvent()).append("' ");
+      // buffer.append("event").append("='").append(getEvent()).append("' ");
       buffer.append("]");
 
       return buffer.toString();

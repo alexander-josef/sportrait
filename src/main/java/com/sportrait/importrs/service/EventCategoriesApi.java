@@ -57,18 +57,57 @@ public class EventCategoriesApi {
         return eventCategoryDTO;
     }
 
+
+    /**
+     * Simple static method to merge / update from DTO
+     * @param eventCategory
+     * @param eventCategoryDto
+     * @return
+     */
+    static ch.unartig.studioserver.model.EventCategory mergeFromEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory, EventCategory eventCategoryDto) {
+        eventCategory.setTitle(eventCategoryDto.getTitle());
+        eventCategory.setDescription(eventCategory.getDescription());
+        return eventCategory;
+    }
+
+
+    /**
+     * DTO -> Model Transformer
+     * @param eventCategoryDTO
+     * @param event
+     * @return
+     */
+    static ch.unartig.studioserver.model.EventCategory convertFromEventCategoryDTO(EventCategory eventCategoryDTO, SportsEvent event) {
+        ch.unartig.studioserver.model.EventCategory eventCategory =
+                new ch.unartig.studioserver.model.EventCategory(eventCategoryDTO.getTitle(),event);
+        eventCategory.setDescription(eventCategoryDTO.getDescription());
+        // eventCategoryDTO.getStatus(); // ??
+        return eventCategory;
+    }
+
+
     @Path("/{eventCategoryId}")
     @PUT
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEventCategory(@PathParam("eventCategoryId") int eventCategoryId, EventCategory eventCategoryDto) {
+    public Response updateEventCategory(@PathParam("eventCategoryId") long eventCategoryId, EventCategory eventCategoryDto) {
 
         _logger.info("PUT /eventCategories/" + eventCategoryId);
-        // load event category
+        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
+        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        // load event eventCategory - check for albums
+        ch.unartig.studioserver.model.EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
+        if (eventCategory == null) {
+            return Response.status(403, "eventCategory not found").build();
+        }
+        mergeFromEventCategoryDTO(eventCategory,eventCategoryDto);
+        // should be enough - upon flushing the session, the object should be persisted
+        _logger.debug("updated eventCategory with ID : ["+eventCategory.getEventCategoryId()+"] ");
+        EventCategory result = convertToEventCategoryDTO(eventCategory);
+        return Response.ok().entity(result).build();
     }
+
 
     @Path("/{eventCategoryId}")
     @DELETE

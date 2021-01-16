@@ -20,6 +20,8 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.sportrait.importrs.service.EventCategoriesApi.convertFromEventCategoryDTO;
+
 // class for the events API - all verbs implemented below
 @Path("/events")
 public class EventsApi {
@@ -125,19 +127,6 @@ public class EventsApi {
         return event;
     }
 
-    /**
-     * DTO -> Model Transformer
-     * @param eventCategoryDTO
-     * @param event
-     * @return
-     */
-    private ch.unartig.studioserver.model.EventCategory convertFromEventCategoryDTO(EventCategory eventCategoryDTO, SportsEvent event) {
-        ch.unartig.studioserver.model.EventCategory eventCategory =
-                new ch.unartig.studioserver.model.EventCategory(eventCategoryDTO.getTitle(),event);
-        eventCategory.setDescription(eventCategoryDTO.getDescription());
-        // eventCategoryDTO.getStatus(); // ??
-        return eventCategory;
-    }
 
     @Path("/{eventId}")
     @GET
