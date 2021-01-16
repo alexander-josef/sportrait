@@ -769,9 +769,21 @@
       </schema-mapping>
     </data-source>
     <data-source name="sportrait_web/Hibernate" uuid="b6a8cad1-e947-4f39-95c6-57ae4f9c916e">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="POSTGRES" exact-version="0" />
+      <database-info product="PostgreSQL" version="11.1 (Debian 11.1-1.pgdg90+1)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="11.1" exact-driver-version="42.2">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <user-name>sportrait</user-name>
-      <schema-mapping />
+      <schema-mapping>
+        <introspection-scope>
+          <node negative="1">
+            <node kind="database" qname="@">
+              <node kind="schema" qname="@" />
+            </node>
+            <node kind="database" qname="sportraitng" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
     </data-source>
   </component>
   <component name="libraryTable">

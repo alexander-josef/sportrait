@@ -17,13 +17,13 @@ public class ApplicationConfig extends ResourceConfig {
 
 
         // alternative - probably better - solution would be to register a servletcontextlistener
+
         // this didn't work as soon as mulitpart request came into play:
         //     public class InitJersey extends Application implements ApplicationEventListener
         // (class "InitJersey" - deleted)
         try {
             System.out.println("***** Calling Registry.init() from Jersey Application Config ******");
             Registry.init();
-
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | GeneralSecurityException | IOException e) {
             System.out.println("**************************");
             System.out.println("****** Exception during Jersey Application Config *******");

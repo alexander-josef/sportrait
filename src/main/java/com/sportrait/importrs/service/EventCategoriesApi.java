@@ -52,7 +52,7 @@ public class EventCategoriesApi {
         EventCategory eventCategoryDTO = new EventCategory();
         eventCategoryDTO.setId(eventCategory.getEventCategoryId());
         eventCategoryDTO.setTitle(eventCategory.getTitle());
-        eventCategoryDTO.setDescription(eventCategory.getTitle());
+        eventCategoryDTO.setDescription(eventCategory.getDescription());
         eventCategoryDTO.setStatus(eventCategory.hasPublishedPhotos() ? EventCategory.StatusEnum.PUBLISHED : EventCategory.StatusEnum.EMTPY);
         return eventCategoryDTO;
     }
@@ -95,6 +95,7 @@ public class EventCategoriesApi {
             // eventCategoryDAO.delete(category);
             SportsEvent event = category.getEvent();
             event.getEventCategories().remove(category);
+            // delete category explicitely here ??? try.
             genericLevelDAO.saveOrUpdate(event);
             HibernateUtil.commitTransaction();
 

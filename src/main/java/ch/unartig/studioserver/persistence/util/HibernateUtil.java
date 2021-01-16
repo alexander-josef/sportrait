@@ -69,8 +69,11 @@ import java.util.Map;
 
 public class HibernateUtil
 {
-    private static Logger  _logger = Logger.getLogger("ch.unartig.studioserver.persistence.util.HibernateUtil");
+    private static final Logger  _logger = Logger.getLogger("ch.unartig.studioserver.persistence.util.HibernateUtil");
 
+    /**
+     * Session Factory - will be created once upon application startup
+     */
     private static SessionFactory sessionFactory;
 
 
@@ -100,24 +103,19 @@ public class HibernateUtil
                         .build();
 
                 try {
-                    _logger.trace("Going to create SessionFactory ");
+                    _logger.info("Going to create SessionFactory ");
                     sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-                    _logger.trace("Hibernate could create SessionFactory");
+                    _logger.info("*************************************");
+                    _logger.info("Hibernate SessionFactory initialized ");
+                    _logger.info("*************************************");
                 }
 
                 catch (Exception e) {
                     // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
                     // so destroy it manually.
-                    _logger.debug("exception during hibernate session factory creation",e);
+                    _logger.error("exception during hibernate session factory creation",e);
                     StandardServiceRegistryBuilder.destroy( registry );
                 }
-
-
-
-
-//                sessionFactory = new Configuration().configure().buildSessionFactory();
-//                sessionFactory.openSession();
-                // outputSchemaDdl();
             }
         } catch (Throwable t)
         {
@@ -166,7 +164,10 @@ public class HibernateUtil
 
 
     /**
+     *  TRUE ?!? :
+     * __>
      * Hibernate 3+ style for returning the current session. Uses the "org.hibernate.context.ThreadLocalSessionContext" .
+     * <__
      * @return a hibernate Session according to the session context class (threadlocal session context)
      */
     public static Session currentSession()

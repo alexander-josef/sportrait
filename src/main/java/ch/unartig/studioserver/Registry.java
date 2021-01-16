@@ -227,8 +227,8 @@ public final class Registry
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";
-    private static String projectName;
-    private static String projectVersion;
+    private static String projectName="not set";
+    private static String projectVersion="not set";
     private static String buildNumber = "99999";
 
     // Where the fine images are located. No document root, not accessible by a web server.
@@ -425,8 +425,8 @@ public final class Registry
         _logger.info("***** sponsorBarFile = " + appSettings.getMessage("sponsorBarFile"));
 
 
-        setProjectName(appSettings.getMessage("application.name"));
-        setProjectVersion(appSettings.getMessage("application.version"));
+        // setProjectName(appSettings.getMessage("application.name"));
+        // setProjectVersion(appSettings.getMessage("application.version"));
         // todo: set to enabled again after svn problem on test server is solved
 //        setBuildNumber(appSettings.getMessage("application.buildNumber"));
 

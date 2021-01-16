@@ -49,12 +49,6 @@
         <property name="hibernate.implicit_naming_strategy">legacy-hbm</property>
 
         <!-- Mapping files -->
-        <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->
-        <!--For a more generic solution check the hibernate.cfg.xml file for localhost and the comments in cluded in this file. However, using the !ENTITY Tag seems not to work for boston-->
-        <!--<mapping resource="ch/unartig/studioserver/model/Photo.hbm.xml"/>-->
-
-
-
         <mapping class="ch.unartig.studioserver.model.GenericLevel"/>
         <mapping class="ch.unartig.studioserver.model.Album"/>
         <mapping class="ch.unartig.studioserver.model.Category"/>

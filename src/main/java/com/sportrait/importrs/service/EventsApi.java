@@ -51,6 +51,11 @@ public class EventsApi {
             _logger.debug("Loading events for : [" + photographer.getFullName() + "]");
             events = glDao.listEventsWithAlbums(photographer); // why only with albums? --> photographer / user is only connected with album. event no connected with user
         }
+        // Done in response filter:
+        // HibernateUtil.currentSession().getTransaction().commit();
+        // HibernateUtil.currentSession().flush();
+        // HibernateUtil.currentSession().close();
+
         return Response.ok()
                 .entity(events
                         .stream()
@@ -145,8 +150,14 @@ public class EventsApi {
         GenericLevelDAO glDao = new GenericLevelDAO();
         SportsEvent event = glDao.get(eventId, SportsEvent.class);
         if (event != null) {
+            Event eventsDTO = convertToEventsDTO(event);
+
+            // done in Response Filter:
+//            HibernateUtil.currentSession().getTransaction().commit();
+//            HibernateUtil.currentSession().flush();
+//            HibernateUtil.currentSession().close();
             return Response.ok()
-                    .entity(convertToEventsDTO(event))
+                    .entity(eventsDTO)
                     .build();
         } else {
             return Response.status(404,"Event not found").build();
@@ -223,13 +234,19 @@ public class EventsApi {
             _logger.info("no eventCategoryDto");
         }
 
+        HibernateUtil.beginTransaction();
         SportsEvent event = glDao.get(eventId,SportsEvent.class);
         if (event != null) {
             event.getEventCategories().add(convertFromEventCategoryDTO(eventCategoryDto,event));
             glDao.saveOrUpdate(event);
             HibernateUtil.commitTransaction();
+            // Done in response filter:
+//            HibernateUtil.currentSession().getTransaction().commit();
+//            HibernateUtil.currentSession().flush();
+//            HibernateUtil.currentSession().close();
             _logger.info("committed new eventCategory for event ["+eventId+"] to DB");
         } else {
+            HibernateUtil.rollbackTransaction();
             return Response.status(404,"no event ressource identified by given eventId").build();
         }
 
