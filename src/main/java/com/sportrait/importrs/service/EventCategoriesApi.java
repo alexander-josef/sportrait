@@ -57,31 +57,25 @@ public class EventCategoriesApi {
         return eventCategoryDTO;
     }
 
-
-    /**
-     * Simple static method to merge / update from DTO
-     * @param eventCategory
-     * @param eventCategoryDto
-     * @return
-     */
-    static ch.unartig.studioserver.model.EventCategory mergeFromEventCategoryDTO(ch.unartig.studioserver.model.EventCategory eventCategory, EventCategory eventCategoryDto) {
-        eventCategory.setTitle(eventCategoryDto.getTitle());
-        eventCategory.setDescription(eventCategory.getDescription());
-        return eventCategory;
-    }
-
-
     /**
      * DTO -> Model Transformer
-     * @param eventCategoryDTO
-     * @param event
-     * @return
+     *
+     * @param eventCategoryDTO the DTO
+     * @param event can be null for updates
+     * @return null if no eventCategory with given ID exists
      */
     static ch.unartig.studioserver.model.EventCategory convertFromEventCategoryDTO(EventCategory eventCategoryDTO, SportsEvent event) {
-        ch.unartig.studioserver.model.EventCategory eventCategory =
-                new ch.unartig.studioserver.model.EventCategory(eventCategoryDTO.getTitle(),event);
+        ch.unartig.studioserver.model.EventCategory eventCategory;
+        if (eventCategoryDTO.getId() != null) { // ID available, updating (PUT)
+            eventCategory = new EventCategoryDAO().getEventCategory(eventCategoryDTO.getId());
+            if (eventCategory==null) {
+                return null;
+            }
+        } else { // creating new eventCategory (POST)
+            eventCategory = new ch.unartig.studioserver.model.EventCategory(event);
+        }
+        eventCategory.setTitle(eventCategoryDTO.getTitle());
         eventCategory.setDescription(eventCategoryDTO.getDescription());
-        // eventCategoryDTO.getStatus(); // ??
         return eventCategory;
     }
 
@@ -93,17 +87,14 @@ public class EventCategoriesApi {
     public Response updateEventCategory(@PathParam("eventCategoryId") long eventCategoryId, EventCategory eventCategoryDto) {
 
         _logger.info("PUT /eventCategories/" + eventCategoryId);
-        EventCategoryDAO eventCategoryDAO = new EventCategoryDAO();
-        GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         // load event eventCategory - check for albums
-        ch.unartig.studioserver.model.EventCategory eventCategory = eventCategoryDAO.load(eventCategoryId);
+        ch.unartig.studioserver.model.EventCategory eventCategory = convertFromEventCategoryDTO(eventCategoryDto, null);
         if (eventCategory == null) {
             return Response.status(403, "eventCategory not found").build();
         }
-        mergeFromEventCategoryDTO(eventCategory,eventCategoryDto);
         // should be enough - upon flushing the session, the object should be persisted
-        _logger.debug("updated eventCategory with ID : ["+eventCategory.getEventCategoryId()+"] ");
+        _logger.debug("updated eventCategory with ID : [" + eventCategory.getEventCategoryId() + "] ");
         EventCategory result = convertToEventCategoryDTO(eventCategory);
         return Response.ok().entity(result).build();
     }
@@ -156,7 +147,7 @@ public class EventCategoriesApi {
         ch.unartig.studioserver.model.EventCategory eventCategory = dao.getEventCategory(eventCategoryId);
 
         if (eventCategory == null) {
-            return Response.status(403,"Event Category does not exist").build();
+            return Response.status(403, "Event Category does not exist").build();
         }
 
         return Response.ok().entity(eventCategory.getAlbums()

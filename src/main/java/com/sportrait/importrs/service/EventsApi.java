@@ -6,6 +6,7 @@ import ch.unartig.studioserver.model.GenericLevel;
 import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
+import ch.unartig.studioserver.persistence.DAOs.ProductDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Event;
@@ -110,18 +111,32 @@ public class EventsApi {
 
     /**
      * DTO -> Model Transformer
-     * @param eventDTO
-     * @return
+     * covers creation (POST) and updating (PUT) an event
+     * (updates all fields!)
+     *
+     * @param eventDTO the DTO
+     * @return null if no event exists with given ID
      */
     private ch.unartig.studioserver.model.SportsEvent convertFromSportsEventDTO(Event eventDTO) {
-        ch.unartig.studioserver.model.SportsEvent event = new ch.unartig.studioserver.model.SportsEvent(eventDTO.getNavTitle(), eventDTO.getTitle(), eventDTO.getDescription());
-
+        ch.unartig.studioserver.model.SportsEvent event;
+        if (eventDTO.getId() != null) { // ID available - trying to update existing event (PUT)
+            event = new GenericLevelDAO().get(eventDTO.getId(), SportsEvent.class);
+            if (event==null) {
+                return null;
+            }
+        } else { // no ID given, create a new object (POST)
+            event = new SportsEvent();
+            // not updating eventCategories for PUT requests (!?)
+            event.setEventCategories(eventDTO.getEventCategories()
+                    .stream()
+                    .map(eventCategoryDTO -> convertFromEventCategoryDTO(eventCategoryDTO, event))
+                    .collect(Collectors.toList()));
+        }
+        event.setNavTitle(eventDTO.getNavTitle());
+        event.setLongTitle(eventDTO.getTitle());
+        event.setDescription(eventDTO.getDescription());
         event.setEventDate(eventDTO.getDate());
         event.setWeblink(eventDTO.getOrganizerUrl());
-        event.setEventCategories(eventDTO.getEventCategories()
-                .stream()
-                .map(eventCategoryDTO -> convertFromEventCategoryDTO(eventCategoryDTO,event))
-                .collect(Collectors.toList()));
         event.setEventLocation(eventDTO.getZipCode(), eventDTO.getCity(), ""); // category (this is not eventCategory!) not needed
 
         return event;
@@ -149,7 +164,7 @@ public class EventsApi {
                     .entity(eventsDTO)
                     .build();
         } else {
-            return Response.status(404,"Event not found").build();
+            return Response.status(404, "Event not found").build();
         }
     }
 
@@ -158,13 +173,26 @@ public class EventsApi {
     @PUT
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateEvent(@PathParam("eventId") int eventId) {
+    public Response updateEvent(@PathParam("eventId") long eventId, Event eventsDto) {
 
         _logger.info("PUT /events/" + eventId);
         // load event category
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
-
-        return Response.ok().entity("not implemented - authenticated user : [" + client.getUsername() + "]").build();
+        GenericLevelDAO glDao = new GenericLevelDAO();
+        SportsEvent sportsEvent;
+        sportsEvent = convertFromSportsEventDTO(eventsDto);
+        if (sportsEvent == null || !sportsEvent.getGenericLevelId().equals(eventId)) {
+            _logger.info("rolling back - no id found for event");
+            HibernateUtil.rollbackTransaction();
+            return Response.status(404, "no event found with given ID").build();
+        }
+        if (sportsEvent.isSportsEventLevel()) {
+            _logger.info("updating event : " + eventId);
+            Event result = convertToEventsDTO(sportsEvent);
+            return Response.ok().entity(result).build();
+        } else {
+            return Response.status(405, "given eventId does not identify an event - method not allowed").build();
+        }
     }
 
 
@@ -172,19 +200,19 @@ public class EventsApi {
     @DELETE
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteEvent(@PathParam("eventId") int eventId) {
+    public Response deleteEvent(@PathParam("eventId") long eventId) {
         _logger.info("DELETE /events/" + eventId);
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("authenticated user : [" + client.getUsername() + "]");
         GenericLevelDAO glDao = new GenericLevelDAO();
-        GenericLevel level = null;
+        GenericLevel level;
         try {
-            level = glDao.get((long) eventId);
-            if (level==null) {
-                return Response.status(404,"Ressource not found").build();
+            level = glDao.get(eventId);
+            if (level == null) {
+                return Response.status(404, "Ressource not found").build();
             }
         } catch (Exception e) {
-            return Response.status(500,"Something went wrong ...").build();
+            return Response.status(500, "Something went wrong ...").build();
         }
 
         _logger.info("... of type :" + level.getLevelType());
@@ -202,9 +230,8 @@ public class EventsApi {
             }
             _logger.info("done deleting level : " + eventId);
             return Response.ok().entity("event deleted - authenticated user : [" + client.getUsername() + "]").build();
-        }
-        else {
-            return Response.status(405,"given eventId does not identify an event - method not allowed").build();
+        } else {
+            return Response.status(405, "given eventId does not identify an event - method not allowed").build();
         }
     }
 
@@ -213,9 +240,9 @@ public class EventsApi {
     @POST
     @Secured
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addEventCategory(EventCategory eventCategoryDto, @PathParam("eventId") long eventId){
+    public Response addEventCategory(EventCategory eventCategoryDto, @PathParam("eventId") long eventId) {
         GenericLevelDAO glDao = new GenericLevelDAO();
-        if (eventCategoryDto.getId()!=null) {
+        if (eventCategoryDto.getId() != null) {
             _logger.info("POST /api/import/events/{eventId}/eventCategories");
             _logger.info("creating new eventCategory from eventCategoryDto ");
         } else {
@@ -224,21 +251,21 @@ public class EventsApi {
         }
 
         HibernateUtil.beginTransaction();
-        SportsEvent event = glDao.get(eventId,SportsEvent.class);
+        SportsEvent event = glDao.get(eventId, SportsEvent.class);
         if (event != null) {
-            event.getEventCategories().add(convertFromEventCategoryDTO(eventCategoryDto,event));
+            event.getEventCategories().add(convertFromEventCategoryDTO(eventCategoryDto, event));
             glDao.saveOrUpdate(event);
             HibernateUtil.commitTransaction();
             // Done in response filter:
 //            HibernateUtil.currentSession().getTransaction().commit();
 //            HibernateUtil.currentSession().flush();
 //            HibernateUtil.currentSession().close();
-            _logger.info("committed new eventCategory for event ["+eventId+"] to DB");
+            _logger.info("committed new eventCategory for event [" + eventId + "] to DB");
         } else {
             HibernateUtil.rollbackTransaction();
-            return Response.status(404,"no event ressource identified by given eventId").build();
+            return Response.status(404, "no event ressource identified by given eventId").build();
         }
 
-        return  Response.ok().entity(convertToEventsDTO(event)).build();
+        return Response.ok().entity(convertToEventsDTO(event)).build();
     }
 }

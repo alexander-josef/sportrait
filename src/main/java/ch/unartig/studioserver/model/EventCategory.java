@@ -82,12 +82,21 @@ public class EventCategory implements java.io.Serializable {
 
     /**
      * 
-     * @param eventCategory
+     * @param eventCategoryTitle
      * @param event
      */
-    public EventCategory(String eventCategory, SportsEvent event)
+    public EventCategory(String eventCategoryTitle, SportsEvent event)
     {
-        setTitle(eventCategory);
+        setTitle(eventCategoryTitle);
+        setEvent(event);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    public EventCategory(SportsEvent event)
+    {
         setEvent(event);
     }
 

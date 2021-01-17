@@ -144,15 +144,10 @@ public class ProductsApi {
     public Response updateAlbumProduct(@PathParam("albumId") long albumId, Product productDto) {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.info("PUT /albums/:albumId/products");
-
         ProductDAO productDAO = new ProductDAO();
         // GenericLevelDAO genericLevelDAO = new GenericLevelDAO();
-
-
         try {
             HibernateUtil.beginTransaction();
-
-
             ch.unartig.studioserver.model.Product product = convertFromProductDTO(productDto, null); // album not needed for update
             if (product == null || !product.getAlbum().getGenericLevelId().equals(albumId)) {
                 HibernateUtil.rollbackTransaction();
@@ -277,7 +272,6 @@ public class ProductsApi {
      * @return a product, updated or created from productDto, or null if provided id does not find a corresponding DB record
      */
     private ch.unartig.studioserver.model.Product convertFromProductDTO(Product productDto, ch.unartig.studioserver.model.Album album) {
-
         // check for existing product and correct album:
         ch.unartig.studioserver.model.Product product;
         if (productDto.getProductId() != null) { // Update existing product (PUT)
@@ -290,8 +284,6 @@ public class ProductsApi {
                             album
                     );
         }
-
-
         if (product != null) {
             product.setProductName(productDto.getProductName() != null ? productDto.getProductName() : product.getProductName());
             product.setProductType(productDto.getProductType() != null ? convertFromProductTypeDTO(productDto.getProductType()) : product.getProductType());
