@@ -203,6 +203,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 
 /**
@@ -374,7 +375,7 @@ public final class Registry
     /**
      * will be called upon startup of the Action servlet
      */
-    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException {
+    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException, NoSuchMethodException, InvocationTargetException {
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
@@ -464,7 +465,7 @@ public final class Registry
         s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
-        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
+        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
         /************************************************************************/
 
         // Set up the HTTP transport and JSON factory for the google sign-in actions

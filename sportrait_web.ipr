@@ -862,6 +862,7 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.500/aws-java-sdk-s3-1.11.500-sources.jar!/" />
+        <root url="file://$MAVEN_REPOSITORY$/com/amazonaws/aws-java-sdk-s3/1.11.500" />
       </SOURCES>
     </library>
     <library name="Maven: com.amazonaws:aws-java-sdk-sqs:1.11.500">

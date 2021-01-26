@@ -29,7 +29,7 @@ import java.util.zip.ZipInputStream;
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonS3 s3DefaultClient; //
     private AmazonS3 s3FrankfurtClient; // specific for older albums on frankfurt bucket

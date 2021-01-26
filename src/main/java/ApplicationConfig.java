@@ -5,6 +5,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import javax.ws.rs.ApplicationPath;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 
 
@@ -24,7 +25,7 @@ public class ApplicationConfig extends ResourceConfig {
         try {
             System.out.println("***** Calling Registry.init() from Jersey Application Config ******");
             Registry.init();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | GeneralSecurityException | IOException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | GeneralSecurityException | IOException | NoSuchMethodException | InvocationTargetException e) {
             System.out.println("**************************");
             System.out.println("****** Exception during Jersey Application Config *******");
             System.out.println("**************************");

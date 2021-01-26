@@ -167,6 +167,7 @@ public class EventCategoriesApi {
      */
     @Path("/{eventCategoryId}/albums")
     @POST
+    @Secured
     @Produces(MediaType.APPLICATION_JSON)
     public Response createAlbum(@PathParam("eventCategoryId") long eventCategoryId, Album albumDto) {
         _logger.info("POST /api/import/eventCategories/{eventCategoryId}/albums");

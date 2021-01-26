@@ -5,12 +5,14 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.ImageRecognitionPostProcessor;
+import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.SportsAlbumMapper;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
+import com.sportrait.importrs.model.Importable;
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -22,6 +24,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/albums")
@@ -92,6 +97,39 @@ public class AlbumsApi {
         return Response
                 .ok()
                 .entity(convertToAlbumDTO(album))
+                .build();
+    }
+
+    /**
+     * list all "importables" - locations with uploaded photos that can be imported as albums
+     * todo: it is assumed that all importables are folders under the s3 bucket key /upload. Make configurable in API
+     * and under the current S3 bucket depending on the environment
+     * @return
+     */
+    @Path("/importables")
+    @GET
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response listImportables() {
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
+        List<Importable> importables = new ArrayList<>();
+        for (String uploadPathKey : Registry.getFileStorageProvider().getUploadPaths()) {
+            String photosS3Uri="s3://"+Registry.getS3BucketNameIreland()+"/"+uploadPathKey;
+            int numberOfPhotos=Registry.getFileStorageProvider().getNumberOfFineImageFiles(uploadPathKey);
+            Importable importable = new Importable();
+            importable.setPhotosS3Uri(photosS3Uri);
+            importable.setLabel(uploadPathKey);
+            importable.setNumberOfPhotos(numberOfPhotos);
+            importable.setUploadDate(new Date());
+            importables.add(importable);
+            _logger.debug("added new Importable ["+photosS3Uri+", "+ uploadPathKey +", "+numberOfPhotos+"]");
+        }
+
+
+        return Response
+                .ok()
+                .entity(importables)
                 .build();
     }
 

@@ -102,6 +102,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
@@ -141,7 +142,7 @@ public class UnartigActionServlet extends ActionServlet
         {
             logger.error("Exception while creating SecureRandom instance",e);
              throw new ServletException("initialization failed",e);
-         } catch (ClassNotFoundException e) {
+         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             logger.error("Exception during Servlet init, class not found", e);
             throw new ServletException("initialization failed",e);
         } catch (InstantiationException e) {
