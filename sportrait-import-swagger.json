@@ -427,6 +427,28 @@
         }
       }
     },
+    "/albums/importables" : {
+      "get" : {
+        "tags" : [ "album" ],
+        "summary" : "list locations - s3 upload folders - ready to be imported as Albums (that are visible for the authenticated requestor)",
+        "operationId" : "listImportables",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Importables"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    },
     "/albums/{albumId}/" : {
       "get" : {
         "parameters" : [ {
@@ -1304,6 +1326,32 @@
             "type" : "boolean",
             "description" : "Was the photo point located after the timing? (can be left out, defaults to false)",
             "default" : false
+          }
+        }
+      },
+      "Importables" : {
+        "description" : "Represents the data for locations and photos ready to be imported as albums",
+        "type" : "object",
+        "required" : [ "photosS3Uri", "label" ],
+        "properties" : {
+          "photosS3Uri" : {
+            "type" : "string",
+            "example" : "s3://dev.ireland.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/"
+          },
+          "label" : {
+            "type" : "string",
+            "example" : "2018-etappe-1-rekognition"
+          },
+          "uploadDate" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2020-12-13",
+            "description" : "The date/time the photos of this importable have been uploaded."
+          },
+          "numberOfPhotos" : {
+            "type" : "integer",
+            "example" : 20,
+            "description" : "The number of photo files available in this importable location."
           }
         }
       }
