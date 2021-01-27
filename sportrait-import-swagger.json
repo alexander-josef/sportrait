@@ -382,8 +382,8 @@
             "format" : "int64"
           }
         } ],
-        "tags" : [ "eventCategory" ],
-        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used on the backend (photos will be added) if one exist.",
+        "tags" : [ "album" ],
+        "summary" : "Add (create) an album for a given eventCategory. Uploads associated photos to the album. An existing album for the given eventCategory can be used on the backend (photos will be added) if one exist.\n  Todo, add query parameters for apply number recognition etcetc.\n",
         "operationId" : "addAlbum",
         "requestBody" : {
           "$ref" : "#/components/requestBodies/Album"
