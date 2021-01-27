@@ -270,8 +270,9 @@ public class SportsEvent extends Event implements java.io.Serializable {
     {
         SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
         // giving control to new thread and return.
-        Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
-        uploader.start();
+        Uploader uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
+        Thread uploaderThread = new Thread(uploader);
+        uploaderThread.start();
         return sportsAlbum;
     }
 
@@ -303,9 +304,10 @@ public class SportsEvent extends Event implements java.io.Serializable {
         sportsAlbum.extractPhotosFromArchive(inputStream);
 
         // giving control to new thread and return.
-        Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages, applyLogoOnFineImages);
+        Uploader uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages, applyLogoOnFineImages);
+        Thread uploaderThread = new Thread(uploader);
         _logger.info("Starting Uploader Thread ...");
-        uploader.start();
+        uploaderThread.start();
         return true;
     }
 

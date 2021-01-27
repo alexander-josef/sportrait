@@ -123,8 +123,9 @@ public class AdminUploadAction extends MappingDispatchAction
         Boolean processImages = (Boolean) dynaForm.get("processImages");
 
         // giving control to new thread and return.
-        Thread uploader  = new Uploader(imagePath,album.getGenericLevelId(),processImages, false);
-        uploader.start();
+        Uploader uploader  = new Uploader(imagePath,album.getGenericLevelId(),processImages, false);
+        Thread uploaderThread  = new Thread(uploader);
+        uploaderThread.start();
 
         return mapping.findForward("showSingleAlbumUpload");
     }

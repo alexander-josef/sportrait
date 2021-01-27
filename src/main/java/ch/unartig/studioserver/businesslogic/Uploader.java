@@ -52,7 +52,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Uploader extends Thread
+public class Uploader implements Runnable
 {
 
     private Logger _logger = Logger.getLogger(getClass().getName());
@@ -100,22 +100,6 @@ public class Uploader extends Thread
         } else
         {
             this.createThumbnailDisplay = Boolean.TRUE;
-        }
-    }
-
-    /**
-     * Will be called from uploader applet Action (only usage so far)
-     * @param tempSingleImageFile The complete Path of the temporary single image file to upload
-     */
-    public void uploadSingleImage(File tempSingleImageFile)
-    {
-        this.tempSingleImageFile = tempSingleImageFile;
-        if (albumId!=null && tempSingleImageFile!=null && !"".equals(tempSingleImageFile))
-        {
-            tempImageDirectory =null;
-            // this will start a separate thread and call the run method in this class.
-            this.start();
-            _logger.debug("Thread for registering single photo started. Image ["+tempSingleImageFile+"]");
         }
     }
 
