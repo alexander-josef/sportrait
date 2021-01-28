@@ -467,7 +467,7 @@
                   "items" : {
                     "type" : "object",
                     "additionalProperties" : {
-                      "type" : "object",
+                      "type" : "integer",
                       "properties" : {
                         "albumId" : {
                           "type" : "integer"
@@ -491,8 +491,8 @@
               }
             }
           },
-          "405" : {
-            "description" : "Invalid input"
+          "500" : {
+            "description" : "Internal Server Error"
           }
         }
       }
