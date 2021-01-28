@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Singleton implementation to hold various album import state data
  */
-public final class AlbumImportStatus {
-    private static final AlbumImportStatus _INSTANCE = new AlbumImportStatus(); // use lazy initialization if needed (?)
+public final class ImportStatus {
+    private static final ImportStatus _INSTANCE = new ImportStatus(); // use lazy initialization if needed (?)
     /**
      * count all import errors for an album
      */
@@ -27,10 +27,10 @@ public final class AlbumImportStatus {
      */
     Map<Album,Integer> queuedForNumberRecognition = new ConcurrentHashMap<>();
 
-    private AlbumImportStatus() {} // Singleton! private default constructor
+    private ImportStatus() {} // Singleton! private default constructor
 
 
-    public static AlbumImportStatus getInstance() {
+    public static ImportStatus getInstance() {
         return _INSTANCE;
     }
 
@@ -61,17 +61,39 @@ public final class AlbumImportStatus {
     public void resetPhotosImported(Album album) {
         photosImported.remove(album);
         photosRemaining.remove(album);
+        importErrors.remove(album);
+    }
+
+
+    public void importError(Album album) {
+        Integer current = importErrors.get(album);
+        importErrors.put(album,current==null?1:current+1);
     }
 
     public int getPhotosImported(Album album) {
-        return photosImported.get(album);
+        System.out.println("album = " + album);
+        System.out.println("photosImported = " + photosImported);
+        return photosImported.isEmpty()?0:photosImported.get(album);
     }
 
     public int getPhotosRemaining(Album album) {
-        return photosRemaining.get(album);
+        return photosRemaining.isEmpty()?0:photosRemaining.get(album);
+    }
+
+    public Map<Album, Integer> getPhotosRemaining() {
+        return photosRemaining;
     }
 
     public int getPhotosQueuedForNumberRecognition(Album album) {
-        return queuedForNumberRecognition.get(album);
+        System.out.println("album = " + album);
+        System.out.println("queuedForNumberRecognition = " + queuedForNumberRecognition);
+        return queuedForNumberRecognition.isEmpty()?0:queuedForNumberRecognition.get(album);
     }
+
+    public int getImportErrors(Album album) {
+        System.out.println("album = " + album);
+        System.out.println("importErrors = " + importErrors);
+        return importErrors.isEmpty()?0:importErrors.get(album);
+    }
+
 }

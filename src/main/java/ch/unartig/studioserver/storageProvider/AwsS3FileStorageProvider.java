@@ -4,7 +4,7 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.businesslogic.AlbumImportStatus;
+import ch.unartig.studioserver.businesslogic.ImportStatus;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsAlbum;
@@ -207,7 +207,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
         long base = System.currentTimeMillis();
 
         // This is an expensive call!
-        AlbumImportStatus.getInstance().setPhotosRemaining(album,getNumberOfFineImageFiles(tempSourceDir));
+        ImportStatus.getInstance().setPhotosRemaining(album,getNumberOfFineImageFiles(tempSourceDir));
 
         // loop through jpeg files on S3
         String targetBucketName = getS3BucketNameFor(album); // only target bucket name - source bucket name is current bucket location
@@ -258,17 +258,18 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                             // add fine Image to queue for number recognition
                             String path = targetBucketName + "/" + fineImageKey;
                             queueHandler.addMessage(album,newPhoto.getPhotoId(),path); // newPhoto could be null for unknown file
-                            AlbumImportStatus.getInstance().incNumberRecognitionCounter(album);
+                            ImportStatus.getInstance().incNumberRecognitionCounter(album);
                         }
                         // update import state object
-                        AlbumImportStatus.getInstance().photoImported(album);
+                        ImportStatus.getInstance().photoImported(album);
 
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + importImageKey);
+                        ImportStatus.getInstance().importError(album);
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
-
+                    ImportStatus.getInstance().importError(album);
                 } finally { // make sure s3 object closes and release http connection
                     if (objectContent != null) {
                         try {
@@ -281,7 +282,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
-        AlbumImportStatus.getInstance().resetPhotosImported(album); // all album photos are imported, clean up state counter
+        ImportStatus.getInstance().resetPhotosImported(album); // all album photos are imported, clean up state counter
         _logger.info("**********************");
         _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base) / 1000 + " seconds"));
         _logger.info("**********************");

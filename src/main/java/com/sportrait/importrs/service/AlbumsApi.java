@@ -6,12 +6,15 @@ import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.ImageRecognitionPostProcessor;
 import ch.unartig.studioserver.Registry;
+import ch.unartig.studioserver.businesslogic.ImportStatus;
 import ch.unartig.studioserver.businesslogic.SportsAlbumMapper;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
+import com.sportrait.importrs.model.AlbumImportStatus;
+import com.sportrait.importrs.model.ImportUpdates;
 import com.sportrait.importrs.model.Importable;
 import org.apache.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -130,6 +133,35 @@ public class AlbumsApi {
         return Response
                 .ok()
                 .entity(importables)
+                .build();
+    }
+
+    /**
+     * Return a map with all currently imported albums and their import status
+     * @return
+     */
+    @Path("/importUpdates")
+    @GET
+    @Secured
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAlbumImportUpdates() {
+        Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
+        _logger.debug("authenticated user : [" + client.getUsername() + "]");
+        // a bit complicated?
+        ImportUpdates importUpdates = new ImportUpdates();
+        ImportStatus.getInstance().getPhotosRemaining().forEach((key, value) -> {
+            _logger.debug("setting status for album : " + key);
+            AlbumImportStatus albumStatus = new AlbumImportStatus();
+            albumStatus.setPhotosRemaining(value);
+            albumStatus.setPhotosImported(ImportStatus.getInstance().getPhotosImported(key));
+            albumStatus.setImportErrors(ImportStatus.getInstance().getImportErrors(key));
+            albumStatus.setQueuedForNumberRecognition(ImportStatus.getInstance().getPhotosQueuedForNumberRecognition(key));
+            importUpdates.put(key.getGenericLevelId().toString(),albumStatus);
+        });
+
+        return Response
+                .ok()
+                .entity(importUpdates)
                 .build();
     }
 
