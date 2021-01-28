@@ -438,13 +438,38 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Importable"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Importable"
+                  }
                 }
               }
             }
           },
           "405" : {
             "description" : "Invalid input"
+          }
+        }
+      }
+    },
+    "/albums/importUpdates" : {
+      "get" : {
+        "tags" : [ "album" ],
+        "summary" : "get status information about all ongoing album imports (that are visible for the authenticated requestor)",
+        "operationId" : "getAlbumImportUpdates",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportUpdates"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error"
           }
         }
       }
@@ -1351,7 +1376,46 @@
           "numberOfPhotos" : {
             "type" : "integer",
             "example" : 20,
-            "description" : "The number of photo files available in this importable location."
+            "description" : "The number of photo files available in this importable location.\n"
+          }
+        }
+      },
+      "ImportUpdates" : {
+        "description" : "A dictionary / map containing album import updates",
+        "type" : "object",
+        "example" : {
+          "500" : {
+            "photosImported" : 5,
+            "photosRemaining" : 10,
+            "importErrors" : 1,
+            "queuedForNumberRecognition" : 30
+          },
+          "601" : {
+            "photosImported" : 1,
+            "photosRemaining" : 4000,
+            "importErrors" : 12,
+            "queuedForNumberRecognition" : 476
+          }
+        },
+        "additionalProperties" : {
+          "$ref" : "#/components/schemas/AlbumImportStatus"
+        }
+      },
+      "AlbumImportStatus" : {
+        "description" : "Contains status information for an album currently being imported",
+        "type" : "object",
+        "properties" : {
+          "photosImported" : {
+            "type" : "integer"
+          },
+          "photosRemaining" : {
+            "type" : "integer"
+          },
+          "importErrors" : {
+            "type" : "integer"
+          },
+          "queuedForNumberRecognition" : {
+            "type" : "integer"
           }
         }
       }
