@@ -484,8 +484,18 @@
                       }
                     },
                     "example" : {
-                      "500" : "{photosImported: 5, photosRemaining: 10, importErrors: 1, queuedForNumberRecognition: 30}\n",
-                      "601" : "{photosImported: 1, photosRemaining: 4000, importErrors: 12, queuedForNumberRecognition: 476}      \n"
+                      "500" : {
+                        "photosImported" : 5,
+                        "photosRemaining" : 10,
+                        "importErrors" : 1,
+                        "queuedForNumberRecognition" : 30
+                      },
+                      "601" : {
+                        "photosImported" : 1,
+                        "photosRemaining" : 4000,
+                        "importErrors" : 12,
+                        "queuedForNumberRecognition" : 476
+                      }
                     }
                   }
                 }
