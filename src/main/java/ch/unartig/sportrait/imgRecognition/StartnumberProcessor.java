@@ -24,13 +24,13 @@ public class StartnumberProcessor implements Runnable {
     private static final int EXECUTOR_KEEP_ALIVE_TIME = 30;
     private static final int MAX_WORKERS = 8; // used to be 1 - what's possible with the rekognition service? will we run into problem with a higher number?
     private static final int CORE_POOL_SIZE = 4;
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
     private static final int MAX_NUMBER_OF_MESSAGES = 10;
     private static final int WAIT_TIME_SECONDS = 20;
     private final ThreadPoolExecutor executor;
-    private List<SportraitImageProcessorIF> processors = new ArrayList<>();
-    private AtomicInteger numSeenProcessor = new AtomicInteger();
-    private int maxImagesToProcess;
+    private final List<SportraitImageProcessorIF> processors = new ArrayList<>();
+    private final AtomicInteger numSeenProcessor = new AtomicInteger();
+    private final int maxImagesToProcess;
 
 
     /**

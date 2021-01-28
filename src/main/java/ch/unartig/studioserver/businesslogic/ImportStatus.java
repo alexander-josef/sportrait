@@ -26,6 +26,10 @@ public final class ImportStatus {
      * keep a counter on all images that are queued for number recognition via AWS rekognition
      */
     Map<Album,Integer> queuedForNumberRecognition = new ConcurrentHashMap<>();
+    /**
+     * keep a counter on all images that are queued for number recognition via AWS rekognition
+     */
+    Map<Album, Integer> queuedForPostProcessing = new ConcurrentHashMap<>();
 
     private ImportStatus() {} // Singleton! private default constructor
 
@@ -96,4 +100,14 @@ public final class ImportStatus {
         return importErrors.isEmpty()?0:importErrors.get(album);
     }
 
+    public void photoRecognitionProcessed(Album album) {
+        queuedForNumberRecognition.put(album, queuedForNumberRecognition.get(album) -1);
+        if (queuedForNumberRecognition.get(album)==0) {
+            queuedForNumberRecognition.remove(album);
+        }
+    }
+
+    public void incPostProcessingCounter(Album album) {
+        // todo: implement
+    }
 }

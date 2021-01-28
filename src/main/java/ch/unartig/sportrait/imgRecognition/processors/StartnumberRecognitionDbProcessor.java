@@ -5,12 +5,14 @@ import ch.unartig.sportrait.imgRecognition.ImgRecognitionHelper;
 import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.sportrait.imgRecognition.RunnerFace;
 import ch.unartig.sportrait.imgRecognition.Startnumber;
+import ch.unartig.studioserver.businesslogic.ImportStatus;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.model.*;
+import com.sportrait.importrs.model.AlbumImportStatus;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             List<RunnerFace> unknownFaces = mapFacesToStartnumbers(photoFaceRecords, path, startnumbersForFile, collectionId);
 
             HibernateUtil.beginTransaction();
-            Photo photo = photoDAO.load(new Long(photoId));
+            Photo photo = photoDAO.load(Long.valueOf(photoId));
             Long albumId = photo.getAlbum().getGenericLevelId();
 
             persistStartnumbers(startnumbersForFile, path, photo);
@@ -67,8 +69,10 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
             _logger.debug("going to update photo ...");
             HibernateUtil.commitTransaction();
             _logger.debug("photo updated and commited to db");
+            ImportStatus.getInstance().photoRecognitionProcessed(photo.getAlbum());
             // add faces w/o matches to separate queue per album
             putUnknownFacesToPostProcessingQueue(unknownFaces, photoId, albumId);
+            ImportStatus.getInstance().incPostProcessingCounter(photo.getAlbum());
         } catch (UAPersistenceException | NumberFormatException e) {
             _logger.warn("Problem processing number recognition for photoId ["+photoId+"]/ path ["+path+"] - ignoring, continuing with next message",e);
         }
