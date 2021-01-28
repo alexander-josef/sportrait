@@ -465,37 +465,20 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "type" : "object",
-                    "additionalProperties" : {
-                      "type" : "object",
-                      "properties" : {
-                        "photosImported" : {
-                          "type" : "integer"
-                        },
-                        "photosRemaining" : {
-                          "type" : "integer"
-                        },
-                        "importErrors" : {
-                          "type" : "integer"
-                        },
-                        "queuedForNumberRecognition" : {
-                          "type" : "integer"
-                        }
-                      }
+                    "$ref" : "#/components/schemas/AlbumImportStatus"
+                  },
+                  "example" : {
+                    "500" : {
+                      "photosImported" : 5,
+                      "photosRemaining" : 10,
+                      "importErrors" : 1,
+                      "queuedForNumberRecognition" : 30
                     },
-                    "example" : {
-                      "500" : {
-                        "photosImported" : 5,
-                        "photosRemaining" : 10,
-                        "importErrors" : 1,
-                        "queuedForNumberRecognition" : 30
-                      },
-                      "601" : {
-                        "photosImported" : 1,
-                        "photosRemaining" : 4000,
-                        "importErrors" : 12,
-                        "queuedForNumberRecognition" : 476
-                      }
+                    "601" : {
+                      "photosImported" : 1,
+                      "photosRemaining" : 4000,
+                      "importErrors" : 12,
+                      "queuedForNumberRecognition" : 476
                     }
                   }
                 }
@@ -1410,7 +1393,29 @@
           "numberOfPhotos" : {
             "type" : "integer",
             "example" : 20,
-            "description" : "The number of photo files available in this importable location."
+            "description" : "The number of photo files available in this importable location.\n"
+          }
+        }
+      },
+      "AlbumImportStatus" : {
+        "description" : "Contains status information for an album currently being imported",
+        "type" : "object",
+        "additionalProperties" : {
+          "type" : "object",
+          "description" : "The albumId (as string! - key of the dictionary)",
+          "properties" : {
+            "photosImported" : {
+              "type" : "integer"
+            },
+            "photosRemaining" : {
+              "type" : "integer"
+            },
+            "importErrors" : {
+              "type" : "integer"
+            },
+            "queuedForNumberRecognition" : {
+              "type" : "integer"
+            }
           }
         }
       }
