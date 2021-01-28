@@ -438,7 +438,10 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Importable"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Importable"
+                  }
                 }
               }
             }
