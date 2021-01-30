@@ -24,19 +24,19 @@ public class HibernateResponseServerFilter implements ContainerResponseFilter {
         // make sure Hibernate Transaction is committed, session is flushed and closed:
         if (!requestContext.getMethod().equals(HttpMethod.OPTIONS)) { // ignore OPTIONS requests (see CORS)
             try {
-                _logger.debug("Jersey Response - Going to finish Hibernate Transaction/Sessions");
+                _logger.trace("Jersey Response - Going to finish Hibernate Transaction/Sessions");
                 HibernateUtil.currentSession().getTransaction().commit();
                 HibernateUtil.currentSession().flush();
-                _logger.debug("... Session flushed");
+                _logger.trace("... Session flushed");
             } catch (HibernateException e) {
                 _logger.info("Exception during transaction commit - rolling back.");
                 HibernateUtil.rollbackTransaction();
             } finally {
                 HibernateUtil.currentSession().close();
-                _logger.debug("... Session closed");
+                _logger.trace("... Session closed");
             }
         } else {
-            _logger.debug("Ignoring request with method ["+requestContext.getMethod()+"]");
+            _logger.trace("Ignoring request with method ["+requestContext.getMethod()+"]");
         }
 
     }
