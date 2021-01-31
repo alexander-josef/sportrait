@@ -122,7 +122,7 @@ public class ProductsApi {
             HibernateUtil.commitTransaction();
             newProductDto.setProductId(product.getProductId()); // id only available after db transaction
             return Response
-                    .ok()
+                    .ok() // todo : use .created(uri-location) here - how to find the uri? HATEOAS !
                     .entity(newProductDto)
                     .build();
         } catch (NotAuthorizedException e) {
