@@ -46,6 +46,8 @@ public class AlbumsApi {
         albumDTO.title(album.getLongTitle());
         albumDTO.status(album.getPublish() ? Album.StatusEnum.PUBLISHED : Album.StatusEnum.HIDDEN);
         albumDTO.freeHighresDownload(album.isHasFreeHighResDownload());
+        albumDTO.photosCount(album.getNumberOfPhotos());
+        albumDTO.creationDate(album.getFirstPhotoInAlbum().getUploadDate());
         // TODO later: ??
         // albumDTO.asvzLogoRelativeUrl(album.getProducts()): // needs a new DB field?
         // albumDTO.photosS3Uri(...); // needed?

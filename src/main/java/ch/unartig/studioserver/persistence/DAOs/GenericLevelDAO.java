@@ -210,10 +210,10 @@ public class GenericLevelDAO {
      * @return a generic Level ; needs to be casted to appropriate class
      * @throws UAPersistenceException
      */
-    public GenericLevel load(Long genericLevelId, Class levelClass) {
+    public <T extends GenericLevel> T load(Long genericLevelId, Class<T> levelClass) {
         try {
             Session session = HibernateUtil.currentSession();
-            return (GenericLevel) session.load(levelClass, genericLevelId);
+            return session.load(levelClass, genericLevelId);
         } catch (HibernateException e) {
             _logger.error("Could not load Generic Level, see stack trace", e);
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);

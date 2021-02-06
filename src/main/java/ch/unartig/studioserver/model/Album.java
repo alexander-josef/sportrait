@@ -194,7 +194,6 @@ package ch.unartig.studioserver.model;
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
@@ -654,8 +653,8 @@ public class Album extends GenericLevel implements Serializable {
         return problemFiles;
     }
 
-    public List getPhotosAsList() {
-        return new ArrayList(getPhotos());
+    public List<Photo> getPhotosAsList() {
+        return new ArrayList<>(getPhotos());
     }
 
     /**
@@ -721,14 +720,13 @@ public class Album extends GenericLevel implements Serializable {
      * todo: the term 'album' is not specific enough anymore with sportsalbums ... there, the last photo of one 'view' is not necessarily the last photo in the whole album
      *
      * @return last photo in album
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public Photo getLastPhotoInAlbumAndSelection() throws UnartigException {
+    public Photo getLastPhotoInAlbumAndSelection() {
         _logger.debug("Album.getLastPhotoInCategoryAndSelection xxxx");
         // reload this album
         GenericLevelDAO glDao = new GenericLevelDAO();
-        List photoList = new ArrayList(((Album) glDao.load(this.getGenericLevelId(), Album.class)).getPhotos());
-        Photo retVal = (Photo) (photoList.get(getNumberOfPhotos() - 1));
+        List<Photo> photoList = new ArrayList<>(((Album) glDao.load(this.getGenericLevelId(), Album.class)).getPhotos());
+        Photo retVal = (photoList.get(getNumberOfPhotos() - 1));
         _logger.debug("returning photo : " + retVal);
         return retVal;
     }
@@ -737,9 +735,8 @@ public class Album extends GenericLevel implements Serializable {
      * method to get first photo in album
      *
      * @return first photo in album
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public Photo getFirstPhotoInAlbum() throws UnartigException {
+    public Photo getFirstPhotoInAlbum() {
         PhotoDAO photoDao = new PhotoDAO();
         return photoDao.getFirstPhotoFor(this);
     }
@@ -771,8 +768,8 @@ public class Album extends GenericLevel implements Serializable {
         // product entries per album: only one per productType
         Set productTypeIds = productPrices.keySet();
         PriceDAO priceDao = new PriceDAO();
-        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext(); ) {
-            String productTypeIdString = (String) iterator.next();
+        for (Object typeId : productTypeIds) {
+            String productTypeIdString = (String) typeId;
             String priceIdString = (String) productPrices.get(productTypeIdString);
             //producttypes with priceid <=0 are not set for this album
             final Long productTypeId = Long.valueOf(productTypeIdString);
@@ -832,12 +829,11 @@ public class Album extends GenericLevel implements Serializable {
      *                           For product configuration, more likely all products are needed
      * @return
      */
-    public Map getAvailableProductTypes(boolean onlyActiveProducts) {
+    public Map<Long, ProductType> getAvailableProductTypes(boolean onlyActiveProducts) {
 
-        Map productTypeMap = new HashMap();
-        Set products = onlyActiveProducts ? getActiveProducts() : getProducts();
-        for (Iterator iterator = products.iterator(); iterator.hasNext(); ) {
-            Product product = (Product) iterator.next();
+        Map<Long, ProductType> productTypeMap = new HashMap<>();
+        Set<Product> products = onlyActiveProducts ? getActiveProducts() : getProducts();
+        for (Product product : products) {
             ProductType productType = product.getProductType();
             productTypeMap.put(productType.getProductTypeId(), productType);
         }
@@ -889,9 +885,9 @@ public class Album extends GenericLevel implements Serializable {
      *
      * @return Active products (products that don't have the inactvie flag)
      */
-    public Set getActiveProducts() {
+    public Set<Product> getActiveProducts() {
         Set<Product> activeProducts = new HashSet<Product>();
-        Set allProductsForAlbum = getProducts();
+        Set<Product> allProductsForAlbum = getProducts();
         for (Object anAllProductsForAlbum : allProductsForAlbum) {
             Product product = (Product) anAllProductsForAlbum;
             if (product.getInactive() == null || !product.getInactive()) { // either null or NOT inactive

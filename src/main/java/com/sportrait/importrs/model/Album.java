@@ -24,7 +24,7 @@ import javax.validation.Valid;
 /**
  * Album
  */
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2020-12-27T16:10:38.199Z[GMT]")public class Album   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2021-02-06T14:47:18.589Z[GMT]")public class Album   {
   @JsonProperty("id")
   private Long id = null;
 
@@ -33,6 +33,9 @@ import javax.validation.Valid;
 
   @JsonProperty("navTitle")
   private String navTitle = null;
+
+  @JsonProperty("photosCount")
+  private Integer photosCount = null;
 
   @JsonProperty("description")
   private String description = null;
@@ -146,6 +149,25 @@ import javax.validation.Valid;
 
   public void setNavTitle(String navTitle) {
     this.navTitle = navTitle;
+  }
+
+  public Album photosCount(Integer photosCount) {
+    this.photosCount = photosCount;
+    return this;
+  }
+
+  /**
+   * the total number of photos in the album (might change during import)
+   * @return photosCount
+   **/
+  @JsonProperty("photosCount")
+  @Schema(example = "3741", description = "the total number of photos in the album (might change during import)")
+  public Integer getPhotosCount() {
+    return photosCount;
+  }
+
+  public void setPhotosCount(Integer photosCount) {
+    this.photosCount = photosCount;
   }
 
   public Album description(String description) {
@@ -315,6 +337,7 @@ import javax.validation.Valid;
     return Objects.equals(this.id, album.id) &&
         Objects.equals(this.title, album.title) &&
         Objects.equals(this.navTitle, album.navTitle) &&
+        Objects.equals(this.photosCount, album.photosCount) &&
         Objects.equals(this.description, album.description) &&
         Objects.equals(this.freeHighresDownload, album.freeHighresDownload) &&
         Objects.equals(this.applyLogoOnFineImages, album.applyLogoOnFineImages) &&
@@ -327,7 +350,7 @@ import javax.validation.Valid;
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, navTitle, description, freeHighresDownload, applyLogoOnFineImages, photosS3Uri, sponsorBarRelativeUrl, asvzLogoRelativeUrl, creationDate, status);
+    return Objects.hash(id, title, navTitle, photosCount, description, freeHighresDownload, applyLogoOnFineImages, photosS3Uri, sponsorBarRelativeUrl, asvzLogoRelativeUrl, creationDate, status);
   }
 
 
@@ -339,6 +362,7 @@ import javax.validation.Valid;
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    navTitle: ").append(toIndentedString(navTitle)).append("\n");
+    sb.append("    photosCount: ").append(toIndentedString(photosCount)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    freeHighresDownload: ").append(toIndentedString(freeHighresDownload)).append("\n");
     sb.append("    applyLogoOnFineImages: ").append(toIndentedString(applyLogoOnFineImages)).append("\n");
