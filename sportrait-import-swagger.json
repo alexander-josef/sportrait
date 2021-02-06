@@ -1110,6 +1110,11 @@
             "description" : "the slug of the album",
             "example" : "sola-2020-etappe-12"
           },
+          "photosCount" : {
+            "type" : "integer",
+            "description" : "the total number of photos in the album (might change during import)",
+            "example" : 3741
+          },
           "description" : {
             "type" : "string",
             "example" : "die 12. etappe der sola 2030"
