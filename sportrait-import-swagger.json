@@ -1039,7 +1039,7 @@
     "schemas" : {
       "Event" : {
         "type" : "object",
-        "required" : [ "title", "navTitle", "organizerUrl" ],
+        "required" : [ "title", "navTitle", "date", "organizerUrl" ],
         "properties" : {
           "id" : {
             "type" : "integer",
@@ -1060,9 +1060,8 @@
           },
           "date" : {
             "type" : "string",
-            "format" : "date",
             "example" : "2020-12-13",
-            "description" : "The date the event takes, or took, place."
+            "description" : "The date (day) the event takes, or took, place, in the format YYYY-MM-DD."
           },
           "zipCode" : {
             "type" : "string",
