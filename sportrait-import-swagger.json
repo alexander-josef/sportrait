@@ -1148,7 +1148,7 @@
           "creationDate" : {
             "type" : "string",
             "format" : "date-time",
-            "description" : "Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z",
+            "description" : "Creation Date / Time for this album as defined by RFC 3339, section 5.6, for example, 2017-07-21T17:32:28Z\nCAUTION: this information is not yet available - a date shown here is the upload date of the first photo in the album\n",
             "example" : "2017-07-21T17:32:28Z"
           },
           "status" : {
