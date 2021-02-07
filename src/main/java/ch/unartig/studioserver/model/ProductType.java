@@ -97,7 +97,7 @@ public class ProductType implements java.io.Serializable {
         this.digitalProduct = digitalProduct;
     }
 
-    public Set getPrices() {
+    public Set<Price> getPrices() {
         return this.prices;
     }
 

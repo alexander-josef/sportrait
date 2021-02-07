@@ -109,7 +109,6 @@ import ch.unartig.util.MailUtil;
 import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -333,18 +332,13 @@ public class ShoppingCartLogic
 
         StringBuffer localizedBody = MailUtil.generateBody(photoOrder,downloadLink, shoppingCart, contentResource, locale);
         String localizedSubject = contentResource.getMessage(locale,"email.orderAccepted.subject");
-        try
-        {
+
             _logger.debug("trying to send email message:\n");
             _logger.debug("localizedSubject \n\n" + localizedSubject);
             _logger.debug("localizedBody = \n\n" + localizedBody);
             MailUtil.sendMail(localizedSubject, localizedBody.toString(), customer.getEmail(), Registry.getOrderConfirmationFromAddress());
             _logger.debug("Confirmation email-message sent to customer");
-        } catch (MessagingException e)
-        {
-            _logger.error("Error sending confirmation message", e);
-            e.printStackTrace();
-        }
+
 
     }
 

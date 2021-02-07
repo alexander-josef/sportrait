@@ -18,15 +18,13 @@
         <!-- Sane default when no revision property is passed in from the commandline -->
         <revision>0-SNAPSHOT</revision>
         <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-
+        <swagger-core-version>2.0.0</swagger-core-version>
     </properties>
 
     <!--<version>1.8.0-SNAPSHOT</version>-->
 
     <name>sportrait Server</name>
     <url>https://sportrait.com</url>
-
-
 
     <!-- new section to manage AWS dependencies (ensure right version of aws dependencies for each module) -->
 
@@ -124,12 +122,6 @@
         <!--removing apache xmlrpc-->
 
         <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
             <groupId>sslext</groupId>
             <artifactId>sslext</artifactId>
             <version>1.2-0</version>
@@ -152,25 +144,6 @@
             <version>1.1.2</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-            <version>3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-fileupload</groupId>
-            <artifactId>commons-fileupload</artifactId>
-            <version>1.3.3</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>1.3</version>
-        </dependency>
-
         <!-- Version problem with struts ???-->
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -180,8 +153,15 @@
 
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -197,6 +177,8 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+
+<!--   Upgrading to 5.4.27 on 2021-01-11 caused problems : problems with 2nd level cache provider dependency (jcache) -->
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -247,24 +229,16 @@
         </dependency>
 
 
-        <!-- use imgscalr to create thumb and display images -->
-        <dependency>
-            <groupId>org.imgscalr</groupId>
-            <artifactId>imgscalr-lib</artifactId>
-            <version>4.2</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- removed version - now managed with BOM dependency management, see top of file 2019-02-16 -->
 
 
 
         <!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+        <!-- bumping version from 1.23.0 to 1.31.0 (20201115) -->
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.23.0</version>
+            <version>1.31.0</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jackson-core</artifactId>
@@ -285,6 +259,36 @@
             <version>1.1.12</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>2.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>2.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <scope>compile</scope>
+            <version>${swagger-core-version}</version>
+        </dependency>
 
     </dependencies>
 

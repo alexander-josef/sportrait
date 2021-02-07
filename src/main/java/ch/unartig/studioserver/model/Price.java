@@ -45,7 +45,7 @@ import java.text.NumberFormat;
 public class Price implements java.io.Serializable {
 
 
-    private static Price notAvailablePrice = new Price();
+    private static final Price notAvailablePrice = new Price();
 
     public static NumberFormat monetaryAmountFormat = DecimalFormat.getInstance();
 
@@ -74,6 +74,10 @@ public class Price implements java.io.Serializable {
     {
     }
 
+    /**
+     * create a generic price label containing EUR and CHF price
+     * @return [CHF price ]//[ EUR price]
+     */
     public String getPriceLabel() {
         return getPriceCHF() + " CHF // " + getPriceEUR() + " EUR";
     }

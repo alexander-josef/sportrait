@@ -34,7 +34,6 @@ import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.DAOs.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.converters.LongConverter;
 import org.apache.log4j.Logger;
@@ -142,7 +141,6 @@ public class PhotographerAdminAction extends MappingDispatchAction
 // copy properties from form to bean
         try
         {
-            BeanUtilsBean beanUtilsBean = BeanUtilsBean.getInstance();
             // the following lines ensures that empty ids are stored as 'null' -- not as null, which leads to a database error
             ConvertUtils.register(new LongConverter(null), Long.class);
             BeanUtils.copyProperties(photographer.getUserProfile(), photographerForm);

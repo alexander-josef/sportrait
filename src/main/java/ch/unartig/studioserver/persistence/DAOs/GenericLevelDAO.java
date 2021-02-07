@@ -105,34 +105,31 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GenericLevelDAO
-{
+public class GenericLevelDAO {
     Logger _logger = Logger.getLogger(getClass().getName());
 
     /**
      * Save a generic Level
+     *
      * @param genericLevel An instance of a concrete generic Level
      * @throws UAPersistenceException
      */
     public void saveOrUpdate(GenericLevel genericLevel) throws UAPersistenceException, NonUniqueObjectException {
-        try
-        {
+        try {
             HibernateUtil.currentSession().saveOrUpdate(genericLevel);
             _logger.info("successful saveOrUpdate of a generic level");
-        } catch (NonUniqueObjectException e1)
-        {
+        } catch (NonUniqueObjectException e1) {
             _logger.info("NonUniqueObject exception - throwing exception to caller");
-            throw new NonUniqueObjectException("nonUniqueObject exception for genericLevel",genericLevel.getGenericLevelId(),genericLevel.getClass().getName());
-        }
-        catch (HibernateException e2)
-        {
-            _logger.error("Cannot save or update a Category, see stack trace",e2);
+            throw new NonUniqueObjectException("nonUniqueObject exception for genericLevel", genericLevel.getGenericLevelId(), genericLevel.getClass().getName());
+        } catch (HibernateException e2) {
+            _logger.error("Cannot save or update a Category, see stack trace", e2);
             throw new UAPersistenceException("Cannot save or update a generic Level, see stack trace", e2);
         }
     }
 
     /**
      * Merging a generic Level - usually as a strategy to react on the NonUniqueObject exception
+     *
      * @param genericLevel An instance of a concrete generic Level
      */
     public void merge(GenericLevel genericLevel) {
@@ -146,13 +143,10 @@ public class GenericLevelDAO
      * @deprecated use generic
      */
     @SuppressWarnings({"JavaDoc"})
-    public List listCategories() throws UAPersistenceException
-    {
-        try
-        {
+    public List listCategories() throws UAPersistenceException {
+        try {
             return HibernateUtil.currentSession().createCriteria(Category.class).list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("cannot list categories, see stack trace ", e);
         }
     }
@@ -161,24 +155,21 @@ public class GenericLevelDAO
      * @deprecated use generic list
      */
     @SuppressWarnings({"JavaDoc"})
-    public List listEventGroups() throws UAPersistenceException
-    {
-        try
-        {
+    public List listEventGroups() throws UAPersistenceException {
+        try {
             return HibernateUtil.currentSession().createCriteria(EventGroup.class).list();
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("cannot list eventGroups, see stack trace ", e);
         }
     }
 
     /**
      * why deprecated? replacement?
+     *
      * @deprecated
      */
     @SuppressWarnings({"JavaDoc"})
-    public List listEvents() throws UAPersistenceException
-    {
+    public List listEvents() throws UAPersistenceException {
         throw new UAPersistenceException("not implemented - deprecated");
 /*
         try
@@ -197,13 +188,12 @@ public class GenericLevelDAO
      * @param levelClass The type of generic level to list
      * @return List of GenericLevel s
      */
-    public List listGenericLevel(Class levelClass)
-    {
+    public List<SportsEvent> listGenericLevel(Class levelClass) {
 
         Session session = HibernateUtil.currentSession();
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Object> criteriaQuery = cb.createQuery(levelClass);
-        Root<Object> root = criteriaQuery.from( levelClass);
+        Root<Object> root = criteriaQuery.from(levelClass);
 
         criteriaQuery.select(root).orderBy(cb.desc(root.get("genericLevelId")));
 
@@ -216,60 +206,72 @@ public class GenericLevelDAO
      * Generically load a hierachy level. must be casted by calling method to appropriate concrete class.
      *
      * @param genericLevelId Level ID
-     * @param levelClass the concrete class
+     * @param levelClass     the concrete class
      * @return a generic Level ; needs to be casted to appropriate class
      * @throws UAPersistenceException
      */
-    public GenericLevel load(Long genericLevelId, Class levelClass)
-    {
-        try
-        {
+    public <T extends GenericLevel> T load(Long genericLevelId, Class<T> levelClass) {
+        try {
             Session session = HibernateUtil.currentSession();
-            return (GenericLevel) session.load(levelClass, genericLevelId);
-        } catch (HibernateException e)
-        {
+            return session.load(levelClass, genericLevelId);
+        } catch (HibernateException e) {
             _logger.error("Could not load Generic Level, see stack trace", e);
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
         }
     }
 
     /**
-     * Load a concrete instance of a GenericLevel
+     * Get a hierarchy level.
+     *
+     * @param genericLevelId Level ID
+     * @param levelClass     the concrete class
+     * @return a generic Level or null, if no record exists for given levelId
+     * @throws UAPersistenceException
+     */
+    public <T extends GenericLevel> T get(Long genericLevelId, Class<T> levelClass) {
+            return HibernateUtil.currentSession().get(levelClass, genericLevelId);
+    }
+
+    /**
+     * Load a concrete instance of a GenericLevel (it's assumed that the ressource existis!)
      *
      * @param genericLevelId Level Id
      * @return a GenericLevel
      * @throws UAPersistenceException
      */
-    public GenericLevel load(Long genericLevelId) throws UAPersistenceException
-    {
-        try
-        {
+    public GenericLevel load(Long genericLevelId) throws UAPersistenceException {
+        try {
             return HibernateUtil.currentSession().load(GenericLevel.class, genericLevelId);
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
             throw new UAPersistenceException("Could not load Generic Level, see stack trace", e);
         }
     }
 
-    public void delete(Long genericLevelId) throws UAPersistenceException
-    {
+    /**
+     * Get a concrete instance of a GenericLevel
+     *
+     * @param genericLevelId Level Id
+     * @return a GenericLevel
+     * @throws UAPersistenceException
+     */
+    public GenericLevel get(Long genericLevelId) {
+        return HibernateUtil.currentSession().get(GenericLevel.class, genericLevelId);
+    }
+
+    public void delete(Long genericLevelId) throws UAPersistenceException {
         delete(load(genericLevelId));
     }
 
-    public void delete(GenericLevel level) throws UAPersistenceException
-    {
+    public void delete(GenericLevel level) throws UAPersistenceException {
         HibernateUtil.currentSession().delete(level);
     }
 
     /**
-     *
      * @param event an Event
      * @return a list of all sports albums for the passed sports event
      * @throws ch.unartig.exceptions.UAPersistenceException
-     *
      */
-    public List getSportsAlbumsFor(Event event) throws UAPersistenceException
-    {
+    public List getSportsAlbumsFor(Event event) throws UAPersistenceException {
         return HibernateUtil.currentSession().createCriteria(SportsAlbum.class)
                 .add(Expression.eq("event", event))
                 .list();
@@ -283,13 +285,12 @@ public class GenericLevelDAO
      * @return an EventGroup
      * @throws UAPersistenceException
      */
-    public EventGroup loadEventGroupByZipCode(String zipCode) throws UAPersistenceException
-    {
+    public EventGroup loadEventGroupByZipCode(String zipCode) throws UAPersistenceException {
         return HibernateUtil.currentSession().createQuery(
                 "select eg " +
                         "from EventGroup eg " +
-                        "where eg.zipcode = :zipCode",EventGroup.class)
-                .setParameter("zipCode",zipCode)
+                        "where eg.zipcode = :zipCode", EventGroup.class)
+                .setParameter("zipCode", zipCode)
                 .uniqueResult();
 
     }
@@ -300,10 +301,8 @@ public class GenericLevelDAO
      * @param date A Date
      * @return List of SportsEvents
      * @throws ch.unartig.exceptions.UAPersistenceException
-     *
      */
-    public List<SportsEvent> getSportsEventsBefore(Date date) throws UAPersistenceException
-    {
+    public List<SportsEvent> getSportsEventsBefore(Date date) throws UAPersistenceException {
         // do we need to restrict it? maybe later
 
 
@@ -312,10 +311,10 @@ public class GenericLevelDAO
         // Create CriteriaQuery
         CriteriaQuery<SportsEvent> criteria = builder.createQuery(SportsEvent.class);
         // get Root element
-        Root<SportsEvent> root = criteria.from( SportsEvent.class );
-        criteria.select( root )
-                .where(builder.lessThanOrEqualTo(root.get("eventDate"),date))
-                .orderBy(builder.desc(root.get("eventDate")),builder.desc(root.get("navTitle")))
+        Root<SportsEvent> root = criteria.from(SportsEvent.class);
+        criteria.select(root)
+                .where(builder.lessThanOrEqualTo(root.get("eventDate"), date))
+                .orderBy(builder.desc(root.get("eventDate")), builder.desc(root.get("navTitle")))
         ;
 
         List<SportsEvent> retValCriteria = HibernateUtil.currentSession()
@@ -334,23 +333,21 @@ public class GenericLevelDAO
      * Query for retrieving events when a photographer is logged in;
      * Return events that have at least one album where the photographer is the logged in photographer
      *
-     *
-     * @param eventGroup List events for this event group (location)
+     * @param eventGroup   List events for this event group (location)
      * @param photographer The Photographer object to get events for.
      * @return Events that have albums for the passed photographer id
      * @throws UAPersistenceException
      */
-    public List listEventsWithAlbums(EventGroup eventGroup, Photographer photographer) throws UAPersistenceException
-    {
+    public List listEventsWithAlbums(EventGroup eventGroup, Photographer photographer) throws UAPersistenceException {
 
         List newEventList = HibernateUtil.currentSession().createQuery(
                 "select distinct e " +
-                "from Event e " +
-                "inner join e.albums a " +
-                "where e.eventGroup = :eventGroup " +
+                        "from Event e " +
+                        "inner join e.albums a " +
+                        "where e.eventGroup = :eventGroup " +
                         "and a.photographer = :photographer")
-                .setParameter("eventGroup",eventGroup)
-                .setParameter("photographer",photographer)
+                .setParameter("eventGroup", eventGroup)
+                .setParameter("photographer", photographer)
                 .getResultList();
 
         _logger.debug("found [" + newEventList.size() + "] events for photographer with id [" + photographer + "]");
@@ -362,18 +359,17 @@ public class GenericLevelDAO
      * Query for retrieving all events (not per eventGroup) when a photographer is logged in;
      * Returns all events (not per eventGroup) that have at least one album where the photographer of the album is the logged in photographer
      *
-     *
      * @param photographer The Photographer object to get events for.
      * @return Events that have albums for the passed photographer id
      */
-    public List<Event> listEventsWithAlbums(Photographer photographer) throws UAPersistenceException {
+    public List<SportsEvent> listEventsWithAlbums(Photographer photographer) throws UAPersistenceException {
 
-        List<Event> newEventList = HibernateUtil.currentSession().createQuery(
+        List<SportsEvent> newEventList = HibernateUtil.currentSession().createQuery(
                 "select distinct e " +
                         "from Event e " +
                         "inner join e.albums a " +
                         "where e.eventGroup = :eventGroup " +
-                        "and a.photographer = :photographer",Event.class)
+                        "and a.photographer = :photographer", SportsEvent.class)
                 .setParameter("photographer", photographer)
                 .getResultList();
 
@@ -383,13 +379,13 @@ public class GenericLevelDAO
 
     /**
      * 'Admin'-routine: return all events with an album - used for web album admin page only?
+     *
      * @param eventGroup The EventGroup
      * @return List of Events
      * @throws UAPersistenceException
      */
-    public List listEventsWithAlbums(EventGroup eventGroup) throws UAPersistenceException
-    {
-       // Alias on album causes  events to appear more than once .... hence the result tranformer with DISTINCT_ROOT_ENTITY
+    public List listEventsWithAlbums(EventGroup eventGroup) throws UAPersistenceException {
+        // Alias on album causes  events to appear more than once .... hence the result tranformer with DISTINCT_ROOT_ENTITY
         _logger.debug("eventGroup = " + eventGroup);
         List eventList = null;
 
@@ -399,7 +395,7 @@ public class GenericLevelDAO
                         "from Event e " +
                         "where e.eventGroup = :eventGroup " +
                         "order by e.eventDate desc, e.navTitle desc ")
-                .setParameter("eventGroup",eventGroup)
+                .setParameter("eventGroup", eventGroup)
                 .list();
         return newEventList;
 
@@ -412,19 +408,18 @@ public class GenericLevelDAO
      * join fetch products - needed in administration window in order to avoid lazy initialization exception
      * see https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
      *
-     * @param event Event
+     * @param event        Event
      * @param photographer Photographer
      * @return A list of Albums
      */
-    public List<Album> listAlbumsForPhotographer(Event event, Photographer photographer) throws UAPersistenceException
-    {
+    public List<Album> listAlbumsForPhotographer(Event event, Photographer photographer) throws UAPersistenceException {
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "select distinct a from Album a " +
                         "left join fetch a.products " +
                         "left join fetch a.event " +
                         "where a.event = :event " +
                         "and a.photographer = :photographer " +
-                        "order by a.eventCategory.eventCategoryId asc",Album.class) // ordering by the eventcategory
+                        "order by a.eventCategory.eventCategoryId asc", Album.class) // ordering by the eventcategory
                 .setParameter("event", event)
                 .setParameter("photographer", photographer)
                 .list();
@@ -437,11 +432,11 @@ public class GenericLevelDAO
      * Return all albums for an event
      * join fetch products - needed in administration window in order to avoid lazy initialization exception
      * see https://vladmihalcea.com/the-best-way-to-handle-the-lazyinitializationexception/
+     *
      * @param event The Event
      * @return List of Album s
      */
-    public List<Album> listAlbumsForPhotographer(Event event) throws UAPersistenceException
-    {
+    public List<Album> listAlbumsForPhotographer(Event event) throws UAPersistenceException {
 
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
@@ -449,10 +444,9 @@ public class GenericLevelDAO
                         "left join fetch a.products " +
                         "left join fetch a.event " +
                         "where a.event = :event " +
-                        "order by a.eventCategory.eventCategoryId asc",Album.class)
+                        "order by a.eventCategory.eventCategoryId asc", Album.class)
                 .setParameter("event", event)
                 .getResultList();
-
 
 
         return albumList;
@@ -460,16 +454,16 @@ public class GenericLevelDAO
 
     /**
      * Query for retrieving Albums when a photographer is logged in
+     *
      * @param photographerId Id of the photographer
      * @return list of albums
      * @throws UAPersistenceException
      */
-    public List<Album> listAlbumsForPhotographer(Long photographerId) throws UAPersistenceException
-    {
+    public List<Album> listAlbumsForPhotographer(Long photographerId) throws UAPersistenceException {
         List<Album> albumList = HibernateUtil.currentSession().createQuery(
                 "select a from Album a " +
-                "where a.photographer.photographerId = :photographerId " +
-                "order by navTitle desc ",Album.class)
+                        "where a.photographer.photographerId = :photographerId " +
+                        "order by navTitle desc ", Album.class)
                 .setParameter("photographerId", photographerId)
                 .getResultList();
 
@@ -479,13 +473,13 @@ public class GenericLevelDAO
 
     /**
      * If available return the sportsalbum that belongs to the passed photographer and category
-     * @param photographer the photographer who owns the alblum
+     *
+     * @param photographer  the photographer who owns the alblum
      * @param eventCategory the category of wanted album
      * @return null or a single event category
      * @throws UAPersistenceException In case we have more than one matching album
      */
-    public SportsAlbum getSportsAlbumFor(Photographer photographer, EventCategory eventCategory) throws UAPersistenceException
-    {
+    public SportsAlbum getSportsAlbumFor(Photographer photographer, EventCategory eventCategory) throws UAPersistenceException {
         return (SportsAlbum) HibernateUtil.currentSession().createCriteria(SportsAlbum.class)
                 .add(Expression.eq("eventCategory", eventCategory))
                 .add(Expression.eq("photographer", photographer))

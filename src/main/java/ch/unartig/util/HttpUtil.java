@@ -40,9 +40,6 @@
  ****************************************************************/
 package ch.unartig.util;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.methods.GetMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -63,7 +60,6 @@ public class HttpUtil {
 
     private String address;
     private URLConnection connection = null;
-    private HttpClient x_client = null;
     private InputStream is = null;
 
     public void setAddress(String address) {
@@ -78,27 +74,6 @@ public class HttpUtil {
 //        this.address = url;
 //    }
 
-    public void closeConnections() {
-        try {
-            if (is != null) {
-                is.close();
-            }
-        } catch (Exception e) {
-        }
-        try {
-            if (connection != null && connection instanceof HttpURLConnection) {
-                ((HttpURLConnection) connection).disconnect();
-            }
-        } catch (Exception e) {
-        }
-        try {
-            if (x_client != null) {
-//                deprecated, and not available anymore in v3 of httpclient
-//                x_client.endSession();
-            }
-        } catch (Exception e) {
-        }
-    }
 
     /**
      * will throw IOException if not authorized:
@@ -119,50 +94,6 @@ public class HttpUtil {
         return is;
     }
 
-    /**
-     * Returns the response from a http GET request as stream.
-     *
-     * @param url
-     * @return
-     * @throws IOException Will throw IOException if not authorized:
-     */
-    public static InputStream getHttpResponseAsStream(String url) throws IOException {
-
-        String x_new_url = url;
-        String x_user = null;
-        String x_pwd = null;
-        if (url.indexOf('@') > 0) {
-            String x_pwd_str =
-                    url.substring(url.indexOf("://") + 3,
-                            url.indexOf('@'));
-            x_user =
-                    x_pwd_str.substring(0, x_pwd_str.indexOf(':'));
-            x_pwd =
-                    x_pwd_str.substring(x_pwd_str.indexOf(':') + 1);
-            x_new_url = url.substring(0, url.indexOf("://") + 3)
-                    + url.substring(url.indexOf('@') + 1);
-        }
-        HttpClient httpClient = new HttpClient();
-        httpClient.getState().setCredentials(//null,
-                null,
-                new UsernamePasswordCredentials(x_user, x_pwd));
-
-//        Deprecated in httpclient > v3.0
-//        x_client.startSession(new URL(x_new_url));
-        httpClient.getHostConfiguration().setHost(url);
-        //	GetMethod get = new GetMethod(x_new_url);
-        GetMethod get = new GetMethod(new URL(x_new_url).getPath());
-        if (x_new_url.indexOf('?') > 0) {
-            String x_queryString = x_new_url.substring(x_new_url.indexOf('?') + 1);
-            get.setQueryString(x_queryString);
-        }
-        int x_responseCode = httpClient.executeMethod(get);
-        if (x_responseCode != HttpURLConnection.HTTP_OK) {
-
-            throw new IOException("Server returned HTTP response code: " + x_responseCode + " for URL: " + url);
-        }
-        return get.getResponseBodyAsStream();
-    }
 
     /**
      * @return content Encoding

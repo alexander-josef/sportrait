@@ -44,7 +44,7 @@ public class ProductTypeDAO {
     {
         try
         {
-            return (ProductType) HibernateUtil.currentSession().load(ProductType.class, productTypeId);
+            return HibernateUtil.currentSession().load(ProductType.class, productTypeId);
         } catch (HibernateException e)
         {
             throw new UAPersistenceException("Could not load ProductType, see stack trace", e);
@@ -53,25 +53,21 @@ public class ProductTypeDAO {
     }
 
 
+    public ProductType get(Long productTypeId) {
+        return HibernateUtil.currentSession().get(ProductType.class, productTypeId);
+    }
+
     /**
      * List all productTypes there are - return ordered (by ID) list
      * @return
      * @throws UAPersistenceException
      */
-    public List listProductTypes() throws UAPersistenceException
+    public List<ProductType> listProductTypes() throws UAPersistenceException
     {
-        List newProductList = HibernateUtil.currentSession().createQuery(
+        List<ProductType> newProductList = HibernateUtil.currentSession().createQuery(
                 "select pt from ProductType pt " +
                         "order by productTypeId asc ")
                 .list();
-
-
-        //hbm3: clean up
-        Criteria c = HibernateUtil.currentSession()
-                .createCriteria(ProductType.class)
-                .addOrder(Order.asc("productTypeId"));
-        List oldProductList = c.list();
-
 
         return newProductList;
 

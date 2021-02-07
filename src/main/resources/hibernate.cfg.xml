@@ -27,6 +27,13 @@
         <property name="hibernate.cache.use_second_level_cache">true</property>
 
         <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.JCacheRegionFactory</property>
+<!--
+        <property name="hibernate.javax.cache.uri">file:ehcache.xml</property>
+-->
+
+<!--            NEW 2021-01-11 - after upgrading Hibernate to 5.4.27 and upgrading ehcache -->
+        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>
+
         <property name="hibernate.javax.cache.missing_cache_strategy">create</property>
 
         <!-- problem with old data when using query cache? -->
@@ -42,12 +49,6 @@
         <property name="hibernate.implicit_naming_strategy">legacy-hbm</property>
 
         <!-- Mapping files -->
-        <!-- CAUTION : make sure that all mappings are included. Check mappings.xml in the model directory, this is the Master resource for mapping files -->
-        <!--For a more generic solution check the hibernate.cfg.xml file for localhost and the comments in cluded in this file. However, using the !ENTITY Tag seems not to work for boston-->
-        <!--<mapping resource="ch/unartig/studioserver/model/Photo.hbm.xml"/>-->
-
-
-
         <mapping class="ch.unartig.studioserver.model.GenericLevel"/>
         <mapping class="ch.unartig.studioserver.model.Album"/>
         <mapping class="ch.unartig.studioserver.model.Category"/>

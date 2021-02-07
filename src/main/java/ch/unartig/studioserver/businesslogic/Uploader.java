@@ -52,10 +52,10 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Uploader extends Thread
+public class Uploader implements Runnable
 {
 
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
 
 //    Enumeration enumeration = new String[]{"dd", "ss"};
     private String tempImageDirectory;
@@ -85,42 +85,9 @@ public class Uploader extends Thread
         }
     }
 
-    /**
-     * Simple constructor without image or directory path (called by applet action only)
-     * @param albumId
-     * @param processImages set to true if thumbnail and display images shall be created using JAI
-     */
-    public Uploader(Long albumId, Boolean processImages)
-    {
-        this.albumId = albumId;
-        this.applyLogoOnFineImages = true; // useful assumption??
-        if (processImages == null || processImages == Boolean.FALSE)
-        {
-            this.createThumbnailDisplay = Boolean.FALSE;
-        } else
-        {
-            this.createThumbnailDisplay = Boolean.TRUE;
-        }
-    }
 
     /**
-     * Will be called from uploader applet Action (only usage so far)
-     * @param tempSingleImageFile The complete Path of the temporary single image file to upload
-     */
-    public void uploadSingleImage(File tempSingleImageFile)
-    {
-        this.tempSingleImageFile = tempSingleImageFile;
-        if (albumId!=null && tempSingleImageFile!=null && !"".equals(tempSingleImageFile))
-        {
-            tempImageDirectory =null;
-            // this will start a separate thread and call the run method in this class.
-            this.start();
-            _logger.debug("Thread for registering single photo started. Image ["+tempSingleImageFile+"]");
-        }
-    }
-
-    /**
-     * Starts new Thread for uploading and importing a photo;
+     * Starts new Thread for uploading and importing photos;
      *
      */
     public void run()

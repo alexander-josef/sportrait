@@ -60,9 +60,7 @@ import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.InputStream;
@@ -82,7 +80,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) // using eager to make admin window work
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @OrderColumn(name = "category_position")
+    @OrderColumn(name = "category_position") // CAUTION : think of the overhead that this ordering occurs!!
     private List<EventCategory> eventCategories = new ArrayList<>(0);
 
     /**
@@ -162,7 +160,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
     }
 
     /**
-     * given the eventcategories as string with a colon semicolon separted list of categories, add the categories to the event
+     * given the eventcategories as string with a colon semicolon separated list of categories, add the categories to the event
      * @param categoriesString a semicolon separated string of categories
      */
     public void setEventCategoriesAsString(String categoriesString)
@@ -262,19 +260,20 @@ public class SportsEvent extends Event implements java.io.Serializable {
      *
      * @param eventCategoryId Sports Category Id as String as passed from view
      * @param tempFineImageServerPath temp path with high-res images local on the server
-     * @param client Client object, containing photographer object
+     * @param photographer Client object, containing photographer object
      * @param createThumbDisplay
      * @param applyLogoOnFineImages
-     * @return true for success
+     * @return SportsAlbum
      * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Client client, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
+    public SportsAlbum createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Photographer photographer, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
     {
-        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
+        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
         // giving control to new thread and return.
-        Thread uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
-        uploader.start();
-        return true;
+        Uploader uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
+        Thread uploaderThread = new Thread(uploader);
+        uploaderThread.start();
+        return sportsAlbum;
     }
 
     /**
@@ -305,9 +304,10 @@ public class SportsEvent extends Event implements java.io.Serializable {
         sportsAlbum.extractPhotosFromArchive(inputStream);
 
         // giving control to new thread and return.
-        Thread uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages, applyLogoOnFineImages);
+        Uploader uploader = new Uploader(null, sportsAlbum.getGenericLevelId(), processImages, applyLogoOnFineImages);
+        Thread uploaderThread = new Thread(uploader);
         _logger.info("Starting Uploader Thread ...");
-        uploader.start();
+        uploaderThread.start();
         return true;
     }
 
@@ -410,15 +410,9 @@ public class SportsEvent extends Event implements java.io.Serializable {
         List<EventCategory> retVal = new ArrayList<>(); // todo debug: cached results? probably not, many sql statements issued
         for (EventCategory eventCategory : getEventCategories()) // --> eventcategories on event are cached
         {
-            try
+            if (eventCategory.hasPublishedPhotos())
             {
-                if (eventCategory.hasPublishedPhotos())
-                {
-                    retVal.add(eventCategory);
-                }
-            } catch (UnartigException e)
-            {
-                _logger.error("Cannot count photos of eventcategory",e);
+                retVal.add(eventCategory);
             }
         }
         return retVal;

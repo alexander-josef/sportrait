@@ -194,7 +194,6 @@ package ch.unartig.studioserver.model;
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
-import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.beans.AbstractAlbumBean;
 import ch.unartig.studioserver.beans.AlbumBean;
@@ -213,7 +212,6 @@ import com.drew.metadata.exif.ExifDirectoryBase;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.jpeg.JpegDirectory;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.IndexColumn;
 
 import javax.persistence.*;
 import java.io.*;
@@ -260,11 +258,11 @@ public class Album extends GenericLevel implements Serializable {
     @JoinColumn(name = "eventcategoryid")
     private EventCategory eventCategory;
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy("pictureTakenDate")
     private Set<Photo> photos = new HashSet<>(0);
 
-    @OneToMany(mappedBy = "album",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OrderBy("productType")
     private Set<Product> products = new HashSet<>(0);
@@ -471,15 +469,15 @@ public class Album extends GenericLevel implements Serializable {
     /**
      * Registers a single photo in the db and creates the thumb and disp images if the applyLogoOnFineImages argument is true
      * AJ 20180204 : applyLogoOnFineImages not used anymore with image service (imgix)
-     *
-     *
+     * <p>
+     * <p>
      * EXIF orientation deatils according to: http://sylvana.net/jpegcrop/exif_orientation.html
-     *
-     *
+     * <p>
+     * <p>
      * For convenience, here is what the letter F would look like if it were tagged correctly and displayed by a program that ignores the orientation tag (thus showing the stored image):
-     *
-     *   1        2       3      4         5            6           7          8
-     *
+     * <p>
+     * 1        2       3      4         5            6           7          8
+     * <p>
      * 888888  888888      88  88      8888888888  88                  88  8888888888
      * 88          88      88  88      88  88      88  88          88  88      88  88
      * 8888      8888    8888  8888    88          8888888888  8888888888          88
@@ -655,8 +653,8 @@ public class Album extends GenericLevel implements Serializable {
         return problemFiles;
     }
 
-    public List getPhotosAsList() {
-        return new ArrayList(getPhotos());
+    public List<Photo> getPhotosAsList() {
+        return new ArrayList<>(getPhotos());
     }
 
     /**
@@ -722,14 +720,13 @@ public class Album extends GenericLevel implements Serializable {
      * todo: the term 'album' is not specific enough anymore with sportsalbums ... there, the last photo of one 'view' is not necessarily the last photo in the whole album
      *
      * @return last photo in album
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public Photo getLastPhotoInAlbumAndSelection() throws UnartigException {
+    public Photo getLastPhotoInAlbumAndSelection() {
         _logger.debug("Album.getLastPhotoInCategoryAndSelection xxxx");
         // reload this album
         GenericLevelDAO glDao = new GenericLevelDAO();
-        List photoList = new ArrayList(((Album) glDao.load(this.getGenericLevelId(), Album.class)).getPhotos());
-        Photo retVal = (Photo) (photoList.get(getNumberOfPhotos() - 1));
+        List<Photo> photoList = new ArrayList<>(((Album) glDao.load(this.getGenericLevelId(), Album.class)).getPhotos());
+        Photo retVal = (photoList.get(getNumberOfPhotos() - 1));
         _logger.debug("returning photo : " + retVal);
         return retVal;
     }
@@ -738,9 +735,8 @@ public class Album extends GenericLevel implements Serializable {
      * method to get first photo in album
      *
      * @return first photo in album
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public Photo getFirstPhotoInAlbum() throws UnartigException {
+    public Photo getFirstPhotoInAlbum() {
         PhotoDAO photoDao = new PhotoDAO();
         return photoDao.getFirstPhotoFor(this);
     }
@@ -772,8 +768,8 @@ public class Album extends GenericLevel implements Serializable {
         // product entries per album: only one per productType
         Set productTypeIds = productPrices.keySet();
         PriceDAO priceDao = new PriceDAO();
-        for (Iterator iterator = productTypeIds.iterator(); iterator.hasNext(); ) {
-            String productTypeIdString = (String) iterator.next();
+        for (Object typeId : productTypeIds) {
+            String productTypeIdString = (String) typeId;
             String priceIdString = (String) productPrices.get(productTypeIdString);
             //producttypes with priceid <=0 are not set for this album
             final Long productTypeId = Long.valueOf(productTypeIdString);
@@ -833,12 +829,11 @@ public class Album extends GenericLevel implements Serializable {
      *                           For product configuration, more likely all products are needed
      * @return
      */
-    public Map getAvailableProductTypes(boolean onlyActiveProducts) {
+    public Map<Long, ProductType> getAvailableProductTypes(boolean onlyActiveProducts) {
 
-        Map productTypeMap = new HashMap();
-        Set products = onlyActiveProducts ? getActiveProducts() : getProducts();
-        for (Iterator iterator = products.iterator(); iterator.hasNext(); ) {
-            Product product = (Product) iterator.next();
+        Map<Long, ProductType> productTypeMap = new HashMap<>();
+        Set<Product> products = onlyActiveProducts ? getActiveProducts() : getProducts();
+        for (Product product : products) {
             ProductType productType = product.getProductType();
             productTypeMap.put(productType.getProductTypeId(), productType);
         }
@@ -848,26 +843,41 @@ public class Album extends GenericLevel implements Serializable {
 
     /**
      * Write access check for an album; client needs to be either admin or owner of the album.
+     * Currently used for all access checks, also read (check calling methods)
      *
      * @param client
+     * @return
      * @throws NotAuthorizedException
      */
-    protected void checkWriteAccessFor(Client client) throws NotAuthorizedException {
+    protected boolean checkWriteAccessFor(Client client) throws NotAuthorizedException {
         _logger.debug("checking access for user [" + client.getUserProfile().getUserName() + "] with roles [" + client.getUserProfile().getRoles() + "]");
         _logger.debug("client is admin? " + client.isAdmin());
         // _logger.debug("Photographer : " + getPhotographer()); // don't use this - can cause lazy initialization exception
         // special case no photographer:
         if (getPhotographer() == null && client.isAdmin()) {
-            // album without an album ...
-            return;
+            // album without a photographer ...
+            return true;
         } else if (getPhotographer() == null && !client.isAdmin()) {
-            throw new RuntimeException("Unexpected state : no photographer album shown to a non-admin!!");
+            throw new NotAuthorizedException("Unexpected state : album w/o linked photographer accessed from non-admin!!");
         }
         // regular check:
         if (!(client.isAdmin() || getPhotographer().equals(client.getPhotographer()))) {
-            throw new NotAuthorizedException("Not Administrator rights");
+            _logger.debug("client is not authorized - photographerId  :  " + client.getPhotographer().getPhotographerId());
+            throw new NotAuthorizedException("Missing rights - need to be owning photographer or admin");
         }
+        return true;
+    }
 
+    /**
+     * Read access check for an album; client needs to be either admin or owner of the album.
+     *
+     * @param client
+     * @return
+     * @throws NotAuthorizedException
+     */
+    public boolean checkReadAccessFor(Client client) throws NotAuthorizedException {
+        //todo : implement RBAC specific read access permissions - currently no permission schema for it.
+        return checkWriteAccessFor(client);
     }
 
     /**
@@ -875,9 +885,9 @@ public class Album extends GenericLevel implements Serializable {
      *
      * @return Active products (products that don't have the inactvie flag)
      */
-    public Set getActiveProducts() {
+    public Set<Product> getActiveProducts() {
         Set<Product> activeProducts = new HashSet<Product>();
-        Set allProductsForAlbum = getProducts();
+        Set<Product> allProductsForAlbum = getProducts();
         for (Object anAllProductsForAlbum : allProductsForAlbum) {
             Product product = (Product) anAllProductsForAlbum;
             if (product.getInactive() == null || !product.getInactive()) { // either null or NOT inactive
@@ -950,23 +960,24 @@ public class Album extends GenericLevel implements Serializable {
 
     /**
      * toString
+     *
      * @return String
      */
-     public String toString() {
-	  StringBuffer buffer = new StringBuffer();
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
 
-      buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
-      buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
-      buffer.append("event").append("='").append(getEvent()).append("' ");
-      buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
-      buffer.append("]");
+        buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
+        buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
+        buffer.append("event").append("='").append(getEvent()).append("' ");
+        buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
+        buffer.append("]");
 
-      return buffer.toString();
-     }
+        return buffer.toString();
+    }
 
 
     /**
-     * sorts the albums for a nice list when showning all albums sorted by event and category (sales report)
+     * sorts the albums for a nice list when showing all albums sorted by event and category (sales report)
      * Album comparator using Generics;
      */
     public static class EventCategoryComparator implements Comparator<Album> {// needs to be static

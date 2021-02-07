@@ -66,7 +66,7 @@ public class SportraitAdministrationWindow extends Window
     private String eventCity;
     private String eventCategory;
     private Tabbox tabbox;
-    private List<Event> events; // events relevant for this administration window - all events in case of a global admin, or only the photographer's events
+    private List<SportsEvent> events; // events relevant for this administration window - all events in case of a global admin, or only the photographer's events
 
     public SportraitAdministrationWindow()
     {
@@ -81,7 +81,7 @@ public class SportraitAdministrationWindow extends Window
         // store events as a field - to be reused by the event administration window. re-load in every case
         if (photographer.isAdmin()) {
             //noinspection unchecked
-            setEvents(glDao.listGenericLevel(Event.class)); // events are reloaded - but problems getting albums from cache?
+            setEvents(glDao.listGenericLevel(SportsEvent.class)); // events are reloaded - but problems getting albums from cache?
         } else {
             setEvents(glDao.listEventsWithAlbums(photographer));
         }
@@ -125,7 +125,7 @@ public class SportraitAdministrationWindow extends Window
         // first clear the listbox:
         albumListbox.getItems().clear();
 
-        List<Event> localEvents;
+        List<SportsEvent> localEvents;
         localEvents = events;
 
         _logger.debug("photographer = " + photographer);
@@ -461,11 +461,11 @@ public class SportraitAdministrationWindow extends Window
     }
 
 
-    public List<Event> getEvents() {
+    public List<SportsEvent> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
+    public void setEvents(List<SportsEvent> events) {
         this.events = events;
     }
 }

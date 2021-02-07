@@ -117,7 +117,7 @@ public class ZAlbumComponent extends Div {
     private void appendProductChildren(Rows productRows) {
 
         ProductTypeDAO ptDao = new ProductTypeDAO();
-        List productTypeList = ptDao.listProductTypes();
+        List<ProductType> productTypeList = ptDao.listProductTypes();
 
         Row row;
 

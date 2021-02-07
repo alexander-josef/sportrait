@@ -122,12 +122,12 @@ public class SportEventsAction extends MappingDispatchAction
                 // todo : call in event?
                 // todo: same as next option?
                 // ***** S3 Upload *****
-                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client, createThumbDisplay,applyLogoOnFineImages);
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), storageProviderUploadPath, client.getPhotographer(), createThumbDisplay,applyLogoOnFineImages);
 
             } else if ((tempFineImageServerPath != null && !"".equals(tempFineImageServerPath)) && (file == null || file.getFileSize()==0) )
             {
                 _logger.info("Going to create album from temporary path on server (2nd option after <Import starten> with a given path has been chosen");
-                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), tempFineImageServerPath, client, createThumbDisplay, applyLogoOnFineImages);
+                event.createSportsAlbumFromTempPath(new Long(eventCategoryId), tempFineImageServerPath, client.getPhotographer(), createThumbDisplay, applyLogoOnFineImages);
             } else if (importDataFile!=null && (tempFineImageServerPath == null || "".equals(tempFineImageServerPath))  )
             {
                 _logger.info("Going to create album from import data file only (no fine images) - 3rd option, zip-file with csv data given");

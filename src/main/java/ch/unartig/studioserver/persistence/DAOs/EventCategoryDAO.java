@@ -51,6 +51,15 @@ public class EventCategoryDAO {
         }
     }
 
-    
+    public EventCategory getEventCategory(long eventCategoryId) {
+        return HibernateUtil.currentSession().get(EventCategory.class, eventCategoryId);
+    }
 
+    /**
+     * Delete an eventCategory - does not commit. This needs to be done in the business logic transaction
+     * @param eventCategory the eventCategory instance to be deleted
+     */
+    public void delete(EventCategory eventCategory) {
+        HibernateUtil.currentSession().delete(eventCategory);
+    }
 }

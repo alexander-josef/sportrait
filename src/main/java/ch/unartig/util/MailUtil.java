@@ -63,15 +63,6 @@ import ch.unartig.studioserver.beans.ShoppingCart;
 import ch.unartig.studioserver.businesslogic.PhotoOrderIF;
 import org.apache.struts.util.MessageResources;
 
-import javax.mail.Address;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
@@ -88,33 +79,11 @@ public class MailUtil
      * @param body
      * @param mailToAddress
      * @param mailFromAddress
-     * @throws MessagingException
      */
-    public static void sendMail(String subject, String body, String mailToAddress, String mailFromAddress) throws MessagingException
+    public static void sendMail(String subject, String body, String mailToAddress, String mailFromAddress)
     {
 
-        Properties javaMailProps = System.getProperties();
-        final String mailUser = "user";
-        final String mailPassword = "password";
-        final Address address = new InternetAddress(mailToAddress);
-        Authenticator authenticator = new Authenticator()
-        {
-            protected PasswordAuthentication getPasswordAuthentication()
-            {
-                return new PasswordAuthentication(mailUser, mailPassword);
-            }
-        };
-        javaMailProps.put(_KEY_MAIL_SMTP_HOST, Registry.getMailHost());
-        javaMailProps.put(_KEY_MAIL_HOST, Registry._MAIL_HOST);
-        javaMailProps.put(_KEY_MAIL_FROM, mailFromAddress);
 
-        Session mailSession = Session.getDefaultInstance(javaMailProps);
-
-        Message message = new MimeMessage(mailSession);
-        message.setSubject(subject);
-        message.setText(body);
-        message.addRecipient(Message.RecipientType.TO, address);
-        Transport.send(message);
 
 
     }

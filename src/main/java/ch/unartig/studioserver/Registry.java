@@ -203,6 +203,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts.util.MessageResources;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
 
 /**
@@ -227,8 +228,8 @@ public final class Registry
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";
-    private static String projectName;
-    private static String projectVersion;
+    private static String projectName="not set";
+    private static String projectVersion="not set";
     private static String buildNumber = "99999";
 
     // Where the fine images are located. No document root, not accessible by a web server.
@@ -339,7 +340,7 @@ public final class Registry
     *constant to use when jumping forward or backward in the album using the >| or |< buttons
     */
     public static final int _JUMP_BACK_FORWARD_PAGE_VALUE = 10;
-    public static final int _DEFAULT_PHOTOPOINT_TOLERANCE_SECONDS = 5;
+    // public static final int _DEFAULT_PHOTOPOINT_TOLERANCE_SECONDS = 5;
     public static final String _SWITZERLAND_COUNTRY_CODE = "CHE";
     public static final String _GERMANY_COUNTRY_CODE = "DEU";
     public static final String _AUSTRIA_COUNTRY_CODE = "AUT";
@@ -374,7 +375,7 @@ public final class Registry
     /**
      * will be called upon startup of the Action servlet
      */
-    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException {
+    public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException, NoSuchMethodException, InvocationTargetException {
 
         MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
@@ -425,8 +426,8 @@ public final class Registry
         _logger.info("***** sponsorBarFile = " + appSettings.getMessage("sponsorBarFile"));
 
 
-        setProjectName(appSettings.getMessage("application.name"));
-        setProjectVersion(appSettings.getMessage("application.version"));
+        // setProjectName(appSettings.getMessage("application.name"));
+        // setProjectVersion(appSettings.getMessage("application.version"));
         // todo: set to enabled again after svn problem on test server is solved
 //        setBuildNumber(appSettings.getMessage("application.buildNumber"));
 
@@ -464,7 +465,7 @@ public final class Registry
         s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
-        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).newInstance();
+        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
         /************************************************************************/
 
         // Set up the HTTP transport and JSON factory for the google sign-in actions

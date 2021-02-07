@@ -4,6 +4,7 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.sportrait.imgRecognition.MessageQueueHandler;
 import ch.unartig.studioserver.Registry;
+import ch.unartig.studioserver.businesslogic.ImportStatus;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.Photo;
 import ch.unartig.studioserver.model.SportsAlbum;
@@ -29,7 +30,7 @@ import java.util.zip.ZipInputStream;
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
 
     private AmazonS3 s3DefaultClient; //
     private AmazonS3 s3FrankfurtClient; // specific for older albums on frankfurt bucket
@@ -202,8 +203,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     public void registerFromTempPath(Album album, String tempSourceDir, boolean createThumbDisp, boolean applyLogoOnFineImages) {
         MessageQueueHandler queueHandler = MessageQueueHandler.getInstance();
-        boolean applyNumberRecognition = true; // todo : add parameter if needed - default true so far
+        boolean applyNumberRecognition = true; // todo : add parameter if needed - default true so far. should go as query parameter to API
         long base = System.currentTimeMillis();
+
+        // This is an expensive call!
+        ImportStatus.getInstance().setPhotosRemaining(album,getNumberOfFineImageFiles(tempSourceDir));
 
         // loop through jpeg files on S3
         String targetBucketName = getS3BucketNameFor(album); // only target bucket name - source bucket name is current bucket location
@@ -254,13 +258,18 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                             // add fine Image to queue for number recognition
                             String path = targetBucketName + "/" + fineImageKey;
                             queueHandler.addMessage(album,newPhoto.getPhotoId(),path); // newPhoto could be null for unknown file
+                            ImportStatus.getInstance().incNumberRecognitionCounter(album);
                         }
+                        // update import state object
+                        ImportStatus.getInstance().photoImported(album);
+
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + importImageKey);
+                        ImportStatus.getInstance().importError(album);
                     }
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
-
+                    ImportStatus.getInstance().importError(album);
                 } finally { // make sure s3 object closes and release http connection
                     if (objectContent != null) {
                         try {
@@ -273,10 +282,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
             }
             listObjectsRequest.setMarker(objects.getNextMarker());
         } while (objects.isTruncated());
-
-
-        // handle problem files
-
+        ImportStatus.getInstance().resetPhotosImported(album); // all album photos are imported, clean up state counter
         _logger.info("**********************");
         _logger.info("Import time (Java or Script): " + ((System.currentTimeMillis() - base) / 1000 + " seconds"));
         _logger.info("**********************");
@@ -315,6 +321,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     /**
      * Use for showing number of photos when importing from temp location.
      * (implementation checks for truncated object lists and works also for object size > 1'000)
+     * CAUTION: slow operation
      * todo : works only with one level of folder hierarchy ? make it more robust
      * todo : works only with the default s3 client - only used for the upload folder so far. refactor if generic solution needed
      * @param key the aws s3 prefix-key (or "folder")
@@ -331,7 +338,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
         _logger.debug("going to count from upload folder : " + key+ " - starting at "+ Instant.now());
         do {
-            // todo : this is slow!
+            // todo : this is slow! there seem to be a better solution using the AWS S3 CLI
             _logger.debug("iterating over objectListings ....");
             objectListing = s3DefaultClient.listObjects(listObjectRequest);
             listObjectRequest.setMarker(objectListing.getNextMarker());

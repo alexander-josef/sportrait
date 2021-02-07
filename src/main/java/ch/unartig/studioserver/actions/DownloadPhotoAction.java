@@ -64,7 +64,9 @@ public class DownloadPhotoAction extends Action {
                 if (photo.isAfterImageServiceMigration())
                 {
                     String asvzLogoRelativeUrl = "/logo/" + yearForLogoWatermark + "/asvz-logo-" + yearForLogoWatermark + ".png";
-                    // todo get logo / sponsor bar from Registry
+                    _logger.debug("asvzLogoRelativeUrl = " + asvzLogoRelativeUrl);
+
+                    // todo get logo / sponsor bar from REST request
                     // todo : check if logo exists on S3 / imgix?
                     String sponsorBarRelativeUrl;
 
@@ -76,8 +78,10 @@ public class DownloadPhotoAction extends Action {
                     { // portrait format
                         blendWidthFactor = "1.0"; // use "0.75" if bar shall not completely cover width
                         markScalePercentage = "26";
-                        // todo get logo / sponsor bar from Registry
+                        // todo get logo / sponsor bar from REST Request
                         sponsorBarRelativeUrl = "/logo/" + yearForLogoWatermark + "/sola-sponsors-bar-bottom-neu-8000px.png";
+                        _logger.debug("sponsorBarRelativeUrl = " + sponsorBarRelativeUrl);
+
                         // todo : check if sponsor bar exists on S3 / imgix?
 
 

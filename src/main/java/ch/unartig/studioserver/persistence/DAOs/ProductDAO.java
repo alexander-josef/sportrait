@@ -3,7 +3,7 @@
  * FILENAME  :
  *    $RCSfile$
  *
- *    @author alex$             
+ *    @author alex$
  *    @since Nov 9, 2005$
  *
  * Copyright (c) 2005 unartig AG  --  All rights reserved
@@ -59,39 +59,47 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.criterion.Order;
 
 import java.util.List;
 
-public class ProductDAO
-{
+public class ProductDAO {
+    Logger _logger = Logger.getLogger(getClass().getName());
+
     /**
      * @param productId
      * @return
      * @throws UAPersistenceException
      */
-    public Product load(Long productId) throws UAPersistenceException
-    {
-        try
-        {
-            return (Product) HibernateUtil.currentSession().load(Product.class, productId);
+    public Product load(Long productId) throws UAPersistenceException {
+        try {
+            return HibernateUtil.currentSession().load(Product.class, productId);
 //            return (GenericLevel) HibernateUtil.currentSession().load(levelClass, genericLevelId);
-        } catch (HibernateException e)
-        {
+        } catch (HibernateException e) {
 //            logger.error("Could not load Event, see stack trace", e);
             throw new UAPersistenceException("Could not load Product, see stack trace", e);
         }
     }
 
     /**
+     * @param productId
+     * @return the product instance or null
+     */
+    public Product get(Long productId) {
+        return HibernateUtil.currentSession().get(Product.class, productId);
+    }
+
+    /**
      * list ALL products
+     *
      * @return
      * @throws UAPersistenceException
      */
-    public List listProducts() throws UAPersistenceException
-    {
+    public List listProducts() throws UAPersistenceException {
         Criteria c = HibernateUtil.currentSession()
                 .createCriteria(Product.class)
                 .addOrder(Order.asc("productId"));
@@ -99,4 +107,8 @@ public class ProductDAO
     }
 
 
+    public void saveOrUpdate(Product product) {
+        HibernateUtil.currentSession().saveOrUpdate(product);
+        _logger.info("successful saveOrUpdate of a product");
+    }
 }

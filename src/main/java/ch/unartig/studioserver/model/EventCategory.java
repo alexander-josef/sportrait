@@ -82,21 +82,29 @@ public class EventCategory implements java.io.Serializable {
 
     /**
      * 
-     * @param eventCategory
+     * @param eventCategoryTitle
      * @param event
      */
-    public EventCategory(String eventCategory, SportsEvent event)
+    public EventCategory(String eventCategoryTitle, SportsEvent event)
     {
-        setTitle(eventCategory);
+        setTitle(eventCategoryTitle);
+        setEvent(event);
+    }
+
+    /**
+     *
+     * @param event
+     */
+    public EventCategory(SportsEvent event)
+    {
         setEvent(event);
     }
 
     /**
      * Return true if this eventcategory has uploaded, published photos.
      * @return true if category has photos
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public boolean hasPublishedPhotos() throws UnartigException {
+    public boolean hasPublishedPhotos() {
 
         _logger.debug("EventCategory "+ getTitle() +" - EventCategory.getAlbums().size() = " + getAlbums().size());
         for (Object o : getAlbums()) {
@@ -140,7 +148,7 @@ public class EventCategory implements java.io.Serializable {
         this.event = event;
     }
 
-    public Set getAlbums() {
+    public Set<Album> getAlbums() {
         return this.albums;
     }
 
@@ -159,7 +167,7 @@ public class EventCategory implements java.io.Serializable {
       buffer.append("eventCategoryId").append("='").append(getEventCategoryId()).append("' ");
       buffer.append("title").append("='").append(getTitle()).append("' ");
       buffer.append("description").append("='").append(getDescription()).append("' ");
-      buffer.append("event").append("='").append(getEvent()).append("' ");
+      // buffer.append("event").append("='").append(getEvent()).append("' ");
       buffer.append("]");
 
       return buffer.toString();

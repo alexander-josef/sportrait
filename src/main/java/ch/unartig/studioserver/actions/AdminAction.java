@@ -332,30 +332,7 @@ public class AdminAction extends MappingDispatchAction
         return mapping.findForward("success");
     }
 
-    public ActionForward finishtimeMapping(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws UnartigException
-    {
-        GenericLevelDAO glDao = new GenericLevelDAO();
-        try
-        {
-            DynaActionForm startnumberMappingForm = (DynaActionForm) form;
-
-            FormFile mappingFile = (FormFile) startnumberMappingForm.get("mappingFile");
-            Long albumId = (Long) startnumberMappingForm.get("sportsAlbumId");
-            _logger.debug("mappingFile [" + mappingFile.getFileName() + "] called for albumId [" + albumId + "]");
-            Album album = (Album) glDao.load(albumId, Album.class);
-            _logger.debug("mapping for albumid " + album.getGenericLevelId());
-            int photoPointDifference = Integer.parseInt(startnumberMappingForm.getString("photopointFinishDifference"));
-            String photoPointTolerance = startnumberMappingForm.getString("photopointTolerance");
-            boolean photopointBeforeFinishtime = "beforeFinishTiming".equals(startnumberMappingForm.getString("photopointLocation"));
-            SportsAlbumMapper mapper = SportsAlbumMapper.createFinishTimeMapper(mappingFile.getInputStream(), album, photoPointDifference, photoPointTolerance, photopointBeforeFinishtime);
-            mapper.mapFinishOrStartTime();
-        } catch (Exception e)
-        {
-            _logger.error("cannot map sports album : ", e);
-            throw new UnartigException(e);
-        }
-        return mapping.findForward("success");
-    }
+// deleted finishTimeMapping
 
     /**
      * delete all startnumber-mappings for a given album
