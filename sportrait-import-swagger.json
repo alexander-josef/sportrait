@@ -1060,6 +1060,7 @@
           },
           "date" : {
             "type" : "string",
+            "format" : "date",
             "example" : "2020-12-13",
             "description" : "The date (day) the event takes, or took, place, in the format YYYY-MM-DD."
           },
