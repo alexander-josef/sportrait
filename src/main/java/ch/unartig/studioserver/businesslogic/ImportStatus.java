@@ -101,7 +101,8 @@ public final class ImportStatus {
     }
 
     public void photoRecognitionProcessed(Album album) {
-        queuedForNumberRecognition.put(album, queuedForNumberRecognition.get(album) -1);
+        Integer current = queuedForNumberRecognition.get(album);
+        queuedForNumberRecognition.put(album, current==null?1:current -1);
         if (queuedForNumberRecognition.get(album)==0) {
             queuedForNumberRecognition.remove(album);
         }
