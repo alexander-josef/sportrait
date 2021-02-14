@@ -14,7 +14,7 @@ jobs:
       - checkout
       - run:
           name: Clean and Verify for INT
-          command: mvn -P "k8s-java-int" -Drevision=$CIRCLE_TAG clean verify
+          command: mvn -P "k8s-java-int" -Drevision=${CIRCLE_TAG} clean verify
       - run:
           name: Save war file and rename
           command: |
