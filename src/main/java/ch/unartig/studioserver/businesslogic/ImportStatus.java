@@ -101,6 +101,8 @@ public final class ImportStatus {
     }
 
     public void photoRecognitionProcessed(Album album) {
+        // strange - how can we get null here for queue?
+        // if message for number recognition is processed w/o the counter being increment first ??
         Integer current = queuedForNumberRecognition.get(album);
         queuedForNumberRecognition.put(album, current==null?1:current -1);
         if (queuedForNumberRecognition.get(album)==0) {

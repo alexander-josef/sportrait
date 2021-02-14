@@ -117,6 +117,7 @@ public class StartnumberProcessor implements Runnable {
                     try {
                         processTask(message);
                     } catch (InvalidParameterException e) {
+                        _logger.info("Exception during number recognition process", e);
                         if (e.getMessage().contains("Minimum image height")) {
                             _logger.debug("Input image " + message.getBody() + " too small to analyze, skipping.");
                         }
