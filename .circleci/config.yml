@@ -3,7 +3,37 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
+jobs:
+  build:
+    docker:
+      - image: "circleci/openjdk:11.0.3-jdk-stretch"
+    steps:
+      - checkout
+      - run:
+          name: Clean and Package
+          command: mvn clean package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace: # use for storing produced artefacts
+          root: ./
+          paths:
+            - target/
+  test:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - checkout
+      - attach_workspace: # use for storing produced artefacts
+          at: ./target
+
 workflows:
+  version: 2
+
   maven_test:
     jobs:
-      - maven/test # checkout, build, test, and upload test results
+      - build
+      - test:
+          requires:
+            - build
