@@ -51,6 +51,8 @@ workflows:
       - maven_build
       - docker/publish:
           name: publish-k8s-int-image
+          requires:
+            - maven_build
           executor: docker/docker
           attach-at: './'
           # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
