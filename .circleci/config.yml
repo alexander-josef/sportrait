@@ -3,7 +3,7 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
   # start from a docker orb - publish and pull is already existing as commands
-  docker: circleci/docker@1.0.1
+  docker: circleci/docker@1.5.0
   # add kubernetes support orb, see https://circleci.com/developer/orbs/orb/circleci/kubernetes
   kube-orb: circleci/kubernetes@0.11.1
 jobs:
@@ -19,7 +19,7 @@ jobs:
           name: Save war file and rename
           command: |
             cp target/ROOT_Test.war ROOT.war
-            mv target/ROOT_Test.war ROOT_k8s-java-int.${CIRCLE_WORKFLOW_ID}.war
+            mv target/ROOT_Test.war ROOT_k8s-java-int.$CIRCLE_WORKFLOW_ID.war
       - save_cache:
           paths:
             - ~/.m2
@@ -27,7 +27,27 @@ jobs:
       - persist_to_workspace: # use for storing produced artefacts - can be used in further jobs
           root: ./
           paths:
-            - ROOT_k8s-java-int.${CIRCLE_WORKFLOW_ID}.war
+            - ROOT_k8s-java-int.$CIRCLE_WORKFLOW_ID.war
+            - ROOT.war
+  build_and_publish_docker_image:
+    executor: docker/docker
+    steps:
+      - attach_workspace: # use for storing produced artefacts
+          at: ./
+      - docker/publish:
+          # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
+          # extra_build_args: '--build-arg revision=<< pipeline.git.revision >> --build-arg vue_cli_build_mode=k8s-int'
+          image: $CIRCLE_PROJECT_USERNAME/sportrait/sportrait-k8s-java-int
+          tag: k8s-int.$CIRCLE_TAG
+          use-docker-credentials-store: true
+          use-remote-docker: true
+          # TODO env variables from env.integration.local?
+          # remove following line - not needed with this directory structure
+          # path: sportrait
+          registry: docker.pkg.github.com
+
+          # Todo later : rename context - docker credentials also applies to admin ui
+          context: sportraitNG
   test:
     docker:
       - image: "cimg/base:stable"
@@ -42,22 +62,7 @@ workflows:
   build_and_deploy_int:
     jobs:
       - maven_build
-      - docker/publish:
-          name: publish-k8s-int-image
-          executor: docker/docker
-          # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
-          extra_build_args: '--build-arg revision=<< pipeline.git.revision >> --build-arg vue_cli_build_mode=k8s-int'
-          image: $CIRCLE_PROJECT_USERNAME/sportrait/sportrait-k8s-java-int
-          tag: k8s-int.$CIRCLE_TAG
-          use-docker-credentials-store: true
-          use-remote-docker: true
-          # TODO env variables from env.integration.local?
-          # remove following line - not needed with this directory structure
-          # path: sportrait
-          registry: docker.pkg.github.com
-
-          # Todo later : rename context - docker credentials also applies to admin ui
-          context: sportraitNG
+      - build_and_publish_docker_image
 
       - test:
           requires:
