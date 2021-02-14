@@ -14,12 +14,12 @@ jobs:
       - checkout
       - run:
           name: Clean and Verify for INT
-          command: mvn -P "k8s-java-int" -Drevision=${CIRCLE_TAG} clean verify
+          command: mvn -P "k8s-java-int" -Drevision=${CIRCLE_WORKFLOW_ID} clean verify # use $CIRCLE_TAG if we switch back to only run tagged builds
       - run:
           name: Save war file and rename
           command: |
             cp target/ROOT_Test.war ROOT.war
-            mv target/ROOT_Test.war ROOT_k8s-java-int.$CIRCLE_TAG.war
+            mv target/ROOT_Test.war ROOT_k8s-java-int.$CIRCLE_WORKFLOW_ID.war
       - save_cache:
           paths:
             - ~/.m2
@@ -27,7 +27,7 @@ jobs:
       - persist_to_workspace: # use for storing produced artefacts - can be used in further jobs
           root: ./
           paths:
-            - ROOT_k8s-java-int.$CIRCLE_TAG.war
+            - ROOT_k8s-java-int.$CIRCLE_WORKFLOW_ID.war
   test:
     docker:
       - image: "cimg/base:stable"
