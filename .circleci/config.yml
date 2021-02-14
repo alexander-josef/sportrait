@@ -35,13 +35,20 @@ jobs:
       - attach_workspace: # use for storing produced artefacts
           at: ./
       - run: echo 'extra steps'
-  test:
+  # on do k8s cluster:
+  deploy-to-k8s-int:
     docker:
       - image: "cimg/base:stable"
     steps:
-      - checkout
-      - attach_workspace: # use for storing produced artefacts
-          at: ./
+      - kube-orb/install-kubeconfig:
+          kubeconfig: KUBECONFIG_DATA
+      - kube-orb/install-kubectl
+      - kube-orb/update-container-image:
+          container-image-updates: "sportrait-java-int=docker.pkg.github.com/alexander-josef/sportrait/sportrait-k8s-java-int:$CIRCLE_WORKFLOW_ID" # maybe later change image name if we only build from one image (not images per environment)
+          get-rollout-status: true
+          record: true
+          resource-name: deployment/sportrait-java-int
+
 
 workflows:
   version: 2
@@ -59,7 +66,7 @@ workflows:
           # not needed for java build - maybe later with env vars
           # extra_build_args: '--build-arg revision=<< pipeline.git.revision >> --build-arg vue_cli_build_mode=k8s-int'
           image: $CIRCLE_PROJECT_USERNAME/sportrait/sportrait-k8s-java-int
-          tag: k8s-int.$CIRCLE_TAG
+          tag: ${CIRCLE_WORKFLOW_ID}
           use-docker-credentials-store: true
           use-remote-docker: true
           # TODO env variables from env.integration.local?
@@ -69,10 +76,10 @@ workflows:
 
           # Todo later : rename context - docker credentials also applies to admin ui
           context: sportraitNG
-
-      - test:
+      - deploy-to-k8s-int:
+          context: sportrait-k8s-int
           requires:
-            - maven_build
+            - publish-k8s-int-image
 #  build_and_deploy_prod:
 #    jobs:
 #      - build
