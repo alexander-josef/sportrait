@@ -61,7 +61,7 @@ workflows:
 
       - test:
           requires:
-            - build
+            - maven_build
 #  build_and_deploy_prod:
 #    jobs:
 #      - build
