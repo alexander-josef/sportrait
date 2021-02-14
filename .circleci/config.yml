@@ -52,7 +52,7 @@ workflows:
       - docker/publish:
           name: publish-k8s-int-image
           executor: docker/docker
-          attach-at: ./
+          attach-at: "./"
           # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
           # not needed for java build - maybe later with env vars
           # extra_build_args: '--build-arg revision=<< pipeline.git.revision >> --build-arg vue_cli_build_mode=k8s-int'
