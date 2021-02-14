@@ -62,9 +62,9 @@ workflows:
       - test:
           requires:
             - build
-  build_and_deploy_prod:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
+#  build_and_deploy_prod:
+#    jobs:
+#      - build
+#      - test:
+#          requires:
+#            - build
