@@ -7,7 +7,7 @@ orbs:
   # add kubernetes support orb, see https://circleci.com/developer/orbs/orb/circleci/kubernetes
   kube-orb: circleci/kubernetes@0.11.1
 jobs:
-  maven_build:
+  maven_build_int:
     docker:
       - image: "circleci/openjdk:11.0.3-jdk-stretch"
     steps:
@@ -29,7 +29,29 @@ jobs:
           paths:
             - ROOT_k8s-java-int.${CIRCLE_WORKFLOW_ID}.war
             - ROOT.war
-  publish-k8s-int-image:
+  maven_build_prod:
+    docker:
+      - image: "circleci/openjdk:11.0.3-jdk-stretch"
+    steps:
+      - checkout
+      - run:
+          name: Clean and Verify for INT
+          command: mvn -P "k8s-java-prod" -Drevision=${CIRCLE_WORKFLOW_ID} clean verify # use $CIRCLE_TAG if we switch back to only run tagged builds
+      - run:
+          name: Save war file and rename
+          command: |
+            cp target/ROOT_PROD.war ROOT.war
+            mv target/ROOT_PROD.war ROOT_k8s-java-prod.${CIRCLE_WORKFLOW_ID}.war
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace: # use for storing produced artefacts - can be used in further jobs
+          root: ./
+          paths:
+            - ROOT_k8s-java-prod.${CIRCLE_WORKFLOW_ID}.war
+            - ROOT.war
+  publish-k8s-int-image: # needed?
     executor: docker/docker
     steps:
       - attach_workspace: # use for storing produced artefacts
@@ -48,18 +70,32 @@ jobs:
           get-rollout-status: true
           record: true
           resource-name: deployment/sportrait-java-int
+  deploy-to-k8s-prod:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - kube-orb/install-kubeconfig:
+          kubeconfig: KUBECONFIG_DATA
+      - kube-orb/install-kubectl
+      - kube-orb/update-container-image:
+          container-image-updates: "sportrait-java-prod=docker.pkg.github.com/alexander-josef/sportrait/sportrait-k8s-java-prod:$CIRCLE_WORKFLOW_ID" # maybe later change image name if we only build from one image (not images per environment)
+          get-rollout-status: true
+          record: true
+          resource-name: deployment/sportrait-java-prod
 
 
 workflows:
   version: 2
-
+  #
+  # INT
+  #
   build_and_deploy_int:
     jobs:
-      - maven_build
+      - maven_build_int
       - docker/publish:
           name: publish-k8s-int-image
           requires:
-            - maven_build
+            - maven_build_int
           executor: docker/docker
           attach-at: './'
           # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
@@ -80,9 +116,37 @@ workflows:
           context: sportrait-k8s-int
           requires:
             - publish-k8s-int-image
-#  build_and_deploy_prod:
-#    jobs:
-#      - build
-#      - test:
-#          requires:
-#            - build
+  #
+  # PROD
+  #
+  build_and_deploy_prod:
+    jobs:
+      - maven_build_prod
+      - docker/publish:
+          name: publish-k8s-prod-image
+          requires:
+            - maven_build_prod
+          executor: docker/docker
+          attach-at: './'
+          # with the build args, we're passing the env. this then determines the NPM build mode (see Dockerfile) and the build variables from the .env.x files
+          # not needed for java build - maybe later with env vars
+          # extra_build_args: '--build-arg revision=<< pipeline.git.revision >> --build-arg vue_cli_build_mode=k8s-int'
+          image: $CIRCLE_PROJECT_USERNAME/sportrait/sportrait-k8s-java-prod
+          tag: ${CIRCLE_WORKFLOW_ID}
+          use-docker-credentials-store: true
+          use-remote-docker: true
+          # TODO env variables from env.integration.local?
+          # remove following line - not needed with this directory structure
+          # path: sportrait
+          registry: docker.pkg.github.com
+
+          # Todo later : rename context - docker credentials also applies to admin ui
+          context: sportraitNG
+      - hold: # <<< A job that will require manual approval in the CircleCI web application.
+          type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
+          requires: # We only run the "hold" job when building and publishing the image has succeeded
+            - publish-k8s-prod-image
+      - deploy-to-k8s-prod:
+          context: sportrait-k8s-prod
+          requires:
+            - hold
