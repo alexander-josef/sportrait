@@ -1,195 +1,3 @@
-/*-*
- *
- * FILENAME  :
- *    $RCSfile$
- *
- *    @author alex$
- *    @since Oct 6, 2005$
- *
- * Copyright (c) 2005 unartig AG  --  All rights reserved
- *
- * STATUS  :
- *    $Revision$, $State$, $Name$
- *
- *    $Author$, $Locker$
- *    $Date$
- *
- *************************************************
- * $Log$
- * Revision 1.5  2007/06/09 11:15:37  alex
- * photographer
- *
- * Revision 1.4  2007/05/03 16:59:39  alex
- * set photos on overview to 16 (2 rows)
- *
- * Revision 1.3  2007/04/17 11:03:27  alex
- * dynamic pager added
- *
- * Revision 1.2  2007/03/27 16:39:17  alex
- * refactored studioalbum into album
- *
- * Revision 1.1  2007/03/27 15:54:28  alex
- * initial commit sportrait code base
- *
- * Revision 1.1  2007/03/01 18:23:41  alex
- * initial commit maven setup no history
- *
- * Revision 1.51  2006/11/12 11:58:47  alex
- * dynamic album ads
- *
- * Revision 1.50  2006/10/28 21:57:09  alex
- * reformat
- *
- * Revision 1.49  2006/10/17 08:07:07  alex
- * creating the order hashes
- *
- * Revision 1.48  2006/08/25 23:27:58  alex
- * payment i18n
- *
- * Revision 1.47  2006/05/04 18:01:39  alex
- * new param max entries
- *
- * Revision 1.46  2006/04/30 16:21:27  alex
- * removing system.outs
- *
- * Revision 1.45  2006/04/29 23:32:07  alex
- * many sola features, bugs, hibernate config
- *
- * Revision 1.44  2006/04/19 21:31:53  alex
- * session will be restored with album-bean (i.e. for bookmarked urls or so...)
- *
- * Revision 1.43  2006/03/20 15:33:33  alex
- * first check in for new sports album logic and db changes
- *
- * Revision 1.42  2006/02/28 14:57:46  alex
- * added more resources (email for order confirmation), small fixes
- *
- * Revision 1.41  2006/02/22 17:08:56  alex
- * jumping forward and jumping back x-pages works
- *
- * Revision 1.40  2006/02/22 14:00:51  alex
- * new album nav concept works also in display
- *
- * Revision 1.39  2006/02/13 16:15:28  alex
- * but [968]
- *
- * Revision 1.38  2006/02/07 14:48:53  alex
- * bug 820 and minor refactorings
- *
- * Revision 1.37  2006/01/10 15:44:56  alex
- * vm1 config files, new property "simulateOrderOnly"
- *
- * Revision 1.36  2005/12/02 23:13:53  alex
- * change log for colorcorrectino to info
- *
- * Revision 1.35  2005/12/02 21:48:34  alex
- * order process bug fix, color correction on
- *
- * Revision 1.34  2005/11/25 13:22:24  alex
- * resources
- *
- * Revision 1.33  2005/11/25 10:56:58  alex
- *
- * Revision 1.32  2005/11/23 20:52:10  alex
- * bug-fixes
- *
- * Revision 1.31  2005/11/22 19:45:46  alex
- * admin actions, configurations
- *
- * Revision 1.30  2005/11/21 17:52:59  alex
- * no account action , photo order
- *
- * Revision 1.29  2005/11/19 22:04:04  alex
- * shopping cart reflects different price segments
- *
- * Revision 1.28  2005/11/19 16:31:43  alex
- * bookmarks of displays should work now
- *
- * Revision 1.27  2005/11/18 19:15:52  alex
- * stuff ...
- *
- * Revision 1.26  2005/11/18 11:10:22  alex
- * customer service message
- *
- * Revision 1.25  2005/11/16 14:26:49  alex
- * validator works for email, new library
- *
- * Revision 1.24  2005/11/14 10:43:34  alex
- * shopping cart basic functions work. photo list needs a bit more work yet
- *
- * Revision 1.23  2005/11/12 23:15:27  alex
- * using indexed properties ... first step
- *
- * Revision 1.22  2005/11/09 15:48:16  alex
- * check out wizard
- *
- * Revision 1.21  2005/11/09 09:01:29  alex
- * check out form wizard
- *
- * Revision 1.20  2005/11/08 13:22:58  alex
- * rename tree items. tree items now not in cvs ... generated at startup time
- *
- * Revision 1.19  2005/11/08 11:03:20  alex
- * nothing
- *
- * Revision 1.18  2005/11/08 10:05:02  alex
- * tree items i18n, backend
- *
- * Revision 1.17  2005/11/07 17:38:26  alex
- * admin interface refactored
- *
- * Revision 1.16  2005/11/06 21:43:22  alex
- * overview, admin menu, index-photo upload
- *
- * Revision 1.15  2005/11/05 21:41:58  alex
- * overview und links in tree menu
- *
- * Revision 1.14  2005/11/05 16:37:25  alex
- * tiles error, more sc stuff
- *
- * Revision 1.13  2005/11/05 16:00:41  alex
- * tiles error, more sc stuff
- *
- * Revision 1.12  2005/11/05 14:57:08  alex
- * images small correction
- *
- * Revision 1.11  2005/11/05 10:32:14  alex
- * shopping cart and minor problems, exception handling
- *
- * Revision 1.10  2005/11/04 23:02:54  alex
- * shopping cart session
- *
- * Revision 1.9  2005/11/04 17:12:18  alex
- * tree refactoring
- *
- * Revision 1.8  2005/11/01 11:28:39  alex
- * pagination works; put logic in overview bean
- *
- * Revision 1.7  2005/10/28 10:00:20  alex
- * layout changes
- *
- * Revision 1.6  2005/10/27 20:21:39  alex
- * album overview
- *
- * Revision 1.5  2005/10/26 15:36:44  alex
- * some fixes
- *
- * Revision 1.4  2005/10/26 14:34:32  alex
- * first version of album overview
- * new mappings in struts for the /album/** url
- *
- * Revision 1.3  2005/10/24 13:50:07  alex
- * upload of album
- * import in db 
- * processing of images
- *
- * Revision 1.2  2005/10/21 13:02:10  alex
- * introducing i18n for text and images
- *
- * Revision 1.1  2005/10/06 18:14:23  alex
- * saving new tree_items file
- *
- ****************************************************************/
 package ch.unartig.studioserver;
 
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
@@ -244,21 +52,21 @@ public final class Registry
     public static String jsDirectory = "js/";
     public static String jsTreeDirectory = "js/tree/";
     /*the tree items file name without the language dependant suffix*/
-    private static String treeItemsFilePrefix = "tree_items_";
+    private static final String treeItemsFilePrefix = "tree_items_";
     // todo confusing: distinguish between the serverFinePath and the fine directory
-    private static String finePath = "fine/"; // used in all storage providers as path denominator
-    private static String thumbnailPath = "thumbnail/"; // used in all storage providers as path denominator
-    private static String displayPath = "display/"; // used in all storage providers as path denominator
+    private static final String finePath = "fine/"; // used in all storage providers as path denominator
+    private static final String thumbnailPath = "thumbnail/"; // used in all storage providers as path denominator
+    private static final String displayPath = "display/"; // used in all storage providers as path denominator
     public static final String _PORTRAIT_MODE_SUFFIX = "portrait";
-    private static Integer displayPixelsLongerSide = 380; // used to be 484 for unartig.ch and the beginning of sportrait
-    private static Integer thumbnailPixelsLongerSide = 100;
+    private static final Integer displayPixelsLongerSide = 380; // used to be 484 for unartig.ch and the beginning of sportrait
+    private static final Integer thumbnailPixelsLongerSide = 100;
     /*the number of thumbnail photos on the preview page*/
     public static int itemsOnPage = 14;
 
     /*this addess will be used for sending a request from the contact form to fogbugz  */
-    private static String customerServiceAddress = "info@sportrait.com";
+    private static final String customerServiceAddress = "info@sportrait.com";
     /*this is the sender for the confirmation email after an order has been confirmed*/
-    private static String orderConfirmationFromAddress = "info@sportrait.com";
+    private static final String orderConfirmationFromAddress = "info@sportrait.com";
 
 
     public static final float _IMAGE_QUALITY_STANDARD = 0.75F; // used for saving thumbnail and display JPGs
@@ -318,7 +126,7 @@ public final class Registry
      */
     public static final String _MAIL_HOST = "localhost";
     public static String _mailHost = _MAIL_HOST;
-    private static String mailFromAddress = "info@unartig.ch";
+    private static final String mailFromAddress = "info@unartig.ch";
     public static final String _GENDER_MALE_CODE = "m";
     /**
      * time-interval in minutes to be shown in overview
@@ -362,6 +170,7 @@ public final class Registry
     private static String applicationEnvironment; // dev, int or prod
     private static String imgixSignKey; // environment dependant sign key as generated on the imgix admin website
     private static String imgixSignKey2; // environment dependant sign key as generated on the imgix admin website for the 2nd imgix source
+    private static String amazonSqsQueueName; // installation dependant queue name for image recognition - each imported photo will be stored to this sqs queue for later image recognition
 
 
     /**
@@ -458,6 +267,10 @@ public final class Registry
             _logger.info("**********************************************************");
         }
 
+
+        /******************* AWS SQS Settings ******************/
+        _logger.info("Setting S3 SQS import queue name :" + appSettings.getMessage("sqsQueueName"));
+        amazonSqsQueueName = appSettings.getMessage("sqsQueueName"); // must be set before instantiation of fileStorageProvider class
 
         /******************* Storage Provider / AWS S3 Settings ******************/
         _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
@@ -786,5 +599,13 @@ public final class Registry
      */
     public static boolean isProdEnv() {
         return getApplicationEnvironment().equals("prod");
+    }
+
+    /**
+     * the Amazon SQS queue name - should be different for each installation
+     * @return
+     */
+    public static String getAmazonSqsQueueName() {
+        return amazonSqsQueueName;
     }
 }

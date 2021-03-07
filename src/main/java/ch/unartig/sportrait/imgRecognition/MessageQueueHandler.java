@@ -18,12 +18,12 @@ import java.util.Map;
  * Singleton class to handle amazon sqs queues related logic
  */
 public class MessageQueueHandler {
-    private static final String SPORTRAIT_QUEUE_NAME_PREFIX = "sportraitQueueName-";
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    // private static final String SPORTRAIT_QUEUE_NAME_PREFIX = "sportraitQueueName-";
+    private final Logger _logger = Logger.getLogger(getClass().getName());
     static final String EVENT_CATEGORY_ID = "eventCategoryId"; // used as message attribute
     static final String PHOTO_ID = "photoId"; // used as message attribute
     private static final String UNKNOWN_FACES_QUEUE_PREFIX = "UnknownFacesQueue-Album-";
-    private String sportraitQueueName;
+    private final String sportraitQueueName;
 
     public AmazonSQS getAmazonSQSclient() {
         return amazonSQSclient;
@@ -32,7 +32,7 @@ public class MessageQueueHandler {
     /**
      * Amazon SQS client to be reused throughout the application (via this singleton class)
      */
-    private AmazonSQS amazonSQSclient;
+    private final AmazonSQS amazonSQSclient;
 
 
     /**
@@ -46,7 +46,8 @@ public class MessageQueueHandler {
 
     private MessageQueueHandler() {
         amazonSQSclient = AmazonSQSClientBuilder.standard().withRegion(Registry.SPORTRAIT_AWS_DEFAULT_REGION).build();
-        sportraitQueueName = SPORTRAIT_QUEUE_NAME_PREFIX + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
+        // sportraitQueueName = SPORTRAIT_QUEUE_NAME_PREFIX + Registry.getApplicationEnvironment(); // todo : either name per album or move to Registry
+        sportraitQueueName = Registry.getAmazonSqsQueueName();
     }
 
     /**

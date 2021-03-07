@@ -8,6 +8,9 @@
 # Environment of this installation: "dev" "int" or "prod"
 environment=dev
 
+# Amazon SQS import queue name
+appSettings.sqsQueueName=
+
 #
 # Server Settings
 server.httpPort=8080

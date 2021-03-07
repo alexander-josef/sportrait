@@ -76,6 +76,7 @@ public class StartnumberProcessor implements Runnable {
         MessageQueueHandler messageQueueHandler = MessageQueueHandler.getInstance();
         String queueUrl = messageQueueHandler.getSportraitQueueName();
         _logger.info("Start Polling the SQS queue - environment  : ["+ Registry.getApplicationEnvironment() +"] for incoming images to recognize ....");
+        _logger.info("Queue URL  : ["+ queueUrl +"]");
         if (processors.isEmpty()) {
             _logger.warn("No processors defined, will not start up.");
             return;

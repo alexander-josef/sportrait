@@ -418,25 +418,7 @@ public class Photo implements java.io.Serializable {
         return displayUrl;
     }
 
-    /**
-     * delete again - testing only
-     * @param params imgix URL creation params
-     * @param allStartnumbers list of Startnumber objects
-     */
-    private void addNumberRecognitionText(Map<String, String> params, List<Startnumber> allStartnumbers) {
-        try {
 
-            Test test =  new Test();
-            List<Startnumber> photoStartnumbers = test.getRecognizedNumbersFor(this,allStartnumbers);
-            allStartnumbers.addAll(photoStartnumbers);
-            String numbers = photoStartnumbers.stream().map(Startnumber::getStartnumberText).collect(Collectors.joining("/"));
-            printStartnumbersOnPhoto(params, numbers);
-
-        } catch (Exception e) {
-            _logger.debug("error trying to recognize number on photo",e);
-            e.printStackTrace();
-        }
-    }
 
     private void printStartnumbersOnPhoto(Map<String, String> params, String numbers) {
         //_logger.debug("startnumbers  : " + numbers);
