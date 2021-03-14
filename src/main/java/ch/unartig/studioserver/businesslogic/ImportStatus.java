@@ -90,6 +90,7 @@ public final class ImportStatus {
 
     public int getPhotosQueuedForNumberRecognition(Album album) {
         System.out.println("album = " + album);
+        // problem ? Test ...
         System.out.println("queuedForNumberRecognition = " + queuedForNumberRecognition);
         return queuedForNumberRecognition.isEmpty()?0:queuedForNumberRecognition.get(album);
     }
