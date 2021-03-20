@@ -47,7 +47,7 @@ import javax.validation.Valid;
    * @return photosS3Uri
    **/
   @JsonProperty("photosS3Uri")
-  @Schema(example = "s3://dev.ireland.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/", required = true, description = "")
+  @Schema(example = "s3://dev.photos.sportrait.com/upload/2018-etappe-1-rekognition-test/", required = true, description = "")
   @NotNull
   public String getPhotosS3Uri() {
     return photosS3Uri;

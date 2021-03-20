@@ -484,19 +484,10 @@ public class Photo implements java.io.Serializable {
      * @return String containing the domain (host) name
      */
     private String getImageServiceDomain() {
-        // todo: refactor : introduce constants / map / enum and use helper method also for AWS S3 Bucket location query (see AwsS3FileStorageProvide)
-        String domain;
-        if (getAlbum().getEvent().getEventDateYear() < 2019) {
-            domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
-            // use with CDN - currently not possible because https cannot be applied to imgix custom subdomains:
-            // domain = Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
-        } else { // after 2019 use new imgix source that links to ireland s3 bucket
-            // use with CDN - currently not possible because https cannot be applied to imgix custom subdomains:
-            // domain = "cdn.imgs-2."+Registry.getApplicationEnvironment() + ".sportrait.com";
-            domain = Registry.getApplicationEnvironment() + "2-sportrait.imgix.net"; // adding an index after the environment
-        }
-
-        return domain;
+        // simplified after using only one bucket - this was possible since Frankfurt now also has AWS Rekognition Service
+        // Non-availability of rekognition in eu-centeral-1 was the reason to open another s3 bucket in Ireland (eu-west-1) after 2018
+        // could be used for future logic for image-service-domain depending on the photo
+        return Registry.getApplicationEnvironment() + "-sportrait.imgix.net";
     }
 
 

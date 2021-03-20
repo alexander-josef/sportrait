@@ -144,4 +144,9 @@ public interface FileStorageProviderInterface {
      */
     void deletePhotos(Album album) throws UAPersistenceException;
 
+    /**
+     * return the currently used S3 bucket for storing the photos
+     * @return
+     */
+    String getCurrenctS3Bucket();
 }

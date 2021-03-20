@@ -38,6 +38,10 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         }
     }
 
+    @Override
+    public String getCurrenctS3Bucket() {
+        throw new RuntimeException("method not implemented for LocalFileStorageProvider");
+    }
 
 
     public void registerFromTempPath(Album album, String tempImageDirectory, boolean createThumbDisp, boolean applyLogoOnFineImages) {

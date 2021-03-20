@@ -20,7 +20,7 @@ public class ImgRecognitionHelper {
     private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
     static final String FACE_COLLECTION_ID = "sportraitFaces2019-"+ Registry.getApplicationEnvironment();
     private AmazonRekognition rekognitionClient;
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = Logger.getLogger(getClass().getName());
     private static ImgRecognitionHelper _instance=null;
 
     private ImgRecognitionHelper() {
@@ -30,8 +30,7 @@ public class ImgRecognitionHelper {
 
         if (_instance==null) {
             _instance = new ImgRecognitionHelper();
-            // build a rekognition client with the default region (Ireland as of 2019) set in the registry - needs to be the same as the region of the bucket with the images
-            // todo : check if it works for albums < 2019
+            // build a rekognition client with the default region (Frankfurt - used to be Ireland until 2021-03) set in the registry - needs to be the same as the region of the bucket with the images
             _instance.rekognitionClient = AmazonRekognitionClientBuilder.standard().withRegion(Registry.SPORTRAIT_AWS_DEFAULT_REGION).build();
         }
         return _instance;

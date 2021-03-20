@@ -120,7 +120,7 @@ public class AlbumsApi {
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
         List<Importable> importables = new ArrayList<>();
         for (String uploadPathKey : Registry.getFileStorageProvider().getUploadPaths()) {
-            String photosS3Uri="s3://"+Registry.getS3BucketNameIreland()+"/"+uploadPathKey;
+            String photosS3Uri="s3://"+Registry.getFileStorageProvider().getCurrenctS3Bucket()+"/"+uploadPathKey;
             int numberOfPhotos=Registry.getFileStorageProvider().getNumberOfFineImageFiles(uploadPathKey);
             Importable importable = new Importable();
             importable.setPhotosS3Uri(photosS3Uri);

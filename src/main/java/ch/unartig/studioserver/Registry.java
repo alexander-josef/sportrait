@@ -32,7 +32,7 @@ public final class Registry
     // todo: move to appSettings
     public static final Regions AWS_FRANKFURT_REGION = Regions.EU_CENTRAL_1;
     public final static Region awsRegionFrankfurt = Region.getRegion(AWS_FRANKFURT_REGION); // Frankfurt - used for bucket URLs in pre-image-service configuration - conflict with EU-WEST-1 buckets and services?
-    public static final Regions SPORTRAIT_AWS_DEFAULT_REGION = Regions.EU_WEST_1; // Ireland - used for bucket URLs after image recognition, used for queues
+    public static final Regions SPORTRAIT_AWS_DEFAULT_REGION = AWS_FRANKFURT_REGION; // Ireland - used for bucket URLs after image recognition, used for queues
 //read from prop-file
     private static String modelPackageName = "ch.unartig.studioserver.model.";
     public static String frontendDirectory = "";
@@ -162,7 +162,6 @@ public final class Registry
     private static String logosOverlayLandscapeFile;
     private static boolean applyLogoOrWatermarkOnFineImage;
     private static String s3BucketName;
-    private static String s3BucketNameIreland;
     private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
     private static JsonFactory googleJasonFactory;
@@ -275,7 +274,7 @@ public final class Registry
         /******************* Storage Provider / AWS S3 Settings ******************/
         _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
         s3BucketName = appSettings.getMessage("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
-        s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
+        // s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
         _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
         fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
@@ -519,10 +518,6 @@ public final class Registry
 
     public static String getS3BucketName() {
         return s3BucketName;
-    }
-
-    public static String getS3BucketNameIreland() {
-        return s3BucketNameIreland;
     }
 
     public static String getSponsorBarFile() {
