@@ -272,7 +272,7 @@ public final class Registry
         amazonSqsQueueName = appSettings.getMessage("sqsQueueName"); // must be set before instantiation of fileStorageProvider class
 
         /******************* Storage Provider / AWS S3 Settings ******************/
-        _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketName"));
+        _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketNameFrankfurt"));
         s3BucketName = appSettings.getMessage("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
         // s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
