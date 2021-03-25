@@ -8,11 +8,12 @@ import com.google.api.client.googleapis.util.Utils;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import org.apache.log4j.Logger;
-import org.apache.struts.util.MessageResources;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
+import java.util.Properties;
 
 /**
  * Global Registry class for constants and fields from properties file
@@ -185,14 +186,26 @@ public final class Registry
      */
     public static void init() throws ClassNotFoundException, IllegalAccessException, InstantiationException, GeneralSecurityException, IOException, NoSuchMethodException, InvocationTargetException {
 
-        MessageResources appSettings = MessageResources.getMessageResources("appSettings");
+        // todo: replace this old MessageResource class with something else in order to read out values from keys in properties files.
+        // do we need to replace all ".getMessage" calls?
+        // maybe better put the configuration as environment variables? how ?
+        String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
+        String appConfigPath = rootPath + "appSettings.properties";
+        Properties appSettings = new Properties();
+        appSettings.load(new FileInputStream(appConfigPath));
+
+//        MessageResources appSettings = MessageResources.getMessageResources("appSettings");
 
 //        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
 //        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
 
-        String appEnv = appSettings.getMessage("application.environment");
+        String appEnv = appSettings.getProperty("application.environment");
         setApplicationEnvironment(appEnv);
         _logger.info("***** setting application environment = " + appEnv);
+
+        // String appEnv = appSettings.getMessage("application.environment");
+        // setApplicationEnvironment(appEnv);
+        // _logger.info("***** setting application environment = " + appEnv);
         // constants needed for jsp EL if conditions
         switch (applicationEnvironment) {
             case "dev":
@@ -206,32 +219,32 @@ public final class Registry
                 break;
         }
 
-        setFineImagesDirectory(appSettings.getMessage("fineImagesDirectory"));
-        _logger.info("***** fine images directory = " + appSettings.getMessage("fineImagesDirectory"));
+        setFineImagesDirectory(appSettings.getProperty("fineImagesDirectory"));
+        _logger.info("***** fine images directory = " + appSettings.getProperty("fineImagesDirectory"));
 
-        setWebImagesDocumentRoot(appSettings.getMessage("webImagesDocumentRoot"));
-        _logger.info("***** web-images document Root = " + appSettings.getMessage("webImagesDocumentRoot"));
+        setWebImagesDocumentRoot(appSettings.getProperty("webImagesDocumentRoot"));
+        _logger.info("***** web-images document Root = " + appSettings.getProperty("webImagesDocumentRoot"));
 
-        setWebImagesContext(appSettings.getMessage("webImagesContext"));
-        _logger.info("***** web-images context = " + appSettings.getMessage("webImagesContext"));
+        setWebImagesContext(appSettings.getProperty("webImagesContext"));
+        _logger.info("***** web-images context = " + appSettings.getProperty("webImagesContext"));
 
-        setLogosScriptPath(appSettings.getMessage("logosScriptPath"));
-        _logger.info("***** logosScriptPath = " + appSettings.getMessage("logosScriptPath"));
+        setLogosScriptPath(appSettings.getProperty("logosScriptPath"));
+        _logger.info("***** logosScriptPath = " + appSettings.getProperty("logosScriptPath"));
 
-        setLogosOverlayPortraitFile(appSettings.getMessage("logosOverlayPortraitFile"));
-        _logger.info("***** logosOverlayPortraitFile = " + appSettings.getMessage("logosOverlayPortraitFile"));
+        setLogosOverlayPortraitFile(appSettings.getProperty("logosOverlayPortraitFile"));
+        _logger.info("***** logosOverlayPortraitFile = " + appSettings.getProperty("logosOverlayPortraitFile"));
 
-        setLogosOverlayLandscapeFile(appSettings.getMessage("logosOverlayLandscapeFile"));
-        _logger.info("***** logosOverlayLandscapeFile = " + appSettings.getMessage("logosOverlayLandscapeFile"));
+        setLogosOverlayLandscapeFile(appSettings.getProperty("logosOverlayLandscapeFile"));
+        _logger.info("***** logosOverlayLandscapeFile = " + appSettings.getProperty("logosOverlayLandscapeFile"));
 
-        setApplyLogoOrWatermarkOnFineImage("true".equals(appSettings.getMessage("applyLogoOrWatermarkOnFineImage")));
-        _logger.info("***** applyLogoOrWatermarkOnFineImage = " + appSettings.getMessage("applyLogoOrWatermarkOnFineImage"));
+        setApplyLogoOrWatermarkOnFineImage("true".equals(appSettings.getProperty("applyLogoOrWatermarkOnFineImage")));
+        _logger.info("***** applyLogoOrWatermarkOnFineImage = " + appSettings.getProperty("applyLogoOrWatermarkOnFineImage"));
 
-        setLogoImageFile(appSettings.getMessage("logoImageFile"));
-        _logger.info("***** logoImageFile = " + appSettings.getMessage("logoImageFile"));
+        setLogoImageFile(appSettings.getProperty("logoImageFile"));
+        _logger.info("***** logoImageFile = " + appSettings.getProperty("logoImageFile"));
 
-        setSponsorBarFile(appSettings.getMessage("sponsorBarFile"));
-        _logger.info("***** sponsorBarFile = " + appSettings.getMessage("sponsorBarFile"));
+        setSponsorBarFile(appSettings.getProperty("sponsorBarFile"));
+        _logger.info("***** sponsorBarFile = " + appSettings.getProperty("sponsorBarFile"));
 
 
         // setProjectName(appSettings.getMessage("application.name"));
@@ -239,21 +252,21 @@ public final class Registry
         // todo: set to enabled again after svn problem on test server is solved
 //        setBuildNumber(appSettings.getMessage("application.buildNumber"));
 
-        setMailHost(appSettings.getMessage("mailHost"));
-        _logger.info("***** Mail Host = " + appSettings.getMessage("mailHost"));
-        setDemoOrderMode("true".equals(appSettings.getMessage("demoOrder")));
-        _logger.info("***** demo order flag = " + appSettings.getMessage("demoOrder"));
-        setSimulateOrderOnly("true".equals(appSettings.getMessage("simulateOrderOnly")));
-        _logger.info("***** simulate order only flag= " + appSettings.getMessage("simulateOrderOnly"));
+        setMailHost(appSettings.getProperty("mailHost"));
+        _logger.info("***** Mail Host = " + appSettings.getProperty("mailHost"));
+        setDemoOrderMode("true".equals(appSettings.getProperty("demoOrder")));
+        _logger.info("***** demo order flag = " + appSettings.getProperty("demoOrder"));
+        setSimulateOrderOnly("true".equals(appSettings.getProperty("simulateOrderOnly")));
+        _logger.info("***** simulate order only flag= " + appSettings.getProperty("simulateOrderOnly"));
 
 
-        String oipsOrderPeriod = appSettings.getMessage("oipsOrderPeriod");
+        String oipsOrderPeriod = appSettings.getProperty("oipsOrderPeriod");
         if (oipsOrderPeriod != null && Long.parseLong(oipsOrderPeriod) > 0) {
             setOipsOrderPeriod(Long.parseLong(oipsOrderPeriod));
         }
 
-        _logger.debug("getMessage oipsColorcorrection: " + appSettings.getMessage("oipsColorcorrection"));
-        String oipsColorcorrection = appSettings.getMessage("oipsColorcorrection");
+        _logger.debug("getProperty oipsColorcorrection: " + appSettings.getProperty("oipsColorcorrection"));
+        String oipsColorcorrection = appSettings.getProperty("oipsColorcorrection");
         if ("false".equals(oipsColorcorrection)) {
             setOipsColorcorrection("0"); // "0" stand for no colorcorrecion
             _logger.info("**********************************************************");
@@ -268,26 +281,26 @@ public final class Registry
 
 
         /******************* AWS SQS Settings ******************/
-        _logger.info("Setting S3 SQS import queue name :" + appSettings.getMessage("sqsQueueName"));
-        amazonSqsQueueName = appSettings.getMessage("sqsQueueName"); // must be set before instantiation of fileStorageProvider class
+        _logger.info("Setting S3 SQS import queue name :" + appSettings.getProperty("sqsQueueName"));
+        amazonSqsQueueName = appSettings.getProperty("sqsQueueName"); // must be set before instantiation of fileStorageProvider class
 
         /******************* Storage Provider / AWS S3 Settings ******************/
-        _logger.info("Setting S3 bucket name :" + appSettings.getMessage("awsS3BucketNameFrankfurt"));
-        s3BucketName = appSettings.getMessage("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
-        // s3BucketNameIreland = appSettings.getMessage("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
+        _logger.info("Setting S3 bucket name :" + appSettings.getProperty("awsS3BucketNameFrankfurt"));
+        s3BucketName = appSettings.getProperty("awsS3BucketNameFrankfurt"); // must be set before instantiation of fileStorageProvider class
+        // s3BucketNameIreland = appSettings.getProperty("awsS3BucketNameIreland"); // must be set before instantiation of fileStorageProvider class
 
-        _logger.info("Setting FileStorageProvider implementation :" + appSettings.getMessage("fileStorageProviderImplementation"));
-        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getMessage("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
+        _logger.info("Setting FileStorageProvider implementation :" + appSettings.getProperty("fileStorageProviderImplementation"));
+        fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getProperty("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
         /************************************************************************/
 
         // Set up the HTTP transport and JSON factory for the google sign-in actions
         setGoogleJasonFactory(Utils.getDefaultJsonFactory());
         setGoogleHttpTransport(GoogleNetHttpTransport.newTrustedTransport());
 
-        _logger.info("***** imgixSignKey = " + appSettings.getMessage("imgixSignKey"));
-        imgixSignKey=appSettings.getMessage("imgixSignKey");
-        _logger.info("***** imgixSignKey2 = " + appSettings.getMessage("imgixSignKey2"));
-        imgixSignKey2=appSettings.getMessage("imgixSignKey2");
+        _logger.info("***** imgixSignKey = " + appSettings.getProperty("imgixSignKey"));
+        imgixSignKey=appSettings.getProperty("imgixSignKey");
+        _logger.info("***** imgixSignKey2 = " + appSettings.getProperty("imgixSignKey2"));
+        imgixSignKey2=appSettings.getProperty("imgixSignKey2");
 
 
 

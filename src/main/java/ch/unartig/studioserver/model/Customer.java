@@ -36,7 +36,6 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import ch.unartig.studioserver.beans.CheckOutForm;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
@@ -83,23 +82,6 @@ public class Customer implements java.io.Serializable {
     {
     }
 
-    /**
-     * Constructor to create customer from check-out form
-     * @param coForm
-     */
-    public Customer(CheckOutForm coForm)
-    {
-        this.setFirstName(coForm.getFirstName());
-        this.setLastName(coForm.getLastName());
-        this.setAddr1(coForm.getAddr1());
-        this.setAddr2(coForm.getAddr2());
-        this.setZipCode(coForm.getZipCode().toString());
-        this.setCity(coForm.getCity());
-        this.setCountry(coForm.getCountry());
-        this.setState("");
-        this.setEmail(coForm.getEmail());
-        this.setGender("f".equals(coForm.getGender()) ? "f" : "m");
-    }
 
     public Long getCustomerId() {
         return this.customerId;

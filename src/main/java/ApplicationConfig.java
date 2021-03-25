@@ -8,6 +8,7 @@ import javax.ws.rs.ApplicationPath;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 
 
 @ApplicationPath("/api/import")
@@ -27,13 +28,17 @@ public class ApplicationConfig extends ResourceConfig {
             System.out.println("***** Calling Registry.init() from Jersey Application Config ******");
             Registry.init();
 /*          init startnumber processor server here (used to be in the unartig action servlet - needs to be deactived / deleted there)
+ */
 
-            startnumberProcessor = new StartnumberProcessor();
-            startnumberProcessorServer = new Thread(startnumberProcessor);
+            StartnumberProcessor startnumberProcessor = new StartnumberProcessor();
+            Thread startnumberProcessorServer = new Thread(startnumberProcessor);
             startnumberProcessorServer.start();
-            logger.info("Startnumber Processor started up");
-*/
+            System.out.println("***** Initialized Startnumber Processor from Jersey Application Config ******");
 //            TODO : how can one make sure this process / server doesn't die ?
+
+            // from old Struts Actionservlet init:
+            // SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
+            // is this somewhere needed?
 
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | GeneralSecurityException | IOException | NoSuchMethodException | InvocationTargetException e) {
             System.out.println("**************************");

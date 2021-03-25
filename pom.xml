@@ -80,75 +80,19 @@
 
         <!-- Removing SPORTrait client dependency-->
 
-        <!--ZK-->
 
-        <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zkplus</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zhtml</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zkbind</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkoss.zk</groupId>
-            <artifactId>zul</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.zkoss.theme/breeze -->
-        <dependency>
-            <groupId>org.zkoss.theme</groupId>
-            <artifactId>breeze</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.zkoss.theme/iceblue_c -->
-        <dependency>
-            <groupId>org.zkoss.theme</groupId>
-            <artifactId>iceblue_c</artifactId>
-            <version>8.6.0.1</version>
-        </dependency>
-
-        <!--ZK END   -->
-
-        <!--removing apache xmlrpc-->
-
-        <dependency>
-            <groupId>sslext</groupId>
-            <artifactId>sslext</artifactId>
-            <version>1.2-0</version>
-        </dependency>
-
-
-        <!-- removed all JAI dependencies ... not necessary anymore with image service (imgix) and metadata extractor-->
-
-
-        <!-- upgrading from 1.1.2 -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>1.1.2</version>
-        </dependency>
 
         <!-- Version problem with struts ???-->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>[1.9.4,)</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.8.0</version>
         </dependency>
 
         <dependency>
@@ -203,12 +147,6 @@
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
             <version>3.3.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>struts</groupId>
-            <artifactId>struts</artifactId>
-            <version>1.2.9</version>
         </dependency>
 
 
@@ -458,68 +396,6 @@
             </properties>
         </profile>
 
-        <!-- Use this profile for testing the DEV environment on digital ocean docker host - app AND db container will be built and freshly set up-->
-        <profile>
-            <id>docker-do-dev</id>
-            <build>
-
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warName>ROOT_Test</warName>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-            <properties>
-                <appConfigFilterFile>docker-do-dev.properties</appConfigFilterFile>
-            </properties>
-        </profile>
-
-        <!-- Use this profile for INT environment on digital ocean docker host - only app will be deployed, db is locally installed on docker host-->
-        <profile>
-            <id>docker-do-int</id>
-            <build>
-
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warName>ROOT_Test</warName>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-            <properties>
-                <appConfigFilterFile>docker-do-int.properties</appConfigFilterFile>
-            </properties>
-        </profile>
-
-        <!-- Use this profile for PROD environment on digital ocean docker host - only app container will be deployed, db is locally installed on docker host-->
-        <profile>
-            <id>docker-do-prod</id>
-            <build>
-
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warName>ROOT_PROD</warName>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-            <properties>
-                <appConfigFilterFile>docker-do-prod.properties</appConfigFilterFile>
-            </properties>
-        </profile>
 
         <!-- Use this profile for k8s-java-PROD environment on (digital ocean) k8s host - db is hosted as another pod on k8s cluster-->
         <profile>
@@ -592,27 +468,5 @@
         <connection>scm:git:https://github.com/alexander-josef/sportrait.git</connection>
         <tag>HEAD</tag>
     </scm>
-
-
-
-    <distributionManagement>
-        <!-- NOT USED ANYMORE WITH DOCKER CONTAINERS - Containers are uploaded to a repo -->
-        <!-- use the following if you're not using a snapshot version. -->
-        <!-- the authentication settings can be put to settings.xml (in [your homedir]/.m2/settings.xml) -->
-        <!-- updated 2015-07 to accommodate the new location of the maven2 repo on aws2.sportrait.com -->
-        <!-- an example is documented in evernote-->
-
-        <repository>
-            <id>ssh-mvn-repo</id>
-            <name>sportrait m2 repo</name>
-            <url>scpexe://aws2.sportrait.com/opt/maven2/repo</url>
-        </repository>
-        <!-- use the following if you ARE using a snapshot version . -->
-        <snapshotRepository>
-            <id>ssh-mvn-repo</id>
-            <name>sportrait m2 snapshot repo</name>
-            <url>scpexe://aws2.sportrait.com/opt/maven2/repo</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>

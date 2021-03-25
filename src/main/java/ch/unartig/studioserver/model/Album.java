@@ -195,8 +195,6 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.beans.AbstractAlbumBean;
-import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -994,13 +992,5 @@ public class Album extends GenericLevel implements Serializable {
         }
     }
 
-    /**
-     * Return the matching AlbumBean. Polymorphism makes sure it's from the right type
-     *
-     * @return
-     */
-    public AbstractAlbumBean getAlbumBean() {
-        return new AlbumBean(this);
-    }
 
 }

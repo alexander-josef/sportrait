@@ -48,12 +48,6 @@ package ch.unartig.studioserver.model;
 
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.beans.AbstractAlbumBean;
-import ch.unartig.studioserver.beans.SportsAlbumBean;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Cacheable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.io.InputStream;
@@ -99,24 +93,7 @@ public class SportsAlbum extends Album implements java.io.Serializable {
         return actionStringPart;
     }
 
-    /**
-     *
-     * @return
-     */
-    @Override
-    public AbstractAlbumBean getAlbumBean() {
 
-        SportsAlbumBean sportsAlbumBean = new SportsAlbumBean();
-        _logger.debug("creating new SportsAlbumBean");
-        // todo: check in EventCategoryAction how to instantiate a SportsAlbumBean --> should be part of SportsAlbumBean constructor
-        sportsAlbumBean.setEventCategory(getEventCategory());
-        sportsAlbumBean.setSportsEvent((SportsEvent)getEvent());
-        sportsAlbumBean.setEventCategories(((SportsEvent) getEvent()).getEventCategories());
-
-        //return new SportsAlbumBean(eventCategory,event);
-        return sportsAlbumBean;
-
-    }
 
     public boolean isSportsAlbumLevel()
     {

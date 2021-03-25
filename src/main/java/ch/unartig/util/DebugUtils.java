@@ -34,17 +34,12 @@
  ****************************************************************/
 package ch.unartig.util;
 
-import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.model.Photo;
 import org.apache.log4j.Logger;
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessages;
+
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
@@ -91,24 +86,6 @@ public class DebugUtils
 
     }
 
-    public static AlbumBean debugAlbumBeanSession(int hour, int minutes, Long albumId, HttpSession session)
-    {
-        System.out.println("AlbumAction.trySessionForAlbum");
-        System.out.println("hour = " + hour);
-        System.out.println("minutes = " + minutes);
-        System.out.println("albumId = " + albumId);
-        AlbumBean ob = (AlbumBean) session.getAttribute(Registry._NAME_ALBUM_BEAN_ATTR);
-        if (ob != null)
-        {
-            System.out.println("ob.getHour() = " + ob.getHour());
-            System.out.println("ob.getMinutes() = " + ob.getMinutes());
-            System.out.println("ob.getAlbum() = " + ob.getAlbum().getGenericLevelId().toString());
-        } else
-        {
-            System.out.println("Overview not present !!!!!!!!!!!!!!!!!!");
-        }
-        return ob;
-    }
 
     public static void debugPhotos(List photos)
     {
@@ -126,53 +103,5 @@ public class DebugUtils
 
 
     
-    public static void debugActionMessage(HttpServletRequest request)
-    {
-        ActionErrors errors = (ActionErrors)request.getAttribute(Globals.ERROR_KEY);
-        if (errors!=null)
-        {
 
-        System.out.println("request.getAttribute(Globals.ERROR_KEY) = " + request.getAttribute(Globals.ERROR_KEY));
-        System.out.println("request.getSession().getAttribute(Globals.ERROR_KEY) = " + request.getSession().getAttribute(Globals.ERROR_KEY));
-
-/*
-            System.out.println("DebugUtils.debugActionMessage : action errors" + errors.get().toString());
-
-            Iterator iterator = errors.get();
-            while (iterator.hasNext())
-            {
-                ActionMessage actionError = (ActionMessage) errors.get().next();
-                System.out.println("actionError.getKey() = " + actionError.getKey());
-                System.out.println("actionError.getValues() = " + actionError.getValues());
-                System.out.println("--------------------------------------------------------");
-            }
-*/
-        } else
-        {
-            System.out.println("DebugUtils.debugActionMessage errors = null");
-        }
-
-        ActionMessages messages = (ActionMessages)request.getAttribute(Globals.MESSAGE_KEY);
-        if (messages != null)
-        {
-
-            System.out.println("request.getAttribute(Globals.MESSAGE_KEY) = " + request.getAttribute(Globals.MESSAGE_KEY));
-            System.out.println("request.getSession().getAttribute(Globals.MESSAGE_KEY) = " + request.getSession().getAttribute(Globals.MESSAGE_KEY));
-
-/*
-            System.out.println("DebugUtils.debugActionMessage : action messages" + messages.get().toString());
-            Iterator iterator = messages.get();
-            while (iterator.hasNext())
-            {
-                ActionMessage actionMessage = (ActionMessage) messages.get().next();
-                System.out.println("actionMessage.getKey() = " + actionMessage.getKey());
-                System.out.println("actionMessage.getValues() = " + actionMessage.getValues());
-                System.out.println("--------------------------------------------------------");
-            }
-*/
-        } else
-        {
-            System.out.println("DebugUtils.debugActionMessage messages = null");
-        }
-    }
 }
