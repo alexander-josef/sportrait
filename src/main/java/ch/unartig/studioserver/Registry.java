@@ -193,11 +193,14 @@ public final class Registry
         String appConfigPath = rootPath + "appSettings.properties";
         Properties appSettings = new Properties();
         appSettings.load(new FileInputStream(appConfigPath));
-
-//        MessageResources appSettings = MessageResources.getMessageResources("appSettings");
-
-//        setFrontendDirectory(appSettings.getMessage("frontendDirectory"));
-//        _logger.info("***** frontend directory = " + appSettings.getMessage("frontendDirectory"));
+        System.getenv().forEach((k, v) -> {
+            Object overriddenProp;
+            //System.out.println(k + ":" + v);
+            overriddenProp = appSettings.setProperty(k,v);
+            if (overriddenProp!=null) {
+                System.out.println("replacing ["+k+"] with value ["+v+"] (old value : "+overriddenProp.toString()+")");
+            }
+        });
 
         String appEnv = appSettings.getProperty("application.environment");
         setApplicationEnvironment(appEnv);
