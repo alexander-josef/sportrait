@@ -195,7 +195,9 @@ public class AlbumsApi {
         try {
             HibernateUtil.beginTransaction();
             album.checkReadAccessFor(client); // todo: check write or delete access!
-            genericLevelDAO.delete(album);
+            // Performance ? could be very slow if each photo deleted separately?
+            album.deleteLevel();
+            // genericLevelDAO.delete(album);
             HibernateUtil.commitTransaction();
         } catch (NotAuthorizedException e) {
             _logger.info(e);

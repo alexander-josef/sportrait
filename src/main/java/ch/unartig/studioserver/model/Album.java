@@ -202,7 +202,6 @@ import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
@@ -214,8 +213,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.*;
 import java.util.*;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipEntry;
+
 
 
 /**
