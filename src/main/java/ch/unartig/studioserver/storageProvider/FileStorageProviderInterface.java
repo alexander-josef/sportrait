@@ -51,24 +51,6 @@ public interface FileStorageProviderInterface {
 
 
     /**
-     * Store a display file based on an output stream
-     * @param album Reference to album
-     * @param file File to be stored as Output Stream
-     * @param name Name of the file to be stored (only last part, without path)
-     * @throws UAPersistenceException
-     */
-    public void putDisplayImage(Album album, OutputStream file, String name) throws UAPersistenceException;
-
-    /**
-     * Store a thumbnail file based on an scaled output stream
-     * @param album Reference to album
-     * @param scaledThumbnailImage File to be stored as Output Stream
-     * @param name Name of the file to be stored (only last part, without path)
-     * @throws UAPersistenceException
-     */
-    void putThumbnailImage(Album album, OutputStream scaledThumbnailImage, String name);
-
-    /**
      * Retrieve a stored file from the storage provider - only relevant for pre-image service operations
      *
      * @param album The album where the file is from
@@ -111,24 +93,6 @@ public interface FileStorageProviderInterface {
      * @param album the album the given key is part of (needed to determine storage location in case of S3, for example)
      */
     public void deleteFile(String key, Album album);
-
-
-    /**
-     * @deprecated use image service for thumbnail images
-     * @param genericLevelId
-     * @param filename
-     * @return
-     */
-    String getThumbnailUrl(String genericLevelId, String filename);
-
-
-    /**
-     * @deprecated use image service for images of type display
-     * @param genericLevelId
-     * @param filename
-     * @return
-     */
-    String getDisplayUrl(String genericLevelId, String filename);
 
 
     /**

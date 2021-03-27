@@ -203,166 +203,7 @@ public class Photo implements java.io.Serializable {
         return hoursMinutesSecondsDateFormatter.format(getPictureTakenDate());
     }
 
-    /**
-     *
-     * @return (absolute o relative ) URL string for thumbnail image
-     */
-    public String getThumbnailUrl()
-    {
-        String thumbnailUrl;
 
-        if (this.isAfterImageServiceMigration()){
-            // old solution before using parameters:
-            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
-            // get a signed thumbnail URL
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","100");
-            params.put("h","100");
-            params.put("fit","clip");
-            params.put("auto","format,enhance,compress");
-            params.put("q","40");
-            params.put("usm","20");
-
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey() ) ;
-        } else {
-            // URL to thumbnail file - legacy solution before image service (imgix)
-            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-        }
-        return thumbnailUrl;
-    }
-
-    /**
-     *
-     * @return (absolute o relative ) URL string for thumbnail image
-     */
-    public String getThumbnailUrl2x()
-    {
-        String thumbnailUrl;
-
-        if (this.isAfterImageServiceMigration()){
-            // old solution before using parameters:
-            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
-            // get a signed thumbnail URL
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","100");
-            params.put("h","100");
-            params.put("fit","clip");
-            params.put("auto","format,enhance,compress");
-            params.put("q","30");
-            params.put("usm","20");
-            params.put("dpr","2");
-
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
-        } else {
-            // URL to thumbnail file - legacy solution before image service (imgix)
-            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-        }
-        return thumbnailUrl;
-    }
-
-    /**
-     *
-     * @return (absolute o relative ) URL string for thumbnail image
-     */
-    public String getThumbnailUrl3x()
-    {
-        String thumbnailUrl;
-
-        if (this.isAfterImageServiceMigration()){
-            // old solution before using parameters:
-            // thumbnailUrl = getMasterImageUrlFromImageService() + "?w=100&h=100&fit=clip&auto=format,enhance,compress&q=40&usm=20";
-            // get a signed thumbnail URL
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","100");
-            params.put("h","100");
-            params.put("fit","clip");
-            params.put("auto","format,enhance,compress");
-            params.put("q","20");
-            params.put("usm","20");
-            params.put("dpr","3");
-
-            thumbnailUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
-        } else {
-            // URL to thumbnail file - legacy solution before image service (imgix)
-            return Registry.getFileStorageProvider().getThumbnailUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-        }
-        return thumbnailUrl;
-    }
-
-    /**
-     *
-     * @return URL string for display image
-     */
-    public String getDisplayUrl()
-    {
-        String displayUrl;
-        if (this.isAfterImageServiceMigration())
-        {
-            // old solution before using params and imgix client
-            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
-
-
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","380");
-            params.put("h","380");
-            params.put("fit","clip");
-            params.put("auto","format,enhance,compress");
-            params.put("q","50");
-            params.put("usm","20");
-
-
-            if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                // _logger.debug("printing out startnumber on display image");
-                printStartnumbersOnPhoto(params, getStartnumbersAsString());
-                // addNumberRecognitionText(params, getStartnumbersAsString());
-            }
-
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(),getImageServiceSignKey()) ;
-
-        } else {
-            // URL to display file - before image service migration (imgix)
-            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-
-        }
-        return displayUrl;
-    }
-
-    public String getDisplayUrl2x() {
-
-        String displayUrl;
-        if (this.isAfterImageServiceMigration())
-        {
-            // old solution before using params and imgix client
-            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
-
-
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","380");
-            params.put("h","380");
-            params.put("fit","max");
-            params.put("auto","format,enhance,compress");
-            params.put("q","40");
-            params.put("usm","20");
-            params.put("dpr","2");
-
-            // add number recognition text
-            // *****
-            // test only
-            if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                // _logger.debug("printing out startnumber on display image");
-                printStartnumbersOnPhoto(params, getStartnumbersAsString());
-                // addNumberRecognitionText(params, getStartnumbersAsString());
-            }
-            // ****
-
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()) ;
-
-        } else {
-            // URL to display file - before image service migration (imgix)
-            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-
-        }
-        return displayUrl;    }
 
     /**
      * iterate through photoSubjects and eventrunners, create a list of startnumbers and return them
@@ -383,51 +224,9 @@ public class Photo implements java.io.Serializable {
         return String.join("/", startnumbers);
     }
 
-    public String getDisplayUrl3x() {
-
-        String displayUrl;
-        if (this.isAfterImageServiceMigration())
-        {
-            // old solution before using params and imgix client
-            // displayUrl = getMasterImageUrlFromImageService() + "?w=380&h=380&fit=clip&auto=format,enhance&q=50&usm=20";
 
 
-            Map<String,String> params = new HashMap<String,String>();
-            params.put("w","380");
-            params.put("h","380");
-            params.put("fit","max");
-            params.put("auto","format,enhance,compress");
-            params.put("q","20");
-            params.put("usm","20");
-            params.put("dpr","3");
-
-            if (Registry.isDevEnv() || Registry.isIntEnv()) {
-                // _logger.debug("printing out startnumber on display image");
-                printStartnumbersOnPhoto(params, getStartnumbersAsString());
-                // addNumberRecognitionText(params, getStartnumbersAsString());
-            }
-
-
-            displayUrl = ImagingHelper.getSignedImgixUrl(params,getPathForImageService(),getImageServiceDomain(),getImageServiceSignKey() ) ;
-
-        } else {
-            // URL to display file - before image service migration (imgix)
-            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
-
-        }
-        return displayUrl;
-    }
-
-
-
-    private void printStartnumbersOnPhoto(Map<String, String> params, String numbers) {
-        //_logger.debug("startnumbers  : " + numbers);
-
-        params.put("txtsize","30");
-        params.put("txtalign","bottom,right");
-        params.put("txtclr","AADD44");
-        params.put("txt", numbers);
-    }
+/*
 
     public String getDisplayUrlFacebookSharingImage() {
 
@@ -449,15 +248,13 @@ public class Photo implements java.io.Serializable {
 
         } else {
             // URL to display file - before image service migration (imgix)
-            return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
+            //  return Registry.getFileStorageProvider().getDisplayUrl(getAlbum().getGenericLevelId().toString(), getFilename());
 
         }
         return displayUrl;
     }
 
-    public URL getImgixUrl(Map<String, String> imgixParams) throws MalformedURLException {
-        return new URL(ImagingHelper.getSignedImgixUrl(imgixParams, getPathForImageService(), getImageServiceDomain(), getImageServiceSignKey()));
-    }
+*/
 
     /**
      * Helper method to determine if photo belongs to an event that has been imported after the image service migration imgix

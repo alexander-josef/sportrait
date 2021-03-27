@@ -311,23 +311,6 @@ public class SportsEvent extends Event implements java.io.Serializable {
         return true;
     }
 
-    /**
-     * Without processing the fine images, import an album into the system based on the already extracted image parameters
-     * @param eventCategoryId
-     * @param inputStream
-     * @param client
-     * @param isZipArchive
-     * @return
-     * @throws UnartigException
-     */
-    public boolean importAlbumFromImportDataOnly(Long eventCategoryId, InputStream inputStream, Client client, boolean isZipArchive) throws UnartigException
-    {
-        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
-        sportsAlbum.registerPhotosFromImportData(inputStream, isZipArchive);
-        return true;
-    }
-
-
 
     /**
      * @see SportsEvent#getOrCreateSportsAlbumFor(Long,Photographer)
