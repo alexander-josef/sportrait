@@ -3,10 +3,7 @@ package ch.unartig.studioserver;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.googleapis.util.Utils;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
+
 import org.apache.log4j.Logger;
 
 import java.io.FileInputStream;
@@ -74,8 +71,7 @@ public final class Registry
     private static String s3BucketName;
     private static String sponsorBarFile; // full path to image that contains sponsor bar that will be copied over image
     private static String logoImageFile; // full path of logo image file that will be copied over the image on the upper left
-    private static JsonFactory googleJasonFactory;
-    private static NetHttpTransport googleHttpTransport;
+
     private static String applicationEnvironment; // dev, int or prod
     private static String imgixSignKey; // environment dependant sign key as generated on the imgix admin website
     private static String imgixSignKey2; // environment dependant sign key as generated on the imgix admin website for the 2nd imgix source
@@ -165,9 +161,7 @@ public final class Registry
         fileStorageProvider = (FileStorageProviderInterface) Class.forName(appSettings.getProperty("fileStorageProviderImplementation")).getDeclaredConstructor().newInstance();
         /************************************************************************/
 
-        // Set up the HTTP transport and JSON factory for the google sign-in actions
-        setGoogleJasonFactory(Utils.getDefaultJsonFactory());
-        setGoogleHttpTransport(GoogleNetHttpTransport.newTrustedTransport());
+
 
         _logger.info("***** imgixSignKey = " + appSettings.getProperty("imgixSignKey"));
         imgixSignKey=appSettings.getProperty("imgixSignKey");
@@ -293,13 +287,6 @@ public final class Registry
         Registry.logoImageFile = logoImageFile;
     }
 
-    public static void setGoogleJasonFactory(JsonFactory googleJasonFactory) {
-        Registry.googleJasonFactory = googleJasonFactory;
-    }
-
-    public static void setGoogleHttpTransport(NetHttpTransport googleHttpTransport) {
-        Registry.googleHttpTransport = googleHttpTransport;
-    }
 
     public static void setApplicationEnvironment(String appEnv) {
         Registry.applicationEnvironment = appEnv;

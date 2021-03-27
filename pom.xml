@@ -150,15 +150,6 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>5.5</version>
-            <classifier>jdk15</classifier>
-            <optional>true</optional>
-            <scope>test</scope>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.paypal.sdk/paypal-core -->
         <dependency>
             <groupId>com.paypal.sdk</groupId>

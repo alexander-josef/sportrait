@@ -2046,17 +2046,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.testng:testng:jdk15:5.5">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-jdk15.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/5.5/testng-5.5-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: org.yaml:snakeyaml:1.18">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.18/snakeyaml-1.18.jar!/" />
