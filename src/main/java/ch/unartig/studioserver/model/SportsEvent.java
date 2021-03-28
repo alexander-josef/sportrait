@@ -366,6 +366,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
             {
                 HibernateUtil.beginTransaction();
                 glDao.saveOrUpdate(sportsAlbum);
+                eventCategory.getAlbums().add(sportsAlbum);
                 HibernateUtil.commitTransaction();
             }
             catch (UAPersistenceException e)
@@ -376,7 +377,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
             }
             finally
             {
-//                HibernateUtil.finishTransaction();
+                _logger.info("new sportsalbum commited");
             }
         }
         return sportsAlbum;
