@@ -43,7 +43,7 @@ public class EventCategoriesApi {
         if (eventCategory != null) {
             return Response.ok().entity(convertToEventCategoryDTO(eventCategory)).build();
         } else {
-            return Response.status(403, "eventCategory not found").build();
+            return Response.status(403).entity("eventCategory not found").build();
         }
     }
 
@@ -91,7 +91,7 @@ public class EventCategoriesApi {
         // load event eventCategory - check for albums
         ch.unartig.studioserver.model.EventCategory eventCategory = convertFromEventCategoryDTO(eventCategoryDto, null);
         if (eventCategory == null) {
-            return Response.status(403, "eventCategory not found").build();
+            return Response.status(403).entity("eventCategory not found").build();
         }
         // should be enough - upon flushing the session, the object should be persisted
         _logger.debug("updated eventCategory with ID : [" + eventCategory.getEventCategoryId() + "] ");
@@ -112,11 +112,12 @@ public class EventCategoriesApi {
         // load event category - check for albums
         ch.unartig.studioserver.model.EventCategory category = eventCategoryDAO.load(eventCategoryId);
         if (category == null) {
-            return Response.status(403, "eventCategory not found").build();
+            return Response.status(403).entity("eventCategory not found").build();
         }
         int numberOfAlbums = category.getAlbums().size();
         if (numberOfAlbums != 0) {
-            return Response.status(404, "EventCategory still contains [" + numberOfAlbums + "] Album(s). Delete albums first.").build();
+            // return Response.status(404, "EventCategory still contains [" + numberOfAlbums + "] Album(s). Delete albums first.").build();
+            return Response.status(404).entity("EventCategory still contains [" + numberOfAlbums + "] Album(s). Delete albums first.").build();
             // todo : extend with a parameter "force=true" to also delete albums
         } else {
             // event must also be updated and saved since it has the eventCategories as an indexed collection
@@ -125,7 +126,7 @@ public class EventCategoriesApi {
             // eventCategoryDAO.delete(category);
             SportsEvent event = category.getEvent();
             event.getEventCategories().remove(category);
-            // delete category explicitely here ??? try.
+            // delete category explicitly here ??? try.
             genericLevelDAO.saveOrUpdate(event);
             HibernateUtil.commitTransaction();
 
@@ -147,7 +148,7 @@ public class EventCategoriesApi {
         ch.unartig.studioserver.model.EventCategory eventCategory = dao.getEventCategory(eventCategoryId);
 
         if (eventCategory == null) {
-            return Response.status(403, "Event Category does not exist").build();
+            return Response.status(403).entity("Event Category does not exist").build();
         }
 
         return Response.ok().entity(eventCategory.getAlbums()
