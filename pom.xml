@@ -123,30 +123,31 @@
         </dependency>
 
 <!--   Upgrading to 5.4.27 on 2021-01-11 caused problems : problems with 2nd level cache provider dependency (jcache) -->
+<!--   Update 2021-03-28 : Update to 5.4.30 seems to work! Including upgrade to ehcache 3.8.1 -->
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.2.Final</version>
+            <version>5.4.30.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-tools</artifactId>
-            <version>5.4.2.Final</version>
+            <version>5.4.30.Final</version>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jcache</artifactId>
-            <version>5.4.2.Final</version>
+            <version>5.4.30.Final</version>
         </dependency>
 
         <!-- Ehcache 3.x -->
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>ehcache</artifactId>
-            <version>3.3.1</version>
+            <version>3.8.1</version>
         </dependency>
 
 
