@@ -65,7 +65,8 @@ import ch.unartig.sportrait.imgRecognition.Test;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.imaging.ImagingHelper;
 import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
@@ -87,7 +88,7 @@ public class Photo implements java.io.Serializable {
     // todo: store thumbnail and display width and height pixels . here? globally?
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @Id
     @GeneratedValue(generator = "increment")

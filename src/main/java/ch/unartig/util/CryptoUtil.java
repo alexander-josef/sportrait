@@ -28,7 +28,8 @@
  ****************************************************************/
 package ch.unartig.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +42,7 @@ import ch.unartig.exceptions.UnartigException;
  */
 public class CryptoUtil
 {
-    public static Logger _logger = Logger.getLogger("ch.unartig.util.CryptUtil");
+    public static Logger _logger = LogManager.getLogger("ch.unartig.util.CryptUtil");
 
     static SecureRandom prng;
 

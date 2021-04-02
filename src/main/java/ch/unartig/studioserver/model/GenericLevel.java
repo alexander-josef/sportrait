@@ -8,7 +8,8 @@ import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Cache;
@@ -28,7 +29,7 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
 
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @Id
     @GeneratedValue(generator = "increment")

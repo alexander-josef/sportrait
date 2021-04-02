@@ -4,7 +4,8 @@ import ch.unartig.studioserver.storageProvider.FileStorageProviderInterface;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,7 +20,7 @@ import java.util.Properties;
 public final class Registry
 {
 
-    public static Logger _logger = Logger.getLogger("ch.unartig.studioserver.Registry");
+    public static Logger _logger = LogManager.getLogger("ch.unartig.studioserver.Registry");
 
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
     public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env / used in JSPa

@@ -46,7 +46,8 @@
 package ch.unartig.util;
 
 import ch.unartig.exceptions.UnartigException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.zip.ZipEntry;
@@ -60,7 +61,7 @@ public class FileUtils
 {
 
     private static final int BUFFER_SIZE = 10000;
-    static Logger _logger = Logger.getLogger("ch.unartig.util.FileUtils");
+    static Logger _logger = LogManager.getLogger("ch.unartig.util.FileUtils");
 
     private FileUtils()
     {

@@ -59,7 +59,8 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Product;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
@@ -68,7 +69,7 @@ import org.hibernate.criterion.Order;
 import java.util.List;
 
 public class ProductDAO {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     /**
      * @param productId

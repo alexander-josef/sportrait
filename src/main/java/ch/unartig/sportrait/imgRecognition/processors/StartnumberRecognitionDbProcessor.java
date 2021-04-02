@@ -13,7 +13,8 @@ import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.amazonaws.services.rekognition.model.*;
 import com.sportrait.importrs.model.AlbumImportStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class StartnumberRecognitionDbProcessor implements SportraitImageProcesso
     private static final int TEXT_CONFIDENCE = 80;
     // public static final String REG_EXP_STARTNUMBER_RECOGNITION = "(.*\\s+)(\\d{1,3})(\\s+.*)";
     public static final String REG_EXP_STARTNUMBER_RECOGNITION = "(\\w*\\s)?(\\d{1,3})(\\s\\w*)?";
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     List<Startnumber> startnumbers = new ArrayList<>(); // reference to numbers stored in startnumberprocessor ?

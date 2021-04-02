@@ -58,7 +58,8 @@ import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Order;
 import ch.unartig.studioserver.persistence.DAOs.OrderDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ import java.util.TimerTask;
 
 public class TimedOrderProcess extends TimerTask
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
     /*use the copla demo order account?*/
     public static final boolean _DEMO_ORDER = Registry.isDemoOrderMode();
     public static final boolean _SIMULATE_ORDER_ONLY = Registry.isSimulateOrderOnly();

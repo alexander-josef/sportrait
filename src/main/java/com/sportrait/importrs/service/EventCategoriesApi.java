@@ -11,7 +11,8 @@ import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.EventCategory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -26,7 +27,7 @@ public class EventCategoriesApi {
     // inject request context to read out client - client to be put to request context in auth filter
     @Context
     ContainerRequestContext requestContext;
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     @Path("/{eventCategoryId}")

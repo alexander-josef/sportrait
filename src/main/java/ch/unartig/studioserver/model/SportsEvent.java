@@ -59,7 +59,8 @@ import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -76,7 +77,7 @@ import java.util.*;
 public class SportsEvent extends Event implements java.io.Serializable {
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) // using eager to make admin window work
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)

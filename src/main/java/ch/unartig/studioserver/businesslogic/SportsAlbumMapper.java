@@ -60,7 +60,8 @@ import ch.unartig.studioserver.model.PhotoSubject;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoSubjectDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -80,7 +81,7 @@ public class SportsAlbumMapper {
     private int photoPointDifference;
     private int photoPointTolerance;
     private boolean photopointBeforeFinishTime;
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = LogManager.getLogger(getClass().getName());
 
     public SportsAlbumMapper(InputStream mappingInputStream, Album album) {
 

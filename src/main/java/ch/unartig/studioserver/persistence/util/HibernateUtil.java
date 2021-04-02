@@ -46,7 +46,8 @@ package ch.unartig.studioserver.persistence.util;
 
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.UserProfile;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -69,7 +70,7 @@ import java.util.Map;
 
 public class HibernateUtil
 {
-    private static final Logger  _logger = Logger.getLogger("ch.unartig.studioserver.persistence.util.HibernateUtil");
+    private static final Logger  _logger = LogManager.getLogger("ch.unartig.studioserver.persistence.util.HibernateUtil");
 
     /**
      * Session Factory - will be created once upon application startup

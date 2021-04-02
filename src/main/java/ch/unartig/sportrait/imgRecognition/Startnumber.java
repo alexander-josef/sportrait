@@ -3,7 +3,8 @@ package ch.unartig.sportrait.imgRecognition;
 import com.amazonaws.services.rekognition.model.Face;
 import com.amazonaws.services.rekognition.model.FaceRecord;
 import com.amazonaws.services.rekognition.model.TextDetection;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 import static ch.unartig.sportrait.imgRecognition.processors.StartnumberRecognitionDbProcessor.REG_EXP_STARTNUMBER_RECOGNITION;
 
 public class Startnumber {
-    private Logger _logger = Logger.getLogger(getClass().getName());
+    private Logger _logger = LogManager.getLogger(getClass().getName());
     private final Float leftPosition;
     private final Float width;
     private final Float middlePosition;

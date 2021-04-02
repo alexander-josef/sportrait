@@ -35,7 +35,8 @@
 package ch.unartig.util;
 
 import ch.unartig.studioserver.model.Photo;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import javax.servlet.ServletInputStream;
@@ -46,7 +47,7 @@ import java.util.List;
 
 public class DebugUtils
 {
-     private static Logger _logger = Logger.getLogger("ch.unartig.util.DebugUtils");
+     private static Logger _logger = LogManager.getLogger("ch.unartig.util.DebugUtils");
 
     /**
      * helper for showing the content of the request

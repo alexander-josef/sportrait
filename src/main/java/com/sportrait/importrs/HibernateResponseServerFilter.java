@@ -1,7 +1,8 @@
 package com.sportrait.importrs;
 
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import javax.ws.rs.HttpMethod;
@@ -14,7 +15,7 @@ import java.io.IOException;
 @Provider
 public class HibernateResponseServerFilter implements ContainerResponseFilter {
 
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
 
     @Override
     public void filter(ContainerRequestContext requestContext,
