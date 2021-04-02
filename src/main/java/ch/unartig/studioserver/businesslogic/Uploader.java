@@ -118,7 +118,7 @@ public class Uploader implements Runnable
         // why load album again? -> Album is loaded/created before in the SportsEvent class, but passed to the Uploader only as ID.
         // To prevent session timeout issues? Not important, this process is not done frequently.
         GenericLevelDAO glDao = new GenericLevelDAO();
-        Album album = (Album) glDao.load(albumId, Album.class);
+        Album album = glDao.load(albumId, Album.class);
 
 
 
@@ -132,13 +132,7 @@ public class Uploader implements Runnable
         } else if (tempSingleImageFile != null)
         {
             // single image photo (only used by applet)
-            Set problemFiles = new HashSet();
-
-            Registry.getFileStorageProvider().putFineImage(album, tempSingleImageFile);
-
-            // register using the fine file
-            album.registerSinglePhoto(problemFiles, new FileInputStream(tempSingleImageFile), tempSingleImageFile.getName(), createThumbnailDisplay, applyLogoOnFineImages);
-            _logger.debug("Done with registering photo [" + tempSingleImageFile.getAbsolutePath() + "]");
+            // not implemented anymore
         } else
         {
             _logger.error("Uploader in unexpected state. Stopping import of photos");

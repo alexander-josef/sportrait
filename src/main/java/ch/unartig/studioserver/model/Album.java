@@ -846,22 +846,6 @@ public class Album extends GenericLevel implements Serializable {
         this.products = products;
     }
 
-    /**
-     * toString
-     *
-     * @return String
-     */
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
-        buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
-        buffer.append("event").append("='").append(getEvent()).append("' ");
-        buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
-        buffer.append("]");
-
-        return buffer.toString();
-    }
 
 
     /**

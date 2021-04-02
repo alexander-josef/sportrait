@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -239,6 +240,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         }
                         // update import state object
                         ImportStatus.getInstance().photoImported(album);
+                        if (Registry.isDevEnv()) {
+                            // pause for 10 seconds to better test status updates
+                            _logger.debug("going to sleep for 10 seconds ...");
+                            TimeUnit.SECONDS.sleep(10);
+                        }
 
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + importImageKey);
@@ -247,6 +253,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
                     ImportStatus.getInstance().importError(album);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 } finally { // make sure s3 object closes and release http connection
                     if (objectContent != null) {
                         try {
