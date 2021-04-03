@@ -4,7 +4,8 @@ import ch.unartig.studioserver.model.Event;
 import ch.unartig.studioserver.model.SportsEvent;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import com.sportrait.importrs.model.Album;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.print.attribute.standard.Media;
 import javax.ws.rs.*;
@@ -13,7 +14,7 @@ import javax.ws.rs.core.Response;
 
 @Path("")
 public class Ping {
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
     GenericLevelDAO glDao = new GenericLevelDAO();
 
     @Path("/ping")

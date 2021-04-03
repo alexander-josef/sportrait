@@ -25,7 +25,8 @@ import ch.unartig.studioserver.model.Photographer;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.controller.Client;
 import ch.unartig.exceptions.UnartigException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Criteria;
@@ -40,7 +41,7 @@ import java.util.List;
 public class ReportingDAO
 {
 
-    final Logger _logger = Logger.getLogger(this.getClass());
+    final Logger _logger = LogManager.getLogger(this.getClass());
 
 
     /**

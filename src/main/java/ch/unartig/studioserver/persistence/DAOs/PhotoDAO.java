@@ -127,7 +127,8 @@ import ch.unartig.studioserver.businesslogic.EventAlbum;
 import ch.unartig.studioserver.model.*;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import ch.unartig.util.DebugUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.*;
 import org.hibernate.criterion.Expression;
@@ -142,7 +143,7 @@ import java.util.*;
 
 public class PhotoDAO {
 
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     public Photo load(Long photoId) throws UAPersistenceException {

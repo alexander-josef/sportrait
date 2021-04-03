@@ -57,20 +57,15 @@
  ****************************************************************/
 package ch.unartig.exceptions;
 
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
 public class UnartigException extends Exception
 {
-    ActionMessages actionMessages = new ActionMessages();
 
     public UnartigException(String message)
     {
         super(message);
 
         System.out.println("message = " + message);
-        actionMessages.add(Globals.MESSAGE_KEY, new ActionMessage("error.generalError", message));
     }
 
     public UnartigException(String message, Throwable problem)

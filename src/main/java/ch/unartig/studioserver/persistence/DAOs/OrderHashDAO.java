@@ -31,13 +31,14 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 public class OrderHashDAO
 {
 
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     public void save(OrderHash orderHash) throws UAPersistenceException
         {

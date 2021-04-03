@@ -51,7 +51,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
@@ -72,7 +73,7 @@ import java.util.Set;
 public class Order implements java.io.Serializable {
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @Id
     @GeneratedValue(generator = "increment")

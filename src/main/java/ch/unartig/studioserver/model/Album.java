@@ -195,8 +195,6 @@ import ch.unartig.controller.Client;
 import ch.unartig.exceptions.NotAuthorizedException;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.Registry;
-import ch.unartig.studioserver.beans.AbstractAlbumBean;
-import ch.unartig.studioserver.beans.AlbumBean;
 import ch.unartig.studioserver.businesslogic.AlbumType;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
@@ -204,7 +202,6 @@ import ch.unartig.studioserver.persistence.DAOs.OrderItemDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotoDAO;
 import ch.unartig.studioserver.persistence.DAOs.PriceDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import ch.unartig.util.FileUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
@@ -216,8 +213,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import java.io.*;
 import java.util.*;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipEntry;
+
 
 
 /**
@@ -347,83 +343,6 @@ public class Album extends GenericLevel implements Serializable {
 
     public AlbumType getAlbumType() {
         return AlbumType.getAlbumType(this.getAlbumTypeString());
-    }
-
-    /**
-     * Register Photos only from the importData stream;
-     * The import data stream comes from a file with the following format:
-     * <p/>
-     * [filename];[width pixels];[height pixels];[date in the format MM/dd/yy]
-     * <p/>
-     * example:
-     * CIMG1114.JPG;3264;2448;2/18/07
-     * <p>
-     * ZIP archive contains import.txt as well as display / thumbnail folders
-     * optionally only import.txt is uploaded in archive
-     *
-     * @param importDataStream
-     * @param isZipArchive
-     */
-    public void registerPhotosFromImportData(InputStream importDataStream, boolean isZipArchive) {
-        BufferedReader br;
-        try {
-            // todo create fine and web images anyway!!
-            if (isZipArchive) { // deal with zip archive that contains images and import.txt
-                ZipEntry zipEntry;
-                // importDataStream is zip file
-                ZipInputStream zis = new ZipInputStream(importDataStream);
-                // todo-files: no need for file system directories:
-                // make sure paths for thumbnails and displays exists:
-                boolean thumbOk = true;
-                if (!getThumbnailPath().exists()) {
-                    thumbOk = getThumbnailPath().mkdirs();
-                }
-                boolean displayOk = true;
-                if (!getDisplayPath().exists()) {
-                    displayOk = getDisplayPath().mkdirs();
-                }
-                if (!(thumbOk && displayOk)) {
-                    throw new RuntimeException("Error importing from Zip file, can not create directories for thumbnail or display");
-                }
-                while ((zipEntry = zis.getNextEntry()) != null) {
-                    if (zipEntry.getName().toLowerCase().startsWith("fine/")) {
-                        throw new RuntimeException("fine images not yet supported");
-                    }
-                    // todo-files: replace with storage-provider method
-                    // files are in directories: "/thumbnail" oder "/display"
-                    FileUtils.copyFile(zis, new File(Album.getAlbumWebImagesPath(this), zipEntry.getName()), false, true);
-                }
-                File importFile = new File(Album.getAlbumWebImagesPath(this), "import.txt");
-                if (importFile.exists()) {
-                    br = new BufferedReader(new FileReader(importFile));
-                } else {
-                    throw new RuntimeException("import.txt must exist for importing photos.");
-                }
-            } else { // only import.txt has been uploaded:
-                InputStreamReader reader = new InputStreamReader(importDataStream);
-                br = new BufferedReader(reader);
-            }
-
-            // process import.txt: 
-            while (br.ready()) {
-                // for each line
-                String line = "";
-                try {
-                    line = br.readLine();
-                    String parts[] = line.split(";");
-                    if (parts.length != 4) {
-                        _logger.info("probably last line in file: skipping invalid line while importing from import.txt : [" + line + "]");
-                        continue;
-                    }
-                    Photo photo = new Photo(parts[0], this, Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), new Date(Long.parseLong(parts[3])), parts[0]);
-                    add(photo);
-                } catch (IOException e) {
-                    _logger.error("The following line causes problems while importing a photo from import.txt : [" + line + "]");
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error importing from zip file or import.txt");
-        }
     }
 
     /**
@@ -610,37 +529,6 @@ public class Album extends GenericLevel implements Serializable {
     }
 
 
-    /**
-     * @return
-     * @deprecated
-     */
-    private File getThumbnailPath() {
-        // todo-files : what to return in case of storage-provider implementation?
-        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(getAlbumWebImagesPath(this), Registry.getThumbnailPath());
-    }
-
-
-    /**
-     * @return
-     * @deprecated
-     */
-    private File getDisplayPath() {
-        // todo-files : what to return in case of storage-provider implementation?
-        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(getAlbumWebImagesPath(this), Registry.getDisplayPath());
-    }
-
-    /**
-     * @param album
-     * @return
-     * @deprecated
-     */
-    private static File getAlbumWebImagesPath(Album album) {
-        // todo-files : what to return in case of storage-provider implementation?
-        // check usage . This method should not be used anymore and replaced by a method of the storage provider interface
-        return new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
-    }
 
     public void setProblemFiles(Set problemFiles) {
         this.problemFiles = problemFiles;
@@ -958,22 +846,6 @@ public class Album extends GenericLevel implements Serializable {
         this.products = products;
     }
 
-    /**
-     * toString
-     *
-     * @return String
-     */
-    public String toString() {
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(getClass().getName()).append("@").append(Integer.toHexString(hashCode())).append(" [");
-        buffer.append("photographer").append("='").append(getPhotographer()).append("' ");
-        buffer.append("event").append("='").append(getEvent()).append("' ");
-        buffer.append("eventCategory").append("='").append(getEventCategory()).append("' ");
-        buffer.append("]");
-
-        return buffer.toString();
-    }
 
 
     /**
@@ -994,13 +866,5 @@ public class Album extends GenericLevel implements Serializable {
         }
     }
 
-    /**
-     * Return the matching AlbumBean. Polymorphism makes sure it's from the right type
-     *
-     * @return
-     */
-    public AbstractAlbumBean getAlbumBean() {
-        return new AlbumBean(this);
-    }
 
 }

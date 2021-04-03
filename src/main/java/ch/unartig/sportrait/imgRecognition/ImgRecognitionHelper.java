@@ -4,7 +4,8 @@ import ch.unartig.studioserver.Registry;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.AmazonRekognitionClientBuilder;
 import com.amazonaws.services.rekognition.model.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class ImgRecognitionHelper {
     private static final float FACE_MATCH_THRESHOLD_FOR_SEARCH = 95F;
     static final String FACE_COLLECTION_ID = "sportraitFaces2019-"+ Registry.getApplicationEnvironment();
     private AmazonRekognition rekognitionClient;
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
     private static ImgRecognitionHelper _instance=null;
 
     private ImgRecognitionHelper() {

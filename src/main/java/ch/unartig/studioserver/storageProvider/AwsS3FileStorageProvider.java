@@ -15,12 +15,13 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -30,7 +31,7 @@ import java.util.zip.ZipInputStream;
  */
 public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
     private static final String FINE_IMAGES_PREFIX = "fine-images";
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
 
     private AmazonS3 s3DefaultClient; //
     private AmazonS3 s3FrankfurtClient; // specific for older albums on frankfurt bucket
@@ -109,28 +110,6 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     }
 
-    /**
-     * Store a file based on an output stream
-     *
-     * @param album
-     * @param scaledImage
-     * @param name
-     * @throws ch.unartig.exceptions.UAPersistenceException
-     */
-    public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
-
-        String key = Registry.getWebImagesContext() + "/" + album.getGenericLevelId() + "/" + Registry.getDisplayPath() + name;
-
-        putImage((ByteArrayOutputStream) scaledImage, key, getS3BucketNameFor(album), true);
-
-    }
-
-    public void putThumbnailImage(Album album, OutputStream scaledImage, String name) {
-
-        String key = Registry.getWebImagesContext() + "/" + album.getGenericLevelId() + "/" + Registry.getThumbnailPath() + name;
-
-        putImage((ByteArrayOutputStream) scaledImage, key, getS3BucketNameFor(album), true);
-    }
 
     public InputStream getFineImageFileContent(Album album, String filename) {
         _logger.debug("Downloading an s3 fine image");
@@ -262,6 +241,11 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         }
                         // update import state object
                         ImportStatus.getInstance().photoImported(album);
+                        if (Registry.isDevEnv()) {
+                            // pause for 10 seconds to better test status updates
+                            _logger.debug("going to sleep for 10 seconds ...");
+                            TimeUnit.SECONDS.sleep(10);
+                        }
 
                     } else {
                         _logger.info("s3 object is not a file, skipping entry for key : " + importImageKey);
@@ -270,6 +254,8 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 } catch (AmazonClientException e) {
                     _logger.error("Cannot read photo from temp location, skipping : " + filename, e);
                     ImportStatus.getInstance().importError(album);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 } finally { // make sure s3 object closes and release http connection
                     if (objectContent != null) {
                         try {
@@ -357,35 +343,6 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
 
     }
 
-    /**
-     * Returns the virtual hosted style URL of a thumbnail image
-     * example: http://photos.sportrait.com.s3.amazonaws.com/web-images/176/thumbnail/sola14_e01_fm_0005.JPG
-     *
-     * @param genericLevelId AlbumId
-     * @param filename       filename of master image
-     * @return Url to S3 object (public access)
-     */
-    public String getThumbnailUrl(String genericLevelId, String filename) {
-        // todo: introduce a sportrait.com cname for "photos.sportrait.com.s3.amazonaws.com" and use a sportrait.com URL
-        // todo: https not possible; certificate for domain name that includes the bucket name must exist. Change if https is needed
-        return bucketHttpsUrl + "/" + Registry.getWebImagesContext() + "/" + genericLevelId + "/" + Registry.getThumbnailPath() + filename;
-    }
-
-    /**
-     * Returns the virtual hosted style URL of a display image
-     * example: http://photos.sportrait.com.s3.amazonaws.com/web-images/176/display/sola14_e01_fm_0005.JPG
-     *
-     * @param genericLevelId AlbumId
-     * @param filename       filename of master image
-     * @return Url to S3 object (public access)
-     */
-    public String getDisplayUrl(String genericLevelId, String filename) {
-        // todo: use following style (exclude Region): http://photos.sportrait.com.s3.amazonaws.com/web-images/176/display/sola14_e01_fm_0005.JPG
-        // todo: introduce a sportrait.com cname for "photos.sportrait.com.s3.amazonaws.com" and use a sportrait.com URL
-        return bucketHttpsUrl + "/" + Registry.getWebImagesContext() + "/" + genericLevelId + "/" + Registry.getDisplayPath() + filename;
-
-    }
-
 
     /**
      * Return a list with all paths available under the "upload/" path (the albums that have been uploaded)
@@ -434,20 +391,6 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                 withDelimiter("/");
 
         deleteFromListObject(listObjectsRequest, bucketName);
-
-        // delete display images
-        listObjectsRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
-                withPrefix(Registry.getWebImagesContext() + "/" + album.getGenericLevelId() + "/" + Registry.getDisplayPath()).
-                withDelimiter("/");
-
-        deleteFromListObject(listObjectsRequest, bucketName);
-
-        // delete thumbnail images
-        listObjectsRequest = new ListObjectsRequest().
-                withBucketName(bucketName).
-                withPrefix(Registry.getWebImagesContext() + "/" + album.getGenericLevelId() + "/" + Registry.getThumbnailPath()).
-                withDelimiter("/");
 
         deleteFromListObject(listObjectsRequest, bucketName);
         _logger.info("done deleting on S3");

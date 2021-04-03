@@ -55,7 +55,8 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.Order;
 import ch.unartig.studioserver.model.OrderHash;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Expression;
@@ -65,7 +66,7 @@ import java.util.List;
 
 public class OrderDAO
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     /**
      * @param order the order class instance

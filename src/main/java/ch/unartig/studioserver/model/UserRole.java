@@ -28,7 +28,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.model;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.GenericGenerator;
@@ -47,7 +48,7 @@ import javax.persistence.*;
 public class UserRole implements java.io.Serializable {
 
     @Transient
-    static Logger _logger = Logger.getLogger(UserRole.class);
+    static Logger _logger = LogManager.getLogger(UserRole.class);
 
     public static final String _ADMIN_ROLE_NAME = "unartigadmin";
     public static final String _PHOTOGRAPHER_ROLE_NAME = "photographer";

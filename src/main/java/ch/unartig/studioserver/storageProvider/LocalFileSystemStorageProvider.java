@@ -6,7 +6,8 @@ import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.model.Album;
 import ch.unartig.studioserver.model.SportsAlbum;
 import ch.unartig.util.FileUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import java.util.Set;
  * Created by alexanderjosef on 01.10.15.
  */
 public class LocalFileSystemStorageProvider implements FileStorageProviderInterface{
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     public LocalFileSystemStorageProvider() {
@@ -29,9 +30,6 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
     public void deletePhotos(Album album) throws UAPersistenceException {
         try {
             org.apache.commons.io.FileUtils.deleteDirectory(getFinePath(album));
-            org.apache.commons.io.FileUtils.deleteDirectory(getDisplayPath(album));
-            org.apache.commons.io.FileUtils.deleteDirectory(getThumbnailPath(album));
-
         } catch (IOException e) {
             _logger.error("Error while deleting photos: ",e);
             throw new UAPersistenceException(e);
@@ -136,23 +134,6 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         saveFile((ByteArrayOutputStream) fineImageAsOutputStream, fineImageFileName, path);
     }
 
-    public void putDisplayImage(Album album, OutputStream scaledImage, String name) throws UAPersistenceException {
-
-
-        File path = new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
-        // make sure path exists
-        path.mkdir();
-        saveFile((ByteArrayOutputStream) scaledImage, name, path);
-    }
-
-
-    public void putThumbnailImage(Album album, OutputStream scaledImage, String name) {
-
-        File path = new File(getAlbumWebImagesPath(album), Registry.getThumbnailPath());
-        // make sure path exists
-        path.mkdir();
-        saveFile((ByteArrayOutputStream) scaledImage, name, path);
-    }
 
     public InputStream getFineImageFileContent(Album album, String filename) throws UAPersistenceException {
 
@@ -203,13 +184,6 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         // todo implement
     }
 
-    public String getThumbnailUrl(String genericLevelId, String filename) {
-        return "/" + Registry.getWebImagesContext()+"/" + genericLevelId + "/" + Registry.getThumbnailPath() + filename;
-    }
-
-    public String getDisplayUrl(String genericLevelId, String filename) {
-        return "/" + Registry.getWebImagesContext()+"/" + genericLevelId + "/" + Registry.getDisplayPath() + filename;
-    }
 
     public List<String> getUploadPaths() {
         // todo implement
@@ -248,26 +222,5 @@ public class LocalFileSystemStorageProvider implements FileStorageProviderInterf
         return finePath;
     }
 
-    private File getThumbnailPath(Album album) {
 
-        return new File(getAlbumWebImagesPath(album), Registry.getThumbnailPath());
-    }
-
-    private File getDisplayPath(Album album) {
-
-        return new File(getAlbumWebImagesPath(album), Registry.getDisplayPath());
-    }
-
-    /**
-     *
-     * @param album
-     * @return
-     * @throws UAPersistenceException
-     */
-    private File getAlbumWebImagesPath(Album album) throws UAPersistenceException {
-
-        File path = new File(Registry.getWebImagesDocumentRoot(), album.getGenericLevelId().toString());
-        path.mkdirs();
-        return path;
-    }
 }

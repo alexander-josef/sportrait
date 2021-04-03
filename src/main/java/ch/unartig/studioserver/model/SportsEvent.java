@@ -59,7 +59,8 @@ import ch.unartig.studioserver.businesslogic.Uploader;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -76,7 +77,7 @@ import java.util.*;
 public class SportsEvent extends Event implements java.io.Serializable {
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @OneToMany(mappedBy = "event",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER) // using eager to make admin window work
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -311,23 +312,6 @@ public class SportsEvent extends Event implements java.io.Serializable {
         return true;
     }
 
-    /**
-     * Without processing the fine images, import an album into the system based on the already extracted image parameters
-     * @param eventCategoryId
-     * @param inputStream
-     * @param client
-     * @param isZipArchive
-     * @return
-     * @throws UnartigException
-     */
-    public boolean importAlbumFromImportDataOnly(Long eventCategoryId, InputStream inputStream, Client client, boolean isZipArchive) throws UnartigException
-    {
-        SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, client.getPhotographer());
-        sportsAlbum.registerPhotosFromImportData(inputStream, isZipArchive);
-        return true;
-    }
-
-
 
     /**
      * @see SportsEvent#getOrCreateSportsAlbumFor(Long,Photographer)
@@ -383,6 +367,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
             {
                 HibernateUtil.beginTransaction();
                 glDao.saveOrUpdate(sportsAlbum);
+                eventCategory.getAlbums().add(sportsAlbum);
                 HibernateUtil.commitTransaction();
             }
             catch (UAPersistenceException e)
@@ -393,7 +378,7 @@ public class SportsEvent extends Event implements java.io.Serializable {
             }
             finally
             {
-//                HibernateUtil.finishTransaction();
+                _logger.info("new sportsalbum commited");
             }
         }
         return sportsAlbum;

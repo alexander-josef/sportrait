@@ -5,7 +5,8 @@ import ch.unartig.studioserver.persistence.DAOs.ProductTypeDAO;
 import com.sportrait.importrs.Secured;
 import com.sportrait.importrs.model.Price;
 import com.sportrait.importrs.model.ProductType;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -20,7 +21,7 @@ public class ProductTypesApi {
     // inject request context to read out client - client to be put to request context in auth filter
     @Context
     ContainerRequestContext requestContext;
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     @GET

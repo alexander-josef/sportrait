@@ -41,7 +41,8 @@
  ****************************************************************/
 package ch.unartig.studioserver.imaging;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.Calendar;
@@ -50,7 +51,7 @@ import java.util.Date;
 
 public class ExifData
 {
-    Logger logger = Logger.getLogger(getClass().getName());
+    Logger logger = LogManager.getLogger(getClass().getName());
     // constant for Exif token
 //    public static final String[] EXIF = {"45", "78", "69", "66", "0"};
     public static final String[] EXIF = {"45", "78", "69", "66"};

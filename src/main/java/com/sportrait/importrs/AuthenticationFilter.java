@@ -71,6 +71,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // The WWW-Authenticate header is sent along with the response
         requestContext.abortWith(
                 Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Unauthorized")
                         .header(HttpHeaders.WWW_AUTHENTICATE,
                                 AUTHENTICATION_SCHEME + " realm=\"" + REALM + "\"")
                         .build());

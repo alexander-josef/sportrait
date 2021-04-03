@@ -25,11 +25,12 @@ package ch.unartig.studioserver.persistence.DAOs;
 import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.UserProfile;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class UserProfileDAO
 {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     /**
      * @param userName

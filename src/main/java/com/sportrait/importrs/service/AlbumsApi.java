@@ -16,7 +16,8 @@ import com.sportrait.importrs.model.Album;
 import com.sportrait.importrs.model.AlbumImportStatus;
 import com.sportrait.importrs.model.ImportUpdates;
 import com.sportrait.importrs.model.Importable;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
 public class AlbumsApi {
     @Context
     ContainerRequestContext requestContext;
-    private final Logger _logger = Logger.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger(getClass().getName());
 
     static Album convertToAlbumDTO(ch.unartig.studioserver.model.Album album) {
         Album albumDTO = new Album();
@@ -195,7 +196,9 @@ public class AlbumsApi {
         try {
             HibernateUtil.beginTransaction();
             album.checkReadAccessFor(client); // todo: check write or delete access!
-            genericLevelDAO.delete(album);
+            // Performance ? could be very slow if each photo deleted separately?
+            album.deleteLevel();
+            // genericLevelDAO.delete(album);
             HibernateUtil.commitTransaction();
         } catch (NotAuthorizedException e) {
             _logger.info(e);

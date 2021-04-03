@@ -116,7 +116,8 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.exceptions.UnartigException;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -137,7 +138,7 @@ public class Category extends GenericLevel implements java.io.Serializable {
 
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @OrderBy("navTitle asc ")

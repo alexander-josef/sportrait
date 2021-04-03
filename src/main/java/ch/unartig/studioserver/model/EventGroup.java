@@ -84,7 +84,8 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.businesslogic.GenericLevelVisitor;
 import ch.unartig.studioserver.persistence.DAOs.GenericLevelDAO;
 import ch.unartig.studioserver.persistence.DAOs.PhotographerDAO;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -100,7 +101,7 @@ import java.util.Set;
 public class EventGroup extends GenericLevel implements java.io.Serializable {
 
     @Transient
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
 
     @ManyToOne

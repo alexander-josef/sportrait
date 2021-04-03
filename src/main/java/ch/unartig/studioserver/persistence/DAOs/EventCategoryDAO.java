@@ -29,10 +29,11 @@ import ch.unartig.exceptions.UAPersistenceException;
 import ch.unartig.studioserver.model.EventCategory;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
 import org.hibernate.HibernateException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EventCategoryDAO {
-    Logger _logger = Logger.getLogger(getClass().getName());
+    Logger _logger = LogManager.getLogger(getClass().getName());
 
     public EventCategory load(Long eventCategoryId) throws UAPersistenceException {
         try {

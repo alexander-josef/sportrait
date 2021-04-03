@@ -7,7 +7,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 
     <display-name>Sportrait Server</display-name>
     <description>
-        SPORTRAIT web app. (c) Alexander Josef 2005-2020
+        SPORTRAIT web app. (c) Alexander Josef 2005-2021
     </description>
     <context-param>
         <param-name>webmaster</param-name>
@@ -27,83 +27,10 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         <filter-name>HibernateFilter</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
-
-    <filter-mapping>
-        <filter-name>HibernateFilter</filter-name>
-        <url-pattern>/zkau/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>HibernateFilter</filter-name>
-        <url-pattern>*.zul</url-pattern>
-    </filter-mapping>
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
-
-
-    <!-- SECTION FOR ZK -->
-    <listener>
-        <description>Used to cleanup when a session isdestroyed</description>
-        <display-name>ZK Session Cleaner</display-name>
-        <listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
-    </listener>
-    <servlet>
-        <description>ZK loader for evaluating ZK pages</description>
-        <servlet-name>zkLoader</servlet-name>
-        <servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
-        <!-- Specifies URI of the update engine(DHtmlUpdateServlet). -->
-        <init-param>
-            <param-name>update-uri</param-name>
-            <param-value>/zkau</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-        <!-- MUST -->
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>zkLoader</servlet-name>
-        <url-pattern>*.zul</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>zkLoader</servlet-name>
-        <url-pattern>*.zhtml</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <description>The asynchronous update engine for ZK</description>
-        <servlet-name>auEngine</servlet-name>
-        <servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>auEngine</servlet-name>
-        <url-pattern>/zkau/*</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet>
-        <servlet-name>action</servlet-name>
-        <servlet-class>ch.unartig.controller.UnartigActionServlet</servlet-class>
-        <init-param>
-            <param-name>config</param-name>
-            <param-value>/WEB-INF/struts-config.xml</param-value>
-        </init-param>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>5</param-value>
-        </init-param>
-        <init-param>
-            <param-name>detail</param-name>
-            <param-value>2</param-value>
-        </init-param>
-        <!--        unartig init params-->
-        <load-on-startup>2</load-on-startup>
-    </servlet>
-
-
-    <!-- Mapping for the struts action. all html pages and the api for the web services-->
-    <servlet-mapping>
-        <servlet-name>action</servlet-name>
-        <url-pattern>*.html</url-pattern>
-    </servlet-mapping>
 
     <session-config>
         <!--default session time-out 30 minutes. enter time-out in minutes-->
