@@ -42,7 +42,8 @@
             <element id="library" level="project" name="Maven: com.amazonaws:aws-java-sdk-sqs:1.11.500" />
             <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:20030211.134440" />
             <element id="library" level="project" name="Maven: commons-io:commons-io:2.8.0" />
-            <element id="library" level="project" name="Maven: log4j:log4j:1.2.14" />
+            <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" />
+            <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.14.1" />
             <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.4.30.Final" />
             <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.4.1.Final" />
             <element id="library" level="project" name="Maven: javax.persistence:javax.persistence-api:2.2" />
@@ -1430,17 +1431,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.13.1/junit-4.13.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: log4j:log4j:1.2.14">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.14/log4j-1.2.14-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: net.bytebuddy:byte-buddy:1.10.21">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.10.21/byte-buddy-1.10.21.jar!/" />
@@ -1516,6 +1506,28 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/httpcomponents/httpcore/4.4.13/httpcore-4.4.13-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.logging.log4j:log4j-api:2.14.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-api/2.14.1/log4j-api-2.14.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.logging.log4j:log4j-core:2.14.1">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/logging/log4j/log4j-core/2.14.1/log4j-core-2.14.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.checkerframework:checker-compat-qual:2.5.5">
