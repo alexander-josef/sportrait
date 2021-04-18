@@ -17,6 +17,7 @@ import org.hibernate.annotations.Cache;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("GENERIC")
@@ -360,6 +361,29 @@ public abstract class GenericLevel implements java.io.Serializable, Comparable {
             return false;
         }
     }
+
+
+    // +++++++++  !!!!!!!!!!!!!!  +++++++++++
+    // equals and hashCode inserted 2021-04-18 after problems with comparisons / equality in sets / maps --> ImportStatus.java
+    // Album instances with equal ID were present in maps
+    // throw out again when detecting strange behavious
+    // +++++++++  !!!!!!!!!!!!!!  +++++++++++
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GenericLevel)) return false;
+        GenericLevel that = (GenericLevel) o;
+        return genericLevelId.equals(that.genericLevelId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(genericLevelId);
+    }
+
+
+
 }
 
 

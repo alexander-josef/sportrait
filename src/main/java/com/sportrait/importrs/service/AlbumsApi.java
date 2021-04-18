@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class AlbumsApi {
     @Context
     ContainerRequestContext requestContext;
-    private final Logger _logger = LogManager.getLogger(getClass().getName());
+    private final Logger _logger = LogManager.getLogger();
 
     static Album convertToAlbumDTO(ch.unartig.studioserver.model.Album album) {
         Album albumDTO = new Album();
@@ -153,15 +153,19 @@ public class AlbumsApi {
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
         // a bit complicated?
         ImportUpdates importUpdates = new ImportUpdates();
-        ImportStatus.getInstance().getPhotosRemaining().forEach((key, value) -> {
-            _logger.debug("setting status for album : " + key);
+        // why loop through photosRemaining? ->
+        // key of the map = album
+        ImportStatus.getInstance().getCurrentlyImportedAlbums().forEach(album -> { // this adds all albums that have photoRemaining to be imported
+            _logger.debug("setting status for album : " + album);
             AlbumImportStatus albumStatus = new AlbumImportStatus();
-            albumStatus.setPhotosRemaining(value);
-            albumStatus.setPhotosImported(ImportStatus.getInstance().getPhotosImported(key));
-            albumStatus.setImportErrors(ImportStatus.getInstance().getImportErrors(key));
-            albumStatus.setQueuedForNumberRecognition(ImportStatus.getInstance().getPhotosQueuedForNumberRecognition(key));
-            importUpdates.put(key.getGenericLevelId().toString(),albumStatus);
+            albumStatus.setAlbumLabel(album.getDescription());
+            albumStatus.setPhotosRemaining(ImportStatus.getInstance().getPhotosRemaining(album));
+            albumStatus.setPhotosImported(ImportStatus.getInstance().getPhotosImported(album));
+            albumStatus.setImportErrors(ImportStatus.getInstance().getImportErrors(album));
+            albumStatus.setQueuedForNumberRecognition(ImportStatus.getInstance().getPhotosQueuedForNumberRecognition(album));
+            importUpdates.put(album.getGenericLevelId().toString(),albumStatus);
         });
+        // todo : also consider open queued for number recognition to be returned
 
         return Response
                 .ok()
