@@ -384,16 +384,16 @@
     <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
   </component>
   <component name="ProjectDictionaryState">
-    <dictionary name="ajosef">
-      <words>
-        <w>startnummern</w>
-      </words>
-    </dictionary>
     <dictionary name="alexanderjosef">
       <words>
         <w>alexanderjosef</w>
         <w>asvz</w>
         <w>sola</w>
+      </words>
+    </dictionary>
+    <dictionary name="ajosef">
+      <words>
+        <w>startnummern</w>
       </words>
     </dictionary>
   </component>

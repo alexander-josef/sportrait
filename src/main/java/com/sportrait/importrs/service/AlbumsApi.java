@@ -141,6 +141,7 @@ public class AlbumsApi {
 
     /**
      * Return a map with all currently imported albums and their import status
+     *
      * @return
      */
     @Path("/importUpdates")

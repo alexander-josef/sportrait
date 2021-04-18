@@ -14,14 +14,19 @@ package com.sportrait.importrs.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-
+import javax.validation.constraints.*;
+import javax.validation.Valid;
 
 /**
  * Contains status information for an album currently being imported
  */
 @Schema(description = "Contains status information for an album currently being imported")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2021-01-28T13:02:09.948Z[GMT]")public class AlbumImportStatus   {
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2021-04-18T07:48:16.157Z[GMT]")public class AlbumImportStatus   {
+  @JsonProperty("albumLabel")
+  private String albumLabel = null;
+
   @JsonProperty("photosImported")
   private Integer photosImported = null;
 
@@ -33,6 +38,25 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
   @JsonProperty("queuedForNumberRecognition")
   private Integer queuedForNumberRecognition = null;
+
+  public AlbumImportStatus albumLabel(String albumLabel) {
+    this.albumLabel = albumLabel;
+    return this;
+  }
+
+  /**
+   * Get albumLabel
+   * @return albumLabel
+   **/
+  @JsonProperty("albumLabel")
+  @Schema(description = "")
+  public String getAlbumLabel() {
+    return albumLabel;
+  }
+
+  public void setAlbumLabel(String albumLabel) {
+    this.albumLabel = albumLabel;
+  }
 
   public AlbumImportStatus photosImported(Integer photosImported) {
     this.photosImported = photosImported;
@@ -120,7 +144,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
       return false;
     }
     AlbumImportStatus albumImportStatus = (AlbumImportStatus) o;
-    return Objects.equals(this.photosImported, albumImportStatus.photosImported) &&
+    return Objects.equals(this.albumLabel, albumImportStatus.albumLabel) &&
+        Objects.equals(this.photosImported, albumImportStatus.photosImported) &&
         Objects.equals(this.photosRemaining, albumImportStatus.photosRemaining) &&
         Objects.equals(this.importErrors, albumImportStatus.importErrors) &&
         Objects.equals(this.queuedForNumberRecognition, albumImportStatus.queuedForNumberRecognition);
@@ -128,7 +153,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
   @Override
   public int hashCode() {
-    return Objects.hash(photosImported, photosRemaining, importErrors, queuedForNumberRecognition);
+    return Objects.hash(albumLabel, photosImported, photosRemaining, importErrors, queuedForNumberRecognition);
   }
 
 
@@ -137,6 +162,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
     StringBuilder sb = new StringBuilder();
     sb.append("class AlbumImportStatus {\n");
     
+    sb.append("    albumLabel: ").append(toIndentedString(albumLabel)).append("\n");
     sb.append("    photosImported: ").append(toIndentedString(photosImported)).append("\n");
     sb.append("    photosRemaining: ").append(toIndentedString(photosRemaining)).append("\n");
     sb.append("    importErrors: ").append(toIndentedString(importErrors)).append("\n");

@@ -13,15 +13,16 @@
 package com.sportrait.importrs.model;
 
 import java.util.Objects;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashMap;
 
 
 /**
- * A dictionary / map containing album import updates
+ * A dictionary / map containing album import updates - key&#x3D;albumId
  */
-@Schema(description = "A dictionary / map containing album import updates")
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2021-01-28T13:02:09.948Z[GMT]")public class ImportUpdates extends HashMap<String, AlbumImportStatus>  {
+@Schema(description = "A dictionary / map containing album import updates - key=albumId")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.JavaJerseyServerCodegen", date = "2021-04-18T07:48:16.157Z[GMT]")public class ImportUpdates extends HashMap<String, AlbumImportStatus>  {
 
   @Override
   public boolean equals(java.lang.Object o) {
