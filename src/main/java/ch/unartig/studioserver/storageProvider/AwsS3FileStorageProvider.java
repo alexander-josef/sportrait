@@ -244,7 +244,7 @@ public class AwsS3FileStorageProvider implements FileStorageProviderInterface {
                         if (Registry.isDevEnv()) {
                             // pause for 10 seconds to better test status updates
                             _logger.debug("going to sleep for 10 seconds ...");
-                            TimeUnit.SECONDS.sleep(10);
+                            TimeUnit.SECONDS.sleep(Registry._PHOTO_IMPORT_TIMEOUT_SEC);
                         }
 
                     } else {

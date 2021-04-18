@@ -20,6 +20,7 @@ import java.util.Properties;
 public final class Registry
 {
 
+    public static final int _PHOTO_IMPORT_TIMEOUT_SEC = 10; // timeout after each photo import in DEV env to better test the current imports status information
     public static Logger _logger = LogManager.getLogger("ch.unartig.studioserver.Registry");
 
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
