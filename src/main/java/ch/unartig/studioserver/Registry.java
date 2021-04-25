@@ -20,9 +20,10 @@ import java.util.Properties;
 public final class Registry
 {
 
-    public static final int _PHOTO_IMPORT_TIMEOUT_SEC = 10; // timeout after each photo import in DEV env to better test the current imports status information
     public static Logger _logger = LogManager.getLogger("ch.unartig.studioserver.Registry");
 
+    public static final int _PHOTO_IMPORT_TIMEOUT_SEC = 10; // timeout after each photo import in DEV env to better test the current imports status information
+    public static final int _ALBUM_IMPORT_STATUS_TIMEOUT_SEC = 2; // timeout after each photo import in DEV env to better test the current imports status information
     public static final String _LANDSCAPE_MODE_SUFFIX = "landscape";
     public static  boolean _DevEnv = false; // constant variable to indicate if we're in dev environment - initializes to false, will be set to true for dev env / used in JSPa
     public static  boolean _IntEnv = false; // constant variable to indicate if we're in int environment - initializes to false, will be set to true for dev env / used in JSPa

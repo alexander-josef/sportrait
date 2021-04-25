@@ -155,18 +155,25 @@ public class AlbumsApi {
     @Produces(MediaType.SERVER_SENT_EVENTS)
     public void getServerSentEvents(@Context SseEventSink eventSink, @Context Sse sse) {
         new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                // ... code that waits 1 second
-                try {
-                    TimeUnit.SECONDS.sleep(Registry._PHOTO_IMPORT_TIMEOUT_SEC);
-                } catch (InterruptedException e) {
-                    _logger.info("timeout interrupted",e);
+            // todo think about broadcasting and start loop only once
+
+            while(true) { // start infinite loop
+                ImportUpdates importUpdates = getImportUpdates();
+                if (!importUpdates.isEmpty()) { // only send event on available data
+                    _logger.debug("sending sse import status - [" + importUpdates.size() + "] imports running ");
+                    final OutboundSseEvent event = sse.newEventBuilder()
+                            .name("import-status-update-event")
+                            .mediaType(MediaType.APPLICATION_JSON_TYPE)
+                            .data(ImportUpdates.class, importUpdates)
+                            .build();
+                    eventSink.send(event);
                 }
-                final OutboundSseEvent event = sse.newEventBuilder()
-                        .name("message-to-client")
-                        .data(String.class, "Hello world " + i + "!")
-                        .build();
-                eventSink.send(event);
+                try {
+                    // ... and then wait 2 second
+                    TimeUnit.SECONDS.sleep(Registry._ALBUM_IMPORT_STATUS_TIMEOUT_SEC);
+                } catch (InterruptedException e) {
+                    _logger.info("timeout interrupted - continuing", e);
+                }
             }
         }).start();
     }
@@ -185,6 +192,16 @@ public class AlbumsApi {
         Client client = (Client) requestContext.getProperty("client"); // client from authentication filter
         _logger.debug("authenticated user : [" + client.getUsername() + "]");
         // a bit complicated?
+        ImportUpdates importUpdates = getImportUpdates();
+        // todo : also consider open queued for number recognition to be returned
+
+        return Response
+                .ok()
+                .entity(importUpdates)
+                .build();
+    }
+
+    private ImportUpdates getImportUpdates() {
         ImportUpdates importUpdates = new ImportUpdates();
         // why loop through photosRemaining? ->
         // key of the map = album
@@ -198,12 +215,7 @@ public class AlbumsApi {
             albumStatus.setQueuedForNumberRecognition(ImportStatus.getInstance().getPhotosQueuedForNumberRecognition(album));
             importUpdates.put(album.getGenericLevelId().toString(),albumStatus);
         });
-        // todo : also consider open queued for number recognition to be returned
-
-        return Response
-                .ok()
-                .entity(importUpdates)
-                .build();
+        return importUpdates;
     }
 
     @Path("/{albumId}")
