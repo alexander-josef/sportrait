@@ -5,6 +5,9 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 
+/**
+ * Websocket Server Endpoint - Experiment, not yet used productively
+ */
 @ServerEndpoint(value="/api/import/status/{albumId}")
 public class ImportStatusEndpoint {
     // see https://www.baeldung.com/java-websockets for more sophisticated details

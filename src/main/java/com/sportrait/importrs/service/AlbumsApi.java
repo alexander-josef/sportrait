@@ -27,10 +27,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.sse.OutboundSseEvent;
+import javax.ws.rs.sse.Sse;
+import javax.ws.rs.sse.SseEventSink;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Path("/albums")
@@ -139,8 +143,37 @@ public class AlbumsApi {
                 .build();
     }
 
+
     /**
-     * Return a map with all currently imported albums and their import status
+     * Return a map with all currently imported albums and their import statuses - non-broadcast SSE resource
+     * Todo : think about securing this endpoint (currently unsecured!)
+     * @param eventSink context passed (Jersey injected) eventSink (i.e. output or target to send event data)
+     * @param sse context passed (Jersey injected) factory to build the eventbuilder
+     */
+    @Path("importUpdatesSSE")
+    @GET
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    public void getServerSentEvents(@Context SseEventSink eventSink, @Context Sse sse) {
+        new Thread(() -> {
+            for (int i = 0; i < 10; i++) {
+                // ... code that waits 1 second
+                try {
+                    TimeUnit.SECONDS.sleep(Registry._PHOTO_IMPORT_TIMEOUT_SEC);
+                } catch (InterruptedException e) {
+                    _logger.info("timeout interrupted",e);
+                }
+                final OutboundSseEvent event = sse.newEventBuilder()
+                        .name("message-to-client")
+                        .data(String.class, "Hello world " + i + "!")
+                        .build();
+                eventSink.send(event);
+            }
+        }).start();
+    }
+
+
+    /**
+     * Return a map with all currently imported albums and their import statuses - regular REST API resource
      *
      * @return
      */

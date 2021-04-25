@@ -2,8 +2,6 @@ import ch.unartig.sportrait.imgRecognition.StartnumberProcessor;
 import ch.unartig.studioserver.Registry;
 import ch.unartig.studioserver.businesslogic.PhotoOrderService;
 import ch.unartig.studioserver.persistence.util.HibernateUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
