@@ -156,7 +156,7 @@ public class AlbumsApi {
     public void getServerSentEvents(@Context SseEventSink eventSink, @Context Sse sse) {
         new Thread(() -> {
             // todo think about broadcasting and start loop only once
-
+            boolean lastImportUpdateIsEmpty=true;
             while(true) { // start infinite loop
                 ImportUpdates importUpdates = getImportUpdates();
                 if (!importUpdates.isEmpty()) { // only send event on available data
@@ -167,6 +167,17 @@ public class AlbumsApi {
                             .data(ImportUpdates.class, importUpdates)
                             .build();
                     eventSink.send(event);
+                    lastImportUpdateIsEmpty=false;
+                } else if (!lastImportUpdateIsEmpty) {
+                    // if the last poll before this one was not empty,
+                    // send one one last empty one
+                    final OutboundSseEvent event = sse.newEventBuilder()
+                            .name("import-status-update-event")
+                            .mediaType(MediaType.APPLICATION_JSON_TYPE)
+                            .data(ImportUpdates.class, importUpdates)
+                            .build();
+                    eventSink.send(event);
+                    lastImportUpdateIsEmpty=true;
                 }
                 try {
                     // ... and then wait 2 second

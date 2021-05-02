@@ -64,7 +64,9 @@ public final class ImportStatus {
         currentlyImportedAlbums.addAll(photosRemaining.keySet());
         currentlyImportedAlbums.addAll(queuedForNumberRecognition.keySet());
         currentlyImportedAlbums.addAll(queuedForPostProcessing.keySet());
-        _logger.debug("returning currently imported albums : " + currentlyImportedAlbums);
+        if (!currentlyImportedAlbums.isEmpty()) {
+            _logger.debug("returning currently imported albums : " + currentlyImportedAlbums);
+        }
         return currentlyImportedAlbums;
     }
 
@@ -104,7 +106,7 @@ public final class ImportStatus {
 
     /**
      * Re-set / remove entry for album - import has finished for album
-     * Called when ... todo
+     * Called when ...  todo
      * @param album
      */
     public void resetPhotosImported(Album album) {
