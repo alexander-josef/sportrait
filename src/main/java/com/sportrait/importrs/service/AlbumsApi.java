@@ -343,6 +343,11 @@ public class AlbumsApi {
     }
 
 
+    /**
+     * Starting the post processing to match known numbers associated with faces to additional face matches
+     * @param albumId
+     * @return
+     */
     @Path("/{albumId}/startPostProcessing")
     @POST
     @Secured

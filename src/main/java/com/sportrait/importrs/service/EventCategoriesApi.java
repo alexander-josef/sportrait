@@ -194,13 +194,9 @@ public class EventCategoriesApi {
             _logger.error(e);
             return Response.serverError().entity("Error while creating album on the server").build();
         }
-
-        albumDto.setId(sportsAlbum.getGenericLevelId());
-        albumDto.setTitle(sportsAlbum.getLongTitle());
-        albumDto.setStatus(Album.StatusEnum.IMPORTING);
-
-        // todo : return ID - think about REST endpoint that delivers status information of album (importing, published, ...)
-        return Response.ok().entity(albumDto).build();
+        Album importingAlbumDto = AlbumsApi.convertToAlbumDTO(sportsAlbum);
+        importingAlbumDto.setStatus(Album.StatusEnum.IMPORTING); // setting status to importing after Post request
+        return Response.ok().entity(importingAlbumDto).build();
     }
 
 }

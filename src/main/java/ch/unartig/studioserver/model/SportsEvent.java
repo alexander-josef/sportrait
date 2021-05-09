@@ -265,10 +265,8 @@ public class SportsEvent extends Event implements java.io.Serializable {
      * @param createThumbDisplay
      * @param applyLogoOnFineImages
      * @return SportsAlbum
-     * @throws ch.unartig.exceptions.UnartigException
      */
-    public SportsAlbum createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Photographer photographer, Boolean createThumbDisplay, boolean applyLogoOnFineImages) throws UnartigException
-    {
+    public SportsAlbum createSportsAlbumFromTempPath(Long eventCategoryId, String tempFineImageServerPath, Photographer photographer, Boolean createThumbDisplay, boolean applyLogoOnFineImages) {
         SportsAlbum sportsAlbum = getOrCreateSportsAlbumFor(eventCategoryId, photographer);
         // giving control to new thread and return.
         Uploader uploader = new Uploader(tempFineImageServerPath, sportsAlbum.getGenericLevelId(), createThumbDisplay,applyLogoOnFineImages);
