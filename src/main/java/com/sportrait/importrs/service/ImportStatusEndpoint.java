@@ -33,6 +33,7 @@ public class ImportStatusEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("ImportStatusEndpoint.onClose");
+        // todo : close thread associated with this socket connection??
     }
 
     @OnError
